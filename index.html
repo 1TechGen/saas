@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Add a general site description here -->
+  <meta name="description" content="Tech Gen AI SaaS Platform offers powerful AI tools like Image Generation, Document Translation, and Text Summarization to enhance your productivity.">
+  <!-- Add keywords if desired, though their importance has diminished -->
+  <meta name="keywords" content="AI, SaaS, image generator, translation, summarization, artificial intelligence, tech tools">
+  
+  <title>Tech Gen AI SaaS Platform</title> <!-- Default Title -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
+
+  <!-- 
+    GOOGLE ADSENSE AUTO ADS SCRIPT PLACEHOLDER
+    When you get AdSense approval, you'll get a script to place here.
+    It usually looks something like this:
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID"
+         crossorigin="anonymous"></script>
+  -->
+
+  <style>
+    .page { display: none; }
+    .page.active { display: block; }
+    .gradient-bg {
+      background: linear-gradient(135deg, #1B2EFD 0%, #00C5FF 100%);
+    }
+    .hover-glow:hover {
+      filter: drop-shadow(0 0 6px rgba(0, 255, 209, 0.7));
+    }
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #00C5FF;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .file-upload {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+    .file-upload-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .tab-button {
+      transition: all 0.3s ease;
+    }
+    .tab-button.active {
+      background: linear-gradient(135deg, #1B2EFD 0%, #00C5FF 100%);
+      color: white;
+    }
+    .alert-message {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      color: white;
+      z-index: 100; 
+      transition: opacity 0.3s ease;
+      max-width: 90%;
+    }
+    .alert-error {
+      background-color: #EF4444; 
+    }
+    .alert-success {
+      background-color: #10B981; 
+    }
+    .alert-info {
+      background-color: #3B82F6; 
+    }
+    .pricing-card ul { list-style: none; padding: 0; }
+    .pricing-card ul li { display: flex; align-items: center; margin-bottom: 0.5rem; }
+    .pricing-card ul li svg { margin-right: 0.5rem; color: #10B981; } 
+
+    /* Placeholder for AdSense Ad Units */
+    .adsense-placeholder {
+        background-color: #f0f0f0;
+        border: 1px dashed #ccc;
+        text-align: center;
+        padding: 20px;
+        margin: 15px auto;
+        font-size: 0.9em;
+        color: #777;
+        min-height: 90px; /* Common ad height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Navigation Bar -->
+  <nav class="bg-gray-800 text-white p-4 sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Tech Gen AI SaaS</h1>
+      <div class="flex items-center space-x-6">
+        <ul class="flex space-x-4">
+          <li><button onclick="showPage('home')" class="hover:text-blue-400">Home</button></li>
+          <li class="relative group">
+            <button class="hover:text-blue-400 flex items-center">
+              Features
+              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div class="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg py-2 z-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+              <button onclick="showPage('ai-generator')" class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-100">AI Image Generator</button>
+              <button onclick="showPage('translate')" class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-100">Translate Documents</button>
+              <button onclick="showPage('summarization')" class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-100">Text Summarization</button>
+            </div>
+          </li>
+          <li><button onclick="showPage('pricing')" class="hover:text-blue-400">Pricing</button></li>
+          <li><button onclick="showPage('contact')" class="hover:text-blue-400">Contact</button></li>
+        </ul>
+        <div class="flex space-x-2">
+          <button onclick="showPage('login')" class="px-4 py-2 rounded-md hover:bg-gray-700 transition">Login</button>
+          <button onclick="showPage('register')" class="bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition">Register</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <main>
+    <!-- Home Page -->
+    <div id="home" class="page active">
+      <section class="bg-blue-950 text-white py-20">
+        <div class="container mx-auto text-center px-4">
+          <h2 class="text-4xl font-bold mb-4">Transform Your Workflow with AI</h2>
+          <p class="text-lg mb-6 max-w-2xl mx-auto">Our AI-powered SaaS platform helps businesses streamline operations and boost productivity with tools for image generation, document translation, and text summarization.</p>
+          <button onclick="showPage('register')" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">Get Started</button>
+        </div>
+      </section>
+      
+      <section class="py-16 container mx-auto px-4">
+        <h3 class="text-3xl font-bold text-center mb-12">Powerful Features</h3>
+        <!-- AdSense Placeholder - Example for Home Page (Above Features) -->
+        <!-- <div class="adsense-placeholder">Home Page - Ad Unit Placeholder (e.g., 728x90 Leaderboard)</div> -->
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="p-6 bg-white rounded-lg shadow-md">
+            <h4 class="text-xl font-semibold mb-2">AI Image Generator</h4>
+            <p class="mb-4">Create stunning, unique visuals from text prompts instantly with our advanced AI image generator. Perfect for artists, marketers, and content creators.</p>
+            <button onclick="showPage('ai-generator')" class="text-blue-600 font-medium hover:underline">Try it now →</button>
+          </div>
+          <div class="p-6 bg-white rounded-lg shadow-md">
+            <h4 class="text-xl font-semibold mb-2">Translate Documents</h4>
+            <p class="mb-4">Effortlessly translate text and entire documents into multiple languages with high accuracy. Break down language barriers for global communication.</p>
+            <button onclick="showPage('translate')" class="text-blue-600 font-medium hover:underline">Try it now →</button>
+          </div>
+          <div class="p-6 bg-white rounded-lg shadow-md">
+            <h4 class="text-xl font-semibold mb-2">Text Summarization</h4>
+            <p class="mb-4">Get concise and coherent summaries of long articles, reports, or documents in seconds. Save time and quickly grasp key information.</p>
+            <button onclick="showPage('summarization')" class="text-blue-600 font-medium hover:underline">Try it now →</button>
+          </div>
+        </div>
+        <!-- AdSense Placeholder - Example for Home Page (Below Features) -->
+        <!-- <div class="adsense-placeholder">Home Page - Ad Unit Placeholder (e.g., 300x250 Medium Rectangle)</div> -->
+      </section>
+
+      <section class="bg-gray-100 py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-3xl font-bold text-gray-800 mb-6">Why Choose Tech Gen AI?</h3>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+                Tech Gen AI provides cutting-edge artificial intelligence tools designed to be intuitive, powerful, and accessible.
+                We leverage state-of-the-art models to deliver high-quality results, helping you save time, enhance creativity, and
+                improve your workflows. Our platform is continuously evolving with new features and improvements.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6">
+                    <div class="text-blue-600 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-2">User-Friendly Interface</h4>
+                    <p class="text-gray-600">Easy-to-use tools that don't require technical expertise.</p>
+                </div>
+                <div class="p-6">
+                     <div class="text-blue-600 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Fast & Accurate</h4>
+                    <p class="text-gray-600">Get high-quality AI-powered results in seconds.</p>
+                </div>
+                <div class="p-6">
+                    <div class="text-blue-600 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Time Saving</h4>
+                    <p class="text-gray-600">Automate tasks and boost your overall productivity.</p>
+                </div>
+            </div>
+        </div>
+      </section>
+
+
+    </div>
+
+    <!-- Login Page (NO ADS HERE) -->
+    <div id="login" class="page">
+      <div class="container mx-auto px-4 py-16 max-w-md">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="bg-blue-600 py-4 px-6">
+            <h2 class="text-2xl font-bold text-white">Welcome Back</h2>
+          </div>
+          <form id="loginForm" class="p-6 space-y-6">
+            <div>
+              <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input type="email" id="loginEmail" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
+            </div>
+            <div>
+              <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <input type="password" id="loginPassword" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition">
+              Sign In
+            </button>
+          </form>
+          <div class="px-6 py-4 bg-gray-50 text-center">
+            <button onclick="showPage('register')" class="text-blue-600 font-medium hover:underline">
+              Create an account
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Page (NO ADS HERE) -->
+    <div id="register" class="page">
+      <div class="container mx-auto px-4 py-16 max-w-md">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="bg-blue-600 py-4 px-6">
+            <h2 class="text-2xl font-bold text-white">Create Account</h2>
+          </div>
+          <form id="registerForm" class="p-6 space-y-6">
+            <div>
+              <label for="registerFullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+              <input type="text" id="registerFullName" name="fullName" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
+            </div>
+            <div>
+              <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input type="email" id="registerEmail" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
+            </div>
+            <div>
+              <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <input type="password" id="registerPassword" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-md" required minlength="6">
+              <p class="text-xs text-gray-500 mt-1">Minimum 6 characters.</p>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition">
+              Sign Up
+            </button>
+          </form>
+          <div class="px-6 py-4 bg-gray-50 text-center">
+            <button onclick="showPage('login')" class="text-blue-600 font-medium hover:underline">
+              Already have an account? Sign in
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Image Generator Page -->
+    <div id="ai-generator" class="page">
+      <header class="gradient-bg text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+          <h1 class="text-3xl font-bold">AI Image Generator</h1>
+          <p class="mt-2 text-[#A1A5B7]">Transform your ideas into stunning visuals with Monster API</p>
+        </div>
+      </header>
+
+      <div class="container mx-auto py-8 px-4">
+        <!-- CONTENT SECTION - Add more text here for AdSense -->
+        <article class="prose lg:prose-xl mx-auto mb-8 bg-white p-6 rounded-lg shadow">
+            <h2>Unleash Your Creativity with AI Image Generation</h2>
+            <p>Our AI Image Generator, powered by advanced models via Monster API, allows you to turn simple text prompts into breathtaking visuals. Whether you're an artist looking for inspiration, a marketer needing unique ad creatives, or just curious about the power of AI, this tool is for you.</p>
+            <p><strong>How it works:</strong> Simply type a description of the image you envision. Be as detailed or as abstract as you like. Choose your preferred aspect ratio and an optional style to guide the AI. Our system will then process your request and generate a unique image based on your input. Explore different prompts and styles to discover endless possibilities!</p>
+            <h3>Tips for Great Prompts:</h3>
+            <ul>
+                <li>Be specific: Instead of "a cat," try "a fluffy ginger cat sleeping on a pile of books, sunbeam shining on it, impressionist painting style."</li>
+                <li>Mention artists or styles: "cyberpunk cityscape by Syd Mead," "portrait in the style of Van Gogh."</li>
+                <li>Use descriptive adjectives: "ethereal," "majestic," "surreal," "minimalist."</li>
+                <li>Experiment! The more you try, the better you'll understand how to achieve your desired results.</li>
+            </ul>
+        </article>
+        <!-- END CONTENT SECTION -->
+
+        <!-- AdSense Placeholder - Example for Tool Page -->
+        <!-- <div class="adsense-placeholder">AI Image Gen - Ad Unit Placeholder (e.g., Responsive)</div> -->
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Try the Generator</h2>
+          <div class="bg-[#151A27] p-4 rounded-lg border border-[#252A37] max-w-3xl mx-auto">
+            <p class="text-[#A1A5B7] mb-3 text-sm">Describe the image you want to create.</p>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="text" id="imagePrompt" placeholder="e.g., 'A majestic lion in a surreal landscape, digital art'" 
+                     class="flex-1 p-2 text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white">
+              <button id="generateImageBtn" class="bg-[#00C5FF] text-[#0B0F19] text-sm font-medium px-4 py-2 rounded hover-glow flex items-center justify-center min-w-[120px]">
+                <span id="generateBtnText">Generate</span>
+                <span id="generateSpinner" class="loading hidden ml-2"></span>
+              </button>
+            </div>
+            <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[#A1A5B7] text-xs mb-1">Aspect Ratio</label>
+                <select id="monsterAspectRatio" class="w-full text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white p-1">
+                  <option value="square" selected>Square (1:1)</option>
+                  <option value="portrait">Portrait (2:3)</option>
+                  <option value="landscape">Landscape (3:2)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[#A1A5B7] text-xs mb-1">Style (Optional)</label>
+                 <select id="monsterImageStyle" class="w-full text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white p-1">
+                    <option value="">None</option>
+                    <option value="photorealistic">Photorealistic</option>
+                    <option value="digital-art">Digital Art</option>
+                    <option value="anime">Anime</option>
+                    <option value="pixel-art">Pixel Art</option>
+                    <option value="comic-book">Comic Book</option>
+                    <option value="fantasy-art">Fantasy Art</option>
+                    <option value="isometric">Isometric</option>
+                    <option value="line-art">Line Art</option>
+                    <option value="origami">Origami</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-4 text-center">
+              <div id="imagePlaceholder" class="bg-[#0B0F19] border border-[#252A37] rounded flex items-center justify-center h-64">
+                <p id="imagePlaceholderText" class="text-[#A1A5B7] text-sm">Image will appear here</p>
+              </div>
+              <div id="imageResultContainer" class="hidden">
+                <img id="generatedImage" src="" alt="Generated image" class="rounded mx-auto border border-[#252A37] max-w-full h-64 object-contain">
+                <button id="downloadImageBtn" class="mt-2 bg-[#00FFD1] text-[#0B0F19] text-sm font-medium px-4 py-2 rounded hover-glow">
+                  Download Image
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Translate Documents Page -->
+    <div id="translate" class="page">
+      <header class="gradient-bg text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+          <h1 class="text-3xl font-bold">AI Document & Text Translator</h1>
+          <p class="mt-2 text-[#A1A5B7]">Translate text and documents with high accuracy using AI</p>
+        </div>
+      </header>
+      <div class="container mx-auto py-8 px-4">
+        <!-- CONTENT SECTION - Add more text here for AdSense -->
+        <article class="prose lg:prose-xl mx-auto mb-8 bg-white p-6 rounded-lg shadow">
+            <h2>Break Language Barriers with AI Translation</h2>
+            <p>Our AI-powered translation service makes global communication seamless. Whether you need to translate a quick snippet of text or an entire document (PDF, DOCX, TXT), our tool provides fast and accurate translations in numerous languages. Powered by advanced neural machine translation models, we strive to deliver translations that are not only grammatically correct but also contextually appropriate.</p>
+            <h3>Features:</h3>
+            <ul>
+                <li><strong>Text Translation:</strong> Paste text directly for instant translation.</li>
+                <li><strong>Document Translation:</strong> Upload your files and receive a translated version while preserving the original structure as much as possible.</li>
+                <li><strong>Multiple Languages:</strong> We support a wide array of languages, constantly expanding our list.</li>
+                <li><strong>High Accuracy:</strong> Leveraging cutting-edge AI for quality translations.</li>
+            </ul>
+            <p>Use our translator for business documents, academic papers, personal correspondence, or simply to understand content in a foreign language. It's fast, easy, and reliable.</p>
+        </article>
+        <!-- END CONTENT SECTION -->
+
+        <!-- AdSense Placeholder - Example for Tool Page -->
+        <!-- <div class="adsense-placeholder">Translate Page - Ad Unit Placeholder</div> -->
+        
+        <div class="max-w-3xl mx-auto">
+            <div class="flex mb-6 bg-[#151A27] rounded-lg p-1">
+              <button id="textTabBtn" class="tab-button flex-1 py-2 px-4 rounded-lg font-medium text-white active">
+                Text Translation
+              </button>
+              <button id="docTabBtn" class="tab-button flex-1 py-2 px-4 rounded-lg font-medium text-[#A1A5B7]">
+                Document Translation
+              </button>
+            </div>
+
+            <section id="textTranslationSection" class="mb-8">
+              <div class="bg-[#151A27] p-4 rounded-lg border border-[#252A37]">
+                <div class="mb-4">
+                  <label class="block text-[#A1A5B7] text-sm mb-1">Text to translate</label>
+                  <textarea id="translatePageTextInput" class="w-full p-2 text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white h-32" placeholder="Enter your text here..."></textarea>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <select id="targetLanguage" class="text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white p-2 flex-1">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="zh-CN">Chinese (Simplified)</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                    <option value="ar">Arabic</option>
+                    <option value="hi">Hindi</option>
+                  </select>
+                  <button id="translateTextBtn" class="bg-[#6E44FF] text-white text-sm font-medium px-6 py-2 rounded hover-glow flex items-center">
+                    <span>Translate Text</span>
+                    <span id="translateTextSpinner" class="loading hidden ml-2"></span>
+                  </button>
+                </div>
+                <div id="textOutput" class="mt-4 p-3 bg-[#0B0F19] rounded border border-[#252A37] min-h-32">
+                  <p class="text-[#A1A5B7] text-sm">Translation results will appear here...</p>
+                </div>
+                <div class="flex justify-end mt-2">
+                  <button id="copyTextBtn" class="text-[#00C5FF] text-xs hover:underline hidden">Copy to Clipboard</button>
+                </div>
+              </div>
+            </section>
+
+            <section id="docTranslationSection" class="mb-8 hidden">
+              <div class="bg-[#151A27] p-4 rounded-lg border border-[#252A37]">
+                <div class="mb-4">
+                  <label class="block text-[#A1A5B7] text-sm mb-1">Upload document to translate</label>
+                  <div class="file-upload bg-[#0B0F19] border border-[#252A37] rounded p-2 text-center">
+                    <button class="bg-[#6E44FF] text-white text-sm font-medium px-4 py-2 rounded hover-glow">
+                      Choose File (PDF, DOCX, TXT)
+                    </button>
+                    <input type="file" id="docFileInput" class="file-upload-input" accept=".pdf,.docx,.txt">
+                  </div>
+                  <div id="docFileNameDisplay" class="text-[#A1A5B7] text-xs mt-1"></div>
+                  <div id="docFileExtractStatus" class="text-[#A1A5B7] text-xs mt-1 hidden">
+                    <span class="loading inline-block mr-2"></span>
+                    Extracting text from document...
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <select id="docTargetLanguage" class="text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white p-2 flex-1">
+                     <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="zh-CN">Chinese (Simplified)</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                    <option value="ar">Arabic</option>
+                    <option value="hi">Hindi</option>
+                  </select>
+                  <button id="translateDocBtn" class="bg-[#6E44FF] text-white text-sm font-medium px-6 py-2 rounded hover-glow flex items-center" disabled>
+                    <span>Translate Document</span>
+                    <span id="translateDocSpinner" class="loading hidden ml-2"></span>
+                  </button>
+                </div>
+                <div id="docTextPreview" class="mb-4 hidden">
+                  <label class="block text-[#A1A5B7] text-sm mb-1">Original Text Preview (first 500 characters)</label>
+                  <div class="p-3 bg-[#0B0F19] rounded border border-[#252A37] max-h-32 overflow-y-auto text-sm text-[#A1A5B7]"></div>
+                </div>
+                <div id="docTranslationOutput" class="mt-4 p-3 bg-[#0B0F19] rounded border border-[#252A37] min-h-32">
+                  <p class="text-[#A1A5B7] text-sm">Document translation results will appear here...</p>
+                </div>
+                <div class="flex justify-between mt-2">
+                  <button id="downloadTranslationBtn" class="text-[#00C5FF] text-xs hover:underline hidden">Download Translation</button>
+                  <button id="copyDocBtn" class="text-[#00C5FF] text-xs hover:underline hidden">Copy to Clipboard</button>
+                </div>
+              </div>
+            </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text Summarization Page -->
+    <div id="summarization" class="page">
+        <header class="gradient-bg text-white py-8">
+            <div class="container mx-auto px-4 text-center">
+              <h1 class="text-3xl font-bold">AI Text Summarizer</h1>
+              <p class="mt-2 text-[#A1A5B7]">Condense long texts into concise summaries using AI</p>
+            </div>
+        </header>
+        <div class="container mx-auto py-8 px-4">
+            <!-- CONTENT SECTION - Add more text here for AdSense -->
+            <article class="prose lg:prose-xl mx-auto mb-8 bg-white p-6 rounded-lg shadow">
+                <h2>Quickly Grasp Key Information with AI Summaries</h2>
+                <p>Overwhelmed by lengthy articles, reports, or research papers? Our AI Text Summarizer helps you cut through the noise and extract the most important information in seconds. Simply paste your text or upload a document, choose your desired summary length (short, medium, or long), and let our AI do the rest.</p>
+                <h3>Why Use Our Summarizer?</h3>
+                <ul>
+                    <li><strong>Save Time:</strong> Read less while understanding more.</li>
+                    <li><strong>Improve Comprehension:</strong> Focus on core ideas without getting lost in details.</li>
+                    <li><strong>Boost Productivity:</strong> Quickly process information for research, study, or business.</li>
+                    <li><strong>Versatile:</strong> Summarize news articles, blog posts, academic papers, business reports, and more.</li>
+                </ul>
+                <p>Our tool uses advanced natural language processing techniques to identify key sentences and concepts, then reconstructs them into a coherent and concise summary. Try it now and experience the power of AI-driven information distillation!</p>
+            </article>
+            <!-- END CONTENT SECTION -->
+
+            <!-- AdSense Placeholder - Example for Tool Page -->
+            <!-- <div class="adsense-placeholder">Summarization Page - Ad Unit Placeholder</div> -->
+
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Try the Summarizer</h2>
+              <div class="bg-[#151A27] p-4 rounded-lg border border-[#252A37] max-w-3xl mx-auto">
+                <div class="mb-4">
+                  <label class="block text-[#A1A5B7] text-sm mb-1">Enter text to summarize</label>
+                  <textarea id="summarizeTextInput" class="w-full p-2 text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white h-40" placeholder="Paste your text here..."></textarea>
+                </div>
+                <div class="flex items-center my-4">
+                  <hr class="flex-grow border-t border-[#252A37]">
+                  <span class="px-3 text-[#A1A5B7] text-sm">OR</span>
+                  <hr class="flex-grow border-t border-[#252A37]">
+                </div>
+                <div class="mb-4">
+                  <label class="block text-[#A1A5B7] text-sm mb-1">Upload document to summarize</label>
+                  <div class="file-upload bg-[#0B0F19] border border-[#252A37] rounded p-2 text-center">
+                    <button class="bg-[#6E44FF] text-white text-sm font-medium px-4 py-2 rounded hover-glow">
+                      Choose File (PDF, DOCX, TXT)
+                    </button>
+                    <input type="file" id="summarizeDocInput" class="file-upload-input" accept=".pdf,.docx,.txt">
+                  </div>
+                  <div id="summarizeDocNameDisplay" class="text-[#A1A5B7] text-xs mt-1"></div>
+                  <div id="summarizeDocExtractStatus" class="text-[#A1A5B7] text-xs mt-1 hidden">
+                    <span class="loading inline-block mr-2"></span>
+                    Extracting text from document...
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <label for="summaryLength" class="block text-[#A1A5B7] text-sm mb-1">Summary Length</label>
+                  <select id="summaryLength" class="w-full sm:w-1/2 text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white p-2">
+                    <option value="short">Short (1-2 sentences)</option>
+                    <option value="medium" selected>Medium (a paragraph)</option>
+                    <option value="long">Long (multiple paragraphs, detailed)</option>
+                  </select>
+                </div>
+                <button id="summarizeTextBtn" class="bg-[#00C5FF] text-[#0B0F19] text-sm font-medium px-6 py-2 rounded hover-glow flex items-center justify-center w-full sm:w-auto">
+                  <span id="summarizeBtnText">Summarize</span>
+                  <span id="summarizeTextSpinner" class="loading hidden ml-2"></span>
+                </button>
+                <div id="summaryOutput" class="mt-4 p-3 bg-[#0B0F19] rounded border border-[#252A37] min-h-32">
+                  <p class="text-[#A1A5B7] text-sm">Summary will appear here...</p>
+                </div>
+                <div class="flex justify-end mt-2">
+                  <button id="copySummaryBtn" class="text-[#00C5FF] text-xs hover:underline hidden">Copy Summary</button>
+                </div>
+              </div>
+            </section>
+          </div>
+    </div>
+
+    <!-- Pricing Page -->
+    <div id="pricing" class="page">
+        <header class="gradient-bg text-white py-8">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-3xl font-bold">Our Pricing Plans</h1>
+                <p class="mt-2 text-[#A1A5B7]">Choose the plan that's right for you, offering great value for powerful AI tools.</p>
+            </div>
+        </header>
+        <div class="container mx-auto px-4 py-16">
+            <!-- AdSense Placeholder - Example for Pricing Page -->
+            <!-- <div class="adsense-placeholder">Pricing Page - Ad Unit Placeholder</div> -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="pricing-card bg-white rounded-lg shadow-lg p-6 flex flex-col">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Free</h3>
+                    <p class="text-4xl font-bold text-gray-900 mb-4">$0<span class="text-lg font-normal text-gray-500">/month</span></p>
+                    <p class="text-gray-600 mb-6">Perfect for individuals starting out or trying our basic features.</p>
+                    <ul class="text-gray-700 mb-8 flex-grow">
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 AI Image Generations/day</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Basic Text Translation (1000 chars/req)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Short Text Summarization (5 docs/day)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Community Support</li>
+                    </ul>
+                    <button onclick="showPage('register')" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition mt-auto">Get Started</button>
+                </div>
+                <div class="pricing-card bg-white rounded-lg shadow-lg p-6 border-4 border-blue-600 flex flex-col relative">
+                    <span class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase">Most Popular</span>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2 mt-4">Pro</h3>
+                    <p class="text-4xl font-bold text-gray-900 mb-4">$19<span class="text-lg font-normal text-gray-500">/month</span></p>
+                    <p class="text-gray-600 mb-6">Ideal for professionals and small teams needing more power.</p>
+                    <ul class="text-gray-700 mb-8 flex-grow">
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 100 AI Image Generations/day</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Advanced Text & Document Translation</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> All Summarization Lengths (50 docs/day)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Priority Email Support</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Access to new features first</li>
+                    </ul>
+                    <button onclick="showPage('register')" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition mt-auto">Choose Pro</button>
+                </div>
+                <div class="pricing-card bg-white rounded-lg shadow-lg p-6 flex flex-col">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Business</h3>
+                    <p class="text-4xl font-bold text-gray-900 mb-4">$49<span class="text-lg font-normal text-gray-500">/month</span></p>
+                    <p class="text-gray-600 mb-6">For larger teams and businesses requiring extensive usage and support.</p>
+                    <ul class="text-gray-700 mb-8 flex-grow">
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Text & Document Translation</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Summarization</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Dedicated 24/7 Support</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Team Collaboration Tools (Coming Soon)</li>
+                    </ul>
+                    <button onclick="showPage('contact')" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition mt-auto">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <header class="gradient-bg text-white py-8">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-3xl font-bold">Get In Touch</h1>
+                <p class="mt-2 text-[#A1A5B7]">We'd love to hear from you. Send us a message for inquiries, support, or feedback!</p>
+            </div>
+        </header>
+      <div class="container mx-auto px-4 py-16 max-w-2xl">
+        <!-- AdSense Placeholder - Example for Contact Page -->
+        <!-- <div class="adsense-placeholder">Contact Page - Ad Unit Placeholder</div> -->
+        <div class="bg-white p-8 rounded-lg shadow-md">
+            <form id="contactForm">
+                <div class="mb-6">
+                    <label for="contactName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="contactName" name="contactName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="mb-6">
+                    <label for="contactEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="contactEmail" name="contactEmail" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="mb-6">
+                    <label for="contactSubject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                    <input type="text" id="contactSubject" name="contactSubject" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="mb-6">
+                    <label for="contactMessage" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                    <textarea id="contactMessage" name="contactMessage" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                </div>
+                <div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition font-semibold">Send Message</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+      <p class="mb-2">
+        <!-- Add links to Privacy Policy and Terms of Service here -->
+        <!-- <a href="#privacy" onclick="showPage('privacyPolicyPage')" class="hover:text-blue-400 underline">Privacy Policy</a> | 
+        <a href="#terms" onclick="showPage('termsOfServicePage')" class="hover:text-blue-400 underline">Terms of Service</a> -->
+         <!-- For now, placeholder text until actual pages are created -->
+         Privacy Policy (Coming Soon) | Terms of Service (Coming Soon)
+      </p>
+      <p>© 2025 Tech Gen AI SaaS. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+
+    const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs"; 
+    const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+    const MONSTER_API_BEARER_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjczODkxZjY1MTM1YWNkMjY1MmY3NDE1OWJmMjgzMjA4IiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjlUMDU6NDA6MzEuMTk2MjgzIn0.iOaQlBji9aXM5y7BM3UFmFSL0jF1yXLzeKiAN0-SlyA";
+    const MONSTER_API_TXT2IMG_URL = "https://api.monsterapi.ai/v1/generate/txt2img";
+
+    async function callGeminiAPI(promptText) { /* ... (implementation unchanged) ... */ 
+        const requestUrl = `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`;
+        try {
+            const response = await fetch(requestUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: promptText }] }],
+                })
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Gemini API Error Response:', errorData);
+                throw new Error(errorData.error?.message || `API error: ${response.status} ${response.statusText}`);
+            }
+            const data = await response.json();
+            if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                return data.candidates[0].content.parts[0].text;
+            } else if (data.promptFeedback?.blockReason) {
+                 throw new Error(`Content blocked by API: ${data.promptFeedback.blockReason} - ${data.promptFeedback.blockReasonMessage || ''}. Please revise your input.`);
+            } else {
+                console.warn('Unexpected Gemini API response structure:', data);
+                throw new Error('Invalid response format from Gemini API.');
+            }
+        } catch (error) {
+            console.error('Error calling Gemini API:', error);
+            throw error;
+        }
+    }
+    async function initiateMonsterImageGeneration(prompt, aspectRatio, style) { /* ... (implementation unchanged) ... */ 
+        const formData = new FormData();
+        formData.append('prompt', prompt);
+        formData.append('aspect_ratio', aspectRatio);
+        if (style) {
+            formData.append('style', style);
+        }
+        try {
+            const response = await fetch(MONSTER_API_TXT2IMG_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${MONSTER_API_BEARER_TOKEN}`,
+                    'Accept': 'application/json',
+                },
+                body: formData
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Monster API Init Error:', errorData);
+                throw new Error(errorData.message || `Monster API error: ${response.status}`);
+            }
+            return await response.json(); 
+        } catch (error) {
+            console.error('Error initiating Monster image generation:', error);
+            throw error;
+        }
+    }
+    async function fetchMonsterImageStatus(statusUrl) { /* ... (implementation unchanged) ... */ 
+        try {
+            const response = await fetch(statusUrl, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${MONSTER_API_BEARER_TOKEN}`,
+                    'Accept': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Monster API Status Error:', errorData);
+                throw new Error(errorData.message || `Monster API status error: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching Monster image status:', error);
+            throw error;
+        }
+    }
+    
+    // --- Meta Tag Management ---
+    const pageMetaInfo = {
+        home: {
+            title: "Tech Gen AI SaaS - AI Tools for Productivity",
+            description: "Boost your workflow with AI-powered image generation, document translation, and text summarization tools from Tech Gen AI SaaS."
+        },
+        login: {
+            title: "Login - Tech Gen AI SaaS",
+            description: "Access your Tech Gen AI SaaS account to use our suite of AI tools."
+        },
+        register: {
+            title: "Register - Tech Gen AI SaaS",
+            description: "Create an account with Tech Gen AI SaaS to start using powerful AI tools for image generation, translation, and summarization."
+        },
+        'ai-generator': {
+            title: "AI Image Generator - Tech Gen AI SaaS",
+            description: "Generate stunning and unique images from text prompts using our advanced AI Image Generator. Perfect for creatives and marketers."
+        },
+        translate: {
+            title: "AI Document & Text Translator - Tech Gen AI SaaS",
+            description: "Translate text snippets or entire documents (PDF, DOCX, TXT) into multiple languages with our accurate AI Translator."
+        },
+        summarization: {
+            title: "AI Text Summarizer - Tech Gen AI SaaS",
+            description: "Quickly summarize long articles, reports, and documents with our AI Text Summarizer. Get key insights in seconds."
+        },
+        pricing: {
+            title: "Pricing Plans - Tech Gen AI SaaS",
+            description: "Explore our flexible pricing plans for Tech Gen AI SaaS tools. Find the perfect fit for your needs, from free trials to business solutions."
+        },
+        contact: {
+            title: "Contact Us - Tech Gen AI SaaS",
+            description: "Get in touch with the Tech Gen AI SaaS team for support, inquiries, or feedback. We're here to help!"
+        }
+        // Add 'privacyPolicyPage' and 'termsOfServicePage' if you create them
+    };
+
+    function updateMetaTags(pageId) {
+        const meta = pageMetaInfo[pageId];
+        if (meta) {
+            document.title = meta.title;
+            const descriptionTag = document.querySelector('meta[name="description"]');
+            if (descriptionTag) {
+                descriptionTag.setAttribute('content', meta.description);
+            }
+        } else { // Fallback for pages not in metaInfo
+            document.title = "Tech Gen AI SaaS Platform";
+            const descriptionTag = document.querySelector('meta[name="description"]');
+            if (descriptionTag) {
+                descriptionTag.setAttribute('content', "Powerful AI tools for image generation, translation, and summarization.");
+            }
+        }
+    }
+    // --- End Meta Tag Management ---
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      const targetPage = document.getElementById(pageId);
+      if (targetPage) {
+        targetPage.classList.add('active');
+        updateMetaTags(pageId); // Update meta tags when page changes
+      } else {
+        console.error(`Page with ID ${pageId} not found.`);
+        const homePage = document.getElementById('home');
+        if (homePage) {
+            homePage.classList.add('active');
+            updateMetaTags('home');
+        }
+      }
+      window.scrollTo(0, 0);
+    }
+    showPage('home'); // Initial page load
+
+    const textTabBtn = document.getElementById('textTabBtn');
+    const docTabBtn = document.getElementById('docTabBtn');
+    const textTranslationSection = document.getElementById('textTranslationSection');
+    const docTranslationSection = document.getElementById('docTranslationSection');
+
+    if (textTabBtn && docTabBtn && textTranslationSection && docTranslationSection) { /* ... (implementation unchanged) ... */ 
+        textTabBtn.addEventListener('click', function() {
+          textTranslationSection.classList.remove('hidden');
+          docTranslationSection.classList.add('hidden');
+          this.classList.add('active','text-white');
+          this.classList.remove('text-[#A1A5B7]');
+          docTabBtn.classList.remove('active','text-white');
+          docTabBtn.classList.add('text-[#A1A5B7]');
+        });
+
+        docTabBtn.addEventListener('click', function() {
+          textTranslationSection.classList.add('hidden');
+          docTranslationSection.classList.remove('hidden');
+          this.classList.add('active','text-white');
+          this.classList.remove('text-[#A1A5B7]');
+          textTabBtn.classList.remove('active','text-white');
+          textTabBtn.classList.add('text-[#A1A5B7]');
+        });
+    }
+
+    function escapeHtml(unsafe) { /* ... (implementation unchanged) ... */ 
+      if (typeof unsafe !== 'string') {
+        if (unsafe === null || unsafe === undefined) return '';
+        unsafe = String(unsafe);
+      }
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function showAlert(message, type) { /* ... (implementation unchanged) ... */ 
+      const existingAlerts = document.querySelectorAll('.alert-message');
+      existingAlerts.forEach(alert => alert.remove());
+
+      const alert = document.createElement('div');
+      alert.className = `alert-message alert-${type}`;
+      alert.textContent = message;
+      document.body.appendChild(alert);
+      
+      setTimeout(() => {
+        alert.style.opacity = '0';
+        setTimeout(() => alert.remove(), 300);
+      }, type === 'error' ? 6000 : 4000); 
+    }
+
+    function downloadImage(url, filename) { /* ... (implementation unchanged) ... */ 
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to fetch image for download');
+          return response.blob();
+        })
+        .then(blob => {
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          showAlert('Image downloaded successfully!', 'success');
+        })
+        .catch(error => {
+          console.error('Download error:', error);
+          showAlert('Failed to download image', 'error');
+        });
+    }
+
+    async function extractTextFromFile(file) { /* ... (implementation unchanged) ... */ 
+        const extension = file.name.split('.').pop().toLowerCase();
+        if (extension === 'pdf') return await extractTextFromPDF(file);
+        if (extension === 'docx') return await extractTextFromDOCX(file);
+        if (extension === 'txt') return await extractTextFromTXT(file);
+        throw new Error('Unsupported file type. Please use PDF, DOCX, or TXT.');
+    }
+    async function extractTextFromPDF(file) { /* ... (implementation unchanged) ... */ 
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.onload = async function() {
+                try {
+                    const typedArray = new Uint8Array(this.result);
+                    const pdf = await pdfjsLib.getDocument(typedArray).promise;
+                    let fullText = '';
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        const textItems = textContent.items.map(item => item.str);
+                        fullText += textItems.join(' ') + '\n';
+                    }
+                    resolve(fullText.trim());
+                } catch (error) {
+                    console.error("Error parsing PDF:", error);
+                    reject(new Error("Could not extract text from PDF. Ensure it's a valid PDF file."));
+                }
+            };
+            fileReader.onerror = (error) => {
+                console.error("FileReader error on PDF:", error);
+                reject(new Error("Error reading PDF file."));
+            };
+            fileReader.readAsArrayBuffer(file);
+        });
+    }
+    async function extractTextFromDOCX(file) { /* ... (implementation unchanged) ... */ 
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.onload = function() {
+                mammoth.extractRawText({arrayBuffer: this.result})
+                    .then(result => resolve(result.value.trim()))
+                    .catch(error => {
+                        console.error("Error parsing DOCX:", error);
+                        reject(new Error("Could not extract text from DOCX. Ensure it's a valid DOCX file."));
+                    });
+            };
+            fileReader.onerror = (error) => {
+                console.error("FileReader error on DOCX:", error);
+                reject(new Error("Error reading DOCX file."));
+            };
+            fileReader.readAsArrayBuffer(file);
+        });
+    }
+    async function extractTextFromTXT(file) { /* ... (implementation unchanged) ... */ 
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.onload = function() {
+                resolve(this.result.trim());
+            };
+            fileReader.onerror = (error) => {
+                console.error("FileReader error on TXT:", error);
+                reject(new Error("Error reading TXT file."));
+            };
+            fileReader.readAsText(file);
+        });
+    }
+
+    const generateImageBtn = document.getElementById('generateImageBtn');
+    const imagePlaceholderText = document.getElementById('imagePlaceholderText');
+
+    if (generateImageBtn) { /* ... (implementation unchanged) ... */ 
+        generateImageBtn.addEventListener('click', async function() {
+            const prompt = document.getElementById('imagePrompt').value.trim();
+            if (!prompt) {
+                showAlert('Please enter an image description', 'error');
+                return;
+            }
+
+            const btn = this;
+            const spinner = document.getElementById('generateSpinner');
+            const btnTextEl = document.getElementById('generateBtnText');
+            const aspectRatio = document.getElementById('monsterAspectRatio').value;
+            const style = document.getElementById('monsterImageStyle').value; 
+
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+            btnTextEl.textContent = 'Initializing...';
+            
+            document.getElementById('imagePlaceholder').style.display = 'flex';
+            imagePlaceholderText.innerHTML = `
+                <div class="flex flex-col items-center">
+                    <div class="loading mb-2" style="width: 24px; height: 24px;"></div>
+                    <p class="text-[#A1A5B7] text-sm">Initializing image generation...</p>
+                </div>`;
+            document.getElementById('imageResultContainer').classList.add('hidden');
+
+            try {
+                const initResponse = await initiateMonsterImageGeneration(prompt, aspectRatio, style);
+                
+                if (initResponse && initResponse.status_url && initResponse.process_id) {
+                    showAlert('Image generation started. Process ID: ' + initResponse.process_id, 'info');
+                    btnTextEl.textContent = 'Generating...';
+                    imagePlaceholderText.innerHTML = `
+                        <div class="flex flex-col items-center">
+                            <div class="loading mb-2" style="width: 24px; height: 24px;"></div>
+                            <p class="text-[#A1A5B7] text-sm">Generating image... This may take a minute.</p>
+                        </div>`;
+
+                    let attempts = 0;
+                    const maxAttempts = 20; 
+                    const pollInterval = 5000; 
+
+                    const pollForResult = async () => {
+                        attempts++;
+                        if (attempts > maxAttempts) {
+                            throw new Error('Image generation timed out. Please try again.');
+                        }
+
+                        const statusResponse = await fetchMonsterImageStatus(initResponse.status_url);
+                        
+                        if (statusResponse.status === 'IN_PROGRESS' || statusResponse.status === 'IN_QUEUE') {
+                            imagePlaceholderText.innerHTML = `
+                                <div class="flex flex-col items-center">
+                                    <div class="loading mb-2" style="width: 24px; height: 24px;"></div>
+                                    <p class="text-[#A1A5B7] text-sm">Status: ${statusResponse.status.replace('_',' ')}. Waiting... (${attempts}/${maxAttempts})</p>
+                                </div>`;
+                            setTimeout(pollForResult, pollInterval);
+                        } else if (statusResponse.status === 'COMPLETED') {
+                            if (statusResponse.result && statusResponse.result.output && statusResponse.result.output.length > 0) {
+                                const imageUrl = statusResponse.result.output[0];
+                                
+                                document.getElementById('imagePlaceholder').style.display = 'none';
+                                const img = document.getElementById('generatedImage');
+                                img.src = imageUrl;
+                                img.alt = prompt;
+                                document.getElementById('imageResultContainer').classList.remove('hidden');
+                                
+                                document.getElementById('downloadImageBtn').onclick = function() {
+                                  downloadImage(imageUrl, `monster-ai-generated-${Date.now()}.png`);
+                                };
+                                showAlert('Image generated successfully!', 'success');
+                                btn.disabled = false;
+                                spinner.classList.add('hidden');
+                                btnTextEl.textContent = 'Generate';
+                            } else {
+                                throw new Error('Generation completed, but no image URL found in response.');
+                            }
+                        } else if (statusResponse.status === 'FAILED') {
+                            throw new Error(`Image generation failed. API Message: ${statusResponse.message || 'Unknown error'}`);
+                        } else {
+                            throw new Error(`Unknown image generation status: ${statusResponse.status}`);
+                        }
+                    };
+                    setTimeout(pollForResult, pollInterval); 
+
+                } else {
+                    throw new Error('Failed to initialize image generation with Monster API.');
+                }
+
+            } catch (error) {
+                console.error('Error in AI Image Generator:', error);
+                imagePlaceholderText.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(error.message)}</p>`;
+                showAlert(`Failed to generate image: ${error.message}`, 'error');
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+                btnTextEl.textContent = 'Generate';
+            }
+        });
+    }
+
+
+    const docFileInput = document.getElementById('docFileInput');
+    if (docFileInput) { /* ... (implementation unchanged) ... */ 
+        docFileInput.addEventListener('change', async function(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          
+          const translateBtn = document.getElementById('translateDocBtn');
+          const fileNameDisplay = document.getElementById('docFileNameDisplay');
+          const fileExtractStatus = document.getElementById('docFileExtractStatus');
+          const docTextPreviewDiv = document.querySelector('#docTextPreview div');
+          const docTextPreviewContainer = document.getElementById('docTextPreview');
+
+          translateBtn.disabled = true;
+          fileNameDisplay.textContent = `Selected file: ${file.name}`;
+          fileExtractStatus.classList.remove('hidden');
+          docTextPreviewContainer.classList.add('hidden');
+          docTextPreviewDiv.textContent = '';
+          
+          try {
+            const extractedText = await extractTextFromFile(file);
+            
+            docTextPreviewDiv.textContent = extractedText.substring(0, 500) + (extractedText.length > 500 ? "..." : "");
+            docTextPreviewContainer.classList.remove('hidden');
+            
+            translateBtn.setAttribute('data-extracted-text', extractedText);
+            translateBtn.disabled = false;
+            
+            showAlert('Document text extracted and ready for translation!', 'success');
+          } catch (error) {
+            console.error('Error extracting text for translation:', error);
+            showAlert(`Error extracting text: ${error.message}`, 'error');
+            fileNameDisplay.textContent = `Error with ${file.name}: ${error.message}`;
+          } finally {
+            fileExtractStatus.classList.add('hidden');
+          }
+        });
+    }
+
+    const translateTextBtn = document.getElementById('translateTextBtn');
+    if (translateTextBtn) { /* ... (implementation unchanged) ... */ 
+        translateTextBtn.addEventListener('click', async function() {
+          const text = document.getElementById('translatePageTextInput').value.trim();
+          if (!text) {
+            showAlert('Please enter some text to translate', 'error');
+            return;
+          }
+
+          const targetLanguageDropdown = document.getElementById('targetLanguage');
+          const languageName = targetLanguageDropdown.options[targetLanguageDropdown.selectedIndex].text;
+
+          const btn = this;
+          const spinner = document.getElementById('translateTextSpinner');
+          const textOutputDiv = document.getElementById('textOutput');
+          
+          btn.disabled = true;
+          spinner.classList.remove('hidden');
+          textOutputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating...</p>`;
+          
+          try {
+            const prompt = `Translate the following text to ${languageName}. Provide only the translated text:\n\n"${text}"`;
+            const translation = await callGeminiAPI(prompt);
+            
+            textOutputDiv.innerHTML = `
+              <h3 class="text-[#00C5FF] font-medium text-sm mb-2">Translation (${escapeHtml(languageName)})</h3>
+              <p class="text-[#A1A5B7] text-sm">${escapeHtml(translation)}</p>
+            `;
+            document.getElementById('copyTextBtn').classList.remove('hidden');
+            showAlert('Text translated successfully!', 'success');
+          } catch (error) {
+            textOutputDiv.innerHTML = `
+              <p class="text-red-400 text-sm">Error: ${escapeHtml(error.message)}</p>
+            `;
+            showAlert(`Failed to translate text: ${error.message}`, 'error');
+          } finally {
+            btn.disabled = false;
+            spinner.classList.add('hidden');
+          }
+        });
+    }
+
+    const translateDocBtn = document.getElementById('translateDocBtn');
+    if (translateDocBtn) { /* ... (implementation unchanged) ... */ 
+        translateDocBtn.addEventListener('click', async function() {
+          const text = this.getAttribute('data-extracted-text');
+          if (!text) {
+            showAlert('No text extracted. Please upload a document first.', 'error');
+            return;
+          }
+
+          const targetLanguageDropdown = document.getElementById('docTargetLanguage');
+          const languageName = targetLanguageDropdown.options[targetLanguageDropdown.selectedIndex].text;
+
+          const btn = this;
+          const spinner = document.getElementById('translateDocSpinner');
+          const docTranslationOutputDiv = document.getElementById('docTranslationOutput');
+          
+          btn.disabled = true;
+          spinner.classList.remove('hidden');
+          docTranslationOutputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating document...</p>`;
+          
+          try {
+            showAlert(`Translating document to ${languageName}... This may take a moment for larger documents.`, 'info');
+            const prompt = `Translate the following document text to ${languageName}. Provide only the translated text:\n\n"${text}"`;
+            const translation = await callGeminiAPI(prompt);
+            
+            docTranslationOutputDiv.innerHTML = `
+              <h3 class="text-[#00C5FF] font-medium text-sm mb-2">Document Translation (${escapeHtml(languageName)})</h3>
+              <div class="text-[#A1A5B7] text-sm max-h-96 overflow-y-auto">${escapeHtml(translation)}</div>
+            `;
+            
+            document.getElementById('copyDocBtn').classList.remove('hidden');
+            document.getElementById('downloadTranslationBtn').classList.remove('hidden');
+            
+            showAlert('Document translation complete!', 'success');
+          } catch (error) {
+            docTranslationOutputDiv.innerHTML = `
+              <p class="text-red-400 text-sm">Error: ${escapeHtml(error.message)}</p>
+            `;
+            showAlert(`Failed to translate document: ${error.message}`, 'error');
+          } finally {
+            btn.disabled = false;
+            spinner.classList.add('hidden');
+          }
+        });
+    }
+
+    const copyTextBtn = document.getElementById('copyTextBtn');
+    if (copyTextBtn) { /* ... (implementation unchanged) ... */ 
+        copyTextBtn.addEventListener('click', function() {
+          const textOutputElement = document.getElementById('textOutput');
+          const textToCopy = textOutputElement.querySelector('p')?.innerText || textOutputElement.innerText;
+          navigator.clipboard.writeText(textToCopy)
+            .then(() => showAlert('Text copied to clipboard!', 'success'))
+            .catch(err => showAlert('Failed to copy text', 'error'));
+        });
+    }
+
+    const copyDocBtn = document.getElementById('copyDocBtn');
+    if (copyDocBtn) { /* ... (implementation unchanged) ... */ 
+        copyDocBtn.addEventListener('click', function() {
+          const docOutputElement = document.getElementById('docTranslationOutput');
+          const textToCopy = docOutputElement.querySelector('div')?.innerText || docOutputElement.innerText;
+          navigator.clipboard.writeText(textToCopy)
+            .then(() => showAlert('Translation copied to clipboard!', 'success'))
+            .catch(err => showAlert('Failed to copy translation', 'error'));
+        });
+    }
+
+    const downloadTranslationBtn = document.getElementById('downloadTranslationBtn');
+    if (downloadTranslationBtn) { /* ... (implementation unchanged) ... */ 
+        downloadTranslationBtn.addEventListener('click', function() {
+          const docOutputElement = document.getElementById('docTranslationOutput');
+          const textToDownload = docOutputElement.querySelector('div')?.innerText || docOutputElement.innerText;
+          
+          const targetLanguageDropdown = document.getElementById('docTargetLanguage');
+          const languageName = targetLanguageDropdown.options[targetLanguageDropdown.selectedIndex].text;
+          const originalFileName = document.getElementById('docFileNameDisplay').textContent.replace('Selected file: ', '').split('.')[0] || 'document';
+          const fileName = `${originalFileName}_translation_${languageName.toLowerCase().replace(/[^a-z0-9]/gi, '_')}.txt`;
+          
+          const blob = new Blob([textToDownload], { type: 'text/plain;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          
+          showAlert('Translation downloaded!', 'success');
+        });
+    }
+
+    const summarizeDocInput = document.getElementById('summarizeDocInput');
+    const summarizeTextInput = document.getElementById('summarizeTextInput');
+    const summarizeDocNameDisplay = document.getElementById('summarizeDocNameDisplay');
+    const summarizeDocExtractStatus = document.getElementById('summarizeDocExtractStatus');
+
+    if (summarizeDocInput) { /* ... (implementation unchanged) ... */ 
+        summarizeDocInput.addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            summarizeDocNameDisplay.textContent = `Selected file: ${file.name}`;
+            summarizeDocExtractStatus.classList.remove('hidden');
+            summarizeTextInput.value = ''; 
+
+            try {
+                const extractedText = await extractTextFromFile(file);
+                summarizeTextInput.value = extractedText;
+                showAlert('Text extracted from document and ready for summarization!', 'success');
+            } catch (error) {
+                console.error('Error extracting text for summarization:', error);
+                showAlert(`Error extracting text: ${error.message}`, 'error');
+                summarizeDocNameDisplay.textContent = `Error with ${file.name}: ${error.message}`;
+            } finally {
+                summarizeDocExtractStatus.classList.add('hidden');
+            }
+        });
+    }
+
+    const summarizeTextBtn = document.getElementById('summarizeTextBtn');
+    if (summarizeTextBtn) { /* ... (implementation unchanged) ... */ 
+        summarizeTextBtn.addEventListener('click', async function() {
+            const textToSummarize = summarizeTextInput.value.trim();
+            if (!textToSummarize) {
+                showAlert('Please enter text or upload a document to summarize.', 'error');
+                return;
+            }
+
+            const summaryLengthDropdown = document.getElementById('summaryLength');
+            const summaryLengthValue = summaryLengthDropdown.value;
+            const summaryLengthText = summaryLengthDropdown.options[summaryLengthDropdown.selectedIndex].text;
+
+
+            const btn = this;
+            const spinner = document.getElementById('summarizeTextSpinner');
+            const btnText = document.getElementById('summarizeBtnText');
+            const summaryOutputDiv = document.getElementById('summaryOutput');
+            const copySummaryBtn = document.getElementById('copySummaryBtn');
+
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+            btnText.textContent = 'Summarizing...';
+            summaryOutputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Generating summary...</p>`;
+            copySummaryBtn.classList.add('hidden');
+
+            try {
+                let lengthInstruction = "";
+                if (summaryLengthValue === 'short') {
+                    lengthInstruction = "Provide a short summary, about 1-2 concise sentences.";
+                } else if (summaryLengthValue === 'medium') {
+                    lengthInstruction = "Provide a medium-length summary, about one paragraph.";
+                } else { 
+                    lengthInstruction = "Provide a detailed, long summary consisting of multiple paragraphs if necessary.";
+                }
+
+                const prompt = `Summarize the following text. ${lengthInstruction} Focus on the key points and main ideas. Provide only the summary text:\n\n"${textToSummarize}"`;
+                
+                showAlert(`Generating ${summaryLengthValue} summary... This may take a moment.`, 'info');
+                const summary = await callGeminiAPI(prompt);
+                
+                summaryOutputDiv.innerHTML = `
+                  <h3 class="text-[#00C5FF] font-medium text-sm mb-2">Summary (${escapeHtml(summaryLengthText)})</h3>
+                  <p class="text-[#A1A5B7] text-sm">${escapeHtml(summary)}</p>
+                `;
+                copySummaryBtn.classList.remove('hidden');
+                showAlert('Text summarized successfully!', 'success');
+
+            } catch (error) {
+                summaryOutputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(error.message)}</p>`;
+                showAlert(`Failed to summarize text: ${error.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+                btnText.textContent = 'Summarize';
+            }
+        });
+    }
+
+    const copySummaryBtn = document.getElementById('copySummaryBtn');
+    if (copySummaryBtn) { /* ... (implementation unchanged) ... */ 
+        copySummaryBtn.addEventListener('click', function() {
+            const summaryOutputElement = document.getElementById('summaryOutput');
+            const textToCopy = summaryOutputElement.querySelector('p')?.innerText || summaryOutputElement.innerText;
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => showAlert('Summary copied to clipboard!', 'success'))
+                .catch(err => showAlert('Failed to copy summary.', 'error'));
+        });
+    }
+
+    function isValidEmail(email) { /* ... (implementation unchanged) ... */ 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) { /* ... (implementation unchanged) ... */ 
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (!email) {
+                showAlert('Email is required.', 'error');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                showAlert('Please enter a valid email address.', 'error');
+                return;
+            }
+            if (!password) {
+                showAlert('Password is required.', 'error');
+                return;
+            }
+            showAlert('Login successful! (Demo)', 'success');
+        });
+    }
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) { /* ... (implementation unchanged) ... */ 
+        registerForm.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const fullName = document.getElementById('registerFullName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+
+            if (!fullName) {
+                showAlert('Full Name is required.', 'error');
+                return;
+            }
+            if (!email) {
+                showAlert('Email is required.', 'error');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                showAlert('Please enter a valid email address.', 'error');
+                return;
+            }
+            if (!password) {
+                showAlert('Password is required.', 'error');
+                return;
+            }
+            if (password.length < 6) {
+                showAlert('Password must be at least 6 characters long.', 'error');
+                return;
+            }
+            showAlert('Registration successful! (Demo) You can now log in.', 'success');
+        });
+    }
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) { /* ... (implementation unchanged) ... */ 
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const contactName = document.getElementById('contactName').value.trim();
+            const contactEmail = document.getElementById('contactEmail').value.trim();
+            const contactSubject = document.getElementById('contactSubject').value.trim();
+            const contactMessage = document.getElementById('contactMessage').value.trim();
+
+            if (!contactName || !contactEmail || !contactSubject || !contactMessage) {
+                showAlert('All fields are required.', 'error');
+                return;
+            }
+            if (!isValidEmail(contactEmail)) {
+                showAlert('Please enter a valid email address.', 'error');
+                return;
+            }
+            showAlert('Message sent successfully! (Demo)', 'success');
+            contactForm.reset();
+        });
+    }
+
+  </script>
+</body>
+</html>
