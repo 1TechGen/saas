@@ -3,24 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Add a general site description here -->
   <meta name="description" content="TECH_GEN AI SaaS Platform offers powerful AI tools like Image Generation, Document Translation, and Text Summarization to enhance your productivity.">
-  <!-- Add keywords if desired, though their importance has diminished -->
   <meta name="keywords" content="AI, SaaS, image generator,Ai image, translation, translate, summarization, artificial intelligence, tech tools, TECH_GEN">
   
-  <title>TECH_GEN - AI SaaS Platform</title> <!-- Updated Default Title -->
+  <title>TECH_GEN - AI SaaS Platform</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
-
-  <!-- 
-    GOOGLE ADSENSE AUTO ADS SCRIPT PLACEHOLDER
-    When you get AdSense approval, you'll get a script to place here.
-    It usually looks something like this:
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID"
-         crossorigin="anonymous"></script>
-  -->
 
   <style>
     .page { display: none; }
@@ -71,7 +61,7 @@
       padding: 0.75rem 1.5rem;
       border-radius: 0.375rem;
       color: white;
-      z-index: 100; 
+      z-index: 1000; 
       transition: opacity 0.3s ease;
       max-width: 90%;
     }
@@ -87,8 +77,6 @@
     .pricing-card ul { list-style: none; padding: 0; }
     .pricing-card ul li { display: flex; align-items: center; margin-bottom: 0.5rem; }
     .pricing-card ul li svg { margin-right: 0.5rem; color: #10B981; } 
-
-    /* Placeholder for AdSense Ad Units */
     .adsense-placeholder {
         background-color: #f0f0f0;
         border: 1px dashed #ccc;
@@ -97,10 +85,17 @@
         margin: 15px auto;
         font-size: 0.9em;
         color: #777;
-        min-height: 90px; /* Common ad height */
+        min-height: 90px;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    #authButtonsContainer button, #userInfoContainer button {
+        margin-left: 0.5rem;
+    }
+    #userInfoContainer {
+        display: flex;
+        align-items: center;
     }
   </style>
 </head>
@@ -111,13 +106,10 @@
       <div class="flex items-center cursor-pointer" onclick="showPage('home')">
         <svg class="h-8 w-auto mr-2 text-sky-400" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <title>TECH_GEN Logo Icon</title>
-            <!-- Outer arc (thicker) -->
             <path d="M24 5C16.8203 5 11 10.8203 11 18C11 25.1797 16.8203 31 24 31"
                   stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Inner arc (thinner) -->
             <path d="M21 9C15.4772 9 11 13.4772 11 19C11 24.5228 15.4772 29 21 29"
                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Filled part (approximates the shape on the right of the inner arc) -->
             <path d="M21 9C25.2727 9 29.0001 12.134 29.0001 16C29.0001 16.9265 28.8437 17.8116 28.5582 18.635L21 18.635L21 9Z"
                   fill="currentColor"/>
         </svg>
@@ -142,9 +134,15 @@
           <li><button onclick="showPage('pricing')" class="hover:text-blue-400">Pricing</button></li>
           <li><button onclick="showPage('contact')" class="hover:text-blue-400">Contact</button></li>
         </ul>
-        <div class="flex space-x-2">
-          <button onclick="showPage('login')" class="px-4 py-2 rounded-md hover:bg-gray-700 transition">Login</button>
-          <button onclick="showPage('register')" class="bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition">Register</button>
+        <div id="authContainer" class="flex items-center">
+            <div id="authButtonsContainer" class="flex space-x-2"> <!-- Initial: visible -->
+              <button onclick="showPage('login')" class="px-4 py-2 rounded-md hover:bg-gray-700 transition">Login</button>
+              <button onclick="showPage('register')" class="bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition">Register</button>
+            </div>
+            <div id="userInfoContainer" class="hidden items-center"> <!-- Initial: hidden -->
+                <span id="userEmailDisplay" class="text-sm mr-3"></span>
+                <button id="logoutButton" class="bg-red-600 px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</button>
+            </div>
         </div>
       </div>
     </div>
@@ -289,6 +287,48 @@
         </div>
       </div>
     </div>
+    
+    <!-- Payment Page (Placeholder - NO ADS HERE) -->
+    <div id="paymentPage" class="page">
+      <div class="container mx-auto px-4 py-16 max-w-md">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="bg-blue-600 py-4 px-6">
+            <h2 class="text-2xl font-bold text-white">Complete Your Purchase</h2>
+          </div>
+          <form id="paymentForm" class="p-6 space-y-6">
+            <p class="text-gray-700">You are purchasing: <strong id="paymentPlanName" class="text-gray-900"></strong></p>
+            <p class="text-gray-700">Price: <strong id="paymentPlanPrice" class="text-gray-900"></strong></p>
+            <div>
+              <label for="cardName" class="block text-sm font-medium text-gray-700 mb-1">Name on Card</label>
+              <input type="text" id="cardName" name="cardName" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
+            </div>
+            <div>
+              <label for="cardNumber" class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
+              <input type="text" id="cardNumber" name="cardNumber" placeholder="xxxx xxxx xxxx xxxx" class="w-full px-4 py-2 border border-gray-300 rounded-md" required pattern="\d{4} ?\d{4} ?\d{4} ?\d{4}" title="Enter a 16-digit card number">
+            </div>
+            <div class="flex space-x-4">
+              <div class="flex-1">
+                <label for="cardExpiry" class="block text-sm font-medium text-gray-700 mb-1">Expiry (MM/YY)</label>
+                <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/YY" class="w-full px-4 py-2 border border-gray-300 rounded-md" required pattern="(0[1-9]|1[0-2])\/\d{2}" title="Enter expiry date as MM/YY">
+              </div>
+              <div class="flex-1">
+                <label for="cardCVC" class="block text-sm font-medium text-gray-700 mb-1">CVC</label>
+                <input type="text" id="cardCVC" name="cardCVC" placeholder="123" class="w-full px-4 py-2 border border-gray-300 rounded-md" required pattern="\d{3,4}" title="Enter 3 or 4 digit CVC">
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition">
+              Confirm Payment
+            </button>
+          </form>
+          <div class="px-6 py-4 bg-gray-50 text-center">
+            <button onclick="showPage('pricing')" class="text-blue-600 font-medium hover:underline">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- AI Image Generator Page -->
     <div id="ai-generator" class="page">
@@ -301,7 +341,7 @@
 
        <div class="adsense-placeholder">AI Image Gen - Ad Unit Placeholder (e.g., Responsive)</div>
 
-        <section class="mb-8">
+        <section class="mb-8 container mx-auto px-4 py-8"> 
           <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Try the Generator</h2>
           <div class="bg-[#151A27] p-4 rounded-lg border border-[#252A37] max-w-3xl mx-auto">
             <p class="text-[#A1A5B7] mb-3 text-sm">Describe the image you want to create.</p>
@@ -353,13 +393,11 @@
         </section>
      
     <div class="container mx-auto py-8 px-4">
-        <!-- CONTENT SECTION - Add more text here for AdSense -->
         <article class="prose lg:prose-xl mx-auto mb-8 bg-white p-6 rounded-lg shadow">
             <h2>Unleash Your Creativity with AI Image Generation</h2>
             <p>Our AI Image Generator, powered by advanced models via Monster API, allows you to turn simple text prompts into breathtaking visuals. Whether you're an artist looking for inspiration, a marketer needing unique ad creatives, or just curious about the power of AI, this tool is for you.</p>
             <p><strong>How it works:</strong> Simply type a description of the image you envision. Be as detailed or as abstract as you like. Choose your preferred aspect ratio and an optional style to guide the AI. Our system will then process your request and generate a unique image based on your input. Explore different prompts and styles to discover endless possibilities!</p>
           </article>
-        <!-- END CONTENT SECTION -->
        </div>
     </div>
     
@@ -375,7 +413,7 @@
       
         <div class="adsense-placeholder">Translate Page - Ad Unit Placeholder</div>
         
-        <div class="max-w-3xl mx-auto">
+        <div class="max-w-3xl mx-auto container px-4 py-8">
             <div class="flex mb-6 bg-[#151A27] rounded-lg p-1">
               <button id="textTabBtn" class="tab-button flex-1 py-2 px-4 rounded-lg font-medium text-white active">
                 Text Translation
@@ -659,7 +697,6 @@
             </section>
         </div>
       <div class="container mx-auto py-8 px-4">
-        <!-- CONTENT SECTION - Add more text here for AdSense -->
         <article class="prose lg:prose-xl mx-auto mb-8 bg-white p-6 rounded-lg shadow">
             <h2>Break Language Barriers with AI Translation</h2>
             <p>Our AI-powered translation tool provides fast and accurate translations for both plain text and full documents. Whether you're dealing with business correspondence, academic research, or personal messages, bridge communication gaps effortlessly.</p>
@@ -671,7 +708,6 @@
             </ul>
             <p>Use our translator for business documents, academic papers, personal correspondence, or simply to understand content in a foreign language. It's fast, easy, and reliable.</p>
         </article>
-        <!-- END CONTENT SECTION -->
       </div>
     </div>
 
@@ -686,7 +722,7 @@
         
             <div class="adsense-placeholder">Summarization Page - Ad Unit Placeholder</div>
 
-            <section class="mb-8">
+            <section class="mb-8 container mx-auto px-4 py-8">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Try the Summarizer</h2>
               <div class="bg-[#151A27] p-4 rounded-lg border border-[#252A37] max-w-3xl mx-auto">
                 <div class="mb-4">
@@ -733,7 +769,6 @@
               </div>
             </section>
       <div class="container mx-auto py-8 px-4">
-            <!-- CONTENT SECTION - Add more text here for AdSense -->
             <article class="prose lg:prose-xl mx-auto mb-8 bg-white p-6 rounded-lg shadow">
                 <h2>Quickly Grasp Key Information with AI Summaries</h2>
                 <p>Overwhelmed by lengthy articles or documents? Our AI Text Summarizer distills vast amounts of text into clear, concise summaries, helping you understand key points quickly and efficiently.</p>
@@ -745,7 +780,6 @@
                 </ul>
                 <p>Our tool uses advanced natural language processing techniques to identify key sentences and concepts, then reconstructs them into a coherent and concise summary. Try it now and experience the power of AI-driven information distillation!</p>
             </article>
-            <!-- END CONTENT SECTION -->
           </div>
     </div>
 
@@ -765,10 +799,11 @@
                     <p class="text-4xl font-bold text-gray-900 mb-4">$0<span class="text-lg font-normal text-gray-500">/month</span></p>
                     <p class="text-gray-600 mb-6">Perfect for individuals starting out or trying our basic features.</p>
                     <ul class="text-gray-700 mb-8 flex-grow">
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 AI Image Generations/day</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Basic Text Translation (1000 chars/req)</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Short Text Summarization (5 docs/day)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 AI Image Generations (session limit)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 10 Text/Doc Translations (session limit)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 Text Summarizations (session limit)</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Community Support</li>
+                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Guest: 10 total uses (any feature)</li>
                     </ul>
                     <button onclick="showPage('register')" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition mt-auto">Get Started</button>
                 </div>
@@ -778,13 +813,13 @@
                     <p class="text-4xl font-bold text-gray-900 mb-4">$19<span class="text-lg font-normal text-gray-500">/month</span></p>
                     <p class="text-gray-600 mb-6">Ideal for professionals and small teams needing more power.</p>
                     <ul class="text-gray-700 mb-8 flex-grow">
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 100 AI Image Generations/day</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Advanced Text & Document Translation</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> All Summarization Lengths (50 docs/day)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Text & Document Translation</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Text Summarization</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Priority Email Support</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Access to new features first</li>
                     </ul>
-                    <button onclick="showPage('register')" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition mt-auto">Choose Pro</button>
+                    <button onclick="initiatePayment('pro')" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition mt-auto">Choose Pro</button>
                 </div>
                 <div class="pricing-card bg-white rounded-lg shadow-lg p-6 flex flex-col">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2">Business</h3>
@@ -846,11 +881,14 @@
         <p class="mb-4 text-sm text-gray-600 text-center">Last updated: May 30, 2025</p>
         
         <p>Your privacy is important to us. It is TECH_GEN's policy to respect your privacy regarding any information we may collect from you across our website, and other sites we own and operate.</p>
+        <p>We are a demonstration application and use client-side API keys for AI features. These keys are visible in the browser and should NOT be used in a public production environment. User registration and login are simulated using browser local storage and session storage. No actual payment processing occurs; payment forms are for demonstration only.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">1. Information We Collect</h3>
         <p><strong>Log data:</strong> When you visit our website, our servers may automatically log the standard data provided by your web browser. It may include your computer’s Internet Protocol (IP) address, your browser type and version, the pages you visit, the time and date of your visit, the time spent on each page, and other details.</p>
         <p><strong>Device data:</strong> We may also collect data about the device you’re using to access our website. This data may include the device type, operating system, unique device identifiers, device settings, and geo-location data.</p>
-        <p><strong>Personal information:</strong> We may ask for personal information, such as your name, email, social media profiles, date of birth, phone/mobile number, home/mailing address, payment information.</p>
+        <p><strong>Personal information (Simulated):</strong> We may ask for personal information, such as your name, and email. For our simulated login, we store your email, a hashed representation of your password (for demo purposes, not secure), selected plan, and usage counts in your browser's `localStorage`. Your logged-in session details (email, name, plan, usage counts) are stored in `sessionStorage`.</p>
+        <p><strong>Usage Data (Simulated):</strong> For guest users, we track total feature usage (e.g., image generations, translations) in `localStorage` to enforce a demonstration limit. For logged-in free tier users, we track usage of specific features within their user object in `localStorage` to enforce free tier limits for the session.</p>
+
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">2. Legal Bases for Processing</h3>
         <p>We will process your personal information lawfully, fairly, and in a transparent manner. We collect and process information about you only where we have legal bases for doing so.</p>
@@ -864,17 +902,22 @@
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">3. Use of Information</h3>
         <p>We may use a combination of personally identifiable and non-personally identifiable information to understand who our visitors are, how they use our services, and how we may improve their experience of our website in future. We do not publicly disclose specific information, but may share aggregated and anonymized versions of this information, for example, in website and customer usage trend reports.</p>
+        <p>Simulated user data (name, email, plan, usage counts) is used solely for demonstrating login, feature access control, and simulated plan upgrades within this application. It is not sent to any server.</p>
         
         <h3 class="text-2xl font-semibold mt-8 mb-3">4. Data Security</h3>
-        <p>We take data security seriously and use commercially acceptable means to protect your personal information from loss or theft, as well as unauthorized access, disclosure, copying, use, or modification. That said, we advise that no method of electronic transmission or storage is 100% secure and cannot guarantee absolute data security.</p>
+        <p>We take data security seriously and use commercially acceptable means to protect your personal information from loss or theft, as well as unauthorized access, disclosure, copying, use, or modification. That said, we advise that no method of electronic transmission or storage is 100% secure and cannot guarantee absolute data security. Our current login/registration is a simulation and does not store data on a server; user information (email, plan, usage counts) is stored in your browser's `localStorage` and `sessionStorage` and is cleared when you clear your browser data, close the browser tab (for session storage), or logout. Passwords in this demo are stored as plain text in local storage for simplicity of demonstration, which is extremely insecure and would never be done in a real application.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">5. Your Rights and Controlling Your Personal Information</h3>
         <p>You have the right to restrict the collection or use of your personal information. If you have previously agreed to us using your personal information for direct marketing purposes, you may change your mind at any time by contacting us. If you ask us to restrict or limit how we process your personal information, we will let you know how the restriction affects your use of our website or products and services.</p>
+        <p>Since all user-specific data for this demo is stored in your browser (`localStorage` and `sessionStorage`), you can clear this data by clearing your browser's site data for this domain, or by using the "Logout" button which clears session storage.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">6. Cookies</h3>
-        <p>We use “cookies” to collect information about you and your activity across our site. A cookie is a small piece of data that our website stores on your computer, and accesses each time you visit, so we can understand how you use our site. This helps us serve you content based on preferences you have specified.</p>
+        <p>We use “cookies” to collect information about you and your activity across our site. A cookie is a small piece of data that our website stores on your computer, and accesses each time you visit, so we can understand how you use our site. This helps us serve you content based on preferences you have specified. We primarily use `localStorage` and `sessionStorage` for simulated authentication features, plan information, and usage tracking in this demonstration.</p>
         
-        <h3 class="text-2xl font-semibold mt-8 mb-3">7. Changes to This Policy</h3>
+        <h3 class="text-2xl font-semibold mt-8 mb-3">7. API Keys and Third-Party Services</h3>
+        <p>This application uses API keys for Google Gemini and Monster API directly in client-side JavaScript for AI features. Exposing API keys in this manner is highly insecure and is done for demonstration purposes only. In a production environment, API keys must be kept on a backend server, and client applications would make requests to that server, which then communicates with the third-party APIs. You are responsible for any costs or usage associated with these API keys if you run this code.</p>
+        
+        <h3 class="text-2xl font-semibold mt-8 mb-3">8. Changes to This Policy</h3>
         <p>At our discretion, we may change our privacy policy to reflect current acceptable practices. We will take reasonable steps to let users know about changes via our website. Your continued use of this site after any changes to this policy will be regarded as acceptance of our practices around privacy and personal information.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">Contact Us</h3>
@@ -888,39 +931,66 @@
         <h2 class="text-3xl font-bold mb-6 text-center">Terms of Service</h2>
         <p class="mb-4 text-sm text-gray-600 text-center">Last updated: May 30, 2025</p>
 
-        <p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the TECH_GEN website (the "Service") operated by TECH_GEN ("us", "we", or "our").</p>
+        <p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the TECH_GEN website (the "Service") operated by TECH_GEN ("us", "we", or "our"). This is a demonstration application.</p>
         <p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.</p>
         <p>By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service.</p>
 
-        <h3 class="text-2xl font-semibold mt-8 mb-3">1. Accounts</h3>
-        <p>When you create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.</p>
-        <p>You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password, whether your password is with our Service or a third-party service.</p>
+        <h3 class="text-2xl font-semibold mt-8 mb-3">1. Accounts (Simulated)</h3>
+        <p>When you create an account with us (a simulated client-side account stored in your browser's `localStorage`), you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your access to certain features on our Service.</p>
+        <p>You are responsible for safeguarding the password that you use to access the Service (though in the current simulation, passwords are not securely stored or verified against a backend; they are stored as plain text in `localStorage` for this demo, which is insecure) and for any activities or actions under your password.</p>
         <p>You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
 
-        <h3 class="text-2xl font-semibold mt-8 mb-3">2. Intellectual Property</h3>
-        <p>The Service and its original content (excluding Content provided by users), features and functionality are and will remain the exclusive property of TECH_GEN and its licensors. The Service is protected by copyright, trademark, and other laws of both the [Your Country] and foreign countries. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of TECH_GEN.</p>
-        
-        <h3 class="text-2xl font-semibold mt-8 mb-3">3. User Content</h3>
-        <p>Our Service allows you to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material ("Content"). You are responsible for the Content that you post to the Service, including its legality, reliability, and appropriateness.</p>
-        <p>By posting Content to the Service, you grant us the right and license to use, modify, publicly perform, publicly display, reproduce, and distribute such Content on and through the Service. You retain any and all of your rights to any Content you submit, post or display on or through the Service and you are responsible for protecting those rights.</p>
+        <h3 class="text-2xl font-semibold mt-8 mb-3">2. Usage Limits and Plans (Simulated)</h3>
+        <p>The Service offers different levels of access:</p>
+        <ul>
+            <li><strong>Guest Users:</strong> May use AI features a limited number of times (e.g., 10 total uses) as a demonstration.</li>
+            <li><strong>Free Registered Users:</strong> Have slightly higher, but still limited, access to AI features (e.g., 5 image generations, 10 translations, 5 summaries per session).</li>
+            <li><strong>Paid Plan Users (Simulated "Pro" Plan):</strong> After a simulated payment process, users on a "Pro" plan may have "unlimited" access to AI features within the reasonable limits of the demonstration and the capabilities of the third-party APIs used.</li>
+        </ul>
+        <p>All usage tracking, plan management, and payments are simulated on the client-side and are for demonstration purposes only. No real financial transactions occur.</p>
 
-        <h3 class="text-2xl font-semibold mt-8 mb-3">4. Prohibited Uses</h3>
+
+        <h3 class="text-2xl font-semibold mt-8 mb-3">3. Intellectual Property</h3>
+        <p>The Service and its original content (excluding Content provided by users), features and functionality are and will remain the exclusive property of TECH_GEN and its licensors. The Service is protected by copyright, trademark,and other laws. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of TECH_GEN.</p>
+        
+        <h3 class="text-2xl font-semibold mt-8 mb-3">4. User Content</h3>
+        <p>Our Service allows you to input text prompts for AI generation, text for translation, and text for summarization ("User Input"). You are responsible for the User Input that you provide to the Service, including its legality, reliability, and appropriateness. You retain any and all of your rights to any User Input you submit.</p>
+        <p>You represent and warrant that: (i) the User Input is yours (you own it) or you have the right to use it and grant us the rights and license as provided in these Terms, and (ii) the posting of your User Input on or through the Service does not violate the privacy rights, publicity rights, copyrights, contract rights or any other rights of any person.</p>
+        <p>We reserve the right to block or remove content or accounts that we determine in our sole discretion are violating these terms, or for any other reason.</p>
+
+
+        <h3 class="text-2xl font-semibold mt-8 mb-3">5. Prohibited Uses</h3>
         <p>You may use the Service only for lawful purposes and in accordance with Terms. You agree not to use the Service:</p>
         <ul>
             <li>In any way that violates any applicable national or international law or regulation.</li>
             <li>For the purpose of exploiting, harming, or attempting to exploit or harm minors in any way by exposing them to inappropriate content or otherwise.</li>
-            <li>To transmit, or procure the sending of, any advertising or promotional material, including any "junk mail", "chain letter," "spam," or any other similar solicitation.</li>
+            <li>To generate or disseminate content that is unlawful, harmful, threatening, abusive, harassing, defamatory, vulgar, obscene, libelous, invasive of another's privacy, hateful, or racially, ethnically or otherwise objectionable.</li>
+            <li>To transmit, or procure the sending of, any advertising or promotional material without our prior written consent, including any "junk mail", "chain letter," "spam," or any other similar solicitation.</li>
             <li>To impersonate or attempt to impersonate TECH_GEN, a TECH_GEN employee, another user, or any other person or entity.</li>
+            <li>To engage in any other conduct that restricts or inhibits anyone's use or enjoyment of the Service, or which, as determined by us, may harm TECH_GEN or users of the Service or expose them to liability.</li>
+             <li>To attempt to reverse-engineer, decompile, or otherwise misuse the client-side API keys provided for this demonstration. These keys are for use within this application only.</li>
+        </ul>
+        <p>Additionally, you agree not to:</p>
+        <ul>
+            <li>Use the Service in any manner that could disable, overburden, damage, or impair the Service or interfere with any other party's use of the Service.</li>
+            <li>Use any robot, spider, or other automatic device, process, or means to access the Service for any purpose, including monitoring or copying any of the material on the Service.</li>
+            <li>Attempt to decompile or reverse engineer any software contained on the Service.</li>
         </ul>
 
-        <h3 class="text-2xl font-semibold mt-8 mb-3">5. Termination</h3>
-        <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
-        <p>Upon termination, your right to use the Service will immediately cease. If you wish to terminate your account, you may simply discontinue using the Service.</p>
 
-        <h3 class="text-2xl font-semibold mt-8 mb-3">6. Limitation Of Liability</h3>
-        <p>In no event shall TECH_GEN, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage, and even if a remedy set forth herein is found to have failed of its essential purpose.</p>
+        <h3 class="text-2xl font-semibold mt-8 mb-3">6. Termination</h3>
+        <p>We may terminate or suspend your access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+        <p>Upon termination, your right to use the Service will immediately cease. If you wish to terminate your simulated account, you may simply discontinue using the Service, logout (which clears session data), and clear your browser's local storage for this site.</p>
 
-        <h3 class="text-2xl font-semibold mt-8 mb-3">7. Changes</h3>
+        <h3 class="text-2xl font-semibold mt-8 mb-3">7. Limitation Of Liability</h3>
+        <p>In no event shall TECH_GEN, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage, and even if a remedy set forth herein is found to have failed of its essential purpose. This includes any issues arising from the use of client-side API keys or simulated payment systems.</p>
+
+        <h3 class="text-2xl font-semibold mt-8 mb-3">8. Disclaimer</h3>
+        <p>Your use of the Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis. The Service is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.</p>
+        <p>TECH_GEN its subsidiaries, affiliates, and its licensors do not warrant that a) the Service will function uninterrupted, secure or available at any particular time or location; b) any errors or defects will be corrected; c) the Service is free of viruses or other harmful components; or d) the results of using the Service will meet your requirements. The AI-generated content is provided by third-party APIs and TECH_GEN does not guarantee its accuracy, appropriateness, or quality.</p>
+
+
+        <h3 class="text-2xl font-semibold mt-8 mb-3">9. Changes</h3>
         <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
         <p>By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, please stop using the Service.</p>
 
@@ -934,28 +1004,28 @@
   <footer class="bg-gray-800 text-white py-8">
     <div class="container mx-auto px-4 text-center">
       
-      <div class="mb-6"> <!-- Wrapper for "Connect With Us" and icons -->
+      <div class="mb-6">
         <h4 class="text-lg font-semibold mb-4">Connect With Us</h4>
-        <div class="flex justify-center space-x-4"> <!-- Added justify-center -->
-          <a href="https://www.facebook.com/share/1E4dYSnnYw/" class="text-gray-400 hover:text-white transition">
+        <div class="flex justify-center space-x-4">
+          <a href="https://www.facebook.com/share/1E4dYSnnYw/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <title>Facebook</title>
               <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"></path>
             </svg>
           </a>
-          <a href="https://x.com/manjeshsharma8?t=6FU-OLj9YMIPd_92uoUHPw&s=09" class="text-gray-400 hover:text-white transition">
+          <a href="https://x.com/manjeshsharma8?t=6FU-OLj9YMIPd_92uoUHPw&s=09" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <title>Twitter</title>
               <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
             </svg>
           </a>
-          <a href="https://www.instagram.com/mjsharma7321?igsh=ZW0yMmhyZ2Z0bmp6" class="text-gray-400 hover:text-white transition">
+          <a href="https://www.instagram.com/mjsharma7321?igsh=ZW0yMmhyZ2Z0bmp6" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <title>Instagram</title>
               <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path>
             </svg>
           </a>
-          <a href="https://youtube.com/@manjeshsharma?si=cvazHP7_fLn3mZrd" class="text-gray-400 hover:text-white transition">
+          <a href="https://youtube.com/@manjeshsharma?si=cvazHP7_fLn3mZrd" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <title>YouTube</title>
               <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
@@ -964,7 +1034,7 @@
         </div>
       </div>
       
-      <div class="mb-4"> <!-- Wrapper for legal links -->
+      <div class="mb-4">
         <a href="#home" onclick="showPage('home'); return false;" class="hover:text-blue-400 underline">Home</a> | 
         <a href="#privacy" onclick="showPage('privacyPolicyPage'); return false;" class="hover:text-blue-400 underline">Privacy Policy</a> | 
         <a href="#terms" onclick="showPage('termsOfServicePage'); return false;" class="hover:text-blue-400 underline">Terms of Service</a> |
@@ -972,18 +1042,89 @@
       </div>
 
       <p>© 2025 TECH_GEN. All rights reserved.</p>
+      <p class="text-xs text-gray-500 mt-2">Disclaimer: This is a demonstration application. API keys are client-side for demo purposes only and are insecure. User authentication and payments are simulated.</p>
     </div>
   </footer>
 
   <script>
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
 
+    // !!! CRITICAL SECURITY WARNING !!!
+    // API keys are exposed client-side. For demonstration ONLY. Do NOT use in production.
     const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs"; 
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+    
     const MONSTER_API_BEARER_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjczODkxZjY1MTM1YWNkMjY1MmY3NDE1OWJmMjgzMjA4IiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjlUMDU6NDA6MzEuMTk2MjgzIn0.iOaQlBji9aXM5y7BM3UFmFSL0jF1yXLzeKiAN0-SlyA";
     const MONSTER_API_TXT2IMG_URL = "https://api.monsterapi.ai/v1/generate/txt2img";
 
-    async function callGeminiAPI(promptText) { /* ... (implementation unchanged, but ensure it's here) ... */ 
+    let currentUser = null; 
+    const protectedPages = ['ai-generator', 'translate', 'summarization', 'paymentPage'];
+
+    const authButtonsContainer = document.getElementById('authButtonsContainer');
+    const userInfoContainer = document.getElementById('userInfoContainer');
+    const userEmailDisplay = document.getElementById('userEmailDisplay');
+    const logoutButton = document.getElementById('logoutButton');
+
+    const GUEST_TOTAL_USAGE_LIMIT = 10;
+    const FREE_TIER_LIMITS = {
+        imageGen: 5,
+        translate: 10,
+        summarize: 5
+    };
+    let guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
+
+    const plansData = {
+        free: { name: "Free", price: "$0/month", id: 'free' },
+        pro: { name: "Pro", price: "$19/month", id: 'pro' },
+        business: { name: "Business", price: "$49/month", id: 'business' }
+    };
+
+    function updateGuestUsage() {
+        guestUsage.total++;
+        sessionStorage.setItem('techGenGuestUsage', JSON.stringify(guestUsage));
+    }
+
+    function canGuestUseFeature(currentPageId) {
+        if (guestUsage.total < GUEST_TOTAL_USAGE_LIMIT) {
+            return true;
+        }
+        showAlert(`You've reached your guest usage limit of ${GUEST_TOTAL_USAGE_LIMIT} actions. Please log in or register for more access.`, 'info');
+        sessionStorage.setItem('intendedPage', currentPageId || 'home');
+        showPage('login');
+        return false;
+    }
+    
+    function canLoggedInFreeUserUseFeature(featureType, currentPageId) {
+        if (!currentUser || (currentUser.plan !== 'free' && currentUser.plan !== undefined)) return true;
+
+        currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
+        const limit = FREE_TIER_LIMITS[featureType];
+        const currentCount = currentUser.usageCounts[featureType] || 0;
+
+        if (currentCount < limit) {
+            return true;
+        }
+        showAlert(`You've reached your Free plan limit of ${limit} ${featureType.replace(/([A-Z])/g, ' $1').toLowerCase()}s. Upgrade to a Pro plan for unlimited access.`, 'info');
+        sessionStorage.setItem('intendedPage', currentPageId || 'home');
+        showPage('pricing');
+        return false;
+    }
+
+    function incrementLoggedInFreeUserUsage(featureType) {
+        if (currentUser && (currentUser.plan === 'free' || currentUser.plan === undefined)) {
+             currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
+             currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
+             localStorage.setItem(`techGenUser_${currentUser.email}`, JSON.stringify(currentUser));
+             sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
+             updateAuthUI();
+        }
+    }
+
+    async function callGeminiAPI(promptText) {
+        if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE") {
+             showAlert('Gemini API Key is not configured. AI features using Gemini will not work.', 'error');
+             throw new Error('Gemini API Key not configured.');
+        }
         const requestUrl = `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`;
         try {
             const response = await fetch(requestUrl, {
@@ -995,8 +1136,9 @@
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('Gemini API Error Response:', errorData);
-                throw new Error(errorData.error?.message || `API error: ${response.status} ${response.statusText}`);
+                let errorMessage = errorData.error?.message || `API error: ${response.status} ${response.statusText}`;
+                if (errorData.error?.details) errorMessage += ` Details: ${JSON.stringify(errorData.error.details)}`;
+                throw new Error(errorMessage);
             }
             const data = await response.json();
             if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
@@ -1004,7 +1146,6 @@
             } else if (data.promptFeedback?.blockReason) {
                  throw new Error(`Content blocked by API: ${data.promptFeedback.blockReason} - ${data.promptFeedback.blockReasonMessage || ''}. Please revise your input.`);
             } else {
-                console.warn('Unexpected Gemini API response structure:', data);
                 throw new Error('Invalid response format from Gemini API.');
             }
         } catch (error) {
@@ -1012,13 +1153,16 @@
             throw error;
         }
     }
-    async function initiateMonsterImageGeneration(prompt, aspectRatio, style) { /* ... (implementation unchanged, but ensure it's here) ... */ 
+
+    async function initiateMonsterImageGeneration(prompt, aspectRatio, style) {
+        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === "YOUR_MONSTER_API_BEARER_TOKEN_HERE") {
+            showAlert('Monster API Token is not configured. Image generation will not work.', 'error');
+            throw new Error('Monster API Token not configured.');
+        }
         const formData = new FormData();
         formData.append('prompt', prompt);
         formData.append('aspect_ratio', aspectRatio);
-        if (style) {
-            formData.append('style', style);
-        }
+        if (style) formData.append('style', style);
         try {
             const response = await fetch(MONSTER_API_TXT2IMG_URL, {
                 method: 'POST',
@@ -1030,7 +1174,6 @@
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('Monster API Init Error:', errorData);
                 throw new Error(errorData.message || `Monster API error: ${response.status}`);
             }
             return await response.json(); 
@@ -1039,7 +1182,9 @@
             throw error;
         }
     }
-    async function fetchMonsterImageStatus(statusUrl) { /* ... (implementation unchanged, but ensure it's here) ... */ 
+
+    async function fetchMonsterImageStatus(statusUrl) {
+        if (!MONSTER_API_BEARER_TOKEN) throw new Error('Monster API Token not configured.');
         try {
             const response = await fetch(statusUrl, {
                 method: 'GET',
@@ -1050,7 +1195,6 @@
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('Monster API Status Error:', errorData);
                 throw new Error(errorData.message || `Monster API status error: ${response.status}`);
             }
             return await response.json();
@@ -1060,89 +1204,69 @@
         }
     }
     
-    // --- Meta Tag Management (implementation unchanged, ensure it's here) ---
     const pageMetaInfo = {
-        home: {
-            title: "TECH_GEN - AI SaaS Platform | Home",
-            description: "Boost your workflow with AI-powered image generation, document translation, and text summarization tools from TECH_GEN."
-        },
-        login: {
-            title: "Login - TECH_GEN",
-            description: "Access your TECH_GEN account to use our suite of AI tools."
-        },
-        register: {
-            title: "Register - TECH_GEN",
-            description: "Create an account with TECH_GEN to start using powerful AI tools for image generation, translation, and summarization."
-        },
-        'ai-generator': {
-            title: "AI Image Generator - TECH_GEN",
-            description: "Generate stunning and unique images from text prompts using our advanced AI Image Generator. Perfect for creatives and marketers."
-        },
-        translate: {
-            title: "AI Document & Text Translator - TECH_GEN",
-            description: "Translate text snippets or entire documents (PDF, DOCX, TXT) into multiple languages with our accurate AI Translator."
-        },
-        summarization: {
-            title: "AI Text Summarizer - TECH_GEN",
-            description: "Quickly summarize long articles, reports, and documents with our AI Text Summarizer. Get key insights in seconds."
-        },
-        pricing: {
-            title: "Pricing Plans - TECH_GEN",
-            description: "Explore our flexible pricing plans for TECH_GEN tools. Find the perfect fit for your needs, from free trials to business solutions."
-        },
-        contact: {
-            title: "Contact Us - TECH_GEN",
-            description: "Get in touch with the TECH_GEN team for support, inquiries, or feedback. We're here to help!"
-        },
-        privacyPolicyPage: {
-            title: "Privacy Policy - TECH_GEN",
-            description: "Read the Privacy Policy for TECH_GEN to understand how we collect, use, and protect your personal information."
-        },
-        termsOfServicePage: {
-            title: "Terms of Service - TECH_GEN",
-            description: "Review the Terms of Service for using the TECH_GEN platform and its AI-powered tools."
-        }
+        home: { title: "TECH_GEN - AI SaaS Platform | Home", description: "Boost your workflow with AI-powered image generation, document translation, and text summarization tools from TECH_GEN." },
+        login: { title: "Login - TECH_GEN", description: "Access your TECH_GEN account to use our suite of AI tools." },
+        register: { title: "Register - TECH_GEN", description: "Create an account with TECH_GEN to start using powerful AI tools for image generation, translation, and summarization." },
+        'ai-generator': { title: "AI Image Generator - TECH_GEN", description: "Generate stunning and unique images from text prompts using our advanced AI Image Generator. Perfect for creatives and marketers." },
+        translate: { title: "AI Document & Text Translator - TECH_GEN", description: "Translate text snippets or entire documents (PDF, DOCX, TXT) into multiple languages with our accurate AI Translator." },
+        summarization: { title: "AI Text Summarizer - TECH_GEN", description: "Quickly summarize long articles, reports, and documents with our AI Text Summarizer. Get key insights in seconds." },
+        pricing: { title: "Pricing Plans - TECH_GEN", description: "Explore our flexible pricing plans for TECH_GEN tools. Find the perfect fit for your needs, from free trials to business solutions." },
+        contact: { title: "Contact Us - TECH_GEN", description: "Get in touch with the TECH_GEN team for support, inquiries, or feedback. We're here to help!" },
+        privacyPolicyPage: { title: "Privacy Policy - TECH_GEN", description: "Read the Privacy Policy for TECH_GEN to understand how we collect, use, and protect your personal information." },
+        termsOfServicePage: { title: "Terms of Service - TECH_GEN", description: "Review the Terms of Service for using the TECH_GEN platform and its AI-powered tools." },
+        paymentPage: { title: "Complete Purchase - TECH_GEN", description: "Securely complete your subscription purchase for TECH_GEN AI tools."}
     };
 
     function updateMetaTags(pageId) {
         const meta = pageMetaInfo[pageId];
-        if (meta) {
-            document.title = meta.title;
-            const descriptionTag = document.querySelector('meta[name="description"]');
-            if (descriptionTag) {
-                descriptionTag.setAttribute('content', meta.description);
-            }
-        } else { 
-            document.title = "TECH_GEN - AI Platform";
-            const descriptionTag = document.querySelector('meta[name="description"]');
-            if (descriptionTag) {
-                descriptionTag.setAttribute('content', "Powerful AI tools for image generation, translation, and summarization from TECH_GEN.");
-            }
-        }
+        document.title = meta ? meta.title : "TECH_GEN - AI Platform";
+        const descriptionTag = document.querySelector('meta[name="description"]');
+        if (descriptionTag) descriptionTag.setAttribute('content', meta ? meta.description : "Powerful AI tools from TECH_GEN.");
     }
     
-    // --- Page Switching Logic (implementation unchanged, ensure it's here) ---
     function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-      });
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
       const targetPage = document.getElementById(pageId);
       if (targetPage) {
         targetPage.classList.add('active');
-        updateMetaTags(pageId); 
+        updateMetaTags(pageId);
+        if (window.location.hash !== `#${pageId}`) window.location.hash = pageId;
       } else {
-        console.error(`Page with ID ${pageId} not found.`);
         const homePage = document.getElementById('home');
         if (homePage) {
             homePage.classList.add('active');
             updateMetaTags('home');
+            if (window.location.hash !== '#home') window.location.hash = 'home';
         }
       }
       window.scrollTo(0, 0);
     }
-    showPage('home'); 
+    
+    function updateAuthUI() {
+        if (currentUser) {
+            authButtonsContainer.classList.add('hidden');
+            userInfoContainer.classList.remove('hidden');
+            let planName = currentUser.plan && plansData[currentUser.plan] ? plansData[currentUser.plan].name : 'Free';
+            userEmailDisplay.textContent = `${currentUser.email} (${planName})`;
+        } else {
+            authButtonsContainer.classList.remove('hidden');
+            userInfoContainer.classList.add('hidden');
+            userEmailDisplay.textContent = '';
+        }
+    }
 
-    // --- UI Element Interactions (Tabs, File Uploads, Buttons, etc. - implementation unchanged, ensure it's all here) ---
+    function handleLogout() {
+        currentUser = null;
+        sessionStorage.removeItem('techGenUser');
+        sessionStorage.removeItem('intendedPage'); 
+        sessionStorage.removeItem('pendingPlan');
+        updateAuthUI();
+        showAlert('You have been logged out.', 'success');
+        showPage('home');
+    }
+    if (logoutButton) logoutButton.addEventListener('click', handleLogout);
+
     const textTabBtn = document.getElementById('textTabBtn');
     const docTabBtn = document.getElementById('docTabBtn');
     const textTranslationSection = document.getElementById('textTranslationSection');
@@ -1150,71 +1274,48 @@
 
     if (textTabBtn && docTabBtn && textTranslationSection && docTranslationSection) { 
         textTabBtn.addEventListener('click', function() {
-          textTranslationSection.classList.remove('hidden');
-          docTranslationSection.classList.add('hidden');
-          this.classList.add('active','text-white');
-          this.classList.remove('text-[#A1A5B7]');
-          docTabBtn.classList.remove('active','text-white');
-          docTabBtn.classList.add('text-[#A1A5B7]');
+          textTranslationSection.classList.remove('hidden'); docTranslationSection.classList.add('hidden');
+          this.classList.add('active','text-white'); this.classList.remove('text-[#A1A5B7]');
+          docTabBtn.classList.remove('active','text-white'); docTabBtn.classList.add('text-[#A1A5B7]');
         });
-
         docTabBtn.addEventListener('click', function() {
-          textTranslationSection.classList.add('hidden');
-          docTranslationSection.classList.remove('hidden');
-          this.classList.add('active','text-white');
-          this.classList.remove('text-[#A1A5B7]');
-          textTabBtn.classList.remove('active','text-white');
-          textTabBtn.classList.add('text-[#A1A5B7]');
+          textTranslationSection.classList.add('hidden'); docTranslationSection.classList.remove('hidden');
+          this.classList.add('active','text-white'); this.classList.remove('text-[#A1A5B7]');
+          textTabBtn.classList.remove('active','text-white'); textTabBtn.classList.add('text-[#A1A5B7]');
         });
     }
 
     function escapeHtml(unsafe) { 
-      if (typeof unsafe !== 'string') {
-        if (unsafe === null || unsafe === undefined) return '';
-        unsafe = String(unsafe);
-      }
-      return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+      if (typeof unsafe !== 'string') unsafe = String(unsafe === null || unsafe === undefined ? '' : unsafe);
+      return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
     function showAlert(message, type) { 
-      const existingAlerts = document.querySelectorAll('.alert-message');
-      existingAlerts.forEach(alert => alert.remove());
-
+      document.querySelectorAll('.alert-message').forEach(alert => alert.remove());
       const alert = document.createElement('div');
       alert.className = `alert-message alert-${type}`;
       alert.textContent = message;
       document.body.appendChild(alert);
-      
       setTimeout(() => {
         alert.style.opacity = '0';
         setTimeout(() => alert.remove(), 300);
-      }, type === 'error' ? 6000 : 4000); 
+      }, type === 'error' ? 7000 : 4000);
     }
 
     function downloadImage(url, filename) { 
       fetch(url)
         .then(response => {
-          if (!response.ok) throw new Error('Failed to fetch image for download');
+          if (!response.ok) throw new Error('Failed to fetch image for download.');
           return response.blob();
         })
         .then(blob => {
           const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = filename;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          showAlert('Image downloaded successfully!', 'success');
+          link.href = URL.createObjectURL(blob); link.download = filename;
+          document.body.appendChild(link); link.click(); document.body.removeChild(link);
+          URL.revokeObjectURL(link.href);
+          showAlert('Image downloaded!', 'success');
         })
-        .catch(error => {
-          console.error('Download error:', error);
-          showAlert('Failed to download image', 'error');
-        });
+        .catch(error => showAlert(`Download error: ${error.message}`, 'error'));
     }
 
     async function extractTextFromFile(file) { 
@@ -1222,130 +1323,106 @@
         if (extension === 'pdf') return await extractTextFromPDF(file);
         if (extension === 'docx') return await extractTextFromDOCX(file);
         if (extension === 'txt') return await extractTextFromTXT(file);
-        throw new Error('Unsupported file type. Please use PDF, DOCX, or TXT.');
+        throw new Error('Unsupported file type.');
     }
     async function extractTextFromPDF(file) { 
         return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.onload = async function() {
+            const fr = new FileReader();
+            fr.onload = async function() {
                 try {
-                    const typedArray = new Uint8Array(this.result);
-                    const pdf = await pdfjsLib.getDocument(typedArray).promise;
-                    let fullText = '';
+                    const pdf = await pdfjsLib.getDocument(new Uint8Array(this.result)).promise;
+                    let text = '';
                     for (let i = 1; i <= pdf.numPages; i++) {
                         const page = await pdf.getPage(i);
-                        const textContent = await page.getTextContent();
-                        const textItems = textContent.items.map(item => item.str);
-                        fullText += textItems.join(' ') + '\n';
+                        const tc = await page.getTextContent();
+                        text += tc.items.map(item => item.str).join(' ') + '\n';
                     }
-                    resolve(fullText.trim());
-                } catch (error) {
-                    console.error("Error parsing PDF:", error);
-                    reject(new Error("Could not extract text from PDF. Ensure it's a valid PDF file."));
-                }
+                    resolve(text.trim());
+                } catch (e) { reject(new Error("Could not extract text from PDF.")); }
             };
-            fileReader.onerror = (error) => {
-                console.error("FileReader error on PDF:", error);
-                reject(new Error("Error reading PDF file."));
-            };
-            fileReader.readAsArrayBuffer(file);
+            fr.onerror = () => reject(new Error("Error reading PDF."));
+            fr.readAsArrayBuffer(file);
         });
     }
     async function extractTextFromDOCX(file) { 
         return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.onload = function() {
+            const fr = new FileReader();
+            fr.onload = function() {
                 mammoth.extractRawText({arrayBuffer: this.result})
-                    .then(result => resolve(result.value.trim()))
-                    .catch(error => {
-                        console.error("Error parsing DOCX:", error);
-                        reject(new Error("Could not extract text from DOCX. Ensure it's a valid DOCX file."));
-                    });
+                    .then(r => resolve(r.value.trim()))
+                    .catch(() => reject(new Error("Could not extract text from DOCX.")));
             };
-            fileReader.onerror = (error) => {
-                console.error("FileReader error on DOCX:", error);
-                reject(new Error("Error reading DOCX file."));
-            };
-            fileReader.readAsArrayBuffer(file);
+            fr.onerror = () => reject(new Error("Error reading DOCX."));
+            fr.readAsArrayBuffer(file);
         });
     }
     async function extractTextFromTXT(file) { 
         return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.onload = function() {
-                resolve(this.result.trim());
-            };
-            fileReader.onerror = (error) => {
-                console.error("FileReader error on TXT:", error);
-                reject(new Error("Error reading TXT file."));
-            };
-            fileReader.readAsText(file);
+            const fr = new FileReader();
+            fr.onload = function() { resolve(this.result.trim()); };
+            fr.onerror = () => reject(new Error("Error reading TXT."));
+            fr.readAsText(file);
         });
     }
 
     const generateImageBtn = document.getElementById('generateImageBtn');
     const imagePlaceholderText = document.getElementById('imagePlaceholderText');
-
     if (generateImageBtn) { 
         generateImageBtn.addEventListener('click', async function() {
+            const pageId = 'ai-generator';
+            if (!currentUser ? !canGuestUseFeature(pageId) : !canLoggedInFreeUserUseFeature('imageGen', pageId)) return;
+
             const prompt = document.getElementById('imagePrompt').value.trim();
-            if (!prompt) {
-                showAlert('Please enter an image description', 'error');
-                return;
-            }
-            const btn = this;
-            const spinner = document.getElementById('generateSpinner');
-            const btnTextEl = document.getElementById('generateBtnText');
-            const aspectRatio = document.getElementById('monsterAspectRatio').value;
-            const style = document.getElementById('monsterImageStyle').value; 
-            btn.disabled = true;
-            spinner.classList.remove('hidden');
-            btnTextEl.textContent = 'Initializing...';
+            if (!prompt) { showAlert('Please enter an image description', 'error'); return; }
+            
+            const btn = this, spinner = document.getElementById('generateSpinner'), btnTextEl = document.getElementById('generateBtnText');
+            const aspectRatio = document.getElementById('monsterAspectRatio').value, style = document.getElementById('monsterImageStyle').value; 
+            
+            btn.disabled = true; spinner.classList.remove('hidden'); btnTextEl.textContent = 'Initializing...';
             document.getElementById('imagePlaceholder').style.display = 'flex';
-            imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Initializing image generation...</p></div>`;
+            imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Initializing...</p></div>`;
             document.getElementById('imageResultContainer').classList.add('hidden');
+            
             try {
-                const initResponse = await initiateMonsterImageGeneration(prompt, aspectRatio, style);
-                if (initResponse && initResponse.status_url && initResponse.process_id) {
-                    showAlert('Image generation started. Process ID: ' + initResponse.process_id, 'info');
+                const initRes = await initiateMonsterImageGeneration(prompt, aspectRatio, style);
+                if (initRes && initRes.status_url && initRes.process_id) {
+                    showAlert('Image generation started. ID: ' + initRes.process_id, 'info');
                     btnTextEl.textContent = 'Generating...';
-                    imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Generating image... This may take a minute.</p></div>`;
-                    let attempts = 0;
-                    const maxAttempts = 20; 
-                    const pollInterval = 5000; 
-                    const pollForResult = async () => {
-                        attempts++;
-                        if (attempts > maxAttempts) throw new Error('Image generation timed out. Please try again.');
-                        const statusResponse = await fetchMonsterImageStatus(initResponse.status_url);
-                        if (statusResponse.status === 'IN_PROGRESS' || statusResponse.status === 'IN_QUEUE') {
-                            imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Status: ${statusResponse.status.replace('_',' ')}. Waiting... (${attempts}/${maxAttempts})</p></div>`;
-                            setTimeout(pollForResult, pollInterval);
-                        } else if (statusResponse.status === 'COMPLETED') {
-                            if (statusResponse.result && statusResponse.result.output && statusResponse.result.output.length > 0) {
-                                const imageUrl = statusResponse.result.output[0];
-                                document.getElementById('imagePlaceholder').style.display = 'none';
-                                const img = document.getElementById('generatedImage');
-                                img.src = imageUrl;
-                                img.alt = prompt;
-                                document.getElementById('imageResultContainer').classList.remove('hidden');
-                                document.getElementById('downloadImageBtn').onclick = function() { downloadImage(imageUrl, `monster-ai-generated-${Date.now()}.png`); };
-                                showAlert('Image generated successfully!', 'success');
-                                btn.disabled = false;
-                                spinner.classList.add('hidden');
-                                btnTextEl.textContent = 'Generate';
-                            } else { throw new Error('Generation completed, but no image URL found in response.'); }
-                        } else if (statusResponse.status === 'FAILED') { throw new Error(`Image generation failed. API Message: ${statusResponse.message || 'Unknown error'}`);
-                        } else { throw new Error(`Unknown image generation status: ${statusResponse.status}`); }
+                    imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Generating... This may take a minute.</p></div>`;
+                    
+                    let attempts = 0, maxAttempts = 30, pollInterval = 6000;
+                    const poll = async () => {
+                        if (++attempts > maxAttempts) throw new Error('Image generation timed out.');
+                        try {
+                            const statusRes = await fetchMonsterImageStatus(initRes.status_url);
+                            if (statusRes.status === 'IN_PROGRESS' || statusRes.status === 'IN_QUEUE') {
+                                imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Status: ${statusRes.status.replace('_',' ')} (${attempts}/${maxAttempts})</p></div>`;
+                                setTimeout(poll, pollInterval);
+                            } else if (statusRes.status === 'COMPLETED') {
+                                if (statusRes.result && statusRes.result.output && statusRes.result.output.length > 0) {
+                                    document.getElementById('imagePlaceholder').style.display = 'none';
+                                    const img = document.getElementById('generatedImage');
+                                    img.src = statusRes.result.output[0]; img.alt = prompt;
+                                    document.getElementById('imageResultContainer').classList.remove('hidden');
+                                    document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
+                                    showAlert('Image generated!', 'success');
+                                    if (!currentUser) updateGuestUsage(); else incrementLoggedInFreeUserUsage('imageGen');
+                                    btn.disabled = false; spinner.classList.add('hidden'); btnTextEl.textContent = 'Generate';
+                                } else throw new Error('Generation completed, but no image URL found.');
+                            } else if (statusRes.status === 'FAILED') throw new Error(`Image generation failed: ${statusRes.message || 'Unknown API error'}`);
+                            else throw new Error(`Unknown status: ${statusRes.status}`);
+                        } catch (pollErr) {
+                            imagePlaceholderText.innerHTML = `<p class="text-red-400 text-sm">Polling error: ${escapeHtml(pollErr.message)}</p>`;
+                            showAlert(`Polling Error: ${pollErr.message}`, 'error');
+                            btn.disabled = false; spinner.classList.add('hidden'); btnTextEl.textContent = 'Generate';
+                        }
                     };
-                    setTimeout(pollForResult, pollInterval); 
-                } else { throw new Error('Failed to initialize image generation with Monster API.'); }
-            } catch (error) {
-                console.error('Error in AI Image Generator:', error);
-                imagePlaceholderText.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(error.message)}</p>`;
-                showAlert(`Failed to generate image: ${error.message}`, 'error');
-                btn.disabled = false;
-                spinner.classList.add('hidden');
-                btnTextEl.textContent = 'Generate';
+                    setTimeout(poll, pollInterval); 
+                } else throw new Error('Failed to initialize image generation.');
+            } catch (err) {
+                imagePlaceholderText.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+                showAlert(`Failed to generate image: ${err.message}`, 'error');
+                btn.disabled = false; spinner.classList.add('hidden'); btnTextEl.textContent = 'Generate';
             }
         });
     }
@@ -1353,248 +1430,348 @@
     const docFileInput = document.getElementById('docFileInput');
     if (docFileInput) { 
         docFileInput.addEventListener('change', async function(e) {
-          const file = e.target.files[0];
-          if (!file) return;
-          const translateBtn = document.getElementById('translateDocBtn');
-          const fileNameDisplay = document.getElementById('docFileNameDisplay');
-          const fileExtractStatus = document.getElementById('docFileExtractStatus');
-          const docTextPreviewDiv = document.querySelector('#docTextPreview div');
-          const docTextPreviewContainer = document.getElementById('docTextPreview');
-          translateBtn.disabled = true;
-          fileNameDisplay.textContent = `Selected file: ${file.name}`;
-          fileExtractStatus.classList.remove('hidden');
-          docTextPreviewContainer.classList.add('hidden');
-          docTextPreviewDiv.textContent = '';
+          const file = e.target.files[0]; if (!file) return;
+          const btn = document.getElementById('translateDocBtn'), nameDisp = document.getElementById('docFileNameDisplay');
+          const statusDisp = document.getElementById('docFileExtractStatus'), previewDiv = document.querySelector('#docTextPreview div');
+          const previewCont = document.getElementById('docTextPreview');
+          
+          btn.disabled = true; nameDisp.textContent = `Selected file: ${file.name}`;
+          statusDisp.classList.remove('hidden'); previewCont.classList.add('hidden');
+          if(previewDiv) previewDiv.textContent = '';
+          
+          const outDiv = document.getElementById('docTranslationOutput');
+          if (outDiv) outDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Results will appear here...</p>`;
+          document.getElementById('downloadTranslationBtn').classList.add('hidden');
+          document.getElementById('copyDocBtn').classList.add('hidden');
+
           try {
-            const extractedText = await extractTextFromFile(file);
-            docTextPreviewDiv.textContent = extractedText.substring(0, 500) + (extractedText.length > 500 ? "..." : "");
-            docTextPreviewContainer.classList.remove('hidden');
-            translateBtn.setAttribute('data-extracted-text', extractedText);
-            translateBtn.disabled = false;
-            showAlert('Document text extracted and ready for translation!', 'success');
-          } catch (error) {
-            console.error('Error extracting text for translation:', error);
-            showAlert(`Error extracting text: ${error.message}`, 'error');
-            fileNameDisplay.textContent = `Error with ${file.name}: ${error.message}`;
-          } finally { fileExtractStatus.classList.add('hidden'); }
+            const text = await extractTextFromFile(file);
+            if(previewDiv) previewDiv.textContent = text.substring(0, 500) + (text.length > 500 ? "..." : "");
+            previewCont.classList.remove('hidden');
+            btn.setAttribute('data-extracted-text', text); btn.disabled = false;
+            showAlert('Document text extracted!', 'success');
+          } catch (err) {
+            showAlert(`Error extracting text: ${err.message}`, 'error');
+            nameDisp.textContent = `Error with ${file.name}: ${err.message}`;
+            btn.removeAttribute('data-extracted-text');
+          } finally { statusDisp.classList.add('hidden'); }
         });
     }
 
     const translateTextBtn = document.getElementById('translateTextBtn');
     if (translateTextBtn) { 
         translateTextBtn.addEventListener('click', async function() {
-          const text = document.getElementById('translatePageTextInput').value.trim();
-          if (!text) { showAlert('Please enter some text to translate', 'error'); return; }
-          const targetLanguageDropdown = document.getElementById('targetLanguage');
-          const languageName = targetLanguageDropdown.options[targetLanguageDropdown.selectedIndex].text;
-          const btn = this;
-          const spinner = document.getElementById('translateTextSpinner');
-          const textOutputDiv = document.getElementById('textOutput');
-          btn.disabled = true;
-          spinner.classList.remove('hidden');
-          textOutputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating...</p>`;
-          try {
-            const prompt = `Translate the following text to ${languageName}. Provide only the translated text:\n\n"${text}"`;
-            const translation = await callGeminiAPI(prompt);
-            textOutputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Translation (${escapeHtml(languageName)})</h3><p class="text-[#A1A5B7] text-sm">${escapeHtml(translation)}</p>`;
-            document.getElementById('copyTextBtn').classList.remove('hidden');
-            showAlert('Text translated successfully!', 'success');
-          } catch (error) {
-            textOutputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(error.message)}</p>`;
-            showAlert(`Failed to translate text: ${error.message}`, 'error');
-          } finally { btn.disabled = false; spinner.classList.add('hidden'); }
+            const pageId = 'translate';
+            if (!currentUser ? !canGuestUseFeature(pageId) : !canLoggedInFreeUserUseFeature('translate', pageId)) return;
+
+            const text = document.getElementById('translatePageTextInput').value.trim();
+            if (!text) { showAlert('Please enter text to translate', 'error'); return; }
+            
+            const langDrop = document.getElementById('targetLanguage');
+            const langCode = langDrop.value, langName = langDrop.options[langDrop.selectedIndex].text;
+            const btn = this, spinner = document.getElementById('translateTextSpinner'), outDiv = document.getElementById('textOutput');
+            
+            btn.disabled = true; spinner.classList.remove('hidden');
+            outDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating...</p>`;
+            document.getElementById('copyTextBtn').classList.add('hidden');
+            
+            try {
+                const prompt = `Translate to ${langName} (code: ${langCode}). Only the translation:\n"${text}"`;
+                const translation = await callGeminiAPI(prompt);
+                outDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">To ${escapeHtml(langName)}</h3><p class="text-white text-sm">${escapeHtml(translation)}</p>`;
+                document.getElementById('copyTextBtn').classList.remove('hidden');
+                showAlert('Text translated!', 'success');
+                if (!currentUser) updateGuestUsage(); else incrementLoggedInFreeUserUsage('translate');
+            } catch (err) {
+                outDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+                showAlert(`Translation failed: ${err.message}`, 'error');
+            } finally { btn.disabled = false; spinner.classList.add('hidden'); }
         });
     }
 
     const translateDocBtn = document.getElementById('translateDocBtn');
     if (translateDocBtn) { 
         translateDocBtn.addEventListener('click', async function() {
-          const text = this.getAttribute('data-extracted-text');
-          if (!text) { showAlert('No text extracted. Please upload a document first.', 'error'); return; }
-          const targetLanguageDropdown = document.getElementById('docTargetLanguage');
-          const languageName = targetLanguageDropdown.options[targetLanguageDropdown.selectedIndex].text;
-          const btn = this;
-          const spinner = document.getElementById('translateDocSpinner');
-          const docTranslationOutputDiv = document.getElementById('docTranslationOutput');
-          btn.disabled = true;
-          spinner.classList.remove('hidden');
-          docTranslationOutputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating document...</p>`;
-          try {
-            showAlert(`Translating document to ${languageName}... This may take a moment for larger documents.`, 'info');
-            const prompt = `Translate the following document text to ${languageName}. Provide only the translated text:\n\n"${text}"`;
-            const translation = await callGeminiAPI(prompt);
-            docTranslationOutputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Document Translation (${escapeHtml(languageName)})</h3><div class="text-[#A1A5B7] text-sm max-h-96 overflow-y-auto">${escapeHtml(translation)}</div>`;
-            document.getElementById('copyDocBtn').classList.remove('hidden');
-            document.getElementById('downloadTranslationBtn').classList.remove('hidden');
-            showAlert('Document translation complete!', 'success');
-          } catch (error) {
-            docTranslationOutputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(error.message)}</p>`;
-            showAlert(`Failed to translate document: ${error.message}`, 'error');
-          } finally { btn.disabled = false; spinner.classList.add('hidden'); }
+            const pageId = 'translate';
+            if (!currentUser ? !canGuestUseFeature(pageId) : !canLoggedInFreeUserUseFeature('translate', pageId)) return;
+
+            const text = this.getAttribute('data-extracted-text');
+            if (!text) { showAlert('No text extracted. Upload a document.', 'error'); return; }
+            
+            const langDrop = document.getElementById('docTargetLanguage');
+            const langCode = langDrop.value, langName = langDrop.options[langDrop.selectedIndex].text;
+            const btn = this, spinner = document.getElementById('translateDocSpinner'), outDiv = document.getElementById('docTranslationOutput');
+            
+            btn.disabled = true; spinner.classList.remove('hidden');
+            outDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating document...</p>`;
+            document.getElementById('copyDocBtn').classList.add('hidden');
+            document.getElementById('downloadTranslationBtn').classList.add('hidden');
+            
+            try {
+                showAlert(`Translating document to ${langName}...`, 'info');
+                const prompt = `Translate to ${langName} (code: ${langCode}). Preserve paragraphs. Only the translation:\n"${text}"`;
+                const translation = await callGeminiAPI(prompt);
+                outDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">To ${escapeHtml(langName)}</h3><div class="text-white text-sm max-h-96 overflow-y-auto">${escapeHtml(translation).replace(/\n/g, '<br>')}</div>`;
+                outDiv.setAttribute('data-raw-translation', translation);
+                document.getElementById('copyDocBtn').classList.remove('hidden');
+                document.getElementById('downloadTranslationBtn').classList.remove('hidden');
+                showAlert('Document translation complete!', 'success');
+                if (!currentUser) updateGuestUsage(); else incrementLoggedInFreeUserUsage('translate');
+            } catch (err) {
+                outDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+                showAlert(`Doc translation failed: ${err.message}`, 'error');
+            } finally { btn.disabled = false; spinner.classList.add('hidden'); }
         });
     }
 
     const copyTextBtn = document.getElementById('copyTextBtn');
-    if (copyTextBtn) { 
-        copyTextBtn.addEventListener('click', function() {
-          const textOutputElement = document.getElementById('textOutput');
-          const textToCopy = textOutputElement.querySelector('p')?.innerText || textOutputElement.innerText;
-          navigator.clipboard.writeText(textToCopy)
-            .then(() => showAlert('Text copied to clipboard!', 'success'))
-            .catch(err => showAlert('Failed to copy text', 'error'));
-        });
-    }
-
+    if (copyTextBtn) copyTextBtn.addEventListener('click', () => {
+          const text = document.getElementById('textOutput').querySelector('p')?.innerText || '';
+          if (text) navigator.clipboard.writeText(text).then(() => showAlert('Copied!', 'success')).catch(() => showAlert('Copy failed.', 'error'));
+          else showAlert('Nothing to copy.', 'info');
+    });
     const copyDocBtn = document.getElementById('copyDocBtn');
-    if (copyDocBtn) { 
-        copyDocBtn.addEventListener('click', function() {
-          const docOutputElement = document.getElementById('docTranslationOutput');
-          const textToCopy = docOutputElement.querySelector('div')?.innerText || docOutputElement.innerText;
-          navigator.clipboard.writeText(textToCopy)
-            .then(() => showAlert('Translation copied to clipboard!', 'success'))
-            .catch(err => showAlert('Failed to copy translation', 'error'));
-        });
-    }
-
+    if (copyDocBtn) copyDocBtn.addEventListener('click', () => {
+          const text = document.getElementById('docTranslationOutput').getAttribute('data-raw-translation') || '';
+          if (text) navigator.clipboard.writeText(text).then(() => showAlert('Copied!', 'success')).catch(() => showAlert('Copy failed.', 'error'));
+          else showAlert('Nothing to copy.', 'info');
+    });
     const downloadTranslationBtn = document.getElementById('downloadTranslationBtn');
-    if (downloadTranslationBtn) { 
-        downloadTranslationBtn.addEventListener('click', function() {
-          const docOutputElement = document.getElementById('docTranslationOutput');
-          const textToDownload = docOutputElement.querySelector('div')?.innerText || docOutputElement.innerText;
-          const targetLanguageDropdown = document.getElementById('docTargetLanguage');
-          const languageName = targetLanguageDropdown.options[targetLanguageDropdown.selectedIndex].text;
-          const originalFileName = document.getElementById('docFileNameDisplay').textContent.replace('Selected file: ', '').split('.')[0] || 'document';
-          const fileName = `${originalFileName}_translation_${languageName.toLowerCase().replace(/[^a-z0-9]/gi, '_')}.txt`;
-          const blob = new Blob([textToDownload], { type: 'text/plain;charset=utf-8' });
+    if (downloadTranslationBtn) downloadTranslationBtn.addEventListener('click', () => {
+          const text = document.getElementById('docTranslationOutput').getAttribute('data-raw-translation') || '';
+          if (!text) { showAlert('Nothing to download.', 'info'); return; }
+          const langName = document.getElementById('docTargetLanguage').options[document.getElementById('docTargetLanguage').selectedIndex].text;
+          const origName = (document.getElementById('docFileNameDisplay').textContent.replace('Selected file: ', '').split('.')[0] || 'doc').replace(/[^a-z0-9]/gi, '_');
+          const fName = `${origName}_trans_${langName.toLowerCase().replace(/[^a-z0-9]/gi, '_')}.txt`;
+          const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
-          a.href = url;
-          a.download = fileName;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
+          a.href = url; a.download = fName;
+          document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
           showAlert('Translation downloaded!', 'success');
-        });
-    }
+    });
 
     const summarizeDocInput = document.getElementById('summarizeDocInput');
     const summarizeTextInput = document.getElementById('summarizeTextInput');
     const summarizeDocNameDisplay = document.getElementById('summarizeDocNameDisplay');
     const summarizeDocExtractStatus = document.getElementById('summarizeDocExtractStatus');
 
-    if (summarizeDocInput) { 
-        summarizeDocInput.addEventListener('change', async function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+    if (summarizeDocInput) summarizeDocInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0]; if (!file) return;
             summarizeDocNameDisplay.textContent = `Selected file: ${file.name}`;
             summarizeDocExtractStatus.classList.remove('hidden');
             summarizeTextInput.value = ''; 
+            const outDiv = document.getElementById('summaryOutput');
+            if (outDiv) outDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Summary will appear here...</p>`;
+            document.getElementById('copySummaryBtn').classList.add('hidden');
             try {
-                const extractedText = await extractTextFromFile(file);
-                summarizeTextInput.value = extractedText;
-                showAlert('Text extracted from document and ready for summarization!', 'success');
-            } catch (error) {
-                console.error('Error extracting text for summarization:', error);
-                showAlert(`Error extracting text: ${error.message}`, 'error');
-                summarizeDocNameDisplay.textContent = `Error with ${file.name}: ${error.message}`;
+                summarizeTextInput.value = await extractTextFromFile(file); 
+                showAlert('Text extracted from document!', 'success');
+            } catch (err) {
+                showAlert(`Error extracting text: ${err.message}`, 'error');
+                summarizeDocNameDisplay.textContent = `Error with ${file.name}: ${err.message}`;
             } finally { summarizeDocExtractStatus.classList.add('hidden'); }
-        });
-    }
+    });
 
     const summarizeTextBtn = document.getElementById('summarizeTextBtn');
-    if (summarizeTextBtn) { 
-        summarizeTextBtn.addEventListener('click', async function() {
-            const textToSummarize = summarizeTextInput.value.trim();
-            if (!textToSummarize) { showAlert('Please enter text or upload a document to summarize.', 'error'); return; }
-            const summaryLengthDropdown = document.getElementById('summaryLength');
-            const summaryLengthValue = summaryLengthDropdown.value;
-            const summaryLengthText = summaryLengthDropdown.options[summaryLengthDropdown.selectedIndex].text;
-            const btn = this;
-            const spinner = document.getElementById('summarizeTextSpinner');
-            const btnText = document.getElementById('summarizeBtnText');
-            const summaryOutputDiv = document.getElementById('summaryOutput');
-            const copySummaryBtn = document.getElementById('copySummaryBtn');
-            btn.disabled = true;
-            spinner.classList.remove('hidden');
-            btnText.textContent = 'Summarizing...';
-            summaryOutputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Generating summary...</p>`;
-            copySummaryBtn.classList.add('hidden');
+    if (summarizeTextBtn) summarizeTextBtn.addEventListener('click', async function() {
+            const pageId = 'summarization';
+            if (!currentUser ? !canGuestUseFeature(pageId) : !canLoggedInFreeUserUseFeature('summarize', pageId)) return;
+
+            const text = summarizeTextInput.value.trim();
+            if (!text) { showAlert('Please enter text or upload a document.', 'error'); return; }
+            
+            const lenDrop = document.getElementById('summaryLength');
+            const lenVal = lenDrop.value, lenText = lenDrop.options[lenDrop.selectedIndex].text;
+            const btn = this, spinner = document.getElementById('summarizeTextSpinner');
+            const btnText = document.getElementById('summarizeBtnText'), outDiv = document.getElementById('summaryOutput');
+            const copyBtn = document.getElementById('copySummaryBtn');
+            
+            btn.disabled = true; spinner.classList.remove('hidden'); btnText.textContent = 'Summarizing...';
+            outDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Generating summary...</p>`;
+            copyBtn.classList.add('hidden');
+            
             try {
-                let lengthInstruction = "";
-                if (summaryLengthValue === 'short') lengthInstruction = "Provide a short summary, about 1-2 concise sentences.";
-                else if (summaryLengthValue === 'medium') lengthInstruction = "Provide a medium-length summary, about one paragraph.";
-                else lengthInstruction = "Provide a detailed, long summary consisting of multiple paragraphs if necessary.";
-                const prompt = `Summarize the following text. ${lengthInstruction} Focus on the key points and main ideas. Provide only the summary text:\n\n"${textToSummarize}"`;
-                showAlert(`Generating ${summaryLengthValue} summary... This may take a moment.`, 'info');
+                let instr = "";
+                if (lenVal === 'short') instr = "Short summary, 1-2 sentences.";
+                else if (lenVal === 'medium') instr = "Medium summary, one paragraph.";
+                else instr = "Detailed summary, multiple paragraphs if needed.";
+                const prompt = `Summarize. ${instr} Key points only. Only the summary text:\n"${text}"`;
+                showAlert(`Generating ${lenVal} summary...`, 'info');
                 const summary = await callGeminiAPI(prompt);
-                summaryOutputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Summary (${escapeHtml(summaryLengthText)})</h3><p class="text-[#A1A5B7] text-sm">${escapeHtml(summary)}</p>`;
-                copySummaryBtn.classList.remove('hidden');
-                showAlert('Text summarized successfully!', 'success');
-            } catch (error) {
-                summaryOutputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(error.message)}</p>`;
-                showAlert(`Failed to summarize text: ${error.message}`, 'error');
+                outDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Summary (${escapeHtml(lenText)})</h3><p class="text-white text-sm">${escapeHtml(summary).replace(/\n/g, '<br>')}</p>`;
+                outDiv.setAttribute('data-raw-summary', summary);
+                copyBtn.classList.remove('hidden');
+                showAlert('Text summarized!', 'success');
+                if (!currentUser) updateGuestUsage(); else incrementLoggedInFreeUserUsage('summarize');
+            } catch (err) {
+                outDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+                showAlert(`Summarization failed: ${err.message}`, 'error');
             } finally { btn.disabled = false; spinner.classList.add('hidden'); btnText.textContent = 'Summarize'; }
-        });
-    }
+    });
 
     const copySummaryBtn = document.getElementById('copySummaryBtn');
-    if (copySummaryBtn) { 
-        copySummaryBtn.addEventListener('click', function() {
-            const summaryOutputElement = document.getElementById('summaryOutput');
-            const textToCopy = summaryOutputElement.querySelector('p')?.innerText || summaryOutputElement.innerText;
-            navigator.clipboard.writeText(textToCopy)
-                .then(() => showAlert('Summary copied to clipboard!', 'success'))
-                .catch(err => showAlert('Failed to copy summary.', 'error'));
-        });
-    }
+    if (copySummaryBtn) copySummaryBtn.addEventListener('click', () => {
+            const text = document.getElementById('summaryOutput').getAttribute('data-raw-summary') || '';
+            if (text) navigator.clipboard.writeText(text).then(() => showAlert('Summary copied!', 'success')).catch(() => showAlert('Copy failed.', 'error'));
+            else showAlert('Nothing to copy.', 'info');
+    });
 
-    function isValidEmail(email) { 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
+    function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+
     const loginForm = document.getElementById('loginForm');
-    if (loginForm) { 
-        loginForm.addEventListener('submit', function(event) {
+    if (loginForm) loginForm.addEventListener('submit', (event) => {
             event.preventDefault(); 
             const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-            if (!email) { showAlert('Email is required.', 'error'); return; }
-            if (!isValidEmail(email)) { showAlert('Please enter a valid email address.', 'error'); return; }
-            if (!password) { showAlert('Password is required.', 'error'); return; }
-            showAlert('Login successful! (Demo)', 'success');
-        });
-    }
+            const password = document.getElementById('loginPassword').value.trim(); 
+            if (!email || !password) { showAlert('Email and password required.', 'error'); return; }
+            if (!isValidEmail(email)) { showAlert('Invalid email.', 'error'); return; }
+
+            const userJSON = localStorage.getItem(`techGenUser_${email}`);
+            if (userJSON) {
+                const storedUser = JSON.parse(userJSON);
+                if (storedUser.password === password) { // INSECURE plain text password check (DEMO ONLY)
+                    currentUser = storedUser;
+                    currentUser.plan = currentUser.plan || 'free';
+                    currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
+                    sessionStorage.setItem('techGenUser', JSON.stringify(currentUser)); 
+                    updateAuthUI();
+                    showAlert(`Welcome back, ${currentUser.name || currentUser.email}!`, 'success');
+                    
+                    const intendedPage = sessionStorage.getItem('intendedPage');
+                    const pendingPlan = sessionStorage.getItem('pendingPlan');
+                    sessionStorage.removeItem('intendedPage'); 
+
+                    if (pendingPlan) {
+                        sessionStorage.removeItem('pendingPlan');
+                        initiatePayment(pendingPlan);
+                    } else if (intendedPage) {
+                        showPage(intendedPage);
+                    } else {
+                        showPage('home'); 
+                    }
+                    loginForm.reset();
+                } else showAlert('Invalid email or password. (Demo)', 'error');
+            } else showAlert('No account with this email. Please register. (Demo)', 'error');
+    });
+
     const registerForm = document.getElementById('registerForm');
-    if (registerForm) { 
-        registerForm.addEventListener('submit', function(event) {
+    if (registerForm) registerForm.addEventListener('submit', (event) => {
             event.preventDefault(); 
             const fullName = document.getElementById('registerFullName').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
             const password = document.getElementById('registerPassword').value.trim();
-            if (!fullName) { showAlert('Full Name is required.', 'error'); return; }
-            if (!email) { showAlert('Email is required.', 'error'); return; }
-            if (!isValidEmail(email)) { showAlert('Please enter a valid email address.', 'error'); return; }
-            if (!password) { showAlert('Password is required.', 'error'); return; }
-            if (password.length < 6) { showAlert('Password must be at least 6 characters long.', 'error'); return; }
-            showAlert('Registration successful! (Demo) You can now log in.', 'success');
-        });
-    }
+            if (!fullName || !email || !password) { showAlert('All fields required.', 'error'); return; }
+            if (!isValidEmail(email)) { showAlert('Invalid email.', 'error'); return; }
+            if (password.length < 6) { showAlert('Password min 6 characters.', 'error'); return; }
+
+            if (localStorage.getItem(`techGenUser_${email}`)) {
+                showAlert('Email already registered. (Demo)', 'error'); return;
+            }
+            const newUser = { 
+                name: fullName, email: email, password: password, // INSECURE plain text password (DEMO ONLY)
+                plan: 'free', usageCounts: { imageGen: 0, translate: 0, summarize: 0 } 
+            }; 
+            localStorage.setItem(`techGenUser_${email}`, JSON.stringify(newUser));
+            currentUser = newUser;
+            sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
+            updateAuthUI();
+            showAlert('Registration successful! Logged in. (Demo)', 'success');
+            
+            const intendedPage = sessionStorage.getItem('intendedPage');
+            const pendingPlan = sessionStorage.getItem('pendingPlan');
+            sessionStorage.removeItem('intendedPage');
+
+            if (pendingPlan) {
+                sessionStorage.removeItem('pendingPlan');
+                initiatePayment(pendingPlan);
+            } else if (intendedPage) {
+                showPage(intendedPage);
+            } else {
+                showPage('home');
+            }
+            registerForm.reset();
+    });
     const contactForm = document.getElementById('contactForm');
-    if (contactForm) { 
-        contactForm.addEventListener('submit', function(event) {
+    if (contactForm) contactForm.addEventListener('submit', (event) => {
             event.preventDefault();
-            const contactName = document.getElementById('contactName').value.trim();
-            const contactEmail = document.getElementById('contactEmail').value.trim();
-            const contactSubject = document.getElementById('contactSubject').value.trim();
-            const contactMessage = document.getElementById('contactMessage').value.trim();
-            if (!contactName || !contactEmail || !contactSubject || !contactMessage) { showAlert('All fields are required.', 'error'); return; }
-            if (!isValidEmail(contactEmail)) { showAlert('Please enter a valid email address.', 'error'); return; }
-            showAlert('Message sent successfully! (Demo)', 'success');
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const subject = document.getElementById('contactSubject').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+            if (!name || !email || !subject || !message) { showAlert('All fields required.', 'error'); return; }
+            if (!isValidEmail(email)) { showAlert('Invalid email.', 'error'); return; }
+            showAlert('Message sent! (Demo)', 'success');
             contactForm.reset();
-        });
+    });
+
+    function initiatePayment(planId) {
+        if (!plansData[planId]) { showAlert('Invalid plan.', 'error'); return; }
+        if (!currentUser) {
+            sessionStorage.setItem('pendingPlan', planId);
+            sessionStorage.setItem('intendedPage', 'paymentPage');
+            showAlert('Please log in or register to purchase.', 'info');
+            showPage('login');
+            return;
+        }
+        document.getElementById('paymentPlanName').textContent = plansData[planId].name;
+        document.getElementById('paymentPlanPrice').textContent = plansData[planId].price;
+        document.getElementById('paymentForm').dataset.planId = planId;
+        showPage('paymentPage');
     }
 
+    const paymentForm = document.getElementById('paymentForm');
+    if (paymentForm) paymentForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const planId = event.target.dataset.planId;
+            const cardName = document.getElementById('cardName').value.trim();
+            const cardNumber = document.getElementById('cardNumber').value.trim();
+            const cardExpiry = document.getElementById('cardExpiry').value.trim();
+            const cardCVC = document.getElementById('cardCVC').value.trim();
+
+            if (!cardName || !cardNumber || !cardExpiry || !cardCVC) { showAlert('Fill all payment details.', 'error'); return; }
+            if (!/^\d{4} ?\d{4} ?\d{4} ?\d{4}$/.test(cardNumber.replace(/ /g, ''))) { showAlert('Invalid card number.', 'error'); return; }
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiry)) { showAlert('Invalid expiry (MM/YY).', 'error'); return; }
+            if (!/^\d{3,4}$/.test(cardCVC)) { showAlert('Invalid CVC.', 'error'); return; }
+
+            currentUser.plan = planId;
+            currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
+            localStorage.setItem(`techGenUser_${currentUser.email}`, JSON.stringify(currentUser));
+            sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
+
+            showAlert(`Payment successful! Upgraded to ${plansData[planId].name}. Enhanced access granted.`, 'success');
+            updateAuthUI();
+            showPage('home'); 
+            paymentForm.reset();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE") console.warn('Gemini API Key placeholder.');
+        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === "YOUR_MONSTER_API_BEARER_TOKEN_HERE") console.warn('Monster API Token placeholder.');
+
+        const storedUser = sessionStorage.getItem('techGenUser');
+        if (storedUser) {
+            currentUser = JSON.parse(storedUser);
+            currentUser.plan = currentUser.plan || 'free';
+            currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
+        }
+        updateAuthUI(); // This call is critical and correctly placed for initial UI setup.
+        
+        guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
+
+        const hash = window.location.hash.substring(1);
+        const initialPage = document.getElementById(hash) ? hash : 'home';
+        showPage(initialPage);
+
+        window.addEventListener('hashchange', () => {
+            const newHash = window.location.hash.substring(1);
+            const activePageId = document.querySelector('.page.active')?.id;
+            if (newHash && newHash !== activePageId) { 
+                 if (document.getElementById(newHash)) showPage(newHash);
+                 else if (!newHash && activePageId !== 'home') showPage('home');
+            } else if (!newHash && activePageId !== 'home') showPage('home');
+        });
+    });
   </script>
 </body>
 </html>
