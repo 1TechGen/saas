@@ -12,6 +12,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
 
+
   <style>
     .page { display: none; }
     .page.active { display: block; }
@@ -135,11 +136,11 @@
           <li><button onclick="showPage('contact')" class="hover:text-blue-400">Contact</button></li>
         </ul>
         <div id="authContainer" class="flex items-center">
-            <div id="authButtonsContainer" class="flex space-x-2"> <!-- Initial: visible -->
+            <div id="authButtonsContainer" class="flex space-x-2">
               <button onclick="showPage('login')" class="px-4 py-2 rounded-md hover:bg-gray-700 transition">Login</button>
               <button onclick="showPage('register')" class="bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition">Register</button>
             </div>
-            <div id="userInfoContainer" class="hidden items-center"> <!-- Initial: hidden -->
+            <div id="userInfoContainer" class="hidden items-center">
                 <span id="userEmailDisplay" class="text-sm mr-3"></span>
                 <button id="logoutButton" class="bg-red-600 px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</button>
             </div>
@@ -225,7 +226,7 @@
       </section>
     </div>
 
-    <!-- Login Page (NO ADS HERE) -->
+    <!-- Login Page -->
     <div id="login" class="page">
       <div class="container mx-auto px-4 py-16 max-w-md">
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -254,7 +255,7 @@
       </div>
     </div>
 
-    <!-- Register Page (NO ADS HERE) -->
+    <!-- Register Page -->
     <div id="register" class="page">
       <div class="container mx-auto px-4 py-16 max-w-md">
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -288,45 +289,183 @@
       </div>
     </div>
     
-    <!-- Payment Page (Placeholder - NO ADS HERE) -->
-    <div id="paymentPage" class="page">
-      <div class="container mx-auto px-4 py-16 max-w-md">
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <div class="bg-blue-600 py-4 px-6">
-            <h2 class="text-2xl font-bold text-white">Complete Your Purchase</h2>
-          </div>
-          <form id="paymentForm" class="p-6 space-y-6">
-            <p class="text-gray-700">You are purchasing: <strong id="paymentPlanName" class="text-gray-900"></strong></p>
-            <p class="text-gray-700">Price: <strong id="paymentPlanPrice" class="text-gray-900"></strong></p>
-            <div>
-              <label for="cardName" class="block text-sm font-medium text-gray-700 mb-1">Name on Card</label>
-              <input type="text" id="cardName" name="cardName" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
-            </div>
-            <div>
-              <label for="cardNumber" class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
-              <input type="text" id="cardNumber" name="cardNumber" placeholder="xxxx xxxx xxxx xxxx" class="w-full px-4 py-2 border border-gray-300 rounded-md" required pattern="\d{4} ?\d{4} ?\d{4} ?\d{4}" title="Enter a 16-digit card number">
-            </div>
-            <div class="flex space-x-4">
-              <div class="flex-1">
-                <label for="cardExpiry" class="block text-sm font-medium text-gray-700 mb-1">Expiry (MM/YY)</label>
-                <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/YY" class="w-full px-4 py-2 border border-gray-300 rounded-md" required pattern="(0[1-9]|1[0-2])\/\d{2}" title="Enter expiry date as MM/YY">
-              </div>
-              <div class="flex-1">
-                <label for="cardCVC" class="block text-sm font-medium text-gray-700 mb-1">CVC</label>
-                <input type="text" id="cardCVC" name="cardCVC" placeholder="123" class="w-full px-4 py-2 border border-gray-300 rounded-md" required pattern="\d{3,4}" title="Enter 3 or 4 digit CVC">
-              </div>
-            </div>
-            <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition">
-              Confirm Payment
-            </button>
-          </form>
-          <div class="px-6 py-4 bg-gray-50 text-center">
-            <button onclick="showPage('pricing')" class="text-blue-600 font-medium hover:underline">
-              Cancel
-            </button>
+    <div id="paymentPage" class="page"> <!-- 'page' class is from the larger context -->
+  <div class="container mx-auto px-4 py-16 max-w-md">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="bg-blue-600 py-4 px-6">
+        <h2 class="text-2xl font-bold text-white">Complete Your Purchase</h2>
+      </div>
+      <form id="paymentForm" class="p-6 space-y-6" onsubmit="handlePayment(event)">
+        <p class="text-gray-700">You are purchasing: <strong id="paymentPlanName" class="text-gray-900">Premium Plan</strong></p>
+        <p class="text-gray-700">Price: <strong id="paymentPlanPrice" class="text-gray-900">₹499</strong></p>
+
+        <div>
+          <label for="Name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          <input type="text" id="Name" name="Name" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
+        </div>
+
+        <div>
+          <label for="Email ID" class="block text-sm font-medium text-gray-700 mb-1">Email ID</label>
+          <input type="text" id="Email ID" name="Email ID" placeholder="text" class="w-full px-4 py-2 border border-gray-300 rounded-md" title="text">
+          
+        </div>
+
+           <div class="flex-1">
+            <label for="usertype" class="block text-sm font-medium text-gray-700 mb-1">usertype</label>
+            <input type="text" id="User Type" name="User Type" placeholder="text" class="w-full px-4 py-2 border border-gray-300 rounded-md" required pattern="\d{text}" title="text">
           </div>
         </div>
+
+        <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition">
+          Confirm Detail
+        </button>
+      </form>
+      <div class="px-6 py-4 bg-gray-50 text-center">
+        <button onclick="showPage('pricing')" class="text-blue-600 font-medium hover:underline">
+          Cancel
+        </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Razorpay Checkout Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+  function showPage(pageId) {
+    // Placeholder: In a real SPA, this would switch views.
+    console.log("Attempting to navigate to page: " + pageId);
+    alert("Placeholder: Would navigate to " + pageId);
+    // If integrated into your larger application, this function would be replaced by your main showPage logic.
+  }
+
+  function handlePayment(event) {
+    event.preventDefault(); // Prevent the form from submitting traditionally
+
+    const planNameElement = document.getElementById('paymentPlanName');
+    const planPriceElement = document.getElementById('paymentPlanPrice');
+    const cardNameElement = document.getElementById('cardName');
+    // Note: Card number, expiry, CVC from your form are NOT directly passed to Razorpay for PCI compliance.
+    // Razorpay's modal will securely collect these. The `prefill` is for user convenience.
+
+    if (!planNameElement || !planPriceElement || !cardNameElement) {
+        alert("Error: Essential payment form elements (plan name, price, card name) are missing in the HTML.");
+        return;
+    }
+
+    const planName = planNameElement.textContent;
+    const planPriceText = planPriceElement.textContent;
+    
+    // Extract price number from string (e.g., "₹499")
+    const amountValue = parseInt(planPriceText.replace(/[^0-9]/g, '')); 
+
+    if (isNaN(amountValue) || amountValue <= 0) {
+      alert("Invalid amount detected. Please ensure the price is correctly displayed on the page.");
+      return;
+    }
+
+    // Razorpay amount is in the smallest currency unit (e.g., paise for INR)
+    const amountInPaise = amountValue * 100;
+
+    const options = {
+      key: "rzp_test_Fd4DPerpqQczeT",  // Your actual TEST Razorpay Key ID
+      amount: amountInPaise,
+      currency: "INR", // Or your desired currency
+      name: "Tech_Gen AI Solutions", // Your business name displayed on Checkout
+      description: `Subscription: ${planName}`, // Transaction description
+      // image: "https://example.com/your_logo.png", // Optional: Your logo URL
+
+      // `order_id` is crucial if you create an order on your backend first (recommended for robust integration)
+      // order_id: "order_9A33XG5A5X", // Example: Replace with actual order_id from your server
+      
+      prefill: {
+        name: cardNameElement.value, // Customer's name from your form
+        // It's good practice to prefill email and contact if you have them
+        // email: "customer.email@example.com",    // Optional: Prefill customer's email
+        // contact: "+919999999999"  // Optional: Prefill customer's phone number
+      },
+      notes: {
+        plan_id: planName.toLowerCase().replace(/\s+/g, '_'), // Example: "premium_plan"
+        // Add any other custom notes you want to associate with the payment
+      },
+      theme: {
+        color: "#1B2EFD" // A color matching your brand (Tech_Gen blue)
+      },
+      handler: function (response) {
+        // This function is called on successful payment
+        alert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
+        console.log("Payment successful response:", response);
+
+        // CRITICAL: Send `response.razorpay_payment_id`, `response.razorpay_order_id` (if used),
+        // and `response.razorpay_signature` to your backend server for verification.
+        // Your server will use these with its secret key to confirm the payment's authenticity.
+        //
+        // Example (pseudo-code for backend call):
+        // fetch('/your-backend-verify-payment-endpoint', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({
+        //     razorpay_payment_id: response.razorpay_payment_id,
+        //     razorpay_order_id: response.razorpay_order_id, // If you used order_id
+        //     razorpay_signature: response.razorpay_signature
+        //   })
+        // }).then(res => res.json()).then(verificationResult => {
+        //   if (verificationResult.status === 'verified') {
+        //     alert('Payment verified by server and processed!');
+        //     // Update user's subscription status in your DB, grant access, etc.
+        //     // showPage('thankYouPage'); // Or navigate to a success/dashboard page
+        //   } else {
+        //     alert('Payment verification failed on server. Please contact support.');
+        //   }
+        // }).catch(error => {
+        //   console.error('Error during payment verification call:', error);
+        //   alert('Could not verify payment. Please contact support.');
+        // });
+
+        // For this client-side only demo, we'll just show a success message.
+        // In a real app, the UI update (e.g., plan upgrade) would happen *after* server verification.
+      },
+      modal: {
+        ondismiss: function () {
+          // This function is called when the customer closes the checkout modal
+          alert("Payment process was cancelled or closed.");
+          console.log("Checkout form closed by user.");
+        }
+      },
+      // Optional: To make prefilled fields non-editable on the Razorpay form
+      // readonly: {
+      //   name: true,
+      //   email: true, // if prefilled
+      //   contact: true // if prefilled
+      // }
+    };
+
+    try {
+        const rzp = new Razorpay(options);
+        
+        // Listen for payment failure from Razorpay (within their modal)
+        rzp.on('payment.failed', function (response){
+            alert(`Payment Failed: ${response.error.description}`);
+            console.error("Razorpay Payment Failed:", response.error);
+            // Log detailed error information
+            // response.error.code
+            // response.error.description
+            // response.error.source
+            // response.error.step
+            // response.error.reason
+            // response.error.metadata.order_id
+            // response.error.metadata.payment_id
+        });
+
+        rzp.open(); // This opens the Razorpay checkout modal
+    } catch (error) {
+        alert("Error initializing Razorpay checkout. See console for details.");
+        console.error("Razorpay initialization error: ", error);
+    }
+  }
+</script>
+        </div>
     </div>
 
 
@@ -803,7 +942,7 @@
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 10 Text/Doc Translations (session limit)</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 Text Summarizations (session limit)</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Community Support</li>
-                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Guest: 10 total uses (any feature)</li>
+                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Guest Users: 10 total uses (session limit)</li>
                     </ul>
                     <button onclick="showPage('register')" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition mt-auto">Get Started</button>
                 </div>
@@ -881,20 +1020,30 @@
         <p class="mb-4 text-sm text-gray-600 text-center">Last updated: May 30, 2025</p>
         
         <p>Your privacy is important to us. It is Tech_Gen's policy to respect your privacy regarding any information we may collect from you across our website, and other sites we own and operate.</p>
-        <p>We are a demonstration application and use client-side API keys for AI features. These keys are visible in the browser and should NOT be used in a public production environment. User registration and login are simulated using browser local storage and session storage. No actual payment processing occurs; payment forms are for demonstration only.</p>
+        <p>
+            This application demonstrates AI features. For this demonstration:
+            Client-side API keys for AI services are used. These keys are visible in the browser's source code.
+            **WARNING: Exposing API keys client-side is highly insecure and should NEVER be done in a public production environment. This is for demonstration purposes ONLY.**
+        </p>
+        <p>
+            User registration and login are **simulated using browser local storage and session storage**. 
+            **WARNING: Storing user credentials (especially passwords as plain text, as done in this simulation) in local storage is EXTREMELY INSECURE and not suitable for production systems.**
+            No actual payment processing occurs; payment forms are for demonstration and simulation only.
+        </p>
+
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">1. Information We Collect</h3>
-        <p><strong>Log data:</strong> When you visit our website, our servers may automatically log the standard data provided by your web browser. It may include your computer’s Internet Protocol (IP) address, your browser type and version, the pages you visit, the time and date of your visit, the time spent on each page, and other details.</p>
-        <p><strong>Device data:</strong> We may also collect data about the device you’re using to access our website. This data may include the device type, operating system, unique device identifiers, device settings, and geo-location data.</p>
-        <p><strong>Personal information (Simulated):</strong> We may ask for personal information, such as your name, and email. For our simulated login, we store your email, a hashed representation of your password (for demo purposes, not secure), selected plan, and usage counts in your browser's `localStorage`. Your logged-in session details (email, name, plan, usage counts) are stored in `sessionStorage`.</p>
-        <p><strong>Usage Data (Simulated):</strong> For guest users, we track total feature usage (e.g., image generations, translations) in `localStorage` to enforce a demonstration limit. For logged-in free tier users, we track usage of specific features within their user object in `localStorage` to enforce free tier limits for the session.</p>
+        <p><strong>Log data:</strong> When you visit our website, our servers (if any were truly involved, which they are not for core auth in this demo) may automatically log the standard data provided by your web browser. It may include your computer's Internet Protocol (IP) address, your browser type and version, the pages you visit, the time and date of your visit, the time spent on each page, and other details.</p>
+        <p><strong>Device data:</strong> We may also collect data about the device you're using to access our website. This data may include the device type, operating system, unique device identifiers, device settings, and geo-location data.</p>
+        <p><strong>Personal information (Simulated):</strong> We may ask for personal information, such as your name, and email. For our simulated login, we store your email, a plain-text representation of your password (for demo purposes, **highly insecure**), selected plan in your browser's `localStorage`. Your logged-in session details (email, name, plan, session-based usage counts for free tier) are stored in `sessionStorage`.</p>
+        <p><strong>Usage Data (Simulated):</strong> For guest users, we track total feature usage (e.g., image generations, translations) in `sessionStorage` to enforce a demonstration limit per session. For logged-in free tier users, we track usage of specific features within their session data (`sessionStorage`) to enforce free tier limits for the current session.</p>
 
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">2. Legal Bases for Processing</h3>
         <p>We will process your personal information lawfully, fairly, and in a transparent manner. We collect and process information about you only where we have legal bases for doing so.</p>
         <p>These legal bases depend on the services you use and how you use them, meaning we collect and use your information only where:</p>
         <ul>
-            <li>It’s necessary for the performance of a contract to which you are a party or to take steps at your request before entering into such a contract (for example, when we provide a service you request from us);</li>
+            <li>It's necessary for the performance of a contract to which you are a party or to take steps at your request before entering into such a contract (for example, when we provide a service you request from us);</li>
             <li>It satisfies a legitimate interest (which is not overridden by your data protection interests), such as for research and development, to market and promote our services, and to protect our legal rights and interests;</li>
             <li>You give us consent to do so for a specific purpose (for example, you might consent to us sending you our newsletter); or</li>
             <li>We need to process your data to comply with a legal obligation.</li>
@@ -902,20 +1051,28 @@
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">3. Use of Information</h3>
         <p>We may use a combination of personally identifiable and non-personally identifiable information to understand who our visitors are, how they use our services, and how we may improve their experience of our website in future. We do not publicly disclose specific information, but may share aggregated and anonymized versions of this information, for example, in website and customer usage trend reports.</p>
-        <p>Simulated user data (name, email, plan, usage counts) is used solely for demonstrating login, feature access control, and simulated plan upgrades within this application. It is not sent to any server.</p>
+        <p>Simulated user data (name, email, plan, usage counts) is used solely for demonstrating login, feature access control, and simulated plan upgrades within this application. It is not sent to any server for authentication or storage purposes.</p>
         
         <h3 class="text-2xl font-semibold mt-8 mb-3">4. Data Security</h3>
-        <p>We take data security seriously and use commercially acceptable means to protect your personal information from loss or theft, as well as unauthorized access, disclosure, copying, use, or modification. That said, we advise that no method of electronic transmission or storage is 100% secure and cannot guarantee absolute data security. Our current login/registration is a simulation and does not store data on a server; user information (email, plan, usage counts) is stored in your browser's `localStorage` and `sessionStorage` and is cleared when you clear your browser data, close the browser tab (for session storage), or logout. Passwords in this demo are stored as plain text in local storage for simplicity of demonstration, which is extremely insecure and would never be done in a real application.</p>
+        <p>
+            We take data security seriously. However, the current implementation of this application for authentication and user data storage is **FOR DEMONSTRATION PURPOSES ONLY AND IS NOT SECURE.**
+            User information (email, plan, and **plain text passwords**) is stored in your browser's `localStorage`. Session data, including usage counts for free users, is stored in `sessionStorage`. This data is cleared when you clear your browser data or logout (for session storage).
+            **Storing sensitive information like passwords in plain text in local storage is extremely insecure and would never be done in a real, production application.**
+            No method of electronic transmission or storage is 100% secure. For a real application, robust server-side security measures, database encryption, and secure authentication protocols are essential.
+        </p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">5. Your Rights and Controlling Your Personal Information</h3>
         <p>You have the right to restrict the collection or use of your personal information. If you have previously agreed to us using your personal information for direct marketing purposes, you may change your mind at any time by contacting us. If you ask us to restrict or limit how we process your personal information, we will let you know how the restriction affects your use of our website or products and services.</p>
-        <p>Since all user-specific data for this demo is stored in your browser (`localStorage` and `sessionStorage`), you can clear this data by clearing your browser's site data for this domain, or by using the "Logout" button which clears session storage.</p>
+        <p>Since all user-specific data for this demo is stored in your browser (`localStorage` and `sessionStorage`), you can clear this data by clearing your browser's site data for this domain, or by using the "Logout" button which clears session storage and effectively ends the simulated logged-in state for that session.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">6. Cookies</h3>
-        <p>We use “cookies” to collect information about you and your activity across our site. A cookie is a small piece of data that our website stores on your computer, and accesses each time you visit, so we can understand how you use our site. This helps us serve you content based on preferences you have specified. We primarily use `localStorage` and `sessionStorage` for simulated authentication features, plan information, and usage tracking in this demonstration.</p>
+        <p>We use "cookies" to collect information about you and your activity across our site. A cookie is a small piece of data that our website stores on your computer, and accesses each time you visit, so we can understand how you use our site. This helps us serve you content based on preferences you have specified. In this demonstration application, we primarily use `localStorage` and `sessionStorage` (which are web storage mechanisms, not traditional cookies) for simulated authentication features, plan information, and usage tracking.</p>
         
         <h3 class="text-2xl font-semibold mt-8 mb-3">7. API Keys and Third-Party Services</h3>
-        <p>This application uses API keys for Google Gemini and Monster API directly in client-side JavaScript for AI features. Exposing API keys in this manner is highly insecure and is done for demonstration purposes only. In a production environment, API keys must be kept on a backend server, and client applications would make requests to that server, which then communicates with the third-party APIs. You are responsible for any costs or usage associated with these API keys if you run this code.</p>
+        <p>
+            **CRITICAL WARNING:** This application uses API keys for Google Gemini and Monster API directly in client-side JavaScript for AI features. Exposing API keys in this manner is **highly insecure** and is done for demonstration purposes ONLY. In a production environment, API keys **MUST** be kept on a backend server, and client applications would make requests to that server, which then communicates securely with the third-party APIs.
+            You are responsible for any costs or usage associated with these API keys if you run this code, especially if it's exposed publicly.
+        </p>
         
         <h3 class="text-2xl font-semibold mt-8 mb-3">8. Changes to This Policy</h3>
         <p>At our discretion, we may change our privacy policy to reflect current acceptable practices. We will take reasonable steps to let users know about changes via our website. Your continued use of this site after any changes to this policy will be regarded as acceptance of our practices around privacy and personal information.</p>
@@ -936,18 +1093,23 @@
         <p>By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">1. Accounts (Simulated)</h3>
-        <p>When you create an account with us (a simulated client-side account stored in your browser's `localStorage`), you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your access to certain features on our Service.</p>
-        <p>You are responsible for safeguarding the password that you use to access the Service (though in the current simulation, passwords are not securely stored or verified against a backend; they are stored as plain text in `localStorage` for this demo, which is insecure) and for any activities or actions under your password.</p>
+        <p>
+            When you create an account with us (a **simulated client-side account stored insecurely in your browser's `localStorage`**), you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your access to certain features on our Service.
+        </p>
+        <p>
+            You are responsible for safeguarding the password that you use to access the Service. **In the current simulation, passwords are NOT securely stored (they are stored as plain text in `localStorage` for this demonstration, which is extremely insecure) and are not verified against a backend.**
+            This simulation does not represent secure password handling.
+        </p>
         <p>You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">2. Usage Limits and Plans (Simulated)</h3>
-        <p>The Service offers different levels of access:</p>
+        <p>The Service offers different levels of access (simulated):</p>
         <ul>
-            <li><strong>Guest Users:</strong> May use AI features a limited number of times (e.g., 10 total uses) as a demonstration.</li>
-            <li><strong>Free Registered Users:</strong> Have slightly higher, but still limited, access to AI features (e.g., 5 image generations, 10 translations, 5 summaries per session).</li>
-            <li><strong>Paid Plan Users (Simulated "Pro" Plan):</strong> After a simulated payment process, users on a "Pro" plan may have "unlimited" access to AI features within the reasonable limits of the demonstration and the capabilities of the third-party APIs used.</li>
+            <li><strong>Guest Users:</strong> May use AI features a limited number of times (e.g., 10 total uses) per session as a demonstration.</li>
+            <li><strong>Free Registered Users:</strong> Have slightly higher, but still limited, access to AI features (e.g., 5 image generations, 10 translations, 5 summaries per session). These limits are reset upon each new login session.</li>
+            <li><strong>Paid Plan Users (Simulated "Pro" Plan):</strong> After a simulated payment process, users on a "Pro" plan may have "unlimited" access to AI features within the reasonable limits of this demonstration and the capabilities of the third-party APIs used.</li>
         </ul>
-        <p>All usage tracking, plan management, and payments are simulated on the client-side and are for demonstration purposes only. No real financial transactions occur.</p>
+        <p>All usage tracking, plan management, and payments are **simulated on the client-side and are for demonstration purposes only.** No real financial transactions occur. No data is sent to a server for these processes.</p>
 
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">3. Intellectual Property</h3>
@@ -968,7 +1130,9 @@
             <li>To transmit, or procure the sending of, any advertising or promotional material without our prior written consent, including any "junk mail", "chain letter," "spam," or any other similar solicitation.</li>
             <li>To impersonate or attempt to impersonate Tech_Gen, a Tech_Gen employee, another user, or any other person or entity.</li>
             <li>To engage in any other conduct that restricts or inhibits anyone's use or enjoyment of the Service, or which, as determined by us, may harm Tech_Gen or users of the Service or expose them to liability.</li>
-             <li>To attempt to reverse-engineer, decompile, or otherwise misuse the client-side API keys provided for this demonstration. These keys are for use within this application only.</li>
+            <li>
+                **To attempt to reverse-engineer, decompile, or otherwise misuse the client-side API keys provided for this demonstration. These keys are for use within this application only and exposing them publicly carries risks for the key owner.**
+            </li>
         </ul>
         <p>Additionally, you agree not to:</p>
         <ul>
@@ -988,7 +1152,7 @@
         <h3 class="text-2xl font-semibold mt-8 mb-3">8. Disclaimer</h3>
         <p>Your use of the Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis. The Service is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.</p>
         <p>Tech_Gen its subsidiaries, affiliates, and its licensors do not warrant that a) the Service will function uninterrupted, secure or available at any particular time or location; b) any errors or defects will be corrected; c) the Service is free of viruses or other harmful components; or d) the results of using the Service will meet your requirements. The AI-generated content is provided by third-party APIs and TECH_GEN does not guarantee its accuracy, appropriateness, or quality.</p>
-
+        <p>**The authentication, user management, and payment features in this application are SIMULATED and INSECURE. They are for demonstration purposes only and NOT SUITABLE FOR PRODUCTION USE.**</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">9. Changes</h3>
         <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
@@ -1036,8 +1200,8 @@
       
       <div class="mb-4">
         <a href="#home" onclick="showPage('home'); return false;" class="hover:text-blue-400 underline">Home</a> | 
-        <a href="#privacy" onclick="showPage('privacyPolicyPage'); return false;" class="hover:text-blue-400 underline">Privacy Policy</a> | 
-        <a href="#terms" onclick="showPage('termsOfServicePage'); return false;" class="hover:text-blue-400 underline">Terms of Service</a> |
+        <a href="#privacyPolicyPage" onclick="showPage('privacyPolicyPage'); return false;" class="hover:text-blue-400 underline">Privacy Policy</a> | 
+        <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;" class="hover:text-blue-400 underline">Terms of Service</a> |
         <a href="#contact" onclick="showPage('contact'); return false;" class="hover:text-blue-400 underline">Contact Us</a>
       </div>
 
@@ -1046,26 +1210,48 @@
   </footer>
 
   <script>
+    // Initialize PDF.js worker
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
 
-    // !!! CRITICAL SECURITY WARNING !!!
-    // API keys are exposed client-side. For demonstration ONLY. Do NOT use in production.
-    const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs"; 
+    // #############################################################################
+    // !!! CRITICAL SECURITY WARNING - READ THIS !!!
+    // #############################################################################
+    //
+    // 1. EXPOSED API KEYS:
+    //    The API keys (GEMINI_API_KEY, MONSTER_API_BEARER_TOKEN) below are
+    //    directly in client-side JavaScript. This is EXTREMELY INSECURE if your
+    //    application is accessible on the public internet. Anyone can view these
+    //    keys and use them, potentially leading to high costs or API abuse under
+    //    your account.
+    //    FOR PRODUCTION: Move all API calls to a backend server. Your frontend
+    //    should call your backend, and the backend securely makes API requests.
+    //
+    // 2. SIMULATED AUTHENTICATION & PAYMENT:
+    //    The login, registration, and payment systems here are SIMULATIONS.
+    //    - User data (including passwords in PLAIN TEXT) is stored in
+    //      browser `localStorage`. This is NOT secure.
+    //    - Payment processing is NOT real.
+    //    FOR PRODUCTION: Implement proper backend authentication (hashed passwords,
+    //    secure session management, database) and use a secure payment gateway.
+    //
+    //    DO NOT USE THIS CLIENT-SIDE AUTHENTICATION/PAYMENT FOR A LIVE SYSTEM.
+    // #############################################################################
+
+    const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs"; // !!! INSECURE - For Demo Only
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
     
-    const MONSTER_API_BEARER_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjczODkxZjY1MTM1YWNkMjY1MmY3NDE1OWJmMjgzMjA4IiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjlUMDU6NDA6MzEuMTk2MjgzIn0.iOaQlBji9aXM5y7BM3UFmFSL0jF1yXLzeKiAN0-SlyA";
+    const MONSTER_API_BEARER_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjczODkxZjY1MTM1YWNkMjY1MmY3NDE1OWJmMjgzMjA4IiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjlUMDU6NDA6MzEuMTk2MjgzIn0.iOaQlBji9aXM5y7BM3UFmFSL0jF1yXLzeKiAN0-SlyA"; // !!! INSECURE - For Demo Only
     const MONSTER_API_TXT2IMG_URL = "https://api.monsterapi.ai/v1/generate/txt2img";
 
     let currentUser = null; 
-    const protectedPages = ['ai-generator', 'translate', 'summarization', 'paymentPage'];
 
     const authButtonsContainer = document.getElementById('authButtonsContainer');
     const userInfoContainer = document.getElementById('userInfoContainer');
     const userEmailDisplay = document.getElementById('userEmailDisplay');
     const logoutButton = document.getElementById('logoutButton');
 
-    const GUEST_TOTAL_USAGE_LIMIT = 10;
-    const FREE_TIER_LIMITS = {
+    const GUEST_TOTAL_USAGE_LIMIT = 10; // Per session
+    const FREE_TIER_LIMITS = { // Per session for logged-in free users
         imageGen: 5,
         translate: 10,
         summarize: 5
@@ -1075,7 +1261,7 @@
     const plansData = {
         free: { name: "Free", price: "$0/month", id: 'free' },
         pro: { name: "Pro", price: "$19/month", id: 'pro' },
-        business: { name: "Business", price: "$49/month", id: 'business' }
+        business: { name: "Business", price: "$49/month", id: 'business' } // Contact sales, not direct purchase
     };
 
     function updateGuestUsage() {
@@ -1087,41 +1273,51 @@
         if (guestUsage.total < GUEST_TOTAL_USAGE_LIMIT) {
             return true;
         }
-        showAlert(`You've reached your guest usage limit of ${GUEST_TOTAL_USAGE_LIMIT} actions. Please log in or register for more access.`, 'info');
+        showAlert(`You've reached your guest usage limit of ${GUEST_TOTAL_USAGE_LIMIT} actions for this session. Please log in or register for more access.`, 'info');
         sessionStorage.setItem('intendedPage', currentPageId || 'home');
         showPage('login');
         return false;
     }
     
-    function canLoggedInFreeUserUseFeature(featureType, currentPageId) {
-        if (!currentUser || (currentUser.plan !== 'free' && currentUser.plan !== undefined)) return true;
+    function canLoggedInUserUseFeature(featureType, currentPageId) {
+        if (!currentUser) return canGuestUseFeature(currentPageId); 
 
-        currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
-        const limit = FREE_TIER_LIMITS[featureType];
-        const currentCount = currentUser.usageCounts[featureType] || 0;
+        if (currentUser.plan === 'pro') return true; // Pro users have unlimited access
 
-        if (currentCount < limit) {
-            return true;
+        if (currentUser.plan === 'free') {
+            currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 }; // Ensure structure
+            const limit = FREE_TIER_LIMITS[featureType];
+            const currentCount = currentUser.usageCounts[featureType] || 0;
+
+            if (currentCount < limit) {
+                return true;
+            }
+            showAlert(`You've reached your Free plan session limit of ${limit} ${featureType.replace(/([A-Z])/g, ' $1').toLowerCase()}s. Upgrade to a Pro plan for unlimited access.`, 'info');
+            sessionStorage.setItem('intendedPage', currentPageId || 'home'); 
+            showPage('pricing');
+            return false;
         }
-        showAlert(`You've reached your Free plan limit of ${limit} ${featureType.replace(/([A-Z])/g, ' $1').toLowerCase()}s. Upgrade to a Pro plan for unlimited access.`, 'info');
-        sessionStorage.setItem('intendedPage', currentPageId || 'home');
-        showPage('pricing');
-        return false;
+        return true; 
     }
 
-    function incrementLoggedInFreeUserUsage(featureType) {
-        if (currentUser && (currentUser.plan === 'free' || currentUser.plan === undefined)) {
-             currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
-             currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
-             localStorage.setItem(`techGenUser_${currentUser.email}`, JSON.stringify(currentUser));
-             sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
-             updateAuthUI();
+    function incrementFeatureUsage(featureType) {
+        if (currentUser) {
+            if (currentUser.plan === 'free') {
+                currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
+                currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
+                sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
+                updateAuthUI(); 
+            }
+        } else {
+            updateGuestUsage();
         }
     }
+
 
     async function callGeminiAPI(promptText) {
-        if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE") {
-             showAlert('Gemini API Key is not configured. AI features using Gemini will not work.', 'error');
+        if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE" || GEMINI_API_KEY === "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs_PLACEHOLDER") { // Check against actual placeholder too
+             showAlert('Gemini API Key is not configured correctly. AI features using Gemini will not work.', 'error');
+             console.error('Gemini API Key is not configured or is a placeholder.');
              throw new Error('Gemini API Key not configured.');
         }
         const requestUrl = `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`;
@@ -1134,7 +1330,7 @@
                 })
             });
             if (!response.ok) {
-                const errorData = await response.json();
+                const errorData = await response.json().catch(() => ({ error: { message: `API error: ${response.status} ${response.statusText}` }}));
                 let errorMessage = errorData.error?.message || `API error: ${response.status} ${response.statusText}`;
                 if (errorData.error?.details) errorMessage += ` Details: ${JSON.stringify(errorData.error.details)}`;
                 throw new Error(errorMessage);
@@ -1143,25 +1339,28 @@
             if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
                 return data.candidates[0].content.parts[0].text;
             } else if (data.promptFeedback?.blockReason) {
-                 throw new Error(`Content blocked by API: ${data.promptFeedback.blockReason} - ${data.promptFeedback.blockReasonMessage || ''}. Please revise your input.`);
+                 throw new Error(`Content blocked by API: ${data.promptFeedback.blockReason} ${data.promptFeedback.blockReasonMessage ? '- ' + data.promptFeedback.blockReasonMessage : ''}. Please revise your input.`);
             } else {
+                console.warn("Unexpected Gemini API response structure:", data);
                 throw new Error('Invalid response format from Gemini API.');
             }
         } catch (error) {
             console.error('Error calling Gemini API:', error);
-            throw error;
+            throw error; 
         }
     }
 
     async function initiateMonsterImageGeneration(prompt, aspectRatio, style) {
-        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === "YOUR_MONSTER_API_BEARER_TOKEN_HERE") {
-            showAlert('Monster API Token is not configured. Image generation will not work.', 'error');
+        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === "YOUR_MONSTER_API_BEARER_TOKEN_HERE" || MONSTER_API_BEARER_TOKEN === "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjczODkxZjY1MTM1YWNkMjY1MmY3NDE1OWJmMjgzMjA4IiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjlUMDU6NDA6MzEuMTk2MjgzIn0.iOaQlBji9aXM5y7BM3UFmFSL0jF1yXLzeKiAN0-SlyA_PLACEHOLDER") { // Check against actual placeholder too
+            showAlert('Monster API Token is not configured correctly. Image generation will not work.', 'error');
+            console.error('Monster API Token is not configured or is a placeholder.');
             throw new Error('Monster API Token not configured.');
         }
         const formData = new FormData();
         formData.append('prompt', prompt);
         formData.append('aspect_ratio', aspectRatio);
         if (style) formData.append('style', style);
+        
         try {
             const response = await fetch(MONSTER_API_TXT2IMG_URL, {
                 method: 'POST',
@@ -1172,7 +1371,7 @@
                 body: formData
             });
             if (!response.ok) {
-                const errorData = await response.json();
+                const errorData = await response.json().catch(() => ({ message: `Monster API error: ${response.status}` }));
                 throw new Error(errorData.message || `Monster API error: ${response.status}`);
             }
             return await response.json(); 
@@ -1193,7 +1392,7 @@
                 }
             });
             if (!response.ok) {
-                const errorData = await response.json();
+                const errorData = await response.json().catch(() => ({ message: `Monster API status error: ${response.status}`}));
                 throw new Error(errorData.message || `Monster API status error: ${response.status}`);
             }
             return await response.json();
@@ -1214,7 +1413,7 @@
         contact: { title: "Contact Us - Tech_Gen", description: "Get in touch with the Tech_Gen team for support, inquiries, or feedback. We're here to help!" },
         privacyPolicyPage: { title: "Privacy Policy - Tech_Gen", description: "Read the Privacy Policy for Tech_Gen to understand how we collect, use, and protect your personal information." },
         termsOfServicePage: { title: "Terms of Service - Tech_Gen", description: "Review the Terms of Service for using the Tech_Gen platform and its AI-powered tools." },
-        paymentPage: { title: "Complete Purchase - Tech_Gen", description: "Securely complete your subscription purchase for Tech_Gen AI tools."}
+        paymentPage: { title: "Complete Purchase - Tech_Gen", description: "Securely complete your subscription purchase for Tech_Gen AI tools (Simulated)."}
     };
 
     function updateMetaTags(pageId) {
@@ -1230,23 +1429,31 @@
       if (targetPage) {
         targetPage.classList.add('active');
         updateMetaTags(pageId);
-        if (window.location.hash !== `#${pageId}`) window.location.hash = pageId;
-      } else {
+        if (window.location.hash !== `#${pageId}`) {
+            window.location.hash = pageId;
+        }
+      } else { 
         const homePage = document.getElementById('home');
         if (homePage) {
             homePage.classList.add('active');
             updateMetaTags('home');
-            if (window.location.hash !== '#home') window.location.hash = 'home';
+            if (window.location.hash !== '#home' && window.location.hash !== '') { 
+                window.location.hash = 'home';
+            }
         }
       }
-      window.scrollTo(0, 0);
+      window.scrollTo(0, 0); 
     }
     
     function updateAuthUI() {
         if (currentUser) {
             authButtonsContainer.classList.add('hidden');
-            userInfoContainer.classList.remove('hidden');
-            let planName = currentUser.plan && plansData[currentUser.plan] ? plansData[currentUser.plan].name : 'Free';
+            userInfoContainer.classList.remove('hidden'); 
+            
+            let planName = 'Free'; 
+            if (currentUser.plan && plansData[currentUser.plan]) {
+                planName = plansData[currentUser.plan].name;
+            }
             userEmailDisplay.textContent = `${currentUser.email} (${planName})`;
         } else {
             authButtonsContainer.classList.remove('hidden');
@@ -1254,6 +1461,7 @@
             userEmailDisplay.textContent = '';
         }
     }
+
 
     function handleLogout() {
         currentUser = null;
@@ -1273,14 +1481,20 @@
 
     if (textTabBtn && docTabBtn && textTranslationSection && docTranslationSection) { 
         textTabBtn.addEventListener('click', function() {
-          textTranslationSection.classList.remove('hidden'); docTranslationSection.classList.add('hidden');
-          this.classList.add('active','text-white'); this.classList.remove('text-[#A1A5B7]');
-          docTabBtn.classList.remove('active','text-white'); docTabBtn.classList.add('text-[#A1A5B7]');
+          textTranslationSection.classList.remove('hidden'); 
+          docTranslationSection.classList.add('hidden');
+          this.classList.add('active','text-white'); 
+          this.classList.remove('text-[#A1A5B7]');
+          docTabBtn.classList.remove('active','text-white'); 
+          docTabBtn.classList.add('text-[#A1A5B7]');
         });
         docTabBtn.addEventListener('click', function() {
-          textTranslationSection.classList.add('hidden'); docTranslationSection.classList.remove('hidden');
-          this.classList.add('active','text-white'); this.classList.remove('text-[#A1A5B7]');
-          textTabBtn.classList.remove('active','text-white'); textTabBtn.classList.add('text-[#A1A5B7]');
+          textTranslationSection.classList.add('hidden'); 
+          docTranslationSection.classList.remove('hidden');
+          this.classList.add('active','text-white'); 
+          this.classList.remove('text-[#A1A5B7]');
+          textTabBtn.classList.remove('active','text-white'); 
+          textTabBtn.classList.add('text-[#A1A5B7]');
         });
     }
 
@@ -1291,30 +1505,60 @@
 
     function showAlert(message, type) { 
       document.querySelectorAll('.alert-message').forEach(alert => alert.remove());
+
       const alert = document.createElement('div');
-      alert.className = `alert-message alert-${type}`;
+      alert.className = `alert-message alert-${type}`; 
       alert.textContent = message;
       document.body.appendChild(alert);
+
       setTimeout(() => {
         alert.style.opacity = '0';
-        setTimeout(() => alert.remove(), 300);
-      }, type === 'error' ? 7000 : 4000);
+        setTimeout(() => alert.remove(), 300); 
+      }, type === 'error' ? 7000 : 4000); 
     }
 
     function downloadImage(url, filename) { 
-      fetch(url)
+      fetch(url, { mode: 'cors' }) 
         .then(response => {
-          if (!response.ok) throw new Error('Failed to fetch image for download.');
+          if (!response.ok) {
+            console.warn("CORS fetch failed for image download, trying direct link.");
+            const directLink = document.createElement('a');
+            directLink.href = url;
+            directLink.download = filename;
+            document.body.appendChild(directLink);
+            directLink.click();
+            document.body.removeChild(directLink);
+            showAlert('Image download initiated (direct link).', 'success');
+            return null; 
+          }
           return response.blob();
         })
         .then(blob => {
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob); link.download = filename;
-          document.body.appendChild(link); link.click(); document.body.removeChild(link);
-          URL.revokeObjectURL(link.href);
-          showAlert('Image downloaded!', 'success');
+          if (blob) { 
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob); 
+            link.download = filename;
+            document.body.appendChild(link); 
+            link.click(); 
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href); 
+            showAlert('Image downloaded!', 'success');
+          }
         })
-        .catch(error => showAlert(`Download error: ${error.message}`, 'error'));
+        .catch(error => {
+            showAlert(`Download error: ${error.message}. Attempting direct link.`, 'error');
+            try {
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showAlert('Image download initiated (fallback). Check your downloads folder.', 'info');
+            } catch (e) {
+                showAlert(`Download completely failed: ${e.message}`, 'error');
+            }
+        });
     }
 
     async function extractTextFromFile(file) { 
@@ -1322,106 +1566,151 @@
         if (extension === 'pdf') return await extractTextFromPDF(file);
         if (extension === 'docx') return await extractTextFromDOCX(file);
         if (extension === 'txt') return await extractTextFromTXT(file);
-        throw new Error('Unsupported file type.');
+        throw new Error('Unsupported file type. Please use PDF, DOCX, or TXT.');
     }
+    
     async function extractTextFromPDF(file) { 
         return new Promise((resolve, reject) => {
-            const fr = new FileReader();
-            fr.onload = async function() {
+            const fileReader = new FileReader();
+            fileReader.onload = async function() {
                 try {
-                    const pdf = await pdfjsLib.getDocument(new Uint8Array(this.result)).promise;
-                    let text = '';
+                    const typedarray = new Uint8Array(this.result);
+                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                    let fullText = '';
                     for (let i = 1; i <= pdf.numPages; i++) {
                         const page = await pdf.getPage(i);
-                        const tc = await page.getTextContent();
-                        text += tc.items.map(item => item.str).join(' ') + '\n';
+                        const textContent = await page.getTextContent();
+                        fullText += textContent.items.map(item => item.str).join(' ') + '\n';
                     }
-                    resolve(text.trim());
-                } catch (e) { reject(new Error("Could not extract text from PDF.")); }
+                    resolve(fullText.trim());
+                } catch (e) { 
+                    console.error("Error parsing PDF:", e);
+                    reject(new Error("Could not extract text from PDF. The file might be corrupted or password-protected.")); 
+                }
             };
-            fr.onerror = () => reject(new Error("Error reading PDF."));
-            fr.readAsArrayBuffer(file);
+            fileReader.onerror = () => {
+                console.error("FileReader error on PDF.");
+                reject(new Error("Error reading PDF file."));
+            }
+            fileReader.readAsArrayBuffer(file);
         });
     }
+    
     async function extractTextFromDOCX(file) { 
         return new Promise((resolve, reject) => {
-            const fr = new FileReader();
-            fr.onload = function() {
+            const fileReader = new FileReader();
+            fileReader.onload = function() {
                 mammoth.extractRawText({arrayBuffer: this.result})
-                    .then(r => resolve(r.value.trim()))
-                    .catch(() => reject(new Error("Could not extract text from DOCX.")));
+                    .then(result => resolve(result.value.trim()))
+                    .catch(err => {
+                        console.error("Error parsing DOCX with Mammoth:", err);
+                        reject(new Error("Could not extract text from DOCX. The file might be corrupted or in an unsupported format."));
+                    });
             };
-            fr.onerror = () => reject(new Error("Error reading DOCX."));
-            fr.readAsArrayBuffer(file);
+            fileReader.onerror = () => {
+                console.error("FileReader error on DOCX.");
+                reject(new Error("Error reading DOCX file."));
+            }
+            fileReader.readAsArrayBuffer(file);
         });
     }
+    
     async function extractTextFromTXT(file) { 
         return new Promise((resolve, reject) => {
-            const fr = new FileReader();
-            fr.onload = function() { resolve(this.result.trim()); };
-            fr.onerror = () => reject(new Error("Error reading TXT."));
-            fr.readAsText(file);
+            const fileReader = new FileReader();
+            fileReader.onload = function() { 
+                resolve(this.result.trim()); 
+            };
+            fileReader.onerror = () => {
+                console.error("FileReader error on TXT.");
+                reject(new Error("Error reading TXT file."));
+            }
+            fileReader.readAsText(file);
         });
     }
 
     const generateImageBtn = document.getElementById('generateImageBtn');
-    const imagePlaceholderText = document.getElementById('imagePlaceholderText');
+    const imagePlaceholderText = document.getElementById('imagePlaceholderText'); 
     if (generateImageBtn) { 
         generateImageBtn.addEventListener('click', async function() {
             const pageId = 'ai-generator';
-            if (!currentUser ? !canGuestUseFeature(pageId) : !canLoggedInFreeUserUseFeature('imageGen', pageId)) return;
+            if (!canLoggedInUserUseFeature('imageGen', pageId)) return;
 
             const prompt = document.getElementById('imagePrompt').value.trim();
-            if (!prompt) { showAlert('Please enter an image description', 'error'); return; }
+            if (!prompt) { 
+                showAlert('Please enter an image description.', 'error'); 
+                return; 
+            }
             
-            const btn = this, spinner = document.getElementById('generateSpinner'), btnTextEl = document.getElementById('generateBtnText');
-            const aspectRatio = document.getElementById('monsterAspectRatio').value, style = document.getElementById('monsterImageStyle').value; 
+            const btn = this;
+            const spinner = document.getElementById('generateSpinner');
+            const btnTextEl = document.getElementById('generateBtnText');
+            const aspectRatio = document.getElementById('monsterAspectRatio').value;
+            const style = document.getElementById('monsterImageStyle').value; 
             
-            btn.disabled = true; spinner.classList.remove('hidden'); btnTextEl.textContent = 'Initializing...';
-            document.getElementById('imagePlaceholder').style.display = 'flex';
-            imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Initializing...</p></div>`;
-            document.getElementById('imageResultContainer').classList.add('hidden');
+            btn.disabled = true; 
+            spinner.classList.remove('hidden'); 
+            btnTextEl.textContent = 'Initializing...';
+            document.getElementById('imagePlaceholder').style.display = 'flex'; 
+            imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Initializing image generation...</p></div>`; 
+            document.getElementById('imageResultContainer').classList.add('hidden'); 
             
             try {
                 const initRes = await initiateMonsterImageGeneration(prompt, aspectRatio, style);
                 if (initRes && initRes.status_url && initRes.process_id) {
-                    showAlert('Image generation started. ID: ' + initRes.process_id, 'info');
+                    showAlert('Image generation process started. ID: ' + initRes.process_id, 'info');
                     btnTextEl.textContent = 'Generating...';
-                    imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Generating... This may take a minute.</p></div>`;
+                    imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Generating image... This may take a moment.</p></div>`;
                     
-                    let attempts = 0, maxAttempts = 30, pollInterval = 6000;
+                    let attempts = 0, maxAttempts = 40, pollInterval = 5000; 
                     const poll = async () => {
-                        if (++attempts > maxAttempts) throw new Error('Image generation timed out.');
+                        if (attempts++ >= maxAttempts) { 
+                            throw new Error('Image generation timed out after ' + (maxAttempts) + ' attempts.'); // Corrected attempt count display
+                        }
                         try {
                             const statusRes = await fetchMonsterImageStatus(initRes.status_url);
                             if (statusRes.status === 'IN_PROGRESS' || statusRes.status === 'IN_QUEUE') {
-                                imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Status: ${statusRes.status.replace('_',' ')} (${attempts}/${maxAttempts})</p></div>`;
+                                imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Status: ${statusRes.status.replace('_',' ')} (Attempt ${attempts}/${maxAttempts})</p></div>`;
                                 setTimeout(poll, pollInterval);
                             } else if (statusRes.status === 'COMPLETED') {
                                 if (statusRes.result && statusRes.result.output && statusRes.result.output.length > 0) {
                                     document.getElementById('imagePlaceholder').style.display = 'none';
                                     const img = document.getElementById('generatedImage');
-                                    img.src = statusRes.result.output[0]; img.alt = prompt;
+                                    img.src = statusRes.result.output[0]; 
+                                    img.alt = prompt; 
                                     document.getElementById('imageResultContainer').classList.remove('hidden');
                                     document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
-                                    showAlert('Image generated!', 'success');
-                                    if (!currentUser) updateGuestUsage(); else incrementLoggedInFreeUserUsage('imageGen');
-                                    btn.disabled = false; spinner.classList.add('hidden'); btnTextEl.textContent = 'Generate';
-                                } else throw new Error('Generation completed, but no image URL found.');
-                            } else if (statusRes.status === 'FAILED') throw new Error(`Image generation failed: ${statusRes.message || 'Unknown API error'}`);
-                            else throw new Error(`Unknown status: ${statusRes.status}`);
-                        } catch (pollErr) {
-                            imagePlaceholderText.innerHTML = `<p class="text-red-400 text-sm">Polling error: ${escapeHtml(pollErr.message)}</p>`;
-                            showAlert(`Polling Error: ${pollErr.message}`, 'error');
-                            btn.disabled = false; spinner.classList.add('hidden'); btnTextEl.textContent = 'Generate';
+                                    showAlert('Image generated successfully!', 'success');
+                                    incrementFeatureUsage('imageGen');
+                                    btn.disabled = false; 
+                                    spinner.classList.add('hidden'); 
+                                    btnTextEl.textContent = 'Generate';
+                                } else {
+                                     throw new Error('Image generation completed, but no image URL was found in the result.');
+                                }
+                            } else if (statusRes.status === 'FAILED') {
+                                 throw new Error(`Image generation failed: ${statusRes.message || 'The API reported a failure.'}`);
+                            } else {
+                                 throw new Error(`Unknown image generation status: ${statusRes.status}`);
+                            }
+                        } catch (pollErr) { 
+                            imagePlaceholderText.innerHTML = `<p class="text-red-400 text-sm">Error during polling: ${escapeHtml(pollErr.message)}</p>`;
+                            showAlert(`Image Polling Error: ${pollErr.message}`, 'error');
+                            btn.disabled = false; 
+                            spinner.classList.add('hidden'); 
+                            btnTextEl.textContent = 'Generate';
                         }
                     };
                     setTimeout(poll, pollInterval); 
-                } else throw new Error('Failed to initialize image generation.');
-            } catch (err) {
+                } else {
+                    throw new Error('Failed to initialize image generation process with the API.');
+                }
+            } catch (err) { 
                 imagePlaceholderText.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
                 showAlert(`Failed to generate image: ${err.message}`, 'error');
-                btn.disabled = false; spinner.classList.add('hidden'); btnTextEl.textContent = 'Generate';
+                btn.disabled = false; 
+                spinner.classList.add('hidden'); 
+                btnTextEl.textContent = 'Generate';
             }
         });
     }
@@ -1429,31 +1718,42 @@
     const docFileInput = document.getElementById('docFileInput');
     if (docFileInput) { 
         docFileInput.addEventListener('change', async function(e) {
-          const file = e.target.files[0]; if (!file) return;
-          const btn = document.getElementById('translateDocBtn'), nameDisp = document.getElementById('docFileNameDisplay');
-          const statusDisp = document.getElementById('docFileExtractStatus'), previewDiv = document.querySelector('#docTextPreview div');
-          const previewCont = document.getElementById('docTextPreview');
+          const file = e.target.files[0]; 
+          if (!file) return;
+
+          const translateDocButton = document.getElementById('translateDocBtn');
+          const fileNameDisplay = document.getElementById('docFileNameDisplay');
+          const fileExtractStatus = document.getElementById('docFileExtractStatus');
+          const textPreviewDiv = document.querySelector('#docTextPreview div'); 
+          const textPreviewContainer = document.getElementById('docTextPreview');
           
-          btn.disabled = true; nameDisp.textContent = `Selected file: ${file.name}`;
-          statusDisp.classList.remove('hidden'); previewCont.classList.add('hidden');
-          if(previewDiv) previewDiv.textContent = '';
+          translateDocButton.disabled = true; 
+          fileNameDisplay.textContent = `Selected file: ${file.name}`;
+          fileExtractStatus.classList.remove('hidden'); 
+          textPreviewContainer.classList.add('hidden'); 
+          if(textPreviewDiv) textPreviewDiv.textContent = ''; 
           
-          const outDiv = document.getElementById('docTranslationOutput');
-          if (outDiv) outDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Results will appear here...</p>`;
+          const outputDiv = document.getElementById('docTranslationOutput');
+          if (outputDiv) outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Document translation results will appear here...</p>`;
           document.getElementById('downloadTranslationBtn').classList.add('hidden');
           document.getElementById('copyDocBtn').classList.add('hidden');
 
           try {
-            const text = await extractTextFromFile(file);
-            if(previewDiv) previewDiv.textContent = text.substring(0, 500) + (text.length > 500 ? "..." : "");
-            previewCont.classList.remove('hidden');
-            btn.setAttribute('data-extracted-text', text); btn.disabled = false;
-            showAlert('Document text extracted!', 'success');
+            const extractedText = await extractTextFromFile(file);
+            if(textPreviewDiv) {
+                textPreviewDiv.textContent = extractedText.substring(0, 500) + (extractedText.length > 500 ? "..." : "");
+            }
+            textPreviewContainer.classList.remove('hidden'); 
+            translateDocButton.setAttribute('data-extracted-text', extractedText); 
+            translateDocButton.disabled = false; 
+            showAlert('Document text extracted successfully!', 'success');
           } catch (err) {
             showAlert(`Error extracting text: ${err.message}`, 'error');
-            nameDisp.textContent = `Error with ${file.name}: ${err.message}`;
-            btn.removeAttribute('data-extracted-text');
-          } finally { statusDisp.classList.add('hidden'); }
+            fileNameDisplay.textContent = `Error with ${file.name}: ${err.message}`;
+            translateDocButton.removeAttribute('data-extracted-text');
+          } finally { 
+            fileExtractStatus.classList.add('hidden'); 
+          }
         });
     }
 
@@ -1461,30 +1761,40 @@
     if (translateTextBtn) { 
         translateTextBtn.addEventListener('click', async function() {
             const pageId = 'translate';
-            if (!currentUser ? !canGuestUseFeature(pageId) : !canLoggedInFreeUserUseFeature('translate', pageId)) return;
+            if (!canLoggedInUserUseFeature('translate', pageId)) return;
 
-            const text = document.getElementById('translatePageTextInput').value.trim();
-            if (!text) { showAlert('Please enter text to translate', 'error'); return; }
+            const textToTranslate = document.getElementById('translatePageTextInput').value.trim();
+            if (!textToTranslate) { 
+                showAlert('Please enter text to translate.', 'error'); 
+                return; 
+            }
             
-            const langDrop = document.getElementById('targetLanguage');
-            const langCode = langDrop.value, langName = langDrop.options[langDrop.selectedIndex].text;
-            const btn = this, spinner = document.getElementById('translateTextSpinner'), outDiv = document.getElementById('textOutput');
+            const targetLangDropdown = document.getElementById('targetLanguage');
+            const targetLangCode = targetLangDropdown.value;
+            const targetLangName = targetLangDropdown.options[targetLangDropdown.selectedIndex].text;
+            const btn = this;
+            const spinner = document.getElementById('translateTextSpinner');
+            const outputDiv = document.getElementById('textOutput');
             
-            btn.disabled = true; spinner.classList.remove('hidden');
-            outDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating...</p>`;
+            btn.disabled = true; 
+            spinner.classList.remove('hidden');
+            outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating...</p>`;
             document.getElementById('copyTextBtn').classList.add('hidden');
             
             try {
-                const prompt = `Translate to ${langName} (code: ${langCode}). Only the translation:\n"${text}"`;
+                const prompt = `Translate the following text to ${targetLangName} (language code: ${targetLangCode}). Provide only the translated text, without any introductory phrases or explanations.\n\nOriginal text:\n"${textToTranslate}"`;
                 const translation = await callGeminiAPI(prompt);
-                outDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">To ${escapeHtml(langName)}</h3><p class="text-white text-sm">${escapeHtml(translation)}</p>`;
+                outputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
                 document.getElementById('copyTextBtn').classList.remove('hidden');
-                showAlert('Text translated!', 'success');
-                if (!currentUser) updateGuestUsage(); else incrementLoggedInFreeUserUsage('translate');
+                showAlert('Text translated successfully!', 'success');
+                incrementFeatureUsage('translate');
             } catch (err) {
-                outDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+                outputDiv.innerHTML = `<p class="text-red-400 text-sm">Translation Error: ${escapeHtml(err.message)}</p>`;
                 showAlert(`Translation failed: ${err.message}`, 'error');
-            } finally { btn.disabled = false; spinner.classList.add('hidden'); }
+            } finally { 
+                btn.disabled = false; 
+                spinner.classList.add('hidden'); 
+            }
         });
     }
 
@@ -1492,147 +1802,229 @@
     if (translateDocBtn) { 
         translateDocBtn.addEventListener('click', async function() {
             const pageId = 'translate';
-            if (!currentUser ? !canGuestUseFeature(pageId) : !canLoggedInFreeUserUseFeature('translate', pageId)) return;
+            if (!canLoggedInUserUseFeature('translate', pageId)) return;
 
-            const text = this.getAttribute('data-extracted-text');
-            if (!text) { showAlert('No text extracted. Upload a document.', 'error'); return; }
+            const extractedText = this.getAttribute('data-extracted-text');
+            if (!extractedText) { 
+                showAlert('No text extracted from document. Please upload a valid document first.', 'error'); 
+                return; 
+            }
             
-            const langDrop = document.getElementById('docTargetLanguage');
-            const langCode = langDrop.value, langName = langDrop.options[langDrop.selectedIndex].text;
-            const btn = this, spinner = document.getElementById('translateDocSpinner'), outDiv = document.getElementById('docTranslationOutput');
+            const targetLangDropdown = document.getElementById('docTargetLanguage');
+            const targetLangCode = targetLangDropdown.value;
+            const targetLangName = targetLangDropdown.options[targetLangDropdown.selectedIndex].text;
+            const btn = this;
+            const spinner = document.getElementById('translateDocSpinner');
+            const outputDiv = document.getElementById('docTranslationOutput');
             
-            btn.disabled = true; spinner.classList.remove('hidden');
-            outDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating document...</p>`;
+            btn.disabled = true; 
+            spinner.classList.remove('hidden');
+            outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating document content...</p>`;
             document.getElementById('copyDocBtn').classList.add('hidden');
             document.getElementById('downloadTranslationBtn').classList.add('hidden');
             
             try {
-                showAlert(`Translating document to ${langName}...`, 'info');
-                const prompt = `Translate to ${langName} (code: ${langCode}). Preserve paragraphs. Only the translation:\n"${text}"`;
+                showAlert(`Translating document to ${targetLangName}... This may take some time for large documents.`, 'info');
+                const prompt = `Translate the following document text to ${targetLangName} (language code: ${targetLangCode}). Try to preserve paragraph breaks and general structure. Provide only the translated text.\n\nOriginal document text:\n"${extractedText}"`;
                 const translation = await callGeminiAPI(prompt);
-                outDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">To ${escapeHtml(langName)}</h3><div class="text-white text-sm max-h-96 overflow-y-auto">${escapeHtml(translation).replace(/\n/g, '<br>')}</div>`;
-                outDiv.setAttribute('data-raw-translation', translation);
+
+                outputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><div class="text-white text-sm max-h-96 overflow-y-auto whitespace-pre-wrap">${escapeHtml(translation)}</div>`;
+                outputDiv.setAttribute('data-raw-translation', translation); 
                 document.getElementById('copyDocBtn').classList.remove('hidden');
                 document.getElementById('downloadTranslationBtn').classList.remove('hidden');
-                showAlert('Document translation complete!', 'success');
-                if (!currentUser) updateGuestUsage(); else incrementLoggedInFreeUserUsage('translate');
+                showAlert('Document content translated successfully!', 'success');
+                incrementFeatureUsage('translate');
             } catch (err) {
-                outDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
-                showAlert(`Doc translation failed: ${err.message}`, 'error');
-            } finally { btn.disabled = false; spinner.classList.add('hidden'); }
+                outputDiv.innerHTML = `<p class="text-red-400 text-sm">Document Translation Error: ${escapeHtml(err.message)}</p>`;
+                showAlert(`Document translation failed: ${err.message}`, 'error');
+            } finally { 
+                btn.disabled = false; 
+                spinner.classList.add('hidden'); 
+            }
         });
     }
 
     const copyTextBtn = document.getElementById('copyTextBtn');
     if (copyTextBtn) copyTextBtn.addEventListener('click', () => {
-          const text = document.getElementById('textOutput').querySelector('p')?.innerText || '';
-          if (text) navigator.clipboard.writeText(text).then(() => showAlert('Copied!', 'success')).catch(() => showAlert('Copy failed.', 'error'));
-          else showAlert('Nothing to copy.', 'info');
+          const textElement = document.getElementById('textOutput').querySelector('p.text-white'); 
+          const textToCopy = textElement ? textElement.innerText : '';
+          if (textToCopy) {
+              navigator.clipboard.writeText(textToCopy)
+                  .then(() => showAlert('Translated text copied to clipboard!', 'success'))
+                  .catch(err => {
+                      console.error('Clipboard copy failed:', err);
+                      showAlert('Failed to copy text. Please try manual copy.', 'error');
+                  });
+          } else {
+              showAlert('No translated text available to copy.', 'info');
+          }
     });
+    
     const copyDocBtn = document.getElementById('copyDocBtn');
     if (copyDocBtn) copyDocBtn.addEventListener('click', () => {
-          const text = document.getElementById('docTranslationOutput').getAttribute('data-raw-translation') || '';
-          if (text) navigator.clipboard.writeText(text).then(() => showAlert('Copied!', 'success')).catch(() => showAlert('Copy failed.', 'error'));
-          else showAlert('Nothing to copy.', 'info');
+          const rawTranslation = document.getElementById('docTranslationOutput').getAttribute('data-raw-translation');
+          if (rawTranslation) {
+              navigator.clipboard.writeText(rawTranslation)
+                  .then(() => showAlert('Translated document content copied to clipboard!', 'success'))
+                  .catch(err => {
+                      console.error('Clipboard copy failed:', err);
+                      showAlert('Failed to copy document content. Please try manual copy.', 'error');
+                  });
+          } else {
+              showAlert('No translated document content available to copy.', 'info');
+          }
     });
+    
     const downloadTranslationBtn = document.getElementById('downloadTranslationBtn');
     if (downloadTranslationBtn) downloadTranslationBtn.addEventListener('click', () => {
-          const text = document.getElementById('docTranslationOutput').getAttribute('data-raw-translation') || '';
-          if (!text) { showAlert('Nothing to download.', 'info'); return; }
-          const langName = document.getElementById('docTargetLanguage').options[document.getElementById('docTargetLanguage').selectedIndex].text;
-          const origName = (document.getElementById('docFileNameDisplay').textContent.replace('Selected file: ', '').split('.')[0] || 'doc').replace(/[^a-z0-9]/gi, '_');
-          const fName = `${origName}_trans_${langName.toLowerCase().replace(/[^a-z0-9]/gi, '_')}.txt`;
-          const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+          const rawTranslation = document.getElementById('docTranslationOutput').getAttribute('data-raw-translation');
+          if (!rawTranslation) { 
+              showAlert('No translated content to download.', 'info'); 
+              return; 
+          }
+          const targetLangName = document.getElementById('docTargetLanguage').options[document.getElementById('docTargetLanguage').selectedIndex].text;
+          const originalFileNameBase = (document.getElementById('docFileNameDisplay').textContent.replace('Selected file: ', '').split('.')[0] || 'document').replace(/[^a-z0-9]/gi, '_');
+          const downloadFileName = `${originalFileNameBase}_translated_to_${targetLangName.toLowerCase().replace(/[^a-z0-9]/gi, '_')}.txt`;
+          
+          const blob = new Blob([rawTranslation], { type: 'text/plain;charset=utf-8' });
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
-          a.href = url; a.download = fName;
-          document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-          showAlert('Translation downloaded!', 'success');
+          a.href = url; 
+          a.download = downloadFileName;
+          document.body.appendChild(a); 
+          a.click(); 
+          document.body.removeChild(a); 
+          URL.revokeObjectURL(url); 
+          showAlert('Translated document downloaded as TXT!', 'success');
     });
 
     const summarizeDocInput = document.getElementById('summarizeDocInput');
-    const summarizeTextInput = document.getElementById('summarizeTextInput');
+    const summarizeTextInput = document.getElementById('summarizeTextInput'); 
     const summarizeDocNameDisplay = document.getElementById('summarizeDocNameDisplay');
     const summarizeDocExtractStatus = document.getElementById('summarizeDocExtractStatus');
 
     if (summarizeDocInput) summarizeDocInput.addEventListener('change', async (e) => {
-            const file = e.target.files[0]; if (!file) return;
+            const file = e.target.files[0]; 
+            if (!file) return;
+
             summarizeDocNameDisplay.textContent = `Selected file: ${file.name}`;
             summarizeDocExtractStatus.classList.remove('hidden');
             summarizeTextInput.value = ''; 
-            const outDiv = document.getElementById('summaryOutput');
-            if (outDiv) outDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Summary will appear here...</p>`;
+            
+            const outputDiv = document.getElementById('summaryOutput');
+            if (outputDiv) outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Summary will appear here...</p>`;
             document.getElementById('copySummaryBtn').classList.add('hidden');
+            
             try {
-                summarizeTextInput.value = await extractTextFromFile(file); 
-                showAlert('Text extracted from document!', 'success');
+                const extractedText = await extractTextFromFile(file); 
+                summarizeTextInput.value = extractedText; 
+                showAlert('Text extracted from document and ready to summarize!', 'success');
             } catch (err) {
                 showAlert(`Error extracting text: ${err.message}`, 'error');
                 summarizeDocNameDisplay.textContent = `Error with ${file.name}: ${err.message}`;
-            } finally { summarizeDocExtractStatus.classList.add('hidden'); }
+            } finally { 
+                summarizeDocExtractStatus.classList.add('hidden'); 
+            }
     });
 
     const summarizeTextBtn = document.getElementById('summarizeTextBtn');
     if (summarizeTextBtn) summarizeTextBtn.addEventListener('click', async function() {
             const pageId = 'summarization';
-            if (!currentUser ? !canGuestUseFeature(pageId) : !canLoggedInFreeUserUseFeature('summarize', pageId)) return;
+            if (!canLoggedInUserUseFeature('summarize', pageId)) return;
 
-            const text = summarizeTextInput.value.trim();
-            if (!text) { showAlert('Please enter text or upload a document.', 'error'); return; }
+            const textToSummarize = summarizeTextInput.value.trim();
+            if (!textToSummarize) { 
+                showAlert('Please enter text or upload a document to summarize.', 'error'); 
+                return; 
+            }
             
-            const lenDrop = document.getElementById('summaryLength');
-            const lenVal = lenDrop.value, lenText = lenDrop.options[lenDrop.selectedIndex].text;
-            const btn = this, spinner = document.getElementById('summarizeTextSpinner');
-            const btnText = document.getElementById('summarizeBtnText'), outDiv = document.getElementById('summaryOutput');
-            const copyBtn = document.getElementById('copySummaryBtn');
+            const lengthDropdown = document.getElementById('summaryLength');
+            const summaryLengthValue = lengthDropdown.value;
+            const summaryLengthText = lengthDropdown.options[lengthDropdown.selectedIndex].text;
+            const btn = this;
+            const spinner = document.getElementById('summarizeTextSpinner');
+            const btnTextElement = document.getElementById('summarizeBtnText');
+            const outputDiv = document.getElementById('summaryOutput');
+            const copySummaryButton = document.getElementById('copySummaryBtn');
             
-            btn.disabled = true; spinner.classList.remove('hidden'); btnText.textContent = 'Summarizing...';
-            outDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Generating summary...</p>`;
-            copyBtn.classList.add('hidden');
+            btn.disabled = true; 
+            spinner.classList.remove('hidden'); 
+            btnTextElement.textContent = 'Summarizing...';
+            outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Generating summary...</p>`;
+            copySummaryButton.classList.add('hidden');
             
             try {
-                let instr = "";
-                if (lenVal === 'short') instr = "Short summary, 1-2 sentences.";
-                else if (lenVal === 'medium') instr = "Medium summary, one paragraph.";
-                else instr = "Detailed summary, multiple paragraphs if needed.";
-                const prompt = `Summarize. ${instr} Key points only. Only the summary text:\n"${text}"`;
-                showAlert(`Generating ${lenVal} summary...`, 'info');
+                let lengthInstruction = "";
+                if (summaryLengthValue === 'short') lengthInstruction = "Provide a short summary, ideally 1-2 sentences, focusing on the main idea.";
+                else if (summaryLengthValue === 'medium') lengthInstruction = "Provide a medium-length summary, about one concise paragraph, covering key points.";
+                else lengthInstruction = "Provide a long, detailed summary, potentially multiple paragraphs if the text is extensive, capturing main arguments and supporting details.";
+                
+                const prompt = `Please summarize the following text. ${lengthInstruction} Ensure the summary is coherent and directly extracted from the provided text. Output only the summary text itself.\n\nText to summarize:\n"${textToSummarize}"`;
+                
+                showAlert(`Generating ${summaryLengthValue} summary...`, 'info');
                 const summary = await callGeminiAPI(prompt);
-                outDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Summary (${escapeHtml(lenText)})</h3><p class="text-white text-sm">${escapeHtml(summary).replace(/\n/g, '<br>')}</p>`;
-                outDiv.setAttribute('data-raw-summary', summary);
-                copyBtn.classList.remove('hidden');
-                showAlert('Text summarized!', 'success');
-                if (!currentUser) updateGuestUsage(); else incrementLoggedInFreeUserUsage('summarize');
+                
+                outputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Summary (${escapeHtml(summaryLengthText)}):</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(summary)}</p>`;
+                outputDiv.setAttribute('data-raw-summary', summary); 
+                copySummaryButton.classList.remove('hidden');
+                showAlert('Text summarized successfully!', 'success');
+                incrementFeatureUsage('summarize');
             } catch (err) {
-                outDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+                outputDiv.innerHTML = `<p class="text-red-400 text-sm">Summarization Error: ${escapeHtml(err.message)}</p>`;
                 showAlert(`Summarization failed: ${err.message}`, 'error');
-            } finally { btn.disabled = false; spinner.classList.add('hidden'); btnText.textContent = 'Summarize'; }
+            } finally { 
+                btn.disabled = false; 
+                spinner.classList.add('hidden'); 
+                btnTextElement.textContent = 'Summarize'; 
+            }
     });
 
     const copySummaryBtn = document.getElementById('copySummaryBtn');
     if (copySummaryBtn) copySummaryBtn.addEventListener('click', () => {
-            const text = document.getElementById('summaryOutput').getAttribute('data-raw-summary') || '';
-            if (text) navigator.clipboard.writeText(text).then(() => showAlert('Summary copied!', 'success')).catch(() => showAlert('Copy failed.', 'error'));
-            else showAlert('Nothing to copy.', 'info');
+            const rawSummary = document.getElementById('summaryOutput').getAttribute('data-raw-summary');
+            if (rawSummary) {
+                navigator.clipboard.writeText(rawSummary)
+                    .then(() => showAlert('Summary copied to clipboard!', 'success'))
+                    .catch(err => {
+                        console.error('Clipboard copy failed:', err);
+                        showAlert('Failed to copy summary. Please try manual copy.', 'error');
+                    });
+            } else {
+                showAlert('No summary available to copy.', 'info');
+            }
     });
 
-    function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+    function isValidEmail(email) { 
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); 
+    }
 
     const loginForm = document.getElementById('loginForm');
     if (loginForm) loginForm.addEventListener('submit', (event) => {
             event.preventDefault(); 
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value.trim(); 
-            if (!email || !password) { showAlert('Email and password required.', 'error'); return; }
-            if (!isValidEmail(email)) { showAlert('Invalid email.', 'error'); return; }
+            if (!email || !password) { 
+                showAlert('Email and password are required.', 'error'); 
+                return; 
+            }
+            if (!isValidEmail(email)) { 
+                showAlert('Please enter a valid email address.', 'error'); 
+                return; 
+            }
 
             const userJSON = localStorage.getItem(`techGenUser_${email}`);
             if (userJSON) {
                 const storedUser = JSON.parse(userJSON);
-                if (storedUser.password === password) { // INSECURE plain text password check (DEMO ONLY)
-                    currentUser = storedUser;
-                    currentUser.plan = currentUser.plan || 'free';
-                    currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
+                if (storedUser.password === password) { 
+                    currentUser = JSON.parse(JSON.stringify(storedUser)); 
+                    currentUser.plan = currentUser.plan || 'free'; 
+
+                    if (currentUser.plan === 'free') {
+                        currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
+                    } else if (currentUser.plan === 'pro') {
+                        delete currentUser.usageCounts; 
+                    }
+                    
                     sessionStorage.setItem('techGenUser', JSON.stringify(currentUser)); 
                     updateAuthUI();
                     showAlert(`Welcome back, ${currentUser.name || currentUser.email}!`, 'success');
@@ -1641,17 +2033,21 @@
                     const pendingPlan = sessionStorage.getItem('pendingPlan');
                     sessionStorage.removeItem('intendedPage'); 
 
-                    if (pendingPlan) {
-                        sessionStorage.removeItem('pendingPlan');
-                        initiatePayment(pendingPlan);
-                    } else if (intendedPage) {
+                    if (pendingPlan) { 
+                        sessionStorage.removeItem('pendingPlan'); 
+                        initiatePayment(pendingPlan); 
+                    } else if (intendedPage && intendedPage !== 'login' && intendedPage !== 'register') {
                         showPage(intendedPage);
                     } else {
                         showPage('home'); 
                     }
                     loginForm.reset();
-                } else showAlert('Invalid email or password. (Demo)', 'error');
-            } else showAlert('No account with this email. Please register. (Demo)', 'error');
+                } else {
+                    showAlert('Invalid email or password.', 'error');
+                }
+            } else {
+                showAlert('No account found with this email. Please register.', 'error');
+            }
     });
 
     const registerForm = document.getElementById('registerForm');
@@ -1660,22 +2056,39 @@
             const fullName = document.getElementById('registerFullName').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
             const password = document.getElementById('registerPassword').value.trim();
-            if (!fullName || !email || !password) { showAlert('All fields required.', 'error'); return; }
-            if (!isValidEmail(email)) { showAlert('Invalid email.', 'error'); return; }
-            if (password.length < 6) { showAlert('Password min 6 characters.', 'error'); return; }
+            if (!fullName || !email || !password) { 
+                showAlert('All fields are required.', 'error'); 
+                return; 
+            }
+            if (!isValidEmail(email)) { 
+                showAlert('Please enter a valid email address.', 'error'); 
+                return; 
+            }
+            if (password.length < 6) { 
+                showAlert('Password must be at least 6 characters long.', 'error'); 
+                return; 
+            }
 
             if (localStorage.getItem(`techGenUser_${email}`)) {
-                showAlert('Email already registered. (Demo)', 'error'); return;
+                showAlert('An account with this email already exists.', 'error'); 
+                return;
             }
             const newUser = { 
-                name: fullName, email: email, password: password, // INSECURE plain text password (DEMO ONLY)
-                plan: 'free', usageCounts: { imageGen: 0, translate: 0, summarize: 0 } 
+                name: fullName, 
+                email: email, 
+                password: password, 
+                plan: 'free', 
+                usageCounts: { imageGen: 0, translate: 0, summarize: 0 } 
             }; 
             localStorage.setItem(`techGenUser_${email}`, JSON.stringify(newUser));
-            currentUser = newUser;
+            
+            currentUser = JSON.parse(JSON.stringify(newUser));
+            if (currentUser.plan === 'free') {
+                currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
+            }
             sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
             updateAuthUI();
-            showAlert('Registration successful! Logged in. (Demo)', 'success');
+            showAlert('Registration successful! You are now logged in.', 'success');
             
             const intendedPage = sessionStorage.getItem('intendedPage');
             const pendingPlan = sessionStorage.getItem('pendingPlan');
@@ -1684,13 +2097,14 @@
             if (pendingPlan) {
                 sessionStorage.removeItem('pendingPlan');
                 initiatePayment(pendingPlan);
-            } else if (intendedPage) {
+            } else if (intendedPage && intendedPage !== 'login' && intendedPage !== 'register') {
                 showPage(intendedPage);
             } else {
                 showPage('home');
             }
             registerForm.reset();
     });
+    
     const contactForm = document.getElementById('contactForm');
     if (contactForm) contactForm.addEventListener('submit', (event) => {
             event.preventDefault();
@@ -1698,63 +2112,103 @@
             const email = document.getElementById('contactEmail').value.trim();
             const subject = document.getElementById('contactSubject').value.trim();
             const message = document.getElementById('contactMessage').value.trim();
-            if (!name || !email || !subject || !message) { showAlert('All fields required.', 'error'); return; }
-            if (!isValidEmail(email)) { showAlert('Invalid email.', 'error'); return; }
-            showAlert('Message sent! (Demo)', 'success');
+            if (!name || !email || !subject || !message) { 
+                showAlert('All fields are required.', 'error'); 
+                return; 
+            }
+            if (!isValidEmail(email)) { 
+                showAlert('Please enter a valid email address.', 'error'); 
+                return; 
+            }
+            console.log("Contact Form Submitted (Simulated):", { name, email, subject, message });
+            showAlert('Your message has been sent! (This is a simulation)', 'success');
             contactForm.reset();
     });
 
     function initiatePayment(planId) {
-        if (!plansData[planId]) { showAlert('Invalid plan.', 'error'); return; }
-        if (!currentUser) {
-            sessionStorage.setItem('pendingPlan', planId);
-            sessionStorage.setItem('intendedPage', 'paymentPage');
-            showAlert('Please log in or register to purchase.', 'info');
+        if (!plansData[planId]) { 
+            showAlert('Invalid plan selected.', 'error'); 
+            return; 
+        }
+        if (!currentUser) { 
+            sessionStorage.setItem('pendingPlan', planId); 
+            sessionStorage.setItem('intendedPage', 'paymentPage'); 
+            showAlert('Please log in or register to purchase a plan.', 'info');
             showPage('login');
             return;
         }
         document.getElementById('paymentPlanName').textContent = plansData[planId].name;
         document.getElementById('paymentPlanPrice').textContent = plansData[planId].price;
-        document.getElementById('paymentForm').dataset.planId = planId;
+        document.getElementById('paymentForm').dataset.planId = planId; 
         showPage('paymentPage');
     }
 
     const paymentForm = document.getElementById('paymentForm');
     if (paymentForm) paymentForm.addEventListener('submit', (event) => {
             event.preventDefault();
-            const planId = event.target.dataset.planId;
+            const planId = event.target.dataset.planId; 
             const cardName = document.getElementById('cardName').value.trim();
             const cardNumber = document.getElementById('cardNumber').value.trim();
             const cardExpiry = document.getElementById('cardExpiry').value.trim();
             const cardCVC = document.getElementById('cardCVC').value.trim();
 
-            if (!cardName || !cardNumber || !cardExpiry || !cardCVC) { showAlert('Fill all payment details.', 'error'); return; }
-            if (!/^\d{4} ?\d{4} ?\d{4} ?\d{4}$/.test(cardNumber.replace(/ /g, ''))) { showAlert('Invalid card number.', 'error'); return; }
-            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiry)) { showAlert('Invalid expiry (MM/YY).', 'error'); return; }
-            if (!/^\d{3,4}$/.test(cardCVC)) { showAlert('Invalid CVC.', 'error'); return; }
+            if (!cardName || !cardNumber || !cardExpiry || !cardCVC) { 
+                showAlert('Please fill in all payment details.', 'error'); 
+                return; 
+            }
+            if (!/^\d{4} ?\d{4} ?\d{4} ?\d{4}$/.test(cardNumber.replace(/ /g, ''))) { 
+                showAlert('Invalid card number format.', 'error'); 
+                return; 
+            }
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiry)) { 
+                showAlert('Invalid expiry date format (MM/YY).', 'error'); 
+                return; 
+            }
+            if (!/^\d{3,4}$/.test(cardCVC)) { 
+                showAlert('Invalid CVC format.', 'error'); 
+                return; 
+            }
 
-            currentUser.plan = planId;
-            currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
-            localStorage.setItem(`techGenUser_${currentUser.email}`, JSON.stringify(currentUser));
-            sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
+            if (currentUser && plansData[planId]) {
+                currentUser.plan = planId; 
+                
+                if (planId === 'pro') {
+                   delete currentUser.usageCounts; 
+                } else if (planId === 'free') { 
+                    currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
+                }
 
-            showAlert(`Payment successful! Upgraded to ${plansData[planId].name}. Enhanced access granted.`, 'success');
-            updateAuthUI();
-            showPage('home'); 
-            paymentForm.reset();
+                localStorage.setItem(`techGenUser_${currentUser.email}`, JSON.stringify(currentUser));
+                sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
+
+                showAlert(`Payment successful! You've been upgraded to the ${plansData[planId].name} plan. Your access has been updated.`, 'success');
+                updateAuthUI(); 
+                showPage('home'); 
+                paymentForm.reset();
+            } else {
+                showAlert('An error occurred during the payment process. Please try again.', 'error');
+            }
     });
 
     document.addEventListener('DOMContentLoaded', () => {
-        if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE") console.warn('Gemini API Key placeholder.');
-        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === "YOUR_MONSTER_API_BEARER_TOKEN_HERE") console.warn('Monster API Token placeholder.');
-
-        const storedUser = sessionStorage.getItem('techGenUser');
-        if (storedUser) {
-            currentUser = JSON.parse(storedUser);
-            currentUser.plan = currentUser.plan || 'free';
-            currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
+        if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("YOUR_GEMINI_API_KEY_HERE") || GEMINI_API_KEY.includes("_PLACEHOLDER")) {
+            console.warn('Gemini API Key is a placeholder or not set. Gemini-dependent features will fail.');
         }
-        updateAuthUI(); // This call is critical and correctly placed for initial UI setup.
+        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN.includes("YOUR_MONSTER_API_BEARER_TOKEN_HERE") || MONSTER_API_BEARER_TOKEN.includes("_PLACEHOLDER")) {
+            console.warn('Monster API Token is a placeholder or not set. Image generation will fail.');
+        }
+
+        const storedUserSession = sessionStorage.getItem('techGenUser');
+        if (storedUserSession) {
+            currentUser = JSON.parse(storedUserSession);
+            currentUser.plan = currentUser.plan || 'free'; 
+            if (currentUser.plan === 'free') {
+                 currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
+            } else if (currentUser.plan === 'pro') {
+                delete currentUser.usageCounts; 
+            }
+        }
+        updateAuthUI(); 
         
         guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
 
@@ -1764,11 +2218,18 @@
 
         window.addEventListener('hashchange', () => {
             const newHash = window.location.hash.substring(1);
-            const activePageId = document.querySelector('.page.active')?.id;
+            const activePageElement = document.querySelector('.page.active');
+            const activePageId = activePageElement ? activePageElement.id : null;
+
             if (newHash && newHash !== activePageId) { 
-                 if (document.getElementById(newHash)) showPage(newHash);
-                 else if (!newHash && activePageId !== 'home') showPage('home');
-            } else if (!newHash && activePageId !== 'home') showPage('home');
+                 if (document.getElementById(newHash)) {
+                    showPage(newHash);
+                 } else { 
+                    showPage('home');
+                 }
+            } else if (!newHash && activePageId !== 'home') { 
+                showPage('home');
+            }
         });
     });
   </script>
