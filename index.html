@@ -1024,7 +1024,7 @@
             **WARNING: Exposing API keys client-side is highly insecure and should NEVER be done in a public production environment. This is for demonstration purposes ONLY.**
         </p>
         <p>
-            User registration and login are **simulated using browser local storage and session storage**. 
+            User registration and login are using browser local storage and session storage**. 
             **WARNING: Storing user credentials (especially passwords as plain text, as done in this simulation) in local storage is EXTREMELY INSECURE and not suitable for production systems.**
             No actual payment processing occurs; payment forms are for demonstration and simulation only.
         </p>
@@ -1033,8 +1033,8 @@
         <h3 class="text-2xl font-semibold mt-8 mb-3">1. Information We Collect</h3>
         <p><strong>Log data:</strong> When you visit our website, our servers (if any were truly involved, which they are not for core auth in this demo) may automatically log the standard data provided by your web browser. It may include your computer's Internet Protocol (IP) address, your browser type and version, the pages you visit, the time and date of your visit, the time spent on each page, and other details.</p>
         <p><strong>Device data:</strong> We may also collect data about the device you're using to access our website. This data may include the device type, operating system, unique device identifiers, device settings, and geo-location data.</p>
-        <p><strong>Personal information (Simulated):</strong> We may ask for personal information, such as your name, and email. For our simulated login, we store your email, a plain-text representation of your password (for demo purposes, **highly insecure**), selected plan in your browser's `localStorage`. Your logged-in session details (email, name, plan, session-based usage counts for free tier) are stored in `sessionStorage`.</p>
-        <p><strong>Usage Data (Simulated):</strong> For guest users, we track total feature usage (e.g., image generations, translations) in `sessionStorage` to enforce a demonstration limit per session. For logged-in free tier users, we track usage of specific features within their session data (`sessionStorage`) to enforce free tier limits for the current session.</p>
+        <p><strong>Personal information :</strong> We may ask for personal information, such as your name, and email. For our login, we store your email, a plain-text representation of your password (for demo purposes, **highly insecure**), selected plan in your browser's `localStorage`. Your logged-in session details (email, name, plan, session-based usage counts for free tier) are stored in `sessionStorage`.</p>
+        <p><strong>Usage Data:</strong> For guest users, we track total feature usage (e.g., image generations, translations) in `sessionStorage` to enforce a demonstration limit per session. For logged-in free tier users, we track usage of specific features within their session data (`sessionStorage`) to enforce free tier limits for the current session.</p>
 
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">2. Legal Bases for Processing</h3>
@@ -1049,7 +1049,7 @@
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">3. Use of Information</h3>
         <p>We may use a combination of personally identifiable and non-personally identifiable information to understand who our visitors are, how they use our services, and how we may improve their experience of our website in future. We do not publicly disclose specific information, but may share aggregated and anonymized versions of this information, for example, in website and customer usage trend reports.</p>
-        <p>Simulated user data (name, email, plan, usage counts) is used solely for demonstrating login, feature access control, and simulated plan upgrades within this application. It is not sent to any server for authentication or storage purposes.</p>
+        <p>user data (name, email, plan, usage counts) is used solely for demonstrating login, feature access control, and plan upgrades within this application. It is not sent to any server for authentication or storage purposes.</p>
         
         <h3 class="text-2xl font-semibold mt-8 mb-3">4. Data Security</h3>
         <p>
@@ -1061,10 +1061,10 @@
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">5. Your Rights and Controlling Your Personal Information</h3>
         <p>You have the right to restrict the collection or use of your personal information. If you have previously agreed to us using your personal information for direct marketing purposes, you may change your mind at any time by contacting us. If you ask us to restrict or limit how we process your personal information, we will let you know how the restriction affects your use of our website or products and services.</p>
-        <p>Since all user-specific data for this demo is stored in your browser (`localStorage` and `sessionStorage`), you can clear this data by clearing your browser's site data for this domain, or by using the "Logout" button which clears session storage and effectively ends the simulated logged-in state for that session.</p>
+        <p>Since all user-specific data for this demo is stored in your browser (`localStorage` and `sessionStorage`), you can clear this data by clearing your browser's site data for this domain, or by using the "Logout" button which clears session storage and effectively ends the logged-in state for that session.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">6. Cookies</h3>
-        <p>We use "cookies" to collect information about you and your activity across our site. A cookie is a small piece of data that our website stores on your computer, and accesses each time you visit, so we can understand how you use our site. This helps us serve you content based on preferences you have specified. In this demonstration application, we primarily use `localStorage` and `sessionStorage` (which are web storage mechanisms, not traditional cookies) for simulated authentication features, plan information, and usage tracking.</p>
+        <p>We use "cookies" to collect information about you and your activity across our site. A cookie is a small piece of data that our website stores on your computer, and accesses each time you visit, so we can understand how you use our site. This helps us serve you content based on preferences you have specified. In this demonstration application, we primarily use `localStorage` and `sessionStorage` (which are web storage mechanisms, not traditional cookies) for authentication features, plan information, and usage tracking.</p>
         
         <h3 class="text-2xl font-semibold mt-8 mb-3">7. API Keys and Third-Party Services</h3>
         <p>
@@ -1090,9 +1090,9 @@
         <p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.</p>
         <p>By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service.</p>
 
-        <h3 class="text-2xl font-semibold mt-8 mb-3">1. Accounts (Simulated)</h3>
+        <h3 class="text-2xl font-semibold mt-8 mb-3">1. Accounts ()</h3>
         <p>
-            When you create an account with us (a **simulated client-side account stored insecurely in your browser's `localStorage`**), you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your access to certain features on our Service.
+            When you create an account with us (a ** client-side account stored insecurely in your browser's `localStorage`**), you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your access to certain features on our Service.
         </p>
         <p>
             You are responsible for safeguarding the password that you use to access the Service. **In the current simulation, passwords are NOT securely stored (they are stored as plain text in `localStorage` for this demonstration, which is extremely insecure) and are not verified against a backend.**
@@ -1100,14 +1100,14 @@
         </p>
         <p>You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
 
-        <h3 class="text-2xl font-semibold mt-8 mb-3">2. Usage Limits and Plans (Simulated)</h3>
-        <p>The Service offers different levels of access (simulated):</p>
+        <h3 class="text-2xl font-semibold mt-8 mb-3">2. Usage Limits and Plans ()</h3>
+        <p>The Service offers different levels of access ():</p>
         <ul>
             <li><strong>Guest Users:</strong> May use AI features a limited number of times (e.g., 10 total uses) per session as a demonstration.</li>
             <li><strong>Free Registered Users:</strong> Have slightly higher, but still limited, access to AI features (e.g., 5 image generations, 10 translations, 5 summaries per session). These limits are reset upon each new login session.</li>
-            <li><strong>Paid Plan Users (Simulated "Pro" Plan):</strong> After a simulated payment process, users on a "Pro" plan may have "unlimited" access to AI features within the reasonable limits of this demonstration and the capabilities of the third-party APIs used.</li>
+            <li><strong>Paid Plan Users ( "Pro" Plan):</strong> After a  payment process, users on a "Pro" plan may have "unlimited" access to AI features within the reasonable limits of this demonstration and the capabilities of the third-party APIs used.</li>
         </ul>
-        <p>All usage tracking, plan management, and payments are **simulated on the client-side and are for demonstration purposes only.** No real financial transactions occur. No data is sent to a server for these processes.</p>
+        <p>All usage tracking, plan management, and payments are ** on the client-side and are for demonstration purposes only.** No real financial transactions occur. No data is sent to a server for these processes.</p>
 
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">3. Intellectual Property</h3>
@@ -1142,15 +1142,15 @@
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">6. Termination</h3>
         <p>We may terminate or suspend your access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
-        <p>Upon termination, your right to use the Service will immediately cease. If you wish to terminate your simulated account, you may simply discontinue using the Service, logout (which clears session data), and clear your browser's local storage for this site.</p>
+        <p>Upon termination, your right to use the Service will immediately cease. If you wish to terminate your  account, you may simply discontinue using the Service, logout (which clears session data), and clear your browser's local storage for this site.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">7. Limitation Of Liability</h3>
-        <p>In no event shall Tech_Gen, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage, and even if a remedy set forth herein is found to have failed of its essential purpose. This includes any issues arising from the use of client-side API keys or simulated payment systems.</p>
+        <p>In no event shall Tech_Gen, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage, and even if a remedy set forth herein is found to have failed of its essential purpose. This includes any issues arising from the use of client-side API keys or  payment systems.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">8. Disclaimer</h3>
         <p>Your use of the Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis. The Service is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.</p>
         <p>Tech_Gen its subsidiaries, affiliates, and its licensors do not warrant that a) the Service will function uninterrupted, secure or available at any particular time or location; b) any errors or defects will be corrected; c) the Service is free of viruses or other harmful components; or d) the results of using the Service will meet your requirements. The AI-generated content is provided by third-party APIs and TECH_GEN does not guarantee its accuracy, appropriateness, or quality.</p>
-        <p>**The authentication, user management, and payment features in this application are SIMULATED and INSECURE. They are for demonstration purposes only and NOT SUITABLE FOR PRODUCTION USE.**</p>
+        <p>**The authentication, user management, and payment features in this application are  and INSECURE. They are for demonstration purposes only and NOT SUITABLE FOR PRODUCTION USE.**</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">9. Changes</h3>
         <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
@@ -1224,7 +1224,7 @@
     //    FOR PRODUCTION: Move all API calls to a backend server. Your frontend
     //    should call your backend, and the backend securely makes API requests.
     //
-    // 2. SIMULATED AUTHENTICATION & PAYMENT:
+    // 2.  AUTHENTICATION & PAYMENT:
     //    The login, registration, and payment systems here are SIMULATIONS.
     //    - User data (including passwords in PLAIN TEXT) is stored in
     //      browser `localStorage`. This is NOT secure.
@@ -1411,7 +1411,7 @@
         contact: { title: "Contact Us - Tech_Gen", description: "Get in touch with the Tech_Gen team for support, inquiries, or feedback. We're here to help!" },
         privacyPolicyPage: { title: "Privacy Policy - Tech_Gen", description: "Read the Privacy Policy for Tech_Gen to understand how we collect, use, and protect your personal information." },
         termsOfServicePage: { title: "Terms of Service - Tech_Gen", description: "Review the Terms of Service for using the Tech_Gen platform and its AI-powered tools." },
-        paymentPage: { title: "Complete Purchase - Tech_Gen", description: "Securely complete your subscription purchase for Tech_Gen AI tools (Simulated)."}
+        paymentPage: { title: "Complete Purchase - Tech_Gen", description: "Securely complete your subscription purchase for Tech_Gen AI tools ()."}
     };
 
     function updateMetaTags(pageId) {
@@ -2118,7 +2118,7 @@
                 showAlert('Please enter a valid email address.', 'error'); 
                 return; 
             }
-            console.log("Contact Form Submitted (Simulated):", { name, email, subject, message });
+            console.log("Contact Form Submitted ():", { name, email, subject, message });
             showAlert('Your message has been sent! (This is a simulation)', 'success');
             contactForm.reset();
     });
