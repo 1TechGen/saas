@@ -794,7 +794,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="pricing-card bg-white rounded-lg shadow-lg p-6 flex flex-col">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2">Free</h3>
-                    <p class="text-4xl font-bold text-gray-900 mb-4">$0<span class="text-lg font-normal text-gray-500">/month</span></p>
+                    <p class="text-4xl font-bold text-gray-900 mb-4">₹0<span class="text-lg font-normal text-gray-500">/month</span></p>
                     <p class="text-gray-600 mb-6">Perfect for individuals starting out or trying our basic features.</p>
                     <ul class="text-gray-700 mb-8 flex-grow">
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 AI Image Generations (session limit)</li>
@@ -808,7 +808,7 @@
                 <div class="pricing-card bg-white rounded-lg shadow-lg p-6 border-4 border-blue-600 flex flex-col relative">
                     <span class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase">Most Popular</span>
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2 mt-4">Pro</h3>
-                    <p class="text-4xl font-bold text-gray-900 mb-4">$19<span class="text-lg font-normal text-gray-500">/month</span></p>
+                    <p class="text-4xl font-bold text-gray-900 mb-4">₹499<span class="text-lg font-normal text-gray-500">/month</span></p>
                     <p class="text-gray-600 mb-6">Ideal for professionals and small teams needing more power.</p>
                     <ul class="text-gray-700 mb-8 flex-grow">
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
@@ -821,7 +821,7 @@
                 </div>
                 <div class="pricing-card bg-white rounded-lg shadow-lg p-6 flex flex-col">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2">Business</h3>
-                    <p class="text-4xl font-bold text-gray-900 mb-4">$49<span class="text-lg font-normal text-gray-500">/month</span></p>
+                    <p class="text-4xl font-bold text-gray-900 mb-4">₹4999<span class="text-lg font-normal text-gray-500">/month</span></p>
                     <p class="text-gray-600 mb-6">For larger teams and businesses requiring extensive usage and support.</p>
                     <ul class="text-gray-700 mb-8 flex-grow">
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
@@ -1151,12 +1151,12 @@
     let guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
 
     const plansData = {
-        free: { name: "Free", priceDisplay: "$0/month", priceAmount: 0, currency: "USD", id: 'free' }, // Assuming USD for $0
-        pro: { name: "Pro", priceDisplay: "$19/month", priceAmount: 1900, currency: "USD", id: 'pro' }, // Amount in cents for USD
+        free: { name: "Free", priceDisplay: "₹0/month", priceAmount: 0, currency: "INR", id: 'free' }, // Assuming INR for ₹0
+        pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 490, currency: "INR", id: 'pro' }, // Amount in cents for INR
         // For Razorpay, if you display in INR (₹), ensure amount is in paise.
         // Example for Pro plan in INR for Razorpay:
-        // pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 49900, currency: "INR", id: 'pro' },
-        business: { name: "Business", priceDisplay: "$49/month", priceAmount: 4900, currency: "USD", id: 'business' }
+        // pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 499, currency: "INR", id: 'pro' },
+        business: { name: "Business", priceDisplay: "₹4999/month", priceAmount: 4999, currency: "INR", id: 'business' }
     };
 
 
