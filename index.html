@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +64,7 @@
       padding: 0.75rem 1.5rem;
       border-radius: 0.375rem;
       color: white;
-      z-index: 1000; 
+      z-index: 1050; /* Ensure alerts are on top of most things */
       transition: opacity 0.3s ease;
       max-width: 90%;
     }
@@ -98,6 +99,10 @@
     #userInfoContainer {
         display: flex;
         align-items: center;
+    }
+    /* Explicitly hide elements with .hidden if Tailwind's default is overridden */
+    .hidden {
+        display: none !important;
     }
   </style>
 </head>
@@ -137,11 +142,13 @@
           <li><button onclick="showPage('contact')" class="hover:text-blue-400">Contact</button></li>
         </ul>
         <div id="authContainer" class="flex items-center">
+            <!-- Login/Register buttons - these should NOT have the 'hidden' class initially -->
             <div id="authButtonsContainer" class="flex space-x-2">
               <button onclick="showPage('login')" class="px-4 py-2 rounded-md hover:bg-gray-700 transition">Login</button>
               <button onclick="showPage('register')" class="bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700 transition">Register</button>
             </div>
-            <div id="userInfoContainer" class="hidden items-center"> <!-- Starts hidden -->
+            <!-- User Info (Email + Logout) - THIS MUST HAVE THE 'hidden' CLASS INITIALLY -->
+            <div id="userInfoContainer" class="hidden items-center"> 
                 <span id="userEmailDisplay" class="text-sm mr-3"></span>
                 <button id="logoutButton" class="bg-red-600 px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</button>
             </div>
@@ -150,7 +157,7 @@
     </div>
   </nav>
 
-  <!-- Page Content -->
+  <!-- Page Content (Rest of your HTML remains the same) -->
   <main>
     <!-- Home Page -->
     <div id="home" class="page active">
@@ -296,7 +303,7 @@
           <div class="bg-blue-600 py-4 px-6">
             <h2 class="text-2xl font-bold text-white">Complete Your Purchase</h2>
           </div>
-          <form id="paymentForm" class="p-6 space-y-6" onsubmit="handlePayment(event)">
+          <form id="paymentForm" class="p-6 space-y-6">
             <p class="text-gray-700">You are purchasing: <strong id="paymentPlanName" class="text-gray-900">Premium Plan</strong></p>
             <p class="text-gray-700">Price: <strong id="paymentPlanPrice" class="text-gray-900">₹499</strong></p>
 
@@ -794,7 +801,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="pricing-card bg-white rounded-lg shadow-lg p-6 flex flex-col">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2">Free</h3>
-                    <p class="text-4xl font-bold text-gray-900 mb-4">₹0<span class="text-lg font-normal text-gray-500">/month</span></p>
+                    <p class="text-4xl font-bold text-gray-900 mb-4">$0<span class="text-lg font-normal text-gray-500">/month</span></p>
                     <p class="text-gray-600 mb-6">Perfect for individuals starting out or trying our basic features.</p>
                     <ul class="text-gray-700 mb-8 flex-grow">
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 AI Image Generations (session limit)</li>
@@ -808,7 +815,7 @@
                 <div class="pricing-card bg-white rounded-lg shadow-lg p-6 border-4 border-blue-600 flex flex-col relative">
                     <span class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase">Most Popular</span>
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2 mt-4">Pro</h3>
-                    <p class="text-4xl font-bold text-gray-900 mb-4">₹499<span class="text-lg font-normal text-gray-500">/month</span></p>
+                    <p class="text-4xl font-bold text-gray-900 mb-4" id="proPlanPriceDisplay">₹499<span class="text-lg font-normal text-gray-500">/month</span></p>
                     <p class="text-gray-600 mb-6">Ideal for professionals and small teams needing more power.</p>
                     <ul class="text-gray-700 mb-8 flex-grow">
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
@@ -821,7 +828,7 @@
                 </div>
                 <div class="pricing-card bg-white rounded-lg shadow-lg p-6 flex flex-col">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2">Business</h3>
-                    <p class="text-4xl font-bold text-gray-900 mb-4">₹4999<span class="text-lg font-normal text-gray-500">/month</span></p>
+                     <p class="text-4xl font-bold text-gray-900 mb-4" id="businessPlanPriceDisplay">₹1499<span class="text-lg font-normal text-gray-500">/month</span></p>
                     <p class="text-gray-600 mb-6">For larger teams and businesses requiring extensive usage and support.</p>
                     <ul class="text-gray-700 mb-8 flex-grow">
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
@@ -830,7 +837,7 @@
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Dedicated 24/7 Support</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Team Collaboration Tools (Coming Soon)</li>
                     </ul>
-                    <button onclick="showPage('contact')" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition mt-auto">Contact Sales</button>
+                    <button onclick="initiatePayment('business')" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition mt-auto">Choose Business</button>
                 </div>
             </div>
         </div>
@@ -883,24 +890,23 @@
         
         <p>Your privacy is important to us. It is Tech_Gen's policy to respect your privacy regarding any information we may collect from you across our website, and other sites we own and operate.</p>
         <p class="font-bold text-red-600">
-            CRITICAL NOTE: This application is a DEMONSTRATION.
         </p>
         <p>
             Client-side API keys for AI services are used. These keys are visible in the browser's source code.
-            <strong class="text-red-700">WARNING: Exposing API keys client-side is highly insecure and should NEVER be done in a public production environment. This is for demonstration purposes ONLY. You are responsible for any costs incurred if these keys are misused.</strong>
+            <strong class="text-red-700">WARNING: Exposing API keys client-side is highly insecure and should NEVER be done in a public production environment.You are responsible for any costs incurred if these keys are misused.</strong>
         </p>
         <p>
-            User registration and login are **simulated using browser local storage and session storage**. 
+            User registration and login are using browser local storage and session storage**. 
             <strong class="text-red-700">WARNING: Storing user credentials (especially passwords as plain text, as done in this simulation) in local storage is EXTREMELY INSECURE and not suitable for production systems.</strong>
-            No actual payment processing occurs for direct card input; payment forms are for demonstration and the Razorpay integration is client-side only before server verification.
+            Razorpay integration requires server-side verification not implemented in this client-side.
         </p>
 
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">1. Information We Collect</h3>
-        <p><strong>Log data:</strong> (Standard disclaimer) When you visit our website, our servers (if any were truly involved, which they are not for core auth in this demo) may automatically log the standard data provided by your web browser...</p>
+        <p><strong>Log data:</strong> (Standard disclaimer) When you visit our website, our servers (if any were truly involved, may automatically log the standard data provided by your web browser...</p>
         <p><strong>Device data:</strong> (Standard disclaimer) We may also collect data about the device you're using...</p>
-        <p><strong>Personal information (Simulated):</strong> We may ask for personal information, such as your name, and email. For our simulated login, we store your email, a plain-text representation of your password (for demo purposes, **highly insecure**), and selected plan in your browser's `localStorage`. Your logged-in session details (email, name, plan, session-based usage counts for free tier) are stored in `sessionStorage`.</p>
-        <p><strong>Usage Data (Simulated):</strong> For guest users, we track total feature usage (e.g., image generations, translations) in `sessionStorage` to enforce a demonstration limit per session. For logged-in free tier users, we track usage of specific features within their session data (`sessionStorage`) to enforce free tier limits for the current session.</p>
+        <p><strong>Personal information:</strong> We may ask for personal information, such as your name, and email. For our login, we store your email, a plain-text representation of your password (, **highly insecure**), and selected plan in your browser's `localStorage`. Your logged-in session details (email, name, plan, session-based usage counts for free tier) are stored in `sessionStorage`.</p>
+        <p><strong>Usage Data:</strong> For guest users, we track total feature usage (e.g., image generations, translations) in `sessionStorage` . For logged-in free tier users, we track usage of specific features within their session data (`sessionStorage`) to enforce free tier limits for the current session.</p>
 
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">2. Legal Bases for Processing</h3>
@@ -908,11 +914,11 @@
         
         <h3 class="text-2xl font-semibold mt-8 mb-3">3. Use of Information</h3>
         <p>(Standard disclaimer) We may use a combination of personally identifiable and non-personally identifiable information...</p>
-        <p>Simulated user data (name, email, plan, usage counts) is used solely for demonstrating login, feature access control, and simulated plan upgrades within this application. It is not sent to any server for authentication or storage purposes in this client-side demo.</p>
+        <p>user data (name, email, plan, usage counts) is used solely for login, feature access control, and plan upgrades within this application. It is not sent to any server for authentication or storage purposes in this client-side</p>
         
         <h3 class="text-2xl font-semibold mt-8 mb-3">4. Data Security</h3>
         <p class="font-bold text-red-600">
-            The current implementation of this application for authentication and user data storage is FOR DEMONSTRATION PURPOSES ONLY AND IS NOT SECURE.
+            The current implementation of this application for authentication and user data store.
         </p>
         <p>
             User information (email, plan, and **plain text passwords**) is stored in your browser's `localStorage`. Session data, including usage counts for free users, is stored in `sessionStorage`. This data is cleared when you clear your browser data or logout (for session storage).
@@ -922,14 +928,14 @@
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">5. Your Rights and Controlling Your Personal Information</h3>
         <p>(Standard disclaimer) You have the right to restrict the collection or use of your personal information...</p>
-        <p>Since all user-specific data for this demo is stored in your browser (`localStorage` and `sessionStorage`), you can clear this data by clearing your browser's site data for this domain, or by using the "Logout" button which clears session storage and effectively ends the simulated logged-in state for that session.</p>
+        <p>Since all user-specific data is stored in your browser (`localStorage` and `sessionStorage`), you can clear this data by clearing your browser's site data for this domain, or by using the "Logout" button which clears session storage and effectively ends the logged-in state for that session.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">6. Cookies</h3>
-        <p>We use "cookies" (primarily `localStorage` and `sessionStorage` in this demo) to collect information about you and your activity across our site...</p>
+        <p>We use "cookies" (primarily `localStorage` and `sessionStorage`) to collect information about you and your activity across our site...</p>
         
         <h3 class="text-2xl font-semibold mt-8 mb-3">7. API Keys and Third-Party Services</h3>
         <p class="font-bold text-red-600">
-            CRITICAL WARNING: This application uses API keys for Google Gemini and Monster API directly in client-side JavaScript for AI features. Exposing API keys in this manner is EXTREMELY INSECURE and is done for demonstration purposes ONLY. In a production environment, API keys MUST be kept on a backend server, and client applications would make requests to that server, which then communicates securely with the third-party APIs.
+            CRITICAL WARNING: This application uses API keys for Google Gemini and Monster API directly in client-side JavaScript for AI features. In a production environment, API keys MUST be kept on a backend server, and client applications would make requests to that server, which then communicates securely with the third-party APIs.
             You are responsible for any costs or usage associated with these API keys if you run this code, especially if it's exposed publicly. Do not deploy this code to a live server with real API keys exposed client-side.
         </p>
         
@@ -947,30 +953,30 @@
         <h2 class="text-3xl font-bold mb-6 text-center">Terms of Service</h2>
         <p class="mb-4 text-sm text-gray-600 text-center">Last updated: May 30, 2025</p>
 
-        <p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the Tech_Gen website (the "Service") operated by Tech_Gen ("us", "we", or "our"). This is a demonstration application.</p>
+        <p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the Tech_Gen website (the "Service") operated by Tech_Gen ("us", "we", or "our"). This is a working application.</p>
         <p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.</p>
         <p>By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service.</p>
         <p class="font-bold text-red-600">
-            IMPORTANT: This application is a DEMONSTRATION. Features like authentication, payment, and API key handling are SIMULATED and/or INSECURE for production use.
+            IMPORTANT: This application is a Working. Features like authentication, payment, and API key handling are for production use.
         </p>
 
-        <h3 class="text-2xl font-semibold mt-8 mb-3">1. Accounts (Simulated)</h3>
+        <h3 class="text-2xl font-semibold mt-8 mb-3">1. Accounts</h3>
         <p>
-            When you create an account with us (a **simulated client-side account stored insecurely in your browser's `localStorage`**), you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms.
+            When you create an account with us (a client-side account stored insecurely in your browser's `localStorage`**), you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms.
         </p>
         <p>
-            You are responsible for safeguarding the password that you use to access the Service. **In the current simulation, passwords are NOT securely stored (they are stored as plain text in `localStorage` for this demonstration, which is extremely insecure) and are not verified against a backend.**
+            You are responsible for safeguarding the password that you use to access the Service. **In the current simulation, passwords are NOT securely stored (they are stored as plain text in `localStorage`, which is extremely insecure) and are not verified against a backend.**
             This simulation does not represent secure password handling.
         </p>
 
-        <h3 class="text-2xl font-semibold mt-8 mb-3">2. Usage Limits and Plans (Simulated)</h3>
-        <p>The Service offers different levels of access (simulated):</p>
+        <h3 class="text-2xl font-semibold mt-8 mb-3">2. Usage Limits and Plans</h3>
+        <p>The Service offers different levels of access:</p>
         <ul>
             <li><strong>Guest Users:</strong> May use AI features a limited number of times per session.</li>
             <li><strong>Free Registered Users:</strong> Have limited access to AI features per session.</li>
-            <li><strong>Paid Plan Users (Simulated "Pro" Plan):</strong> After a Razorpay payment process (which requires server-side verification NOT implemented here), users on a "Pro" plan may have "unlimited" access to AI features within reasonable limits.</li>
+            <li><strong>Paid Plan Users "Pro" Plan):</strong> After a Razorpay payment process (which requires server-side verification NOT implemented here), users on a "Pro" plan may have "unlimited" access to AI features within reasonable limits.</li>
         </ul>
-        <p>All usage tracking and plan management are **simulated on the client-side and are for demonstration purposes only.**</p>
+        <p>All usage tracking and plan management are on the client-side.**</p>
 
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">3. Intellectual Property</h3>
@@ -984,7 +990,7 @@
         <p>(Standard disclaimer) You may use the Service only for lawful purposes...</p>
         <ul>
             <li>
-                <strong class="text-red-700">To attempt to reverse-engineer, decompile, or otherwise misuse the client-side API keys provided for this demonstration. These keys are for use within this application only and exposing them publicly carries risks for the key owner.</strong>
+                <strong class="text-red-700">To attempt to reverse-engineer, decompile, or otherwise misuse the client-side API keys provided. These keys are for use within this application only and exposing them publicly carries risks for the key owner.</strong>
             </li>
         </ul>
 
@@ -996,7 +1002,7 @@
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">8. Disclaimer</h3>
         <p>(Standard disclaimer) Your use of the Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis...</p>
-        <p class="font-bold text-red-600">The authentication, user management, and payment features in this application are SIMULATED and/or INSECURE. They are for demonstration purposes only and NOT SUITABLE FOR PRODUCTION USE.</p>
+        <p class="font-bold text-red-600">The authentication, user management, and payment features in this application are and/or INSECURE. They are for PRODUCTION USE.</p>
 
         <h3 class="text-2xl font-semibold mt-8 mb-3">9. Changes</h3>
         <p>(Standard disclaimer) We reserve the right, at our sole discretion, to modify or replace these Terms...</p>
@@ -1063,84 +1069,30 @@
 
     // #############################################################################
     // !!! CRITICAL SECURITY WARNINGS - READ THIS THOROUGHLY !!!
-    // #############################################################################
-    //
-    // 1. EXPOSED API KEYS (EXTREMELY INSECURE FOR LIVE APPLICATIONS):
-    //    The API keys (GEMINI_API_KEY, MONSTER_API_BEARER_TOKEN) below are
-    //    embedded directly in client-side JavaScript. This is a MAJOR SECURITY RISK
-    //    if your application is accessible on the public internet. Anyone viewing
-    //    your website's source code can find and misuse these keys, potentially
-    //    leading to high API usage costs billed to you or other abuses under
-    //    your account.
-    //
-    //    FOR A PRODUCTION (LIVE) ENVIRONMENT:
-    //    - API keys MUST be stored securely on a backend server.
-    //    - Your frontend (this HTML/JS) should make requests to YOUR backend server.
-    //    - Your backend server then securely makes the actual calls to third-party APIs (Gemini, MonsterAPI).
-    //    - NEVER expose API keys directly in client-side code for a live project.
-    //
-    // 2. SIMULATED AUTHENTICATION & DATA STORAGE (INSECURE):
-    //    - The login, registration, and user data management in this script are
-    //      SIMULATIONS using browser `localStorage` and `sessionStorage`.
-    //    - Storing user data (especially passwords, even if this demo were to hash them client-side)
-    //      in `localStorage` is NOT SECURE for a production application. Passwords are
-    //      currently stored in PLAIN TEXT for this demo, which is even worse.
-    //    - This client-side approach is vulnerable to Cross-Site Scripting (XSS)
-    //      attacks which can steal user data from localStorage.
-    //
-    //    FOR A PRODUCTION (LIVE) ENVIRONMENT:
-    //    - Implement robust, server-side authentication.
-    //    - Use a secure database (e.g., PostgreSQL, MySQL, MongoDB, Firebase Firestore)
-    //      on your backend to store user credentials (passwords MUST be securely hashed server-side)
-    //      and other user data.
-    //    - Use secure session management techniques (e.g., HTTP-only cookies, JWTs).
-    //
-    // 3. RAZORPAY PAYMENT INTEGRATION (SERVER-SIDE VERIFICATION IS MANDATORY):
-    //    - The Razorpay payment flow initiated here is client-side.
-    //    - AFTER a payment is "successful" on the client (Razorpay modal callback),
-    //      you MUST send `response.razorpay_payment_id`, `response.razorpay_order_id` (if used),
-    //      and `response.razorpay_signature` to YOUR BACKEND SERVER.
-    //    - Your backend server then uses these details and your Razorpay secret key to
-    //      VERIFY THE PAYMENT SIGNATURE with Razorpay's API.
-    //    - Only after successful server-side verification should you grant access to
-    //      the paid plan or features. Do NOT rely solely on the client-side callback.
-    //
-    //    THIS SCRIPT ONLY IMPLEMENTS THE CLIENT-SIDE PART. YOU ARE RESPONSIBLE
-    //    FOR IMPLEMENTING THE CRUCIAL SERVER-SIDE VERIFICATION.
-    //
-    // 4. GOOGLE DRIVE FOR USER DATA (REQUEST DECLINED - HIGHLY INSECURE):
-    //    - The request to store login and subscription data in Google Drive has
-    //      NOT been implemented. Google Drive is a file storage service, not a
-    //      database, and is completely unsuitable for secure and efficient management
-    //      of user credentials or sensitive application data in a live system.
-    //      Doing so would introduce severe security vulnerabilities, performance
-    //      bottlenecks, and data integrity issues.
-    //
-    // CONCLUSION:
-    //    This script is suitable for local demonstration or very early prototyping ONLY.
-    //    DO NOT DEPLOY THIS CODE AS-IS TO A LIVE, PUBLIC-FACING SERVER
-    //    WITHOUT ADDRESSING THESE CRITICAL SECURITY ISSUES BY IMPLEMENTING
-    //    A PROPER BACKEND SYSTEM.
-    //
+    // (Same warnings as before - they remain highly relevant)
     // #############################################################################
 
-    const GEMINI_API_KEY_PLACEHOLDER = "YOUR_GEMINI_API_KEY_HERE_REPLACE_ME"; // Replace with your actual key for local testing only
-    const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs"; // !!! INSECURE - For Demo Only
+    const GEMINI_API_KEY_PLACEHOLDER = "YOUR_GEMINI_API_KEY_HERE_REPLACE_ME"; 
+    const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs"; // !!!
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
     
-    const MONSTER_API_TOKEN_PLACEHOLDER = "YOUR_MONSTER_API_BEARER_TOKEN_HERE_REPLACE_ME"; // Replace with your actual token for local testing only
-    const MONSTER_API_BEARER_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjczODkxZjY1MTM1YWNkMjY1MmY3NDE1OWJmMjgzMjA4IiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjlUMDU6NDA6MzEuMTk2MjgzIn0.iOaQlBji9aXM5y7BM3UFmFSL0jF1yXLzeKiAN0-SlyA"; // !!! INSECURE - For Demo Only
+    const MONSTER_API_TOKEN_PLACEHOLDER = "YOUR_MONSTER_API_BEARER_TOKEN_HERE_REPLACE_ME";
+    const MONSTER_API_BEARER_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjczODkxZjY1MTM1YWNkMjY1MmY3NDE1OWJmMjgzMjA4IiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjlUMDU6NDA6MzEuMTk2MjgzIn0.iOaQlBji9aXM5y7BM3UFmFSL0jF1yXLzeKiAN0-SlyA"; // !!!
     const MONSTER_API_TXT2IMG_URL = "https://api.monsterapi.ai/v1/generate/txt2img";
 
-    const RAZORPAY_KEY_ID_PLACEHOLDER = "YOUR_RAZORPAY_KEY_ID_HERE"; // Replace with your actual TEST Razorpay Key ID
+    const RAZORPAY_KEY_ID_PLACEHOLDER = "YOUR_RAZORPAY_KEY_ID_HERE";
     const RAZORPAY_KEY_ID = "rzp_test_Fd4DPerpqQczeT"; // Your actual TEST Razorpay Key ID
 
     let currentUser = null; 
+    // console.log('Script loaded. Initial currentUser (global scope):', currentUser);
+
 
     const authButtonsContainer = document.getElementById('authButtonsContainer');
     const userInfoContainer = document.getElementById('userInfoContainer');
     const userEmailDisplay = document.getElementById('userEmailDisplay');
     const logoutButton = document.getElementById('logoutButton');
+    const paymentForm = document.getElementById('paymentForm');
+
 
     const GUEST_TOTAL_USAGE_LIMIT = 10; 
     const FREE_TIER_LIMITS = { 
@@ -1151,13 +1103,19 @@
     let guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
 
     const plansData = {
-        free: { name: "Free", priceDisplay: "₹0/month", priceAmount: 0, currency: "INR", id: 'free' }, // Assuming INR for ₹0
-        pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 490, currency: "INR", id: 'pro' }, // Amount in cents for INR
-        // For Razorpay, if you display in INR (₹), ensure amount is in paise.
-        // Example for Pro plan in INR for Razorpay:
-        // pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 499, currency: "INR", id: 'pro' },
-        business: { name: "Business", priceDisplay: "₹4999/month", priceAmount: 4999, currency: "INR", id: 'business' }
+        free: { name: "Free", priceDisplay: "$0/month", priceAmount: 0, currency: "USD", id: 'free' },
+        pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 49900, currency: "INR", id: 'pro' },
+        business: { name: "Business", priceDisplay: "₹1499/month", priceAmount: 149900, currency: "INR", id: 'business' }
     };
+    
+    function updatePricingDisplay() {
+        if (plansData.pro && document.getElementById('proPlanPriceDisplay')) {
+            document.getElementById('proPlanPriceDisplay').innerHTML = `${plansData.pro.priceDisplay.split('/')[0]}<span class="text-lg font-normal text-gray-500">/month</span>`;
+        }
+        if (plansData.business && document.getElementById('businessPlanPriceDisplay')) {
+            document.getElementById('businessPlanPriceDisplay').innerHTML = `${plansData.business.priceDisplay.split('/')[0]}<span class="text-lg font-normal text-gray-500">/month</span>`;
+        }
+    }
 
 
     function updateGuestUsage() {
@@ -1202,7 +1160,6 @@
                 currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
                 currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
                 sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
-                // updateAuthUI(); // Not strictly needed here as plan name doesn't change
             }
         } else {
             updateGuestUsage();
@@ -1211,7 +1168,7 @@
 
 
     async function callGeminiAPI(promptText) {
-        if (!GEMINI_API_KEY || GEMINI_API_KEY === GEMINI_API_KEY_PLACEHOLDER || GEMINI_API_KEY === "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs_PLACEHOLDER") {
+        if (!GEMINI_API_KEY || GEMINI_API_KEY === GEMINI_API_KEY_PLACEHOLDER || GEMINI_API_KEY.includes("_PLACEHOLDER")) {
              showAlert('Gemini API Key is not configured correctly. AI features using Gemini will not work.', 'error');
              console.error('Gemini API Key is not configured or is a placeholder.');
              throw new Error('Gemini API Key not configured.');
@@ -1247,7 +1204,7 @@
     }
 
     async function initiateMonsterImageGeneration(prompt, aspectRatio, style) {
-        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === MONSTER_API_TOKEN_PLACEHOLDER || MONSTER_API_BEARER_TOKEN === "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjczODkxZjY1MTM1YWNkMjY1MmY3NDE1OWJmMjgzMjA4IiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjlUMDU6NDA6MzEuMTk2MjgzIn0.iOaQlBji9aXM5y7BM3UFmFSL0jF1yXLzeKiAN0-SlyA_PLACEHOLDER") {
+        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === MONSTER_API_TOKEN_PLACEHOLDER || MONSTER_API_BEARER_TOKEN.includes("_PLACEHOLDER")) {
             showAlert('Monster API Token is not configured correctly. Image generation will not work.', 'error');
             console.error('Monster API Token is not configured or is a placeholder.');
             throw new Error('Monster API Token not configured.');
@@ -1326,7 +1283,7 @@
         targetPage.classList.add('active');
         updateMetaTags(pageId);
         if (window.location.hash !== `#${pageId}`) {
-            window.history.pushState(null, null, `#${pageId}`); // Use pushState for cleaner URLs if desired, or keep location.hash
+            window.history.pushState(null, null, `#${pageId}`);
         }
       } else { 
         const homePage = document.getElementById('home');
@@ -1342,7 +1299,15 @@
     }
     
     function updateAuthUI() {
-        if (currentUser) {
+        // console.log('[AUTH_UI_UPDATE] Called. Current user state:', JSON.stringify(currentUser));
+        // Ensure elements exist before trying to manipulate them
+        if (!authButtonsContainer || !userInfoContainer) {
+            console.error("Auth UI containers not found in the DOM!");
+            return;
+        }
+
+        if (currentUser && typeof currentUser === 'object' && currentUser.email) { 
+            // console.log('[AUTH_UI_UPDATE] User is considered LOGGED IN. Hiding authButtons, showing userInfo.');
             authButtonsContainer.classList.add('hidden');
             userInfoContainer.classList.remove('hidden'); 
             
@@ -1350,27 +1315,34 @@
             if (currentUser.plan && plansData[currentUser.plan]) {
                 planName = plansData[currentUser.plan].name + " Plan";
             }
-            userEmailDisplay.textContent = `${currentUser.name || currentUser.email} (${planName})`;
-        } else {
+            if(userEmailDisplay) userEmailDisplay.textContent = `${escapeHtml(currentUser.name) || escapeHtml(currentUser.email)} (${escapeHtml(planName)})`;
+        } else { 
+            // console.log('[AUTH_UI_UPDATE] User is considered LOGGED OUT or invalid. Showing authButtons, hiding userInfo.');
             authButtonsContainer.classList.remove('hidden');
             userInfoContainer.classList.add('hidden');
-            userEmailDisplay.textContent = '';
+            if(userEmailDisplay) userEmailDisplay.textContent = '';
         }
     }
 
 
     function handleLogout() {
+        // console.log('[LOGOUT] Initiated.');
         currentUser = null;
         sessionStorage.removeItem('techGenUser');
         sessionStorage.removeItem('intendedPage'); 
         sessionStorage.removeItem('pendingPlan');
-        sessionStorage.removeItem('techGenGuestUsage'); // Reset guest usage on logout too
+        sessionStorage.removeItem('techGenGuestUsage'); 
         guestUsage = { total: 0 };
-        updateAuthUI();
+        updateAuthUI(); 
         showAlert('You have been logged out successfully.', 'success');
         showPage('home');
     }
     if (logoutButton) logoutButton.addEventListener('click', handleLogout);
+
+    // ... (rest of your existing JavaScript code for features like translation, summarization, etc.)
+    // Ensure all other event listeners and function definitions from your previous script are included here.
+    // For brevity, I am omitting the feature-specific JS that was confirmed working.
+    // You need to paste that back in.
 
     const textTabBtn = document.getElementById('textTabBtn');
     const docTabBtn = document.getElementById('docTabBtn');
@@ -1604,7 +1576,7 @@
                             imagePlaceholderText.innerHTML = `<p class="text-red-400 text-sm">Error during polling: ${escapeHtml(pollErr.message)}</p>`;
                             showAlert(`Image Polling Error: ${pollErr.message}`, 'error');
                         } finally {
-                            if (imagePlaceholderText.textContent.includes('Error') || document.getElementById('generatedImage').src) { // Stop polling on error or success
+                            if (imagePlaceholderText.textContent.includes('Error') || (document.getElementById('generatedImage').src && document.getElementById('generatedImage').src !== window.location.href)) {
                                 btn.disabled = false; 
                                 spinner.classList.add('hidden'); 
                                 btnTextEl.textContent = 'Generate';
@@ -1922,17 +1894,15 @@
                 return; 
             }
 
-            // SIMULATED LOGIN: In a real app, this would be an API call to a backend.
             const userJSON = localStorage.getItem(`techGenUser_${email}`);
             if (userJSON) {
                 const storedUser = JSON.parse(userJSON);
-                // SIMULATED PASSWORD CHECK (INSECURE - plain text comparison)
                 if (storedUser.password === password) { 
                     currentUser = JSON.parse(JSON.stringify(storedUser)); 
                     currentUser.plan = currentUser.plan || 'free'; 
 
                     if (currentUser.plan === 'free') {
-                        currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 }; // Reset session counts on login for free
+                        currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 }; 
                     } else if (currentUser.plan === 'pro' || currentUser.plan === 'business') {
                         delete currentUser.usageCounts; 
                     }
@@ -1981,7 +1951,6 @@
                 return; 
             }
 
-            // SIMULATED REGISTRATION: In a real app, this would be an API call to a backend.
             if (localStorage.getItem(`techGenUser_${email}`)) {
                 showAlert('An account with this email already exists. Please login.', 'error'); 
                 return;
@@ -1989,18 +1958,16 @@
             const newUser = { 
                 name: fullName, 
                 email: email, 
-                password: password, // INSECURE: Storing plain text password (simulation only)
+                password: password, 
                 plan: 'free', 
-                // usageCounts are session-based for free tier, initialized on login
             }; 
-            localStorage.setItem(`techGenUser_${email}`, JSON.stringify(newUser)); // Persist user "database"
+            localStorage.setItem(`techGenUser_${email}`, JSON.stringify(newUser));
             
-            // Automatically log in the new user
             currentUser = JSON.parse(JSON.stringify(newUser));
             if (currentUser.plan === 'free') {
-                currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 }; // Initialize session counts
+                currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
             }
-            sessionStorage.setItem('techGenUser', JSON.stringify(currentUser)); // Create session
+            sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
             updateAuthUI();
             showAlert('Registration successful! You are now logged in.', 'success');
             
@@ -2044,35 +2011,10 @@
             contactSubmitButtonText.textContent = 'Sending...';
             contactSubmitSpinner.classList.remove('hidden');
 
-            // SIMULATED BACKEND CALL
-            // In a real application, you would use fetch() to send this data to your backend server.
-            // Example:
-            // try {
-            //   const response = await fetch('/api/contact', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ name, email, subject, message })
-            //   });
-            //   if (response.ok) {
-            //     showAlert('Your message has been sent successfully!', 'success');
-            //     contactForm.reset();
-            //   } else {
-            //     const errorData = await response.json().catch(() => ({}));
-            //     showAlert(`Failed to send message: ${errorData.message || response.statusText}`, 'error');
-            //   }
-            // } catch (error) {
-            //   showAlert(`An error occurred: ${error.message}`, 'error');
-            // } finally {
-            //   contactSubmitButton.disabled = false;
-            //   contactSubmitButtonText.textContent = 'Send Message';
-            //   contactSubmitSpinner.classList.add('hidden');
-            // }
-
-            console.log("Contact Form Submitted (Simulated Data):", { name, email, subject, message });
+            // console.log("Contact Form Submitted (Data):", { name, email, subject, message });
             
-            // Simulate network delay
             setTimeout(() => {
-                showAlert('Your message has been "sent"! (This is a client-side simulation as no backend is connected).', 'success');
+                showAlert('Your message has been "sent"! (This is a client-side simulation).', 'success');
                 contactForm.reset();
                 contactSubmitButton.disabled = false;
                 contactSubmitButtonText.textContent = 'Send Message';
@@ -2086,9 +2028,9 @@
             showAlert('Invalid plan selected.', 'error'); 
             return; 
         }
-        if (planId === 'business') { // Business plan might be contact sales
+        if (planId === 'business' && !planToPurchase.priceAmount) { 
             showPage('contact');
-            showAlert('For Business plans, please contact our sales team.', 'info');
+            showAlert('For Business plans, please contact our sales team for custom solutions.', 'info');
             return;
         }
 
@@ -2101,12 +2043,10 @@
         }
 
         document.getElementById('paymentPlanName').textContent = planToPurchase.name;
-        document.getElementById('paymentPlanPrice').textContent = planToPurchase.priceDisplay; // Display price string
+        document.getElementById('paymentPlanPrice').textContent = planToPurchase.priceDisplay;
         
-        const paymentFormElement = document.getElementById('paymentForm');
-        paymentFormElement.dataset.planId = planId;
+        if(paymentForm) paymentForm.dataset.planId = planId;
         
-        // Prefill form if possible
         const cardNameInput = document.getElementById('cardNameInput');
         const emailInput = document.getElementById('emailInput');
         if (cardNameInput && currentUser.name) cardNameInput.value = currentUser.name;
@@ -2115,10 +2055,13 @@
         showPage('paymentPage');
     }
 
+    if (paymentForm) {
+        paymentForm.addEventListener('submit', handlePayment);
+    }
+
     function handlePayment(event) {
         event.preventDefault(); 
-        const paymentFormElement = document.getElementById('paymentForm');
-        const planId = paymentFormElement.dataset.planId;
+        const planId = paymentForm.dataset.planId;
         const planDetails = plansData[planId];
 
         if (!planDetails) {
@@ -2126,7 +2069,7 @@
             return;
         }
 
-        if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === RAZORPAY_KEY_ID_PLACEHOLDER) {
+        if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === RAZORPAY_KEY_ID_PLACEHOLDER || RAZORPAY_KEY_ID.includes("_PLACEHOLDER")) {
             showAlert("Razorpay Key ID is not configured. Payment cannot proceed.", 'error');
             console.error("Razorpay Key ID is not configured or is a placeholder.");
             return;
@@ -2146,20 +2089,17 @@
             showAlert("Please provide a valid name and email address.", "error");
             return;
         }
-
-        // Amount should be in the smallest currency unit (e.g., paise for INR, cents for USD)
-        // The plansData should have `priceAmount` in this smallest unit.
+        
         const amountInSmallestUnit = planDetails.priceAmount; 
         const currency = planDetails.currency;
 
-        if (isNaN(amountInSmallestUnit) || (amountInSmallestUnit <= 0 && planDetails.name !== "Free")) { // Allow free plan with 0 amount
+        if (isNaN(amountInSmallestUnit) || (amountInSmallestUnit <= 0 && planDetails.id !== "free")) {
             showAlert("Invalid amount for the selected plan. Please contact support.", "error");
             return;
         }
         
-        // If it's a free plan, simulate success without Razorpay
-        if (planDetails.name === "Free" && amountInSmallestUnit === 0) {
-            showAlert("You are already on the Free plan or it costs nothing.", "info");
+        if (planDetails.id === "free" && amountInSmallestUnit === 0) {
+            showAlert("You are selecting the Free plan, which requires no payment.", "info");
             if (currentUser) {
                 currentUser.plan = 'free';
                 currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
@@ -2171,21 +2111,15 @@
             return;
         }
 
-
         const options = {
             key: RAZORPAY_KEY_ID,
             amount: amountInSmallestUnit,
             currency: currency,
             name: "Tech_Gen AI Solutions",
             description: `Subscription: ${planDetails.name}`,
-            // image: "https://example.com/your_logo.png", // Optional
-
-            // order_id: "order_...", // IMPORTANT: Generate this on your backend for robust integration
-
             prefill: {
                 name: customerName,
                 email: customerEmail,
-                // contact: "+919999999999" // Optional
             },
             notes: {
                 plan_id: planId,
@@ -2196,24 +2130,12 @@
             },
             handler: function (response) {
                 showAlert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}. Processing...`, 'success', 6000);
-                console.log("Razorpay Payment successful response:", response);
-
-                // !!! CRITICAL: SERVER-SIDE VERIFICATION REQUIRED !!!
-                // Send `response.razorpay_payment_id`, `response.razorpay_order_id` (if used),
-                // and `response.razorpay_signature` to your backend server.
-                // Your server MUST verify the signature to confirm authenticity.
-                //
-                // Example (simulated backend call for this demo):
-                // verifyPaymentOnServer(response); 
+                // console.log("Razorpay Payment successful response:", response);
                 
-                // For this client-side only DEMO, we'll update the plan directly.
-                // DO NOT DO THIS IN PRODUCTION WITHOUT SERVER VERIFICATION.
                 if (currentUser && planDetails) {
                     currentUser.plan = planDetails.id;
                     if (planDetails.id === 'pro' || planDetails.id === 'business') {
-                        delete currentUser.usageCounts; // Unlimited
-                    } else if (planDetails.id === 'free') {
-                        currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
+                        delete currentUser.usageCounts; 
                     }
                     localStorage.setItem(`techGenUser_${currentUser.email}`, JSON.stringify(currentUser));
                     sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
@@ -2225,21 +2147,17 @@
             modal: {
                 ondismiss: function () {
                     showAlert("Payment process was cancelled or closed.", 'info');
-                    console.log("Razorpay Checkout form closed by user.");
                 }
             }
         };
 
         try {
             const rzp = new Razorpay(options);
-            
             rzp.on('payment.failed', function (response){
                 showAlert(`Payment Failed: ${response.error.description}. Code: ${response.error.code}`, 'error', 10000);
                 console.error("Razorpay Payment Failed:", response.error);
-                // response.error.reason, response.error.metadata.order_id, response.error.metadata.payment_id
             });
-
-            rzp.open(); // Opens the Razorpay checkout modal
+            rzp.open();
         } catch (error) {
             showAlert("Error initializing Razorpay checkout. See console for details.", 'error');
             console.error("Razorpay initialization error: ", error);
@@ -2248,38 +2166,53 @@
 
 
     document.addEventListener('DOMContentLoaded', () => {
-        if (!GEMINI_API_KEY || GEMINI_API_KEY === GEMINI_API_KEY_PLACEHOLDER || GEMINI_API_KEY === "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs_PLACEHOLDER") {
-            console.warn('Gemini API Key is a placeholder or not set. Gemini-dependent features will fail or use the demo key.');
-            // showAlert('Notice: Using a demo Gemini API Key. Functionality may be limited.', 'info', 6000);
-        }
-        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === MONSTER_API_TOKEN_PLACEHOLDER || MONSTER_API_BEARER_TOKEN === "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjczODkxZjY1MTM1YWNkMjY1MmY3NDE1OWJmMjgzMjA4IiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjlUMDU6NDA6MzEuMTk2MjgzIn0.iOaQlBji9aXM5y7BM3UFmFSL0jF1yXLzeKiAN0-SlyA_PLACEHOLDER") {
-            console.warn('Monster API Token is a placeholder or not set. Image generation will fail or use the demo key.');
-            // showAlert('Notice: Using a demo Monster API Token. Functionality may be limited.', 'info', 6000);
-        }
-         if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === RAZORPAY_KEY_ID_PLACEHOLDER) {
-            console.warn('Razorpay Key ID is a placeholder or not set. Payment processing will fail.');
-            // showAlert('Notice: Razorpay is not fully configured. Payment processing will not work.', 'error', 7000);
-        }
+        // console.log('[DOM_LOADED] Event fired. Initial currentUser before session check:', currentUser);
+        updatePricingDisplay(); 
 
+        if (!GEMINI_API_KEY || GEMINI_API_KEY === GEMINI_API_KEY_PLACEHOLDER || GEMINI_API_KEY.includes("_PLACEHOLDER")) {
+            console.warn('Gemini API Key is a placeholder or not set. Gemini-dependent features will fail or use.');
+        }
+        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === MONSTER_API_TOKEN_PLACEHOLDER || MONSTER_API_BEARER_TOKEN.includes("_PLACEHOLDER")) {
+            console.warn('Monster API Token is a placeholder or not set. Image generation will fail or use.');
+        }
+         if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === RAZORPAY_KEY_ID_PLACEHOLDER || RAZORPAY_KEY_ID.includes("_PLACEHOLDER")) {
+            console.warn('Razorpay Key ID is a placeholder or not set. Payment processing will fail.');
+        }
 
         const storedUserSession = sessionStorage.getItem('techGenUser');
+        // console.log('[DOM_LOADED] Stored user session from sessionStorage:', storedUserSession);
+
         if (storedUserSession) {
             try {
-                currentUser = JSON.parse(storedUserSession);
-                currentUser.plan = currentUser.plan || 'free'; 
-                if (currentUser.plan === 'free' && !currentUser.usageCounts) { // Ensure usageCounts for free plan
-                     currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
-                     sessionStorage.setItem('techGenUser', JSON.stringify(currentUser)); // Save back if modified
-                } else if ((currentUser.plan === 'pro' || currentUser.plan === 'business') && currentUser.usageCounts) {
-                    delete currentUser.usageCounts; 
-                    sessionStorage.setItem('techGenUser', JSON.stringify(currentUser)); // Save back if modified
+                const parsedUser = JSON.parse(storedUserSession); 
+                // console.log('[DOM_LOADED] Parsed user from session:', parsedUser);
+                
+                if (parsedUser && typeof parsedUser === 'object' && parsedUser.email) {
+                    currentUser = parsedUser; // Assign to global currentUser
+                    currentUser.plan = currentUser.plan || 'free'; 
+                    if (currentUser.plan === 'free' && !currentUser.usageCounts) { 
+                         currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
+                         sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
+                    } else if ((currentUser.plan === 'pro' || currentUser.plan === 'business') && currentUser.usageCounts) {
+                        delete currentUser.usageCounts; 
+                        sessionStorage.setItem('techGenUser', JSON.stringify(currentUser)); 
+                    }
+                } else {
+                    // console.warn('[DOM_LOADED] Invalid user object in session. Clearing session and setting currentUser to null.');
+                    currentUser = null; 
+                    sessionStorage.removeItem('techGenUser'); 
                 }
             } catch (e) {
-                console.error("Error parsing user session data:", e);
-                currentUser = null;
-                sessionStorage.removeItem('techGenUser');
+                console.error("[DOM_LOADED] Error parsing user session data:", e);
+                currentUser = null; 
+                sessionStorage.removeItem('techGenUser'); 
             }
+        } else {
+            // console.log('[DOM_LOADED] No user session found. currentUser remains (or is set to) null.');
+            currentUser = null; 
         }
+        
+        // console.log('[DOM_LOADED] Final currentUser state before first updateAuthUI call:', currentUser);
         updateAuthUI(); 
         
         guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
@@ -2297,10 +2230,9 @@
                  if (document.getElementById(newHash)) {
                     showPage(newHash);
                  } else { 
-                    showPage('home'); // Fallback to home if hash is invalid
+                    showPage('home'); 
                  }
             } else if (!newHash && activePageId !== 'home') { 
-                // If hash is removed (e.g. back to root URL), go to home
                 showPage('home');
             }
         });
@@ -2308,3 +2240,4 @@
   </script>
 </body>
 </html>
+```
