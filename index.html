@@ -844,39 +844,117 @@
 
     <!-- Contact Page -->
     <div id="contact" class="page">
-        <header class="gradient-bg text-white py-8">
-            <div class="container mx-auto px-4 text-center">
-                <h1 class="text-3xl font-bold">Get In Touch</h1>
-                <p class="mt-2 text-[#A1A5B7]">We'd love to hear from you. Send us a message for inquiries, support, or feedback!</p>
+    <header class="gradient-bg text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-3xl font-bold">Get In Touch</h1>
+            <p class="mt-2 text-gray-200">We'd love to hear from you. Send us a message for inquiries, support, or feedback!</p>
+        </div>
+    </header>
+  <div class="container mx-auto px-4 py-16 max-w-2xl">
+    <div class="adsense-placeholder">Contact Page - Ad Unit Placeholder</div>
+    <div class="bg-white p-8 rounded-lg shadow-md">
+        <!-- Modified form tag with Formspree action and method -->
+        <form id="contactForm" action="https://formspree.io/f/mldnezke" method="POST">
+            <div class="mb-6">
+                <label for="contactName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <!-- 'name' attribute is important for Formspree -->
+                <input type="text" id="contactName" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
             </div>
-        </header>
-      <div class="container mx-auto px-4 py-16 max-w-2xl">
-        <div class="adsense-placeholder">Contact Page - Ad Unit Placeholder</div>
-        <div class="bg-white p-8 rounded-lg shadow-md">
-            <form id="contactForm">
-                <div class="mb-6">
-                    <label for="contactName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input type="text" id="contactName" name="contactName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <div class="mb-6">
-                    <label for="contactEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input type="email" id="contactEmail" name="contactEmail" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <div class="mb-6">
-                    <label for="contactSubject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
-                    <input type="text" id="contactSubject" name="contactSubject" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
-                </div>
-                <div class="mb-6">
-                    <label for="contactMessage" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                    <textarea id="contactMessage" name="contactMessage" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required></textarea>
-                </div>
-                <div>
-                    <button type="submit" id="contactSubmitButton" class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition font-semibold">
-                        <span id="contactSubmitButtonText">Send Message</span>
-                        <span id="contactSubmitSpinner" class="loading hidden ml-2"></span>
-                    </button>
-                </div>
-            </form>
+            <div class="mb-6">
+                <label for="contactEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <!-- Use 'name="_replyto"' for Formspree to set the Reply-To header -->
+                <input type="email" id="contactEmail" name="_replyto" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+            </div>
+            <div class="mb-6">
+                <label for="contactSubject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                <input type="text" id="contactSubject" name="subject" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+            </div>
+            <div class="mb-6">
+                <label for="contactMessage" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                <textarea id="contactMessage" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required></textarea>
+            </div>
+            <!-- You can add other custom Formspree fields here if needed, e.g.: -->
+            <!-- <input type="hidden" name="_subject" value="New Contact Form Submission!"> -->
+            <!-- <input type="hidden" name="_next" value="YOUR_THANK_YOU_PAGE_URL"> -->
+            <div>
+                <button type="submit" id="contactSubmitButton" class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition font-semibold flex items-center justify-center">
+                    <span id="contactSubmitButtonText">Send Message</span>
+                    <span id="contactSubmitSpinner" class="loading hidden ml-2"></span>
+                </button>
+            </div>
+        </form>
+        <div id="formStatusMessage" class="mt-4 text-center"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+    const contactForm = document.getElementById('contactForm');
+    const submitButton = document.getElementById('contactSubmitButton');
+    const buttonText = document.getElementById('contactSubmitButtonText');
+    const spinner = document.getElementById('contactSubmitSpinner');
+    const formStatusMessage = document.getElementById('formStatusMessage');
+
+    contactForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission to handle it with fetch
+
+        const formData = new FormData(contactForm);
+
+        // --- UI changes for "sending" state ---
+        buttonText.textContent = 'Sending...';
+        spinner.classList.remove('hidden');
+        submitButton.disabled = true;
+        formStatusMessage.textContent = ''; // Clear previous messages
+
+        fetch(contactForm.action, {
+            method: contactForm.method,
+            body: formData,
+            headers: {
+                'Accept': 'application/json' // Important for Formspree to return JSON
+            }
+        })
+        .then(response => {
+            buttonText.textContent = 'Send Message'; // Reset button text early
+            spinner.classList.add('hidden');
+            submitButton.disabled = false;
+
+            if (response.ok) {
+                return response.json();
+            } else {
+                // Try to parse error response from Formspree
+                return response.json().then(data => {
+                    if (Object.hasOwn(data, 'errors')) {
+                        throw new Error(data["errors"].map(error => error["message"]).join(", "));
+                    }
+                    throw new Error('Network response was not ok.');
+                });
+            }
+        })
+        .then(data => {
+            // --- UI changes for "sent" state ---
+            formStatusMessage.textContent = 'Message sent successfully!';
+            formStatusMessage.className = 'mt-4 text-center text-green-600 font-semibold';
+            contactForm.reset(); // Reset the form fields
+
+            // Remove the success message after a few seconds
+            setTimeout(() => {
+                formStatusMessage.textContent = '';
+            }, 5000);
+        })
+        .catch(error => {
+            console.error('Form submission error:', error);
+            // --- UI changes for "error" state ---
+            formStatusMessage.textContent = 'Oops! Something went wrong. ' + error.message;
+            formStatusMessage.className = 'mt-4 text-center text-red-600';
+        })
+        .finally(() => {
+            // Ensure button is re-enabled and spinner hidden in all cases (e.g. network error before .then)
+            buttonText.textContent = 'Send Message';
+            spinner.classList.add('hidden');
+            submitButton.disabled = false;
+        });
+    });
+</script>
         </div>
       </div>
     </div>
