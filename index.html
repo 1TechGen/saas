@@ -15,7 +15,6 @@
   <meta name="msvalidate.01" content="0411FDFD8C7EE90CFC8093F8B0BA1ACF" />
   <meta name="google-adsense-account" content="ca-pub-1893797822419017">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Tech_Gen AI SaaS Platform offers powerful AI tools like Image Generation, Document Translation, and Text Summarization to enhance your productivity.">
   <meta name="keywords" content="AI, SaaS, image generator,Ai image, translation, translate, summarization, artificial intelligence, tech tools, Tech_Gen">
   <title>Tech_Gen SaaS | Build Your SaaS Platform Faster</title>
   <meta name="description" content="Launch your SaaS business quickly with our customizable platform. Features include user management, analytics, and seamless integrations. Start your free trial today.">
@@ -37,14 +36,18 @@
   <title>Tech_Gen - AI SaaS Platform</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>  
+// Initialize Supabase in your main script
 const supabaseUrl = "https://jeytrtslclursxlrvqwh.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpleXRydHNsY2x1cnN4bHJ2cXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxMjcwMzEsImV4cCI6MjA2NDcwMzAzMX0.iHrhYIibZsKtUqy4JY0f05RSHoEoCMhTRrPoIZ5U72o";
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-   async function signUp(email, password) {
+  
+  async function signUp(email, password) {
   const { data, error } = await supabase.auth.signUp({
     email: email,
     password: password,
