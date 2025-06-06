@@ -15,7 +15,6 @@
   <meta name="msvalidate.01" content="0411FDFD8C7EE90CFC8093F8B0BA1ACF" />
   <meta name="google-adsense-account" content="ca-pub-1893797822419017">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="keywords" content="AI, SaaS, image generator,Ai image, translation, translate, summarization, artificial intelligence, tech tools, Tech_Gen">
   <title>Tech_Gen SaaS | Build Your SaaS Platform Faster</title>
   <meta name="description" content="Launch your SaaS business quickly with our customizable platform. Features include user management, analytics, and seamless integrations. Start your free trial today.">
   <meta name="keywords" content="SaaS platform, build SaaS, cloud software, startup tools, AI, SaaS, image generator,Ai image, translation, translate, summarization, artificial intelligence, tech tools, Tech_Gen">
@@ -33,93 +32,22 @@
   <meta name="twitter:description" content="Launch your SaaS business quickly with our customizable platform.">
   <meta name="twitter:image" content="https://www.techgentools.site/og-image.jpg">
   
-  <title>Tech_Gen - AI SaaS Platform</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script>  
-// Initialize Supabase in your main script
-const supabaseUrl = "https://jeytrtslclursxlrvqwh.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpleXRydHNsY2x1cnN4bHJ2cXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxMjcwMzEsImV4cCI6MjA2NDcwMzAzMX0.iHrhYIibZsKtUqy4JY0f05RSHoEoCMhTRrPoIZ5U72o";
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-  
-  async function signUp(email, password) {
-  const { data, error } = await supabase.auth.signUp({
-    email: email,
-    password: password,
-  });
-
-  if (error) {
-    console.error("Sign-up error:", error.message);
-    alert("Registration failed: " + error.message);
-  } else {
-    console.log("User registered:", data);
-    alert("Check your email for verification!");
-  }
-   }
-
-async function signIn(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email,
-    password: password,
-  });
-
-  if (error) {
-    console.error("Login error:", error.message);
-    alert("Login failed: " + error.message);
-  } else {
-    console.log("User logged in:", data);
-    alert("Welcome back!");
-    // Redirect to dashboard or homepage
-    window.location.href = "/dashboard.html";
-  }
-}
-
-    async function checkUser() {
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (user) {
-    console.log("User is logged in:", user.email);
-    // Show protected content
-  } else {
-    console.log("No user logged in");
-    // Redirect to login page
-    window.location.href = "/login.html";
-  }
-}
-
-// Call on page load
-checkUser();
-
-    async function signOut() {
-  const { error } = await supabase.auth.signOut();
-  
-  if (error) {
-    console.error("Logout error:", error);
-  } else {
-    console.log("User logged out");
-    window.location.href = "/login.html";
-  }
-    }
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-  </script>
-    
-
   <style>
     .page { display: none; }
     .page.active { display: block; }
     /* New style for auth-pages-container when active */
     .auth-pages-container.active-auth {
-        min-height: screen; /* Tailwind: min-h-screen */
+        min-height: 100vh; /* Use 100vh for full viewport height */
         display: flex;
         align-items: center;
         justify-content: center;
     }
-
     .gradient-bg {
       background: linear-gradient(135deg, #1B2EFD 0%, #00C5FF 100%);
     }
@@ -340,7 +268,7 @@ checkUser();
                         <h2 class="text-2xl font-bold text-white">Welcome Back</h2>
                     </div>
                     <form id="loginForm" class="p-6 space-y-4">
-                        <div id="loginError" class="error-message hidden text-red-600 text-sm"></div>
+                        <div id="loginError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
                         <div>
                             <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                             <input type="email" id="loginEmail" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
@@ -372,7 +300,7 @@ checkUser();
                         <h2 class="text-2xl font-bold text-white">Create Account</h2>
                     </div>
                     <form id="registerForm" class="p-6 space-y-4">
-                        <div id="registerError" class="error-message hidden text-red-600 text-sm"></div>
+                        <div id="registerError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
                         <div>
                             <label for="registerFullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                             <input type="text" id="registerFullName" name="fullName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
@@ -406,12 +334,12 @@ checkUser();
                         <h2 class="text-2xl font-bold text-white">Reset Password</h2>
                     </div>
                     <form id="forgotPasswordForm" class="p-6 space-y-4">
-                        <div id="forgotPasswordError" class="error-message hidden text-red-600 text-sm"></div>
-                        <div id="forgotPasswordSuccess" class="text-green-600 hidden mb-4">
-                            Password reset link has been sent to your email if it exists in our system.
+                        <div id="forgotPasswordError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
+                        <div id="forgotPasswordSuccess" class="hidden text-green-600 bg-green-100 p-2 rounded mb-4">
+                            If an account exists for this email, a password reset link has been sent.
                         </div>
                         <div>
-                            <label for="forgotPasswordEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <label for="forgotPasswordEmail" class="block text-sm font-medium text-gray-700 mb-1">Enter your account email</label>
                             <input type="email" id="forgotPasswordEmail" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
                         </div>
                         <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -434,21 +362,16 @@ checkUser();
                         <h2 class="text-2xl font-bold text-white">Set New Password</h2>
                     </div>
                     <form id="resetPasswordForm" class="p-6 space-y-4">
-                        <div id="resetPasswordError" class="error-message hidden text-red-600 text-sm"></div>
-                        <div id="resetPasswordSuccess" class="text-green-600 hidden mb-4">
+                        <div id="resetPasswordError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
+                        <div id="resetPasswordSuccess" class="hidden text-green-600 bg-green-100 p-2 rounded mb-4">
                             Your password has been updated successfully.
                         </div>
-                        <input type="hidden" id="resetToken" name="token">
                         <div>
                             <label for="resetNewPassword" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
                             <input type="password" id="resetNewPassword" name="newPassword" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required minlength="6">
                             <p class="text-xs text-gray-500 mt-1">Minimum 6 characters.</p>
                         </div>
-                        <div>
-                            <label for="resetConfirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                            <input type="password" id="resetConfirmPassword" name="confirmPassword" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required minlength="6">
-                        </div>
-                        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                         <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                             Update Password
                         </button>
                     </form>
@@ -460,6 +383,7 @@ checkUser();
                 </div>
             </div>
         </div>
+
         <div id="paymentPage" class="page">
           <div class="container mx-auto px-4 py-8 max-w-md">
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -1220,27 +1144,26 @@ checkUser();
         console.error("pdf.js library not loaded. PDF functionality will be affected.");
     }
 
-    // !!! CRITICAL SECURITY WARNINGS !!!
-    const GEMINI_API_KEY_PLACEHOLDER = "YOUR_GEMINI_API_KEY_HERE_REPLACE_ME"; 
+    // --- API KEYS AND CONFIGURATION ---
+    // In a real production app, these keys should be stored in environment variables on a server,
+    // and your frontend would call your server, not the APIs directly.
+    // Exposing API keys in client-side code is a major security risk.
     const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs"; 
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
     
-    const MONSTER_API_TOKEN_PLACEHOLDER = "YOUR_MONSTER_API_BEARER_TOKEN_HERE_REPLACE_ME";
     const MONSTER_API_BEARER_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjczODkxZjY1MTM1YWNkMjY1MmY3NDE1OWJmMjgzMjA4IiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjlUMDU6NDA6MzEuMTk2MjgzIn0.iOaQlBji9aXM5y7BM3UFmFSL0jF1yXLzeKiAN0-SlyA"; 
     const MONSTER_API_TXT2IMG_URL = "https://api.monsterapi.ai/v1/generate/txt2img";
 
-    const RAZORPAY_KEY_ID_PLACEHOLDER = "YOUR_RAZORPAY_KEY_ID_HERE";
-    const RAZORPAY_KEY_ID = "rzp_live_xoN2xNuHMZnCup"; 
+    const RAZORPAY_KEY_ID = "rzp_test_rGZcQYTcZ5hF1s"; // Using a test key for demonstration
 
+    // --- SUPABASE INITIALIZATION ---
+    const supabaseUrl = "https://jeytrtslclursxlrvqwh.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpleXRydHNsY2x1cnN4bHJ2cXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxMjcwMzEsImV4cCI6MjA2NDcwMzAzMX0.iHrhYIibZsKtUqy4JY0f05RSHoEoCMhTRrPoIZ5U72o";
+    const { createClient } = supabase;
+    const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+    // --- APPLICATION STATE AND CONSTANTS ---
     let currentUser = null; 
-
-    const authButtonsContainer = document.getElementById('authButtonsContainer');
-    const userInfoContainer = document.getElementById('userInfoContainer');
-    const userEmailDisplay = document.getElementById('userEmailDisplay');
-    const logoutButton = document.getElementById('logoutButton');
-    const paymentForm = document.getElementById('paymentForm');
-    const authPagesWrapper = document.getElementById('auth-pages-wrapper'); // Get the new wrapper
-
     const GUEST_TOTAL_USAGE_LIMIT = 10; 
     const FREE_TIER_LIMITS = { 
         imageGen: 5,
@@ -1273,6 +1196,8 @@ checkUser();
 
     const authPageIds = ['login', 'register', 'forgotPassword', 'resetPassword', 'paymentPage'];
 
+    // --- UI AND HELPER FUNCTIONS ---
+
     function updateMetaTags(pageId) {
         const meta = pageMetaInfo[pageId];
         document.title = meta ? meta.title : "Tech_Gen - AI Platform";
@@ -1300,8 +1225,8 @@ checkUser();
     function showPage(pageId, isInitialLoad = false) {
         document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
         const targetPage = document.getElementById(pageId);
+        const authPagesWrapper = document.getElementById('auth-pages-wrapper');
 
-        // Conditional styling for the auth pages wrapper
         if (authPagesWrapper) {
             if (authPageIds.includes(pageId)) {
                 authPagesWrapper.classList.add('active-auth');
@@ -1310,54 +1235,28 @@ checkUser();
             }
         }
 
-
         if (targetPage) {
             targetPage.classList.add('active');
             updateMetaTags(pageId);
-
-            if (pageId === 'resetPassword') {
-                const urlParams = new URLSearchParams(window.location.search);
-                const token = urlParams.get('token');
-                const resetTokenInput = document.getElementById('resetToken');
-                if (token && resetTokenInput) {
-                    resetTokenInput.value = token;
-                }
-            }
-
-            const currentPath = window.location.pathname;
-            let newSearchParamsString = ""; 
-
-            if (pageId === 'resetPassword') {
-                const currentUrlParams = new URLSearchParams(window.location.search);
-                if (currentUrlParams.has('token')) {
-                    const preservedTokenParams = new URLSearchParams();
-                    preservedTokenParams.set('token', currentUrlParams.get('token'));
-                    newSearchParamsString = `?${preservedTokenParams.toString()}`;
-                }
-            }
-            const newURL = `${currentPath}${newSearchParamsString}#${pageId}`;
             
+            const newURL = `${window.location.pathname}#${pageId}`;
             const pageTitle = pageMetaInfo[pageId]?.title || `Tech_Gen - ${pageId}`;
-            if (isInitialLoad) {
-                window.history.replaceState({ page: pageId }, pageTitle, newURL);
-            } else {
-                if (window.location.href !== new URL(newURL, window.location.origin).href) {
+            
+            // Avoid pushing duplicate history states
+            if (window.location.hash !== `#${pageId}`) {
+                if (isInitialLoad) {
+                    window.history.replaceState({ page: pageId }, pageTitle, newURL);
+                } else {
                     window.history.pushState({ page: pageId }, pageTitle, newURL);
                 }
             }
-
         } else {
             console.warn(`Page with ID "${pageId}" not found. Defaulting to home.`);
-            const homePage = document.getElementById('home');
-            if (homePage) {
-                homePage.classList.add('active');
-                updateMetaTags('home');
-                 window.history.replaceState({ page: 'home' }, pageMetaInfo['home']?.title, window.location.pathname + '#home');
-                 if(authPagesWrapper) authPagesWrapper.classList.remove('active-auth'); // Ensure wrapper is not styled for home
-            }
+            showPage('home');
         }
         window.scrollTo(0, 0);
 
+        // Clear any previous form errors when showing a new page
         document.querySelectorAll('#loginError, #registerError, #forgotPasswordError, #resetPasswordError').forEach(el => {
             el.classList.add('hidden'); el.textContent = '';
         });
@@ -1367,14 +1266,16 @@ checkUser();
     }
 
     function getCurrentPageIdFromUrl() {
-        const hash = window.location.hash.substring(1);
-        const urlParams = new URLSearchParams(window.location.search);
-        const tokenFromUrl = urlParams.get('token');
-
-        if (tokenFromUrl && (hash === 'resetPassword' || !hash || hash === '') ) { 
-            return 'resetPassword';
+        // Supabase v2 uses the URL fragment for tokens. It looks like #access_token=...
+        // The fragment will not be a simple page ID during auth redirects.
+        const hash = window.location.hash;
+        if (hash.includes('access_token')) {
+            // This is an auth redirect. Let the onAuthStateChange handler decide where to go.
+            // For now, return a neutral page like 'home' to avoid errors.
+            return 'home';
         }
-        return (hash && document.getElementById(hash)) ? hash : 'home';
+        const pageId = hash.substring(1);
+        return (pageId && document.getElementById(pageId)) ? pageId : 'home';
     }
 
     function updatePricingDisplay() {
@@ -1386,6 +1287,31 @@ checkUser();
         }
     }
 
+    function updateAuthUI() {
+        const authButtonsContainer = document.getElementById('authButtonsContainer');
+        const userInfoContainer = document.getElementById('userInfoContainer');
+        const userEmailDisplay = document.getElementById('userEmailDisplay');
+
+        if (!authButtonsContainer || !userInfoContainer) {
+            console.error("Auth UI containers not found in the DOM!");
+            return;
+        }
+
+        if (currentUser) { 
+            authButtonsContainer.classList.add('hidden');
+            userInfoContainer.classList.remove('hidden'); 
+            
+            const planName = plansData[currentUser.plan]?.name || 'Free';
+            if(userEmailDisplay) userEmailDisplay.textContent = `${escapeHtml(currentUser.name)} (${escapeHtml(planName)} Plan)`;
+        } else { 
+            authButtonsContainer.classList.remove('hidden');
+            userInfoContainer.classList.add('hidden');
+            if(userEmailDisplay) userEmailDisplay.textContent = '';
+        }
+    }
+
+    // --- FEATURE GATING AND USAGE TRACKING ---
+
     function updateGuestUsage() {
         guestUsage.total++;
         sessionStorage.setItem('techGenGuestUsage', JSON.stringify(guestUsage));
@@ -1395,7 +1321,7 @@ checkUser();
         if (guestUsage.total < GUEST_TOTAL_USAGE_LIMIT) {
             return true;
         }
-        showAlert(`You've reached your guest usage limit of ${GUEST_TOTAL_USAGE_LIMIT} actions for this session. Please log in or register for more access.`, 'info');
+        showAlert(`You've reached your guest usage limit of ${GUEST_TOTAL_USAGE_LIMIT} actions. Please log in or register for more access.`, 'info');
         sessionStorage.setItem('intendedPage', currentPageId || 'home');
         showPage('login');
         return false;
@@ -1407,7 +1333,6 @@ checkUser();
         if (currentUser.plan === 'pro' || currentUser.plan === 'business') return true;
 
         if (currentUser.plan === 'free') {
-            currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
             const limit = FREE_TIER_LIMITS[featureType];
             const currentCount = currentUser.usageCounts[featureType] || 0;
 
@@ -1419,49 +1344,43 @@ checkUser();
             showPage('pricing');
             return false;
         }
-        return true; 
+        return false; // Default to no access if plan is unknown
     }
 
     function incrementFeatureUsage(featureType) {
-        if (currentUser) {
-            if (currentUser.plan === 'free') {
-                currentUser.usageCounts = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
-                currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
-                sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
-            }
-        } else {
+        if (currentUser && currentUser.plan === 'free') {
+            currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
+            // Persist usage for the current session for logged-in free users
+            sessionStorage.setItem(`techGenUsage_${currentUser.email}`, JSON.stringify(currentUser.usageCounts));
+        } else if (!currentUser) { // Guest user
             updateGuestUsage();
         }
     }
 
+    // --- API CALL FUNCTIONS ---
+
     async function callGeminiAPI(promptText) {
-        if (!GEMINI_API_KEY || GEMINI_API_KEY === GEMINI_API_KEY_PLACEHOLDER || GEMINI_API_KEY.includes("_PLACEHOLDER")) {
-             showAlert('Gemini API Key is not configured correctly. AI features using Gemini will not work.', 'error');
-             console.error('Gemini API Key is not configured or is a placeholder.');
-             throw new Error('Gemini API Key not configured.');
+        if (!GEMINI_API_KEY) {
+             showAlert('API Key is not configured correctly. AI features will not work.', 'error');
+             throw new Error('API Key not configured.');
         }
         const requestUrl = `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`;
         try {
             const response = await fetch(requestUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: promptText }] }],
-                })
+                body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
             });
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ error: { message: `API error: ${response.status} ${response.statusText}` }}));
-                let errorMessage = errorData.error?.message || `API error: ${response.status} ${response.statusText}`;
-                if (errorData.error?.details) errorMessage += ` Details: ${JSON.stringify(errorData.error.details)}`;
-                throw new Error(errorMessage);
+                throw new Error(errorData.error?.message || `API error: ${response.status}`);
             }
             const data = await response.json();
             if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
                 return data.candidates[0].content.parts[0].text;
             } else if (data.promptFeedback?.blockReason) {
-                 throw new Error(`Content blocked by API: ${data.promptFeedback.blockReason} ${data.promptFeedback.blockReasonMessage ? '- ' + data.promptFeedback.blockReasonMessage : ''}. Please revise your input.`);
+                 throw new Error(`Content blocked by API: ${data.promptFeedback.blockReason}. Revise your input.`);
             } else {
-                console.warn("Unexpected Gemini API response structure:", data);
                 throw new Error('Invalid response format from Gemini API.');
             }
         } catch (error) {
@@ -1471,9 +1390,8 @@ checkUser();
     }
 
     async function initiateMonsterImageGeneration(prompt, aspectRatio, style) {
-        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === MONSTER_API_TOKEN_PLACEHOLDER || MONSTER_API_BEARER_TOKEN.includes("_PLACEHOLDER")) {
+        if (!MONSTER_API_BEARER_TOKEN) {
             showAlert('Monster API Token is not configured correctly. Image generation will not work.', 'error');
-            console.error('Monster API Token is not configured or is a placeholder.');
             throw new Error('Monster API Token not configured.');
         }
         const formData = new FormData();
@@ -1484,10 +1402,7 @@ checkUser();
         try {
             const response = await fetch(MONSTER_API_TXT2IMG_URL, {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${MONSTER_API_BEARER_TOKEN}`,
-                    'Accept': 'application/json',
-                },
+                headers: { 'Authorization': `Bearer ${MONSTER_API_BEARER_TOKEN}`, 'Accept': 'application/json' },
                 body: formData
             });
             if (!response.ok) {
@@ -1502,14 +1417,11 @@ checkUser();
     }
 
     async function fetchMonsterImageStatus(statusUrl) {
-        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === MONSTER_API_TOKEN_PLACEHOLDER) throw new Error('Monster API Token not configured.');
+        if (!MONSTER_API_BEARER_TOKEN) throw new Error('Monster API Token not configured.');
         try {
             const response = await fetch(statusUrl, {
                 method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${MONSTER_API_BEARER_TOKEN}`,
-                    'Accept': 'application/json',
-                }
+                headers: { 'Authorization': `Bearer ${MONSTER_API_BEARER_TOKEN}`, 'Accept': 'application/json' }
             });
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ message: `Monster API status error: ${response.status}`}));
@@ -1522,77 +1434,19 @@ checkUser();
         }
     }
         
-    function updateAuthUI() {
-        if (!authButtonsContainer || !userInfoContainer) {
-            console.error("Auth UI containers not found in the DOM!");
-            return;
-        }
+    // --- FILE HANDLING AND UTILITIES ---
 
-        if (currentUser && typeof currentUser === 'object' && currentUser.email) { 
-            authButtonsContainer.classList.add('hidden');
-            userInfoContainer.classList.remove('hidden'); 
-            
-            let planName = 'Free Plan'; 
-            if (currentUser.plan && plansData[currentUser.plan]) {
-                planName = plansData[currentUser.plan].name + " Plan";
-            }
-            if(userEmailDisplay) userEmailDisplay.textContent = `${escapeHtml(currentUser.name) || escapeHtml(currentUser.email)} (${escapeHtml(planName)})`;
-        } else { 
-            authButtonsContainer.classList.remove('hidden');
-            userInfoContainer.classList.add('hidden');
-            if(userEmailDisplay) userEmailDisplay.textContent = '';
-        }
-    }
-
-    function handleLogout() {
-        currentUser = null;
-        sessionStorage.removeItem('techGenUser');
-        sessionStorage.removeItem('intendedPage'); 
-        sessionStorage.removeItem('pendingPlan');
-        sessionStorage.removeItem('techGenGuestUsage'); 
-        guestUsage = { total: 0 };
-        updateAuthUI(); 
-        showAlert('You have been logged out successfully.', 'success');
-        showPage('home');
-    }
-    if (logoutButton) logoutButton.addEventListener('click', handleLogout);
-
-    const textTabBtn = document.getElementById('textTabBtn');
-    const docTabBtn = document.getElementById('docTabBtn');
-    const textTranslationSection = document.getElementById('textTranslationSection');
-    const docTranslationSection = document.getElementById('docTranslationSection');
-
-    if (textTabBtn && docTabBtn && textTranslationSection && docTranslationSection) { 
-        textTabBtn.addEventListener('click', function() {
-          textTranslationSection.classList.remove('hidden'); 
-          docTranslationSection.classList.add('hidden');
-          this.classList.add('active','text-white'); 
-          this.classList.remove('text-[#A1A5B7]');
-          docTabBtn.classList.remove('active','text-white'); 
-          docTabBtn.classList.add('text-[#A1A5B7]');
-        });
-        docTabBtn.addEventListener('click', function() {
-          textTranslationSection.classList.add('hidden'); 
-          docTranslationSection.classList.remove('hidden');
-          this.classList.add('active','text-white'); 
-          this.classList.remove('text-[#A1A5B7]');
-          textTabBtn.classList.remove('active','text-white'); 
-          textTabBtn.classList.add('text-[#A1A5B7]');
-        });
-    }
-    
     function downloadImage(url, filename) { 
       fetch(url, { mode: 'cors' }) 
         .then(response => {
           if (!response.ok) {
-            console.warn("CORS fetch failed for image download, trying direct link.");
             const directLink = document.createElement('a');
             directLink.href = url;
             directLink.download = filename;
             document.body.appendChild(directLink);
             directLink.click();
             document.body.removeChild(directLink);
-            showAlert('Image download initiated (direct link). Check your downloads folder.', 'info');
+            showAlert('Image download initiated (direct link).', 'info');
             return null; 
           }
           return response.blob();
@@ -1610,35 +1464,18 @@ checkUser();
           }
         })
         .catch(error => {
-            showAlert(`Image download error: ${error.message}. Attempting fallback direct link.`, 'error');
-            try {
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                showAlert('Image download initiated (fallback). Check your downloads folder.', 'info');
-            } catch (e) {
-                showAlert(`Download completely failed: ${e.message}. Please try to save the image manually.`, 'error');
-            }
+            showAlert(`Image download error: ${error.message}. Please try to save the image manually.`, 'error');
         });
     }
 
     async function extractTextFromFile(file) { 
         const extension = file.name.split('.').pop().toLowerCase();
         if (extension === 'pdf') {
-            if (typeof pdfjsLib === 'undefined') {
-                 showAlert('PDF.js library is not loaded. Cannot process PDF files.', 'error');
-                 throw new Error('PDF.js library missing.');
-            }
+            if (typeof pdfjsLib === 'undefined') throw new Error('PDF.js library missing.');
             return await extractTextFromPDF(file);
         }
         if (extension === 'docx') {
-            if (typeof mammoth === 'undefined') {
-                showAlert('Mammoth.js library is not loaded. Cannot process DOCX files.', 'error');
-                throw new Error('Mammoth.js library missing.');
-            }
+            if (typeof mammoth === 'undefined') throw new Error('Mammoth.js library missing.');
             return await extractTextFromDOCX(file);
         }
         if (extension === 'txt') return await extractTextFromTXT(file);
@@ -1660,14 +1497,10 @@ checkUser();
                     }
                     resolve(fullText.trim());
                 } catch (e) { 
-                    console.error("Error parsing PDF:", e);
-                    reject(new Error("Could not extract text from PDF. The file might be corrupted, password-protected, or an image-only PDF.")); 
+                    reject(new Error("Could not extract text from PDF. The file might be corrupted or an image-only PDF.")); 
                 }
             };
-            fileReader.onerror = () => {
-                console.error("FileReader error on PDF.");
-                reject(new Error("Error reading PDF file."));
-            }
+            fileReader.onerror = () => reject(new Error("Error reading PDF file."));
             fileReader.readAsArrayBuffer(file);
         });
     }
@@ -1678,15 +1511,9 @@ checkUser();
             fileReader.onload = function() {
                 mammoth.extractRawText({arrayBuffer: this.result})
                     .then(result => resolve(result.value.trim()))
-                    .catch(err => {
-                        console.error("Error parsing DOCX with Mammoth:", err);
-                        reject(new Error("Could not extract text from DOCX. The file might be corrupted or in an unsupported format."));
-                    });
+                    .catch(err => reject(new Error("Could not extract text from DOCX.")));
             };
-            fileReader.onerror = () => {
-                console.error("FileReader error on DOCX.");
-                reject(new Error("Error reading DOCX file."));
-            }
+            fileReader.onerror = () => reject(new Error("Error reading DOCX file."));
             fileReader.readAsArrayBuffer(file);
         });
     }
@@ -1694,390 +1521,14 @@ checkUser();
     async function extractTextFromTXT(file) { 
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
-            fileReader.onload = function() { 
-                resolve(this.result.trim()); 
-            };
-            fileReader.onerror = () => {
-                console.error("FileReader error on TXT.");
-                reject(new Error("Error reading TXT file."));
-            }
+            fileReader.onload = function() { resolve(this.result.trim()); };
+            fileReader.onerror = () => reject(new Error("Error reading TXT file."));
             fileReader.readAsText(file);
         });
     }
 
-    const generateImageBtn = document.getElementById('generateImageBtn');
-    const imagePlaceholderText = document.getElementById('imagePlaceholderText'); 
-    if (generateImageBtn) { 
-        generateImageBtn.addEventListener('click', async function() {
-            const pageId = 'ai-generator';
-            if (!canLoggedInUserUseFeature('imageGen', pageId)) return;
+    // --- PAYMENT HANDLING ---
 
-            const prompt = document.getElementById('imagePrompt').value.trim();
-            if (!prompt) { 
-                showAlert('Please enter an image description.', 'error'); 
-                return; 
-            }
-            
-            const btn = this;
-            const spinner = document.getElementById('generateSpinner');
-            const btnTextEl = document.getElementById('generateBtnText');
-            const aspectRatio = document.getElementById('monsterAspectRatio').value;
-            const style = document.getElementById('monsterImageStyle').value; 
-            
-            btn.disabled = true; 
-            spinner.classList.remove('hidden'); 
-            btnTextEl.textContent = 'Initializing...';
-            document.getElementById('imagePlaceholder').style.display = 'flex'; 
-            if(imagePlaceholderText) imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Initializing image generation...</p></div>`; 
-            document.getElementById('imageResultContainer').classList.add('hidden'); 
-            
-            try {
-                const initRes = await initiateMonsterImageGeneration(prompt, aspectRatio, style);
-                if (initRes && initRes.status_url && initRes.process_id) {
-                    showAlert('Image generation process started. ID: ' + initRes.process_id, 'info');
-                    btnTextEl.textContent = 'Generating...';
-                    if(imagePlaceholderText) imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Generating image... This may take a moment.</p></div>`;
-                    
-                    let attempts = 0, maxAttempts = 40, pollInterval = 5000; 
-                    const poll = async () => {
-                        if (attempts++ >= maxAttempts) { 
-                            throw new Error('Image generation timed out after ' + maxAttempts + ' attempts.');
-                        }
-                        try {
-                            const statusRes = await fetchMonsterImageStatus(initRes.status_url);
-                            if (statusRes.status === 'IN_PROGRESS' || statusRes.status === 'IN_QUEUE') {
-                                if(imagePlaceholderText) imagePlaceholderText.innerHTML = `<div class="flex flex-col items-center"><div class="loading mb-2" style="width: 24px; height: 24px;"></div><p class="text-[#A1A5B7] text-sm">Status: ${statusRes.status.replace('_',' ')} (Attempt ${attempts}/${maxAttempts})</p></div>`;
-                                setTimeout(poll, pollInterval);
-                            } else if (statusRes.status === 'COMPLETED') {
-                                if (statusRes.result && statusRes.result.output && statusRes.result.output.length > 0) {
-                                    document.getElementById('imagePlaceholder').style.display = 'none';
-                                    const img = document.getElementById('generatedImage');
-                                    img.src = statusRes.result.output[0]; 
-                                    img.alt = prompt; 
-                                    document.getElementById('imageResultContainer').classList.remove('hidden');
-                                    document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
-                                    showAlert('Image generated successfully!', 'success');
-                                    incrementFeatureUsage('imageGen');
-                                } else {
-                                     throw new Error('Image generation completed, but no image URL was found in the result.');
-                                }
-                            } else if (statusRes.status === 'FAILED') {
-                                 throw new Error(`Image generation failed: ${statusRes.message || 'The API reported a failure.'}`);
-                            } else {
-                                 throw new Error(`Unknown image generation status: ${statusRes.status}`);
-                            }
-                        } catch (pollErr) { 
-                            if(imagePlaceholderText) imagePlaceholderText.innerHTML = `<p class="text-red-400 text-sm">Error during polling: ${escapeHtml(pollErr.message)}</p>`;
-                            showAlert(`Image Polling Error: ${pollErr.message}`, 'error');
-                        } finally {
-                            const generatedImageElement = document.getElementById('generatedImage');
-                            const isErrorInPlaceholder = imagePlaceholderText && imagePlaceholderText.textContent.includes('Error');
-                            const isImageSrcValid = generatedImageElement && generatedImageElement.src && generatedImageElement.src !== window.location.href.split('#')[0] + '#';
-
-                            if (isErrorInPlaceholder || isImageSrcValid) {
-                                btn.disabled = false; 
-                                spinner.classList.add('hidden'); 
-                                btnTextEl.textContent = 'Generate';
-                            }
-                        }
-                    };
-                    setTimeout(poll, pollInterval); 
-                } else {
-                    throw new Error('Failed to initialize image generation process with the API.');
-                }
-            } catch (err) { 
-                if(imagePlaceholderText) imagePlaceholderText.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
-                showAlert(`Failed to generate image: ${err.message}`, 'error');
-                btn.disabled = false; 
-                spinner.classList.add('hidden'); 
-                btnTextEl.textContent = 'Generate';
-            }
-        });
-    }
-
-    const docFileInput = document.getElementById('docFileInput');
-    if (docFileInput) { 
-        docFileInput.addEventListener('change', async function(e) {
-          const file = e.target.files[0]; 
-          if (!file) return;
-
-          const translateDocButton = document.getElementById('translateDocBtn');
-          const fileNameDisplay = document.getElementById('docFileNameDisplay');
-          const fileExtractStatus = document.getElementById('docFileExtractStatus');
-          const textPreviewDiv = document.querySelector('#docTextPreview div'); 
-          const textPreviewContainer = document.getElementById('docTextPreview');
-          
-          translateDocButton.disabled = true; 
-          fileNameDisplay.textContent = `Selected file: ${escapeHtml(file.name)}`;
-          fileExtractStatus.classList.remove('hidden'); 
-          textPreviewContainer.classList.add('hidden'); 
-          if(textPreviewDiv) textPreviewDiv.textContent = ''; 
-          
-          const outputDiv = document.getElementById('docTranslationOutput');
-          if (outputDiv) outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Document translation results will appear here...</p>`;
-          document.getElementById('downloadTranslationBtn').classList.add('hidden');
-          document.getElementById('copyDocBtn').classList.add('hidden');
-
-          try {
-            const extractedText = await extractTextFromFile(file);
-            if(textPreviewDiv) {
-                textPreviewDiv.textContent = extractedText.substring(0, 500) + (extractedText.length > 500 ? "..." : "");
-            }
-            textPreviewContainer.classList.remove('hidden'); 
-            translateDocButton.setAttribute('data-extracted-text', extractedText); 
-            translateDocButton.disabled = false; 
-            showAlert('Document text extracted successfully!', 'success');
-          } catch (err) {
-            showAlert(`Error extracting text: ${err.message}`, 'error');
-            fileNameDisplay.textContent = `Error with ${escapeHtml(file.name)}: ${escapeHtml(err.message)}`;
-            translateDocButton.removeAttribute('data-extracted-text');
-          } finally { 
-            fileExtractStatus.classList.add('hidden'); 
-          }
-        });
-    }
-
-    const translateTextBtn = document.getElementById('translateTextBtn');
-    if (translateTextBtn) { 
-        translateTextBtn.addEventListener('click', async function() {
-            const pageId = 'translate';
-            if (!canLoggedInUserUseFeature('translate', pageId)) return;
-
-            const textToTranslate = document.getElementById('translatePageTextInput').value.trim();
-            if (!textToTranslate) { 
-                showAlert('Please enter text to translate.', 'error'); 
-                return; 
-            }
-            
-            const targetLangDropdown = document.getElementById('targetLanguage');
-            const targetLangCode = targetLangDropdown.value;
-            const targetLangName = targetLangDropdown.options[targetLangDropdown.selectedIndex].text;
-            const btn = this;
-            const spinner = document.getElementById('translateTextSpinner');
-            const outputDiv = document.getElementById('textOutput');
-            
-            btn.disabled = true; 
-            spinner.classList.remove('hidden');
-            outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating...</p>`;
-            document.getElementById('copyTextBtn').classList.add('hidden');
-            
-            try {
-                const prompt = `Translate the following text to ${targetLangName} (language code: ${targetLangCode}). Provide only the translated text, without any introductory phrases or explanations.\n\nOriginal text:\n"${textToTranslate}"`;
-                const translation = await callGeminiAPI(prompt);
-                outputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
-                document.getElementById('copyTextBtn').classList.remove('hidden');
-                showAlert('Text translated successfully!', 'success');
-                incrementFeatureUsage('translate');
-            } catch (err) {
-                outputDiv.innerHTML = `<p class="text-red-400 text-sm">Translation Error: ${escapeHtml(err.message)}</p>`;
-                showAlert(`Translation failed: ${err.message}`, 'error');
-            } finally { 
-                btn.disabled = false; 
-                spinner.classList.add('hidden'); 
-            }
-        });
-    }
-
-    const translateDocBtn = document.getElementById('translateDocBtn');
-    if (translateDocBtn) { 
-        translateDocBtn.addEventListener('click', async function() {
-            const pageId = 'translate';
-            if (!canLoggedInUserUseFeature('translate', pageId)) return;
-
-            const extractedText = this.getAttribute('data-extracted-text');
-            if (!extractedText) { 
-                showAlert('No text extracted from document. Please upload a valid document first.', 'error'); 
-                return; 
-            }
-            
-            const targetLangDropdown = document.getElementById('docTargetLanguage');
-            const targetLangCode = targetLangDropdown.value;
-            const targetLangName = targetLangDropdown.options[targetLangDropdown.selectedIndex].text;
-            const btn = this;
-            const spinner = document.getElementById('translateDocSpinner');
-            const outputDiv = document.getElementById('docTranslationOutput');
-            
-            btn.disabled = true; 
-            spinner.classList.remove('hidden');
-            outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating document content...</p>`;
-            document.getElementById('copyDocBtn').classList.add('hidden');
-            document.getElementById('downloadTranslationBtn').classList.add('hidden');
-            
-            try {
-                showAlert(`Translating document to ${targetLangName}... This may take some time for large documents.`, 'info');
-                const prompt = `Translate the following document text to ${targetLangName} (language code: ${targetLangCode}). Try to preserve paragraph breaks and general structure. Provide only the translated text.\n\nOriginal document text:\n"${extractedText}"`;
-                const translation = await callGeminiAPI(prompt);
-
-                outputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><div class="text-white text-sm max-h-96 overflow-y-auto whitespace-pre-wrap">${escapeHtml(translation)}</div>`;
-                outputDiv.setAttribute('data-raw-translation', translation); 
-                document.getElementById('copyDocBtn').classList.remove('hidden');
-                document.getElementById('downloadTranslationBtn').classList.remove('hidden');
-                showAlert('Document content translated successfully!', 'success');
-                incrementFeatureUsage('translate');
-            } catch (err) {
-                outputDiv.innerHTML = `<p class="text-red-400 text-sm">Document Translation Error: ${escapeHtml(err.message)}</p>`;
-                showAlert(`Document translation failed: ${err.message}`, 'error');
-            } finally { 
-                btn.disabled = false; 
-                spinner.classList.add('hidden'); 
-            }
-        });
-    }
-
-    const copyTextBtn = document.getElementById('copyTextBtn');
-    if (copyTextBtn) copyTextBtn.addEventListener('click', () => {
-          const textElement = document.getElementById('textOutput').querySelector('p.text-white'); 
-          const textToCopy = textElement ? textElement.innerText : '';
-          if (textToCopy) {
-              navigator.clipboard.writeText(textToCopy)
-                  .then(() => showAlert('Translated text copied to clipboard!', 'success'))
-                  .catch(err => {
-                      console.error('Clipboard copy failed:', err);
-                      showAlert('Failed to copy text. Please try manual copy.', 'error');
-                  });
-          } else {
-              showAlert('No translated text available to copy.', 'info');
-          }
-    });
-    
-    const copyDocBtn = document.getElementById('copyDocBtn');
-    if (copyDocBtn) copyDocBtn.addEventListener('click', () => {
-          const rawTranslation = document.getElementById('docTranslationOutput').getAttribute('data-raw-translation');
-          if (rawTranslation) {
-              navigator.clipboard.writeText(rawTranslation)
-                  .then(() => showAlert('Translated document content copied to clipboard!', 'success'))
-                  .catch(err => {
-                      console.error('Clipboard copy failed:', err);
-                      showAlert('Failed to copy document content. Please try manual copy.', 'error');
-                  });
-          } else {
-              showAlert('No translated document content available to copy.', 'info');
-          }
-    });
-    
-    const downloadTranslationBtn = document.getElementById('downloadTranslationBtn');
-    if (downloadTranslationBtn) downloadTranslationBtn.addEventListener('click', () => {
-          const rawTranslation = document.getElementById('docTranslationOutput').getAttribute('data-raw-translation');
-          if (!rawTranslation) { 
-              showAlert('No translated content to download.', 'info'); 
-              return; 
-          }
-          const targetLangName = document.getElementById('docTargetLanguage').options[document.getElementById('docTargetLanguage').selectedIndex].text;
-          const originalFileNameBase = (document.getElementById('docFileNameDisplay').textContent.replace('Selected file: ', '').split('.')[0] || 'document').replace(/[^a-z0-9_.-]/gi, '_');
-          const downloadFileName = `${originalFileNameBase}_translated_to_${targetLangName.toLowerCase().replace(/[^a-z0-9]/gi, '_')}.txt`;
-          
-          const blob = new Blob([rawTranslation], { type: 'text/plain;charset=utf-8' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url; 
-          a.download = downloadFileName;
-          document.body.appendChild(a); 
-          a.click(); 
-          document.body.removeChild(a); 
-          URL.revokeObjectURL(url); 
-          showAlert('Translated document downloaded as TXT!', 'success');
-    });
-
-    const summarizeDocInput = document.getElementById('summarizeDocInput');
-    const summarizeTextInput = document.getElementById('summarizeTextInput'); 
-    const summarizeDocNameDisplay = document.getElementById('summarizeDocNameDisplay');
-    const summarizeDocExtractStatus = document.getElementById('summarizeDocExtractStatus');
-
-    if (summarizeDocInput) summarizeDocInput.addEventListener('change', async (e) => {
-            const file = e.target.files[0]; 
-            if (!file) return;
-
-            summarizeDocNameDisplay.textContent = `Selected file: ${escapeHtml(file.name)}`;
-            summarizeDocExtractStatus.classList.remove('hidden');
-            summarizeTextInput.value = ''; 
-            
-            const outputDiv = document.getElementById('summaryOutput');
-            if (outputDiv) outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Summary will appear here...</p>`;
-            document.getElementById('copySummaryBtn').classList.add('hidden');
-            
-            try {
-                const extractedText = await extractTextFromFile(file); 
-                summarizeTextInput.value = extractedText; 
-                showAlert('Text extracted from document and ready to summarize!', 'success');
-            } catch (err) {
-                showAlert(`Error extracting text: ${err.message}`, 'error');
-                summarizeDocNameDisplay.textContent = `Error with ${escapeHtml(file.name)}: ${escapeHtml(err.message)}`;
-            } finally { 
-                summarizeDocExtractStatus.classList.add('hidden'); 
-            }
-    });
-
-    const summarizeTextBtn = document.getElementById('summarizeTextBtn');
-    if (summarizeTextBtn) summarizeTextBtn.addEventListener('click', async function() {
-            const pageId = 'summarization';
-            if (!canLoggedInUserUseFeature('summarize', pageId)) return;
-
-            const textToSummarize = summarizeTextInput.value.trim();
-            if (!textToSummarize) { 
-                showAlert('Please enter text or upload a document to summarize.', 'error'); 
-                return; 
-            }
-            
-            const lengthDropdown = document.getElementById('summaryLength');
-            const summaryLengthValue = lengthDropdown.value;
-            const summaryLengthText = lengthDropdown.options[lengthDropdown.selectedIndex].text;
-            const btn = this;
-            const spinner = document.getElementById('summarizeTextSpinner');
-            const btnTextElement = document.getElementById('summarizeBtnText');
-            const outputDiv = document.getElementById('summaryOutput');
-            const copySummaryButton = document.getElementById('copySummaryBtn');
-            
-            btn.disabled = true; 
-            spinner.classList.remove('hidden'); 
-            btnTextElement.textContent = 'Summarizing...';
-            outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Generating summary...</p>`;
-            copySummaryButton.classList.add('hidden');
-            
-            try {
-                let lengthInstruction = "";
-                if (summaryLengthValue === 'short') lengthInstruction = "Provide a short summary, ideally 1-2 sentences, focusing on the main idea.";
-                else if (summaryLengthValue === 'medium') lengthInstruction = "Provide a medium-length summary, about one concise paragraph, covering key points.";
-                else lengthInstruction = "Provide a long, detailed summary, potentially multiple paragraphs if the text is extensive, capturing main arguments and supporting details.";
-                
-                const prompt = `Please summarize the following text. ${lengthInstruction} Ensure the summary is coherent and directly extracted from the provided text. Output only the summary text itself.\n\nText to summarize:\n"${textToSummarize}"`;
-                
-                showAlert(`Generating ${summaryLengthValue} summary...`, 'info');
-                const summary = await callGeminiAPI(prompt);
-                
-                outputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Summary (${escapeHtml(summaryLengthText)}):</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(summary)}</p>`;
-                outputDiv.setAttribute('data-raw-summary', summary); 
-                copySummaryButton.classList.remove('hidden');
-                showAlert('Text summarized successfully!', 'success');
-                incrementFeatureUsage('summarize');
-            } catch (err) {
-                outputDiv.innerHTML = `<p class="text-red-400 text-sm">Summarization Error: ${escapeHtml(err.message)}</p>`;
-                showAlert(`Summarization failed: ${err.message}`, 'error');
-            } finally { 
-                btn.disabled = false; 
-                spinner.classList.add('hidden'); 
-                btnTextElement.textContent = 'Summarize'; 
-            }
-    });
-
-    const copySummaryBtn = document.getElementById('copySummaryBtn');
-    if (copySummaryBtn) copySummaryBtn.addEventListener('click', () => {
-            const rawSummary = document.getElementById('summaryOutput').getAttribute('data-raw-summary');
-            if (rawSummary) {
-                navigator.clipboard.writeText(rawSummary)
-                    .then(() => showAlert('Summary copied to clipboard!', 'success'))
-                    .catch(err => {
-                        console.error('Clipboard copy failed:', err);
-                        showAlert('Failed to copy summary. Please try manual copy.', 'error');
-                    });
-            } else {
-                showAlert('No summary available to copy.', 'info');
-            }
-    });
-
-    function isValidEmail(email) { 
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); 
-    }
-    
     function initiatePayment(planId) {
         const planToPurchase = plansData[planId];
         if (!planToPurchase) { 
@@ -2086,7 +1537,7 @@ checkUser();
         }
         if (planId === 'business' && !planToPurchase.priceAmount) { 
             showPage('contact');
-            showAlert('For Business plans, please contact our sales team for custom solutions.', 'info');
+            showAlert('For Business plans, please contact our sales team.', 'info');
             return;
         }
 
@@ -2100,8 +1551,7 @@ checkUser();
 
         document.getElementById('paymentPlanName').textContent = planToPurchase.name;
         document.getElementById('paymentPlanPrice').textContent = planToPurchase.priceDisplay;
-        
-        if(paymentForm) paymentForm.dataset.planId = planId;
+        document.getElementById('paymentForm').dataset.planId = planId;
         
         const cardNameInput = document.getElementById('cardNameInput');
         const emailInput = document.getElementById('emailInput');
@@ -2113,269 +1563,175 @@ checkUser();
 
     function handlePayment(event) {
         event.preventDefault(); 
+        const paymentForm = document.getElementById('paymentForm');
         const planId = paymentForm.dataset.planId;
         const planDetails = plansData[planId];
 
         if (!planDetails) {
-            showAlert("Error: Plan details not found for payment.", 'error');
-            return;
+            showAlert("Error: Plan details not found.", 'error'); return;
+        }
+        if (!RAZORPAY_KEY_ID) {
+            showAlert("Payment processor is not configured.", 'error'); return;
         }
 
-        if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === RAZORPAY_KEY_ID_PLACEHOLDER || RAZORPAY_KEY_ID.includes("_PLACEHOLDER")) {
-            showAlert("Razorpay Key ID is not configured. Payment cannot proceed.", 'error');
-            console.error("Razorpay Key ID is not configured or is a placeholder.");
-            return;
-        }
-
-        const cardNameElement = document.getElementById('cardNameInput');
-        const emailElement = document.getElementById('emailInput');
-
-        if (!cardNameElement || !emailElement ) {
-            showAlert("Error: Essential payment form elements are missing.", 'error');
-            return;
-        }
-        const customerName = cardNameElement.value;
-        const customerEmail = emailElement.value;
-
-        if (!customerName || !customerEmail || !isValidEmail(customerEmail)) {
-            showAlert("Please provide a valid name and email address.", "error");
-            return;
-        }
+        const customerName = document.getElementById('cardNameInput').value;
+        const customerEmail = document.getElementById('emailInput').value;
         
-        const amountInSmallestUnit = planDetails.priceAmount; 
-        const currency = planDetails.currency;
-
-        if (isNaN(amountInSmallestUnit) || (amountInSmallestUnit <= 0 && planDetails.id !== "free")) {
-            showAlert("Invalid amount for the selected plan. Please contact support.", "error");
-            return;
-        }
-        
-        if (planDetails.id === "free" && amountInSmallestUnit === 0) {
-            showAlert("You are selecting the Free plan, which requires no payment.", "info");
-            if (currentUser) {
-                currentUser.plan = 'free';
-                currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
-                localStorage.setItem(`techGenUser_${currentUser.email}`, JSON.stringify(currentUser));
-                sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
-                updateAuthUI();
-            }
-            showPage('home');
-            return;
-        }
-
         const options = {
             key: RAZORPAY_KEY_ID,
-            amount: amountInSmallestUnit,
-            currency: currency,
+            amount: planDetails.priceAmount,
+            currency: planDetails.currency,
             name: "Tech_Gen AI Solutions",
             description: `Subscription: ${planDetails.name}`,
-            prefill: {
-                name: customerName,
-                email: customerEmail,
-            },
-            notes: {
-                plan_id: planId,
-                user_email: currentUser ? currentUser.email : 'guest_checkout',
-            },
-            theme: {
-                color: "#1B2EFD"
-            },
+            prefill: { name: customerName, email: customerEmail },
+            notes: { plan_id: planId, user_email: currentUser.email },
+            theme: { color: "#1B2EFD" },
             handler: function (response) {
-                showAlert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}. Processing...`, 'success', 6000);
+                showAlert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}.`, 'success', 6000);
                 
-                if (currentUser && planDetails) {
-                    currentUser.plan = planDetails.id;
-                    if (planDetails.id === 'pro' || planDetails.id === 'business') {
-                        delete currentUser.usageCounts; 
-                    }
-                    localStorage.setItem(`techGenUser_${currentUser.email}`, JSON.stringify(currentUser));
-                    sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
-                    updateAuthUI();
-                    showAlert(`Your ${planDetails.name} plan is now active! (Client-side update - server verification needed in production)`, 'success', 8000);
-                    showPage('home'); 
-                }
+                // Update user plan
+                currentUser.plan = planDetails.id;
+                delete currentUser.usageCounts;
+                
+                // In a real app, this update should be verified and stored in your database.
+                // For this demo, we store it in localStorage for persistence across sessions.
+                localStorage.setItem(`techGenPlan_${currentUser.email}`, planDetails.id);
+                
+                updateAuthUI();
+                showAlert(`Your ${planDetails.name} plan is now active!`, 'success', 8000);
+                showPage('home'); 
             },
-            modal: {
-                ondismiss: function () {
-                    showAlert("Payment process was cancelled or closed.", 'info');
-                }
-            }
+            modal: { ondismiss: () => showAlert("Payment process was cancelled.", 'info') }
         };
 
         try {
             const rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (response){
-                showAlert(`Payment Failed: ${response.error.description}. Code: ${response.error.code}`, 'error', 10000);
-                console.error("Razorpay Payment Failed:", response.error);
-            });
+            rzp.on('payment.failed', (response) => showAlert(`Payment Failed: ${response.error.description}`, 'error', 10000));
             rzp.open();
         } catch (error) {
-            showAlert("Error initializing Razorpay checkout. See console for details.", 'error');
+            showAlert("Error initializing Razorpay checkout.", 'error');
             console.error("Razorpay initialization error: ", error);
         }
     }
 
-    // --- DOMContentLoaded: Main Initialization ---
+    // --- MAIN INITIALIZATION AND EVENT LISTENERS ---
     document.addEventListener('DOMContentLoaded', () => {
         updatePricingDisplay(); 
 
-        if (!GEMINI_API_KEY || GEMINI_API_KEY === GEMINI_API_KEY_PLACEHOLDER || GEMINI_API_KEY.includes("_PLACEHOLDER")) {
-            console.warn('Gemini API Key is a placeholder or not set. Gemini-dependent features will fail or use a demo.');
-        }
-        if (!MONSTER_API_BEARER_TOKEN || MONSTER_API_BEARER_TOKEN === MONSTER_API_TOKEN_PLACEHOLDER || MONSTER_API_BEARER_TOKEN.includes("_PLACEHOLDER")) {
-            console.warn('Monster API Token is a placeholder or not set. Image generation will fail or use a demo.');
-        }
-        if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === RAZORPAY_KEY_ID_PLACEHOLDER || RAZORPAY_KEY_ID.includes("_PLACEHOLDER")) {
-            console.warn('Razorpay Key ID is a placeholder or not set. Payment processing will fail.');
-        }
-
-        const storedUserSession = sessionStorage.getItem('techGenUser');
-        if (storedUserSession) {
-            try {
-                const parsedUser = JSON.parse(storedUserSession); 
-                if (parsedUser && typeof parsedUser === 'object' && parsedUser.email) {
-                    currentUser = parsedUser;
-                    currentUser.plan = currentUser.plan || 'free'; 
-                    if (currentUser.plan === 'free' && !currentUser.usageCounts) { 
-                         currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
-                         sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
-                    } else if ((currentUser.plan === 'pro' || currentUser.plan === 'business') && currentUser.usageCounts) {
-                        delete currentUser.usageCounts; 
-                        sessionStorage.setItem('techGenUser', JSON.stringify(currentUser)); 
-                    }
-                } else {
-                    currentUser = null; 
-                    sessionStorage.removeItem('techGenUser'); 
+        // --- Central Authentication Logic ---
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            const userSession = session?.user || null;
+            
+            if (userSession) {
+                // User is logged in
+                let userPlan = localStorage.getItem(`techGenPlan_${userSession.email}`) || 'free';
+                let usageCounts = {};
+                if (userPlan === 'free') {
+                    usageCounts = JSON.parse(sessionStorage.getItem(`techGenUsage_${userSession.email}`)) || { imageGen: 0, translate: 0, summarize: 0 };
                 }
-            } catch (e) {
-                console.error("Error parsing user session data:", e);
-                currentUser = null; 
-                sessionStorage.removeItem('techGenUser'); 
+
+                currentUser = {
+                    id: userSession.id,
+                    email: userSession.email,
+                    name: userSession.user_metadata.full_name || userSession.email,
+                    plan: userPlan,
+                    usageCounts: usageCounts
+                };
+                
+                updateAuthUI();
+
+                // Handle special auth events
+                if (event === 'SIGNED_IN') {
+                    const intendedPage = sessionStorage.getItem('intendedPage');
+                    const pendingPlanId = sessionStorage.getItem('pendingPlan');
+                    sessionStorage.removeItem('intendedPage');
+
+                    if (pendingPlanId) {
+                        sessionStorage.removeItem('pendingPlan');
+                        initiatePayment(pendingPlanId);
+                    } else if (intendedPage && document.getElementById(intendedPage)) {
+                        showPage(intendedPage);
+                    } else if (getCurrentPageIdFromUrl() === 'login' || getCurrentPageIdFromUrl() === 'register') {
+                        showPage('home');
+                    }
+                } else if (event === 'PASSWORD_RECOVERY') {
+                    showAlert('You are in password recovery mode. Please set a new password.', 'info');
+                    showPage('resetPassword');
+                }
+            } else {
+                // User is logged out
+                currentUser = null;
+                updateAuthUI();
             }
-        } else {
-            currentUser = null; 
-        }
-        updateAuthUI(); 
-        guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
+        });
 
         const initialPageId = getCurrentPageIdFromUrl();
         showPage(initialPageId, true); 
 
         window.addEventListener('popstate', (event) => {
             const pageIdToShow = getCurrentPageIdFromUrl();
-            showPage(pageIdToShow); 
+            if (pageIdToShow) showPage(pageIdToShow);
         });
         
+        // --- Form Event Listeners ---
         const loginFormEl = document.getElementById('loginForm');
-        if (loginFormEl) loginFormEl.addEventListener('submit', (event) => {
+        if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
             event.preventDefault(); 
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value.trim(); 
             const errorEl = document.getElementById('loginError');
-            errorEl.classList.add('hidden'); errorEl.textContent = '';
+            errorEl.classList.add('hidden');
 
             if (!email || !password) { 
-                errorEl.textContent = 'Email and password are required.'; errorEl.classList.remove('hidden');
-                return; 
+                errorEl.textContent = 'Email and password are required.'; errorEl.classList.remove('hidden'); return; 
             }
-            if (!isValidEmail(email)) { 
-                errorEl.textContent = 'Please enter a valid email address.'; errorEl.classList.remove('hidden');
-                return; 
-            }
+            
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
-            const userJSON = localStorage.getItem(`techGenUser_${email}`);
-            if (userJSON) {
-                const storedUser = JSON.parse(userJSON);
-                if (storedUser.password === password) { 
-                    currentUser = JSON.parse(JSON.stringify(storedUser)); 
-                    currentUser.plan = currentUser.plan || 'free'; 
-
-                    if (currentUser.plan === 'free') {
-                        currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 }; 
-                    } else if (currentUser.plan === 'pro' || currentUser.plan === 'business') {
-                        delete currentUser.usageCounts; 
-                    }
-                    
-                    sessionStorage.setItem('techGenUser', JSON.stringify(currentUser)); 
-                    updateAuthUI();
-                    showAlert(`Welcome back, ${escapeHtml(currentUser.name) || escapeHtml(currentUser.email)}!`, 'success');
-                    
-                    const intendedPage = sessionStorage.getItem('intendedPage');
-                    const pendingPlanId = sessionStorage.getItem('pendingPlan');
-                    sessionStorage.removeItem('intendedPage'); 
-
-                    if (pendingPlanId) { 
-                        sessionStorage.removeItem('pendingPlan'); 
-                        initiatePayment(pendingPlanId); 
-                    } else if (intendedPage && intendedPage !== 'login' && intendedPage !== 'register' && document.getElementById(intendedPage)) {
-                        showPage(intendedPage);
-                    } else {
-                        showPage('home'); 
-                    }
-                    loginFormEl.reset();
-                } else {
-                    errorEl.textContent = 'Invalid email or password.'; errorEl.classList.remove('hidden');
-                }
+            if (error) {
+                errorEl.textContent = error.message; errorEl.classList.remove('hidden');
             } else {
-                errorEl.textContent = 'No account found with this email. Please register.'; errorEl.classList.remove('hidden');
+                showAlert(`Welcome back!`, 'success');
+                // onAuthStateChange handles the rest
+                loginFormEl.reset();
             }
         });
 
         const registerFormEl = document.getElementById('registerForm');
-        if (registerFormEl) registerFormEl.addEventListener('submit', (event) => {
+        if (registerFormEl) registerFormEl.addEventListener('submit', async (event) => {
             event.preventDefault(); 
             const fullName = document.getElementById('registerFullName').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
             const password = document.getElementById('registerPassword').value.trim();
             const errorEl = document.getElementById('registerError');
-            errorEl.classList.add('hidden'); errorEl.textContent = '';
+            errorEl.classList.add('hidden');
 
-            if (!fullName || !email || !password) { 
-                errorEl.textContent = 'All fields are required.'; errorEl.classList.remove('hidden');
-                return; 
-            }
-            if (!isValidEmail(email)) { 
-                errorEl.textContent = 'Please enter a valid email address.'; errorEl.classList.remove('hidden');
-                return; 
-            }
-            if (password.length < 6) { 
-                errorEl.textContent = 'Password must be at least 6 characters long.'; errorEl.classList.remove('hidden');
-                return; 
+            if (!fullName || !email || password.length < 6) { 
+                errorEl.textContent = 'All fields are required and password must be at least 6 characters.'; errorEl.classList.remove('hidden'); return; 
             }
 
-            if (localStorage.getItem(`techGenUser_${email}`)) {
-                errorEl.textContent = 'An account with this email already exists. Please login.'; errorEl.classList.remove('hidden');
-                return;
-            }
-            const newUser = { 
-                name: fullName, 
-                email: email, 
-                password: password, 
-                plan: 'free', 
-            }; 
-            localStorage.setItem(`techGenUser_${email}`, JSON.stringify(newUser));
-            
-            currentUser = JSON.parse(JSON.stringify(newUser));
-            if (currentUser.plan === 'free') {
-                currentUser.usageCounts = { imageGen: 0, translate: 0, summarize: 0 };
-            }
-            sessionStorage.setItem('techGenUser', JSON.stringify(currentUser));
-            updateAuthUI();
-            showAlert('Registration successful! You are now logged in.', 'success');
-            
-            const intendedPage = sessionStorage.getItem('intendedPage');
-            const pendingPlanId = sessionStorage.getItem('pendingPlan');
-            sessionStorage.removeItem('intendedPage');
+            const { error } = await supabaseClient.auth.signUp({
+                email, password, options: { data: { full_name: fullName } }
+            });
 
-            if (pendingPlanId) {
-                sessionStorage.removeItem('pendingPlan');
-                initiatePayment(pendingPlanId);
-            } else if (intendedPage && intendedPage !== 'login' && intendedPage !== 'register' && document.getElementById(intendedPage)) {
-                showPage(intendedPage);
+            if (error) {
+                errorEl.textContent = error.message; errorEl.classList.remove('hidden');
             } else {
+                showAlert('Registration successful! Please check your email to verify your account.', 'success', 8000);
+                registerFormEl.reset();
+                showPage('login');
+            }
+        });
+
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) logoutButton.addEventListener('click', async () => {
+            const { error } = await supabaseClient.auth.signOut();
+            if (error) {
+                showAlert(`Logout failed: ${error.message}`, 'error');
+            } else {
+                showAlert('You have been signed out.', 'info');
                 showPage('home');
             }
-            registerFormEl.reset();
         });
 
         const forgotPasswordFormEl = document.getElementById('forgotPasswordForm');
@@ -2384,28 +1740,17 @@ checkUser();
                 e.preventDefault();
                 const errorEl = document.getElementById('forgotPasswordError');
                 const successEl = document.getElementById('forgotPasswordSuccess');
+                errorEl.classList.add('hidden');
                 
-                errorEl.classList.add('hidden'); errorEl.textContent = '';
-                successEl.classList.add('hidden');
-
                 const email = document.getElementById('forgotPasswordEmail').value;
-                if (!isValidEmail(email)) {
-                    errorEl.textContent = 'Please enter a valid email.'; errorEl.classList.remove('hidden');
-                    return;
-                }
-                try {
-                    console.log('Simulating: Sending reset password email to:', email);
-                    const simulatedToken = "simulatedResetToken123" + Date.now(); 
-                    const resetUrl = `${window.location.origin}${window.location.pathname}?token=${simulatedToken}#resetPassword`;
-                    console.log(`Simulated reset link: ${resetUrl}`);
-                    
-                    await new Promise(resolve => setTimeout(resolve, 1000)); 
-                    
+                const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + window.location.pathname,
+                });
+                
+                if (error) {
+                    errorEl.textContent = error.message; errorEl.classList.remove('hidden');
+                } else {
                     successEl.classList.remove('hidden');
-                    showAlert(`(Simulation) If an account exists for ${email}, a reset link would be sent. For testing, use a link like: ${window.location.origin}${window.location.pathname}?token=YOUR_TOKEN_HERE#resetPassword`, 'info', 15000);
-                } catch (error) {
-                    const message = error.message || 'Failed to send reset email simulation';
-                    errorEl.textContent = message; errorEl.classList.remove('hidden');
                 }
             });
         }
@@ -2415,110 +1760,166 @@ checkUser();
             resetPasswordFormEl.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const errorEl = document.getElementById('resetPasswordError');
-                const successEl = document.getElementById('resetPasswordSuccess');
-
-                errorEl.classList.add('hidden'); errorEl.textContent = '';
-                successEl.classList.add('hidden');
-
                 const newPassword = document.getElementById('resetNewPassword').value;
-                const confirmPassword = document.getElementById('resetConfirmPassword').value;
-                const token = document.getElementById('resetToken').value;
 
-                if (newPassword !== confirmPassword) {
-                    errorEl.textContent = 'Passwords do not match'; errorEl.classList.remove('hidden');
-                    return;
-                }
                 if (newPassword.length < 6) {
-                    errorEl.textContent = 'Password must be at least 6 characters long.'; errorEl.classList.remove('hidden');
-                    return;
+                    errorEl.textContent = 'Password must be at least 6 characters.'; errorEl.classList.remove('hidden'); return;
                 }
-                if (!token) {
-                     errorEl.textContent = 'Invalid or missing reset token.'; errorEl.classList.remove('hidden');
-                    return;
-                }
+                
+                const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
 
-                try {
-                    console.log('Simulating: Resetting password with token:', token, 'New Password:', newPassword);
-                    await new Promise(resolve => setTimeout(resolve, 1000)); 
-                                        
-                    successEl.classList.remove('hidden');
-                    resetPasswordFormEl.reset();
-                    showAlert('Password has been updated successfully (Simulation). Please login with your new password.', 'success', 6000);
-                    
-                    window.history.replaceState(null, pageMetaInfo['login']?.title, window.location.pathname + '#login'); 
+                if (error) {
+                    errorEl.textContent = error.message; errorEl.classList.remove('hidden');
+                } else {
+                    showAlert('Password updated successfully. Signing you out now.', 'success');
+                    await supabaseClient.auth.signOut();
                     showPage('login');
-
-                } catch (error) {
-                    const message = error.message || 'Failed to reset password (Simulation)';
-                    errorEl.textContent = message; errorEl.classList.remove('hidden');
                 }
             });
         }
 
-        if (paymentForm) {
-            paymentForm.addEventListener('submit', handlePayment);
+        if (document.getElementById('paymentForm')) {
+            document.getElementById('paymentForm').addEventListener('submit', handlePayment);
         }
-        // Ensure contact form script is also within DOMContentLoaded or called after it
-        const contactFormEl = document.getElementById('contactForm'); // Renamed to avoid conflict
-        const contactSubmitButtonEl = document.getElementById('contactSubmitButton');
-        const contactButtonTextEl = document.getElementById('contactSubmitButtonText');
-        const contactSpinnerEl = document.getElementById('contactSubmitSpinner');
-        const contactFormStatusMessageEl = document.getElementById('formStatusMessage');
-
+        
+        const contactFormEl = document.getElementById('contactForm');
         if (contactFormEl) {
             contactFormEl.addEventListener('submit', function(event) {
                 event.preventDefault(); 
                 const formData = new FormData(contactFormEl);
+                const contactSubmitButtonEl = this.querySelector('button[type="submit"]');
 
-                if (contactButtonTextEl) contactButtonTextEl.textContent = 'Sending...';
-                if (contactSpinnerEl) contactSpinnerEl.classList.remove('hidden');
-                if (contactSubmitButtonEl) contactSubmitButtonEl.disabled = true;
-                if (contactFormStatusMessageEl) contactFormStatusMessageEl.textContent = ''; 
+                contactSubmitButtonEl.disabled = true;
 
-                fetch(contactFormEl.action, {
-                    method: contactFormEl.method,
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
+                fetch(this.action, {
+                    method: this.method, body: formData, headers: { 'Accept': 'application/json' }
                 })
                 .then(response => {
-                    if (contactButtonTextEl) contactButtonTextEl.textContent = 'Send Message'; 
-                    if (contactSpinnerEl) contactSpinnerEl.classList.add('hidden');
-                    if (contactSubmitButtonEl) contactSubmitButtonEl.disabled = false;
-
-                    if (response.ok) return response.json();
-                    else {
-                        return response.json().then(data => {
-                            if (Object.hasOwn(data, 'errors')) {
-                                throw new Error(data["errors"].map(error => error["message"]).join(", "));
-                            }
-                            throw new Error('Network response was not ok.');
+                    if (response.ok) {
+                        showAlert('Message sent successfully!', 'success');
+                        this.reset();
+                    } else {
+                        response.json().then(data => {
+                            const errorMessage = data.errors?.map(e => e.message).join(', ') || 'An unknown error occurred.';
+                            throw new Error(errorMessage);
                         });
                     }
                 })
-                .then(data => {
-                    if (contactFormStatusMessageEl) {
-                        contactFormStatusMessageEl.textContent = 'Message sent successfully!';
-                        contactFormStatusMessageEl.className = 'mt-4 text-center text-green-600 font-semibold';
-                    }
-                    contactFormEl.reset(); 
-                    setTimeout(() => {
-                        if (contactFormStatusMessageEl) contactFormStatusMessageEl.textContent = '';
-                    }, 5000);
-                })
                 .catch(error => {
-                    console.error('Form submission error:', error);
-                    if (contactFormStatusMessageEl) {
-                        contactFormStatusMessageEl.textContent = 'Oops! Something went wrong. ' + error.message;
-                        contactFormStatusMessageEl.className = 'mt-4 text-center text-red-600';
-                    }
+                    showAlert(`Form submission error: ${error.message}`, 'error');
                 })
                 .finally(() => {
-                    if (contactButtonTextEl) contactButtonTextEl.textContent = 'Send Message';
-                    if (contactSpinnerEl) contactSpinnerEl.classList.add('hidden');
-                    if (contactSubmitButtonEl) contactSubmitButtonEl.disabled = false;
+                    contactSubmitButtonEl.disabled = false;
                 });
             });
         }
+        
+        // --- Tool-Specific Event Listeners ---
+        const generateImageBtn = document.getElementById('generateImageBtn');
+        if (generateImageBtn) { 
+            generateImageBtn.addEventListener('click', async function() {
+                if (!canLoggedInUserUseFeature('imageGen', 'ai-generator')) return;
+                const prompt = document.getElementById('imagePrompt').value.trim();
+                if (!prompt) { showAlert('Please enter an image description.', 'error'); return; }
+                
+                this.disabled = true;
+                const spinner = document.getElementById('generateSpinner');
+                spinner.classList.remove('hidden');
+                
+                try {
+                    const initRes = await initiateMonsterImageGeneration(prompt, document.getElementById('monsterAspectRatio').value, document.getElementById('monsterImageStyle').value);
+                    let attempts = 0, maxAttempts = 40, pollInterval = 5000;
+                    const poll = async () => {
+                        if (attempts++ >= maxAttempts) throw new Error('Image generation timed out.');
+                        const statusRes = await fetchMonsterImageStatus(initRes.status_url);
+                        if (statusRes.status === 'IN_PROGRESS' || statusRes.status === 'IN_QUEUE') {
+                            setTimeout(poll, pollInterval);
+                        } else if (statusRes.status === 'COMPLETED') {
+                            const img = document.getElementById('generatedImage');
+                            img.src = statusRes.result.output[0]; 
+                            img.alt = prompt;
+                            document.getElementById('imagePlaceholder').style.display = 'none';
+                            document.getElementById('imageResultContainer').classList.remove('hidden');
+                            document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
+                            showAlert('Image generated successfully!', 'success');
+                            incrementFeatureUsage('imageGen');
+                            this.disabled = false;
+                            spinner.classList.add('hidden');
+                        } else {
+                            throw new Error(`Image generation failed: ${statusRes.message || 'Unknown API error'}`);
+                        }
+                    };
+                    setTimeout(poll, pollInterval);
+                } catch (err) { 
+                    showAlert(`Failed to generate image: ${err.message}`, 'error');
+                    this.disabled = false;
+                    spinner.classList.add('hidden');
+                }
+            });
+        }
+
+        const translateTextBtn = document.getElementById('translateTextBtn');
+        if (translateTextBtn) { 
+            translateTextBtn.addEventListener('click', async function() {
+                if (!canLoggedInUserUseFeature('translate', 'translate')) return;
+                const textToTranslate = document.getElementById('translatePageTextInput').value.trim();
+                if (!textToTranslate) { showAlert('Please enter text to translate.', 'error'); return; }
+                
+                this.disabled = true;
+                const outputDiv = document.getElementById('textOutput');
+                outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating...</p>`;
+
+                try {
+                    const targetLangName = document.getElementById('targetLanguage').selectedOptions[0].text;
+                    const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text.\n\n"${textToTranslate}"`;
+                    const translation = await callGeminiAPI(prompt);
+                    outputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
+                    document.getElementById('copyTextBtn').classList.remove('hidden');
+                    incrementFeatureUsage('translate');
+                } catch (err) {
+                    outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+                } finally { 
+                    this.disabled = false;
+                }
+            });
+        }
+
+        const summarizeTextBtn = document.getElementById('summarizeTextBtn');
+        if (summarizeTextBtn) summarizeTextBtn.addEventListener('click', async function() {
+            if (!canLoggedInUserUseFeature('summarize', 'summarization')) return;
+            const textToSummarize = document.getElementById('summarizeTextInput').value.trim();
+            if (!textToSummarize) { showAlert('Please provide text to summarize.', 'error'); return; }
+            
+            this.disabled = true;
+            const outputDiv = document.getElementById('summaryOutput');
+            outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Summarizing...</p>`;
+
+            try {
+                const prompt = `Summarize the following text:\n\n"${textToSummarize}"`;
+                const summary = await callGeminiAPI(prompt);
+                outputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Summary:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(summary)}</p>`;
+                outputDiv.setAttribute('data-raw-summary', summary);
+                document.getElementById('copySummaryBtn').classList.remove('hidden');
+                incrementFeatureUsage('summarize');
+            } catch (err) {
+                outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+            } finally {
+                this.disabled = false;
+            }
+        });
+        
+        // Add listeners for copy buttons, file inputs etc. here...
+        const copyTextBtn = document.getElementById('copyTextBtn');
+        if (copyTextBtn) copyTextBtn.addEventListener('click', () => {
+            const textToCopy = document.getElementById('textOutput').querySelector('p.text-white')?.innerText;
+            if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
+        });
+        const copySummaryBtn = document.getElementById('copySummaryBtn');
+        if (copySummaryBtn) copySummaryBtn.addEventListener('click', () => {
+            const textToCopy = document.getElementById('summaryOutput').getAttribute('data-raw-summary');
+            if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
+        });
+
     });
   </script>
 </body>
