@@ -1187,6 +1187,8 @@
 
     // --- APPLICATION STATE AND CONSTANTS ---
     let currentUser = null; 
+    let inactivityTimer; // Timer for session logout
+    const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minutes in milliseconds
     const GUEST_TOTAL_USAGE_LIMIT = 10; 
     const FREE_TIER_LIMITS = { 
         imageGen: 5,
@@ -1243,6 +1245,40 @@
         alert.style.opacity = '0';
         setTimeout(() => alert.remove(), 300); 
       }, type === 'error' ? Math.max(duration, 7000) : duration); 
+    }
+
+    // --- INACTIVITY LOGOUT FUNCTIONS ---
+    
+    /**
+     * [FIXED] Logs the user out, shows an alert, and redirects to the login page.
+     * This function is called by a setTimeout.
+     */
+    function logoutDueToInactivity() {
+        if (currentUser) {
+            const currentPageId = getCurrentPageIdFromUrl();
+            // Store the page the user was on so we can redirect them back after login
+            if (currentPageId && currentPageId !== 'login' && currentPageId !== 'register') {
+                sessionStorage.setItem('intendedPage', currentPageId);
+            }
+            
+            supabaseClient.auth.signOut(); 
+            
+            // Show an alert and immediately navigate to the login page
+            showAlert('You have been logged out due to inactivity. Please log in to continue.', 'info', 8000);
+            showPage('login');
+        }
+    }
+
+    /**
+     * Resets the inactivity timer. This function is called whenever there's user activity.
+     */
+    function resetInactivityTimer() {
+        // Clear the previous timer
+        clearTimeout(inactivityTimer);
+        // If a user is logged in, set a new timer
+        if (currentUser) {
+            inactivityTimer = setTimeout(logoutDueToInactivity, INACTIVITY_TIMEOUT);
+        }
     }
     
     function showPage(pageId, isInitialLoad = false) {
@@ -1654,6 +1690,12 @@
     document.addEventListener('DOMContentLoaded', () => {
         updatePricingDisplay(); 
 
+        // --- Event Listeners for User Activity to reset the inactivity timer ---
+        const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
+        activityEvents.forEach(eventName => {
+            window.addEventListener(eventName, resetInactivityTimer, true);
+        });
+
         // --- Central Authentication Logic ---
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
@@ -1675,6 +1717,9 @@
                 };
                 
                 updateAuthUI();
+                
+                // Start the inactivity timer now that we know a user is logged in
+                resetInactivityTimer();
 
                 // Handle special auth events
                 if (event === 'SIGNED_IN') {
@@ -1698,6 +1743,9 @@
                 // User is logged out
                 currentUser = null;
                 updateAuthUI();
+                
+                // Clear the inactivity timer since no user is logged in
+                clearTimeout(inactivityTimer);
             }
         });
 
@@ -1953,7 +2001,7 @@
             }
         });
         
-        // --- [NEW] Translate Page Tab Switching ---
+        // --- Translate Page Tab Switching ---
         const textTabBtn = document.getElementById('textTabBtn');
         const docTabBtn = document.getElementById('docTabBtn');
         const textTranslationSection = document.getElementById('textTranslationSection');
@@ -1974,7 +2022,7 @@
             });
         }
 
-        // --- [NEW & FIXED] File Input Listeners ---
+        // --- File Input Listeners ---
         const summarizeDocInput = document.getElementById('summarizeDocInput');
         if (summarizeDocInput) {
             summarizeDocInput.addEventListener('change', async (event) => {
