@@ -204,6 +204,7 @@
   </nav>
 
   <main>
+    <!-- Main content pages here... -->
     <!-- Home Page (and other non-auth content pages) -->
     <div id="home" class="page">
       <section class="bg-blue-950 text-white py-20">
@@ -985,10 +986,10 @@
       </div>
     </div>
   
-    <!-- In the main content section - fixed the privacy policy and terms pages -->
-<div id="privacyPolicyPage" class="page">
-  <div class="container mx-auto px-4 py-16 prose lg:prose-xl">
-    <h2 class="text-3xl font-bold mb-6 text-center">Privacy Policy</h2>
+    <div id="privacyPolicyPage" class="page">
+      <div class="container mx-auto px-4 py-16 prose lg:prose-xl">
+        <!-- Privacy Policy Content -->
+        <h2 class="text-3xl font-bold mb-6 text-center">Privacy Policy</h2>
     <p class="mb-4 text-sm text-gray-600 text-center">Last updated: May 30, 2025</p>
     
     <p>At Tech_Gen SaaS, we respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
@@ -1062,12 +1063,13 @@
         <p>For privacy-related questions, contact:</p>
         <p><a href="mailto:privacy@Tech_Gen.com" class="text-blue-900 hover:underline">privacy@Tech_Gen.com</a></p>
     </div>
-  </div>
-</div>
+      </div>
+    </div>
 
-<div id="termsOfServicePage" class="page">
-  <div class="container mx-auto px-4 py-16 prose lg:prose-xl">
-    <h2 class="text-3xl font-bold mb-6 text-center">Terms of Service</h2>
+    <div id="termsOfServicePage" class="page">
+      <div class="container mx-auto px-4 py-16 prose lg:prose-xl">
+        <!-- Terms of Service Content -->
+        <h2 class="text-3xl font-bold mb-6 text-center">Terms of Service</h2>
     <p class="mb-4 text-sm text-gray-600 text-center">Last updated: May 30, 2025</p>
 
     <p>Welcome to Tech_Gen SaaS (the "Service"). By accessing or using our website and services, you agree to comply with and be bound by the following Terms and Conditions. If you do not agree, please refrain from using our Service.</p>
@@ -1108,8 +1110,8 @@
 
     <h3 class="text-2xl font-semibold mt-8 mb-3">Contact Us</h3>
     <p>If you have any questions about these Terms, please contact us via the <a href="#contact" onclick="showPage('contact'); return false;" class="text-blue-900 hover:underline">Contact page</a>.</p>
-  </div>
-</div>
+      </div>
+    </div>
   </main>
 
   <footer class="bg-gray-800 text-white py-8">
@@ -1145,11 +1147,12 @@
         </div>
       </div>
       
+      <!-- *** IMPROVED FOOTER LINKS FOR SEO *** -->
       <div class="mb-4">
-        <a href="#home" onclick="showPage('home'); return false;" class="hover:text-blue-900 underline">Home</a> | 
-        <a href="#privacyPolicyPage" onclick="showPage('privacyPolicyPage'); return false;" class="hover:text-blue-900 underline">Privacy Policy</a> | 
-        <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;" class="hover:text-blue-900 underline">Terms of Service</a> |
-        <a href="#contact" onclick="showPage('contact'); return false;" class="hover:text-blue-900 underline">Contact Us</a>
+        <a href="#home" class="hover:text-blue-900 underline">Home</a> | 
+        <a href="#privacyPolicyPage" class="hover:text-blue-900 underline">Privacy Policy</a> | 
+        <a href="#termsOfServicePage" class="hover:text-blue-900 underline">Terms of Service</a> |
+        <a href="#contact" class="hover:text-blue-900 underline">Contact Us</a>
       </div>
 
       <p>© 2025 Tech_Gen. All rights reserved.</p>
@@ -1246,33 +1249,20 @@
 
     // --- INACTIVITY LOGOUT FUNCTIONS ---
     
-    /**
-     * [FIXED] Logs the user out, shows an alert, and redirects to the login page.
-     * This function is called by a setTimeout.
-     */
     function logoutDueToInactivity() {
         if (currentUser) {
             const currentPageId = getCurrentPageIdFromUrl();
-            // Store the page the user was on so we can redirect them back after login
             if (currentPageId && currentPageId !== 'login' && currentPageId !== 'register') {
                 sessionStorage.setItem('intendedPage', currentPageId);
             }
-            
             supabaseClient.auth.signOut(); 
-            
-            // Show an alert and immediately navigate to the login page
             showAlert('You have been logged out due to inactivity. Please log in to continue.', 'info', 8000);
             showPage('login');
         }
     }
 
-    /**
-     * Resets the inactivity timer. This function is called whenever there's user activity.
-     */
     function resetInactivityTimer() {
-        // Clear the previous timer
         clearTimeout(inactivityTimer);
-        // If a user is logged in, set a new timer
         if (currentUser) {
             inactivityTimer = setTimeout(logoutDueToInactivity, INACTIVITY_TIMEOUT);
         }
@@ -1298,7 +1288,6 @@
             const newURL = `${window.location.pathname}#${pageId}`;
             const pageTitle = pageMetaInfo[pageId]?.title || `Tech_Gen - ${pageId}`;
             
-            // Avoid pushing duplicate history states
             if (window.location.hash !== `#${pageId}`) {
                 if (isInitialLoad) {
                     window.history.replaceState({ page: pageId }, pageTitle, newURL);
@@ -1312,7 +1301,6 @@
         }
         window.scrollTo(0, 0);
 
-        // Clear any previous form errors when showing a new page
         document.querySelectorAll('#loginError, #registerError, #forgotPasswordError, #resetPasswordError').forEach(el => {
             el.classList.add('hidden'); el.textContent = '';
         });
@@ -1322,12 +1310,8 @@
     }
 
     function getCurrentPageIdFromUrl() {
-        // Supabase v2 uses the URL fragment for tokens. It looks like #access_token=...
-        // The fragment will not be a simple page ID during auth redirects.
         const hash = window.location.hash;
         if (hash.includes('access_token')) {
-            // This is an auth redirect. Let the onAuthStateChange handler decide where to go.
-            // For now, return a neutral page like 'home' to avoid errors.
             return 'home';
         }
         const pageId = hash.substring(1);
@@ -1365,8 +1349,6 @@
             if(userEmailDisplay) userEmailDisplay.textContent = '';
         }
     }
-
-    // --- FEATURE GATING AND USAGE TRACKING ---
 
     function updateGuestUsage() {
         guestUsage.total++;
@@ -1406,14 +1388,11 @@
     function incrementFeatureUsage(featureType) {
         if (currentUser && currentUser.plan === 'free') {
             currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
-            // Persist usage for the current session for logged-in free users
             sessionStorage.setItem(`techGenUsage_${currentUser.email}`, JSON.stringify(currentUser.usageCounts));
         } else if (!currentUser) { // Guest user
             updateGuestUsage();
         }
     }
-
-    // --- API CALL FUNCTIONS ---
 
     async function callGeminiAPI(promptText) {
         if (!GEMINI_API_KEY) {
@@ -1490,8 +1469,6 @@
         }
     }
         
-    // --- FILE HANDLING AND UTILITIES ---
-
     function downloadContent(content, filename) {
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
@@ -1596,8 +1573,6 @@
         });
     }
 
-    // --- PAYMENT HANDLING ---
-
     function initiatePayment(planId) {
         const planToPurchase = plansData[planId];
         if (!planToPurchase) { 
@@ -1658,12 +1633,9 @@
             handler: function (response) {
                 showAlert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}.`, 'success', 6000);
                 
-                // Update user plan
                 currentUser.plan = planDetails.id;
                 delete currentUser.usageCounts;
                 
-                // In a real app, this update should be verified and stored in your database.
-                // For this demo, we store it in localStorage for persistence across sessions.
                 localStorage.setItem(`techGenPlan_${currentUser.email}`, planDetails.id);
                 
                 updateAuthUI();
@@ -1687,18 +1659,15 @@
     document.addEventListener('DOMContentLoaded', () => {
         updatePricingDisplay(); 
 
-        // --- Event Listeners for User Activity to reset the inactivity timer ---
         const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
         activityEvents.forEach(eventName => {
             window.addEventListener(eventName, resetInactivityTimer, true);
         });
 
-        // --- Central Authentication Logic ---
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
             
             if (userSession) {
-                // User is logged in
                 let userPlan = localStorage.getItem(`techGenPlan_${userSession.email}`) || 'free';
                 let usageCounts = {};
                 if (userPlan === 'free') {
@@ -1714,11 +1683,8 @@
                 };
                 
                 updateAuthUI();
-                
-                // Start the inactivity timer now that we know a user is logged in
                 resetInactivityTimer();
 
-                // Handle special auth events
                 if (event === 'SIGNED_IN') {
                     const intendedPage = sessionStorage.getItem('intendedPage');
                     const pendingPlanId = sessionStorage.getItem('pendingPlan');
@@ -1737,15 +1703,30 @@
                     showPage('resetPassword');
                 }
             } else {
-                // User is logged out
                 currentUser = null;
                 updateAuthUI();
-                
-                // Clear the inactivity timer since no user is logged in
                 clearTimeout(inactivityTimer);
             }
         });
 
+        // *** MODIFIED CLICK HANDLER TO SUPPORT SEO-FRIENDLY FOOTER LINKS ***
+        document.body.addEventListener('click', function(e) {
+            let target = e.target;
+            // Traverse up the DOM to find the nearest anchor tag
+            while (target && target.tagName !== 'A') {
+                target = target.parentElement;
+            }
+
+            // Check if the clicked anchor has a hash link and is internal to the page
+            if (target && target.hash && target.pathname === window.location.pathname) {
+                const pageId = target.hash.substring(1);
+                if (document.getElementById(pageId)) {
+                    e.preventDefault(); // Prevent default jump-to-anchor behavior
+                    showPage(pageId);
+                }
+            }
+        });
+        
         const initialPageId = getCurrentPageIdFromUrl();
         showPage(initialPageId, true); 
 
@@ -1773,7 +1754,6 @@
                 errorEl.textContent = error.message; errorEl.classList.remove('hidden');
             } else {
                 showAlert(`Welcome back!`, 'success');
-                // onAuthStateChange handles the rest
                 loginFormEl.reset();
             }
         });
@@ -1796,25 +1776,17 @@
             const { data, error } = await supabaseClient.auth.signUp({
                 email,
                 password,
-                options: {
-                    data: {
-                        full_name: fullName
-                    }
-                }
+                options: { data: { full_name: fullName } }
             });
 
             if (error) {
-                // *** MODIFIED BLOCK ***
-                // Check for the specific "User already registered" error from Supabase
                 if (error.message && error.message.includes("User already registered")) {
                     errorEl.innerHTML = 'An account with this email already exists. Please <button type="button" onclick="showPage(\'login\')" class="font-bold underline text-blue-800 hover:text-blue-600">log in</button> or use the "Forgot Password" link on the login page.';
                 } else {
                     errorEl.textContent = error.message;
                 }
                 errorEl.classList.remove('hidden');
-                // *** END OF MODIFIED BLOCK ***
             } else if (data.user && data.user.identities && data.user.identities.length === 0) {
-                 // This case handles when Supabase detects the email but doesn't create a new user, often due to email confirmation settings.
                 errorEl.innerHTML = 'An account with this email already exists. Please <button type="button" onclick="showPage(\'login\')" class="font-bold underline text-blue-800 hover:text-blue-600">log in</button> or use the "Forgot Password" link on the login page.';
                 errorEl.classList.remove('hidden');
             } else {
@@ -1915,7 +1887,6 @@
             });
         }
         
-        // --- Tool-Specific Event Listeners ---
         const generateImageBtn = document.getElementById('generateImageBtn');
         if (generateImageBtn) { 
             generateImageBtn.addEventListener('click', async function() {
@@ -1924,8 +1895,7 @@
                 if (!prompt) { showAlert('Please enter an image description.', 'error'); return; }
                 
                 this.disabled = true;
-                const spinner = document.getElementById('generateSpinner');
-                spinner.classList.remove('hidden');
+                document.getElementById('generateSpinner').classList.remove('hidden');
                 
                 try {
                     const initRes = await initiateMonsterImageGeneration(prompt, document.getElementById('monsterAspectRatio').value, document.getElementById('monsterImageStyle').value);
@@ -1945,7 +1915,7 @@
                             showAlert('Image generated successfully!', 'success');
                             incrementFeatureUsage('imageGen');
                             this.disabled = false;
-                            spinner.classList.add('hidden');
+                            document.getElementById('generateSpinner').classList.add('hidden');
                         } else {
                             throw new Error(`Image generation failed: ${statusRes.message || 'Unknown API error'}`);
                         }
@@ -1954,7 +1924,7 @@
                 } catch (err) { 
                     showAlert(`Failed to generate image: ${err.message}`, 'error');
                     this.disabled = false;
-                    spinner.classList.add('hidden');
+                    document.getElementById('generateSpinner').classList.add('hidden');
                 }
             });
         }
@@ -2018,7 +1988,6 @@
             }
         });
         
-        // --- Translate Page Tab Switching ---
         const textTabBtn = document.getElementById('textTabBtn');
         const docTabBtn = document.getElementById('docTabBtn');
         const textTranslationSection = document.getElementById('textTranslationSection');
@@ -2039,7 +2008,6 @@
             });
         }
 
-        // --- File Input Listeners ---
         const summarizeDocInput = document.getElementById('summarizeDocInput');
         if (summarizeDocInput) {
             summarizeDocInput.addEventListener('change', async (event) => {
@@ -2052,7 +2020,7 @@
 
                 nameDisplay.textContent = escapeHtml(file.name);
                 statusDisplay.classList.remove('hidden');
-                textInput.value = ''; // Clear previous text
+                textInput.value = ''; 
 
                 try {
                     const text = await extractTextFromFile(file);
@@ -2060,10 +2028,10 @@
                     showAlert('Document text extracted successfully!', 'success');
                 } catch (err) {
                     showAlert(`Error: ${err.message}`, 'error');
-                    nameDisplay.textContent = ''; // Clear filename on error
+                    nameDisplay.textContent = ''; 
                 } finally {
                     statusDisplay.classList.add('hidden');
-                    event.target.value = null; // Allow re-uploading the same file
+                    event.target.value = null; 
                 }
             });
         }
@@ -2144,7 +2112,6 @@
             });
         }
 
-        // --- Copy & Download Listeners ---
         const copyTextBtn = document.getElementById('copyTextBtn');
         if (copyTextBtn) copyTextBtn.addEventListener('click', () => {
             const textToCopy = document.getElementById('textOutput').querySelector('p.text-white')?.innerText;
