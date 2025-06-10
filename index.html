@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- Primary Meta Tags -->
   <title>Tech_Gen - AI-Powered Productivity Tools</title>
@@ -1780,23 +1780,43 @@
 
         const registerFormEl = document.getElementById('registerForm');
         if (registerFormEl) registerFormEl.addEventListener('submit', async (event) => {
-            event.preventDefault(); 
+            event.preventDefault();
             const fullName = document.getElementById('registerFullName').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
             const password = document.getElementById('registerPassword').value.trim();
             const errorEl = document.getElementById('registerError');
             errorEl.classList.add('hidden');
 
-            if (!fullName || !email || password.length < 6) { 
-                errorEl.textContent = 'All fields are required and password must be at least 6 characters.'; errorEl.classList.remove('hidden'); return; 
+            if (!fullName || !email || password.length < 6) {
+                errorEl.textContent = 'All fields are required and password must be at least 6 characters.';
+                errorEl.classList.remove('hidden');
+                return;
             }
 
-            const { error } = await supabaseClient.auth.signUp({
-                email, password, options: { data: { full_name: fullName } }
+            const { data, error } = await supabaseClient.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        full_name: fullName
+                    }
+                }
             });
 
             if (error) {
-                errorEl.textContent = error.message; errorEl.classList.remove('hidden');
+                // *** MODIFIED BLOCK ***
+                // Check for the specific "User already registered" error from Supabase
+                if (error.message && error.message.includes("User already registered")) {
+                    errorEl.innerHTML = 'An account with this email already exists. Please <button type="button" onclick="showPage(\'login\')" class="font-bold underline text-blue-800 hover:text-blue-600">log in</button> or use the "Forgot Password" link on the login page.';
+                } else {
+                    errorEl.textContent = error.message;
+                }
+                errorEl.classList.remove('hidden');
+                // *** END OF MODIFIED BLOCK ***
+            } else if (data.user && data.user.identities && data.user.identities.length === 0) {
+                 // This case handles when Supabase detects the email but doesn't create a new user, often due to email confirmation settings.
+                errorEl.innerHTML = 'An account with this email already exists. Please <button type="button" onclick="showPage(\'login\')" class="font-bold underline text-blue-800 hover:text-blue-600">log in</button> or use the "Forgot Password" link on the login page.';
+                errorEl.classList.remove('hidden');
             } else {
                 showAlert('Registration successful! Please check your email to verify your account.', 'success', 8000);
                 registerFormEl.reset();
