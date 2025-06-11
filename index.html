@@ -211,7 +211,7 @@
                         <p class="text-sm text-gray-800 font-semibold" id="userEmailDisplay">User Name (Plan)</p>
                     </div>
                     <button onclick="showPage('accountPage')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Dashboard</button>
-                    <button id="logoutButton" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100">Logout</button>
+                    <button onclick="handleLogout()" id="logoutButton" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100">Logout</button>
                 </div>
             </div>
         </div>
@@ -325,7 +325,7 @@
                     <button id="upgradePlanBtn" onclick="showPage('pricing')" class="w-full sm:w-auto bg-green-600 text-white py-2 px-6 rounded-md hover:bg-green-700 transition font-semibold">
                         Upgrade Plan
                     </button>
-                    <button onclick="document.getElementById('logoutButton').click()" class="w-full sm:w-auto bg-red-600 text-white py-2 px-6 rounded-md hover:bg-red-700 transition font-semibold">
+                    <button onclick="handleLogout()" class="w-full sm:w-auto bg-red-600 text-white py-2 px-6 rounded-md hover:bg-red-700 transition font-semibold">
                         Logout
                     </button>
                 </div>
@@ -1011,8 +1011,8 @@
             inactivityTimer = setTimeout(async () => {
                 if (currentUser) { 
                     console.log(`Inactivity timeout reached. Logging out ${currentUser.email}.`);
+                    await handleLogout();
                     showAlert('You have been logged out due to inactivity.', 'info');
-                    await supabaseClient.auth.signOut();
                 }
             }, INACTIVITY_TIMEOUT);
         }
@@ -1271,6 +1271,11 @@
         rzp.open();
     }
     
+    // --- LOGOUT FUNCTION ---
+    async function handleLogout() {
+      await supabaseClient.auth.signOut();
+    }
+
     // --- APP INITIALIZATION AND EVENT LISTENERS ---
     
     function initializeEventListeners() {
@@ -1313,15 +1318,12 @@
                 return;
             }
 
-            // IMPORTANT: This logic relies on the "Confirm email" setting being turned OFF
-            // in your Supabase project's Email Provider settings. 
-            // If it's ON, Supabase will not return an error for a duplicate email.
             const { data, error } = await supabaseClient.auth.signUp({
                 email, password, options: { data: { full_name: fullName } }
             });
             
             if (error) {
-                console.error("Registration Error:", error); // Log the full error for debugging
+                console.error("Registration Error:", error);
                 if (error.message && error.message.toLowerCase().includes("user already registered")) {
                     errorEl.innerHTML = 'This email is already registered. Please <button type="button" onclick="showPage(\'login\')" class="font-bold underline text-sky-700 hover:text-sky-500">log in</button>.';
                 } else {
@@ -1329,16 +1331,10 @@
                 }
                 errorEl.classList.remove('hidden');
             } else {
-                // This block now only runs on a truly successful new registration.
-                showAlert('Registration successful!', 'success');
+                showAlert('Registration successful! Please log in.', 'success');
                 e.target.reset();
                 showPage('login');
             }
-        });
-
-        document.getElementById('logoutButton')?.addEventListener('click', async () => {
-            await supabaseClient.auth.signOut();
-            showAlert('You have been signed out.', 'info');
         });
 
         document.getElementById('forgotPasswordForm')?.addEventListener('submit', async (e) => {
@@ -1375,7 +1371,7 @@
                 errorEl.classList.remove('hidden');
             } else {
                 showAlert('Password updated successfully. Please log in.', 'success');
-                await supabaseClient.auth.signOut();
+                await handleLogout();
             }
         });
 
@@ -1622,11 +1618,14 @@
                 if (pendingPlanId) {
                     initiatePayment(pendingPlanId);
                 } else {
-                    showPage(intendedPage || 'accountPage');
+                    // *** FIX 1: Changed default redirect to 'home' ***
+                    showPage(intendedPage || 'home');
                 }
             } else if (event === 'SIGNED_OUT') {
+                // *** FIX 2: Centralized logout logic ***
                 currentUser = null;
                 updateAuthUI();
+                showAlert('You have been signed out.', 'info');
                 const currentPage = getCurrentPageIdFromUrl();
                 const authRequiredPages = ['accountPage', 'paymentPage'];
                 if (authRequiredPages.includes(currentPage)) {
