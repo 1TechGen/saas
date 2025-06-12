@@ -764,15 +764,6 @@
             </div>
           </div>
         </div>
-
-        <!-- RSS Feed Link at the bottom -->
-        <div class="text-center mt-16 border-t pt-8">
-            <a href="https://#.com/" target="_blank" title="Subscribe to RSS Feed" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-gray-600 hover:text-orange-500 transition-colors">
-                <svg class="w-6 h-6 text-orange-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 18c-1.105 0-2-.895-2-2s.895-2 2-2 2 .895 2 2-.895 2-2 2zm-2-5.5c0-1.873 1.258-3.444 3-3.868V5.868C2.129 6.29 0 8.525 0 11.25h2zm0-4.5C2 3.485 5.485 0 9.75 0v2C6.567 2 4 4.567 4 7.75H2z"/></svg>
-                <span>Subscribe to our Feed</span>
-            </a>
-        </div>
-
       </div>
     </div>
     <div id="privacyPolicyPage" class="page">
@@ -811,14 +802,23 @@
 
   <script>
     // =================================================================================
-    // Supabase Backend Setup:
-    // This script is now updated for a LIVE environment where "Confirm email" is ON.
+    // PRODUCTION-READY SCRIPT FOR TECH_GEN
+    // Assumes Supabase project is configured with:
+    // 1. RLS Policies on 'profiles' table.
+    // 2. Site URL set to 'https://www.techgentools.site'.
+    // 3. "Confirm email" is ON.
+    // 4. `update_user_plan` RPC function is created.
     // =================================================================================
 
-    if (typeof pdfjsLib !== 'undefined') {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+    // --- Defensive Library Initialization ---
+    try {
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+        }
+    } catch (e) {
+        console.error("Could not initialize PDF.js. PDF features will be unavailable.", e);
     }
-
+    
     // --- API KEYS AND CONFIGURATION ---
     const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs";
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
@@ -873,13 +873,15 @@
             currentUser = null;
             return;
         }
+        // This 'select' query will fail if RLS is enabled without a policy.
         const { data: profile, error } = await supabaseClient
             .from('profiles')
             .select('full_name, plan')
             .eq('id', user.id)
             .single();
-        if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found, which is fine.
-            console.error("Error fetching profile:", error);
+            
+        if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found, which is okay on first login.
+            console.error("Error fetching profile (Check RLS Policies!):", error);
             showAlert("Could not load your user profile. Please try again later.", "error");
             await supabaseClient.auth.signOut();
             return;
@@ -963,12 +965,14 @@
             document.title = meta.title;
             const descriptionTag = document.querySelector('meta[name="description"]');
             if (descriptionTag) descriptionTag.content = meta.description;
-            const newURL = `${window.location.origin}${window.location.pathname}#${pageId}`;
-            if (window.location.hash !== `#${pageId}`) {
+
+            // Clean the URL hash for navigation
+            const cleanURL = `${window.location.origin}${window.location.pathname}#${pageId}`;
+            if (window.location.href !== cleanURL) {
                 if (isInitialLoad) {
-                    window.history.replaceState({ page: pageId }, meta.title, newURL);
+                    window.history.replaceState({ page: pageId }, meta.title, cleanURL);
                 } else {
-                    window.history.pushState({ page: pageId }, meta.title, newURL);
+                    window.history.pushState({ page: pageId }, meta.title, cleanURL);
                 }
             }
         } else {
@@ -983,7 +987,10 @@
 
     function getCurrentPageIdFromUrl() {
         const hash = window.location.hash;
-        if (hash.includes('access_token') || hash.includes('error_description')) return 'home';
+        // Ignore Supabase auth tokens in the hash
+        if (!hash || hash.startsWith('#access_token=') || hash.startsWith('#error_description=')) {
+            return 'home';
+        }
         const pageId = hash.substring(1);
         return (pageId && document.getElementById(pageId)) ? pageId : 'home';
     }
@@ -1051,6 +1058,9 @@
             }
         }
     }
+    
+    // --- All other helper functions (API calls, file handling, payments) remain the same ---
+    // (Included for completeness)
     
     async function callGeminiAPI(promptText) {
         if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("YOUR")) {
@@ -1256,8 +1266,7 @@
                     showAlert(`Payment was successful, but we couldn't update your plan automatically. Please contact support.`, 'error', 15000);
                     showPage('contact');
                 } else {
-                    const { data: { user } } = await supabaseClient.auth.getUser();
-                    await loadCurrentUserProfile(user);
+                    await loadCurrentUserProfile(currentUser); // Re-fetch profile data
                     updateAuthUI();
                     showAlert(`Your ${planDetails.name} plan is now active!`, 'success', 8000);
                     showPage('accountPage');
@@ -1270,7 +1279,6 @@
         rzp.open();
     }
     
-    // --- LOGOUT FUNCTION ---
     async function handleLogout() {
       await supabaseClient.auth.signOut();
     }
@@ -1286,7 +1294,7 @@
             showPage(pageId);
         });
 
-        // --- AUTH FORMS ---
+        // --- ROBUST AUTH FORMS ---
         document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = e.target.email.value.trim();
@@ -1296,18 +1304,14 @@
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
             if (error) {
-                // Handle specific "Email not confirmed" error for live site
                 if (error.message.includes('Email not confirmed')) {
                      errorEl.innerHTML = 'Email not confirmed. Please check your inbox for a confirmation link.';
                 } else {
-                    errorEl.textContent = error.message;
+                    errorEl.textContent = 'Invalid login credentials.'; // Generic error for security
                 }
                 errorEl.classList.remove('hidden');
-            } else {
-                showAlert('Welcome back!', 'success');
-                e.target.reset();
-                showPage('home'); 
             }
+            // onAuthStateChange will handle successful login
         });
 
         document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
@@ -1324,6 +1328,7 @@
                 return;
             }
 
+            // We do not specify redirectTo here. Supabase will use the Site URL from settings.
             const { data, error } = await supabaseClient.auth.signUp({
                 email, password, options: { data: { full_name: fullName } }
             });
@@ -1336,16 +1341,10 @@
                 }
                 errorEl.classList.remove('hidden');
             } else {
-                // Handle the case where email confirmation is required (for live site)
                 if (data.user && !data.session) {
                      showAlert('Registration successful! Please check your email to confirm your account.', 'success', 10000);
                      e.target.reset();
-                     showPage('login'); // Send them to the login page to wait for confirmation
-                } else if (data.session) {
-                    // This handles the case where "Confirm email" is OFF (instant login during development)
-                    showAlert('Registration successful! Welcome.', 'success');
-                    e.target.reset();
-                    showPage('home');
+                     showPage('login');
                 }
             }
         });
@@ -1357,11 +1356,7 @@
             const successEl = document.getElementById('forgotPasswordSuccess');
             errorEl.classList.add('hidden');
             successEl.classList.add('hidden');
-            
-            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                // Supabase automatically uses the "Site URL" from your Auth settings
-                // No need to specify redirectTo here unless you want a custom path
-            });
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
 
             if (error) {
                 errorEl.textContent = error.message;
@@ -1381,18 +1376,21 @@
                 errorEl.classList.remove('hidden');
                 return;
             }
+            // This handler is triggered after the user clicks the link in their email.
+            // Supabase client handles the token from the URL automatically.
             const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
             if (error) {
                 errorEl.textContent = error.message;
                 errorEl.classList.remove('hidden');
             } else {
-                showAlert('Password updated successfully. Please log in.', 'success');
+                showAlert('Password updated successfully. You can now log in.', 'success');
                 await handleLogout();
+                showPage('login');
             }
         });
 
+        // --- Payment and Tool Listeners (No changes needed) ---
         document.getElementById('paymentForm')?.addEventListener('submit', handlePayment);
-        
         document.getElementById('contactForm')?.addEventListener('submit', function(event) {
             event.preventDefault(); 
             const formData = new FormData(this);
@@ -1400,22 +1398,17 @@
             submitBtn.disabled = true;
             document.getElementById('contactSubmitSpinner').classList.remove('hidden');
             fetch(this.action, { method: this.method, body: formData, headers: { 'Accept': 'application/json' } })
-            .then(res => {
-                if (res.ok) {
-                    showAlert('Message sent!', 'success');
-                    this.reset();
-                } else {
-                    res.json().then(data => { throw new Error(data.errors?.map(e => e.message).join(', ') || 'Unknown error.') });
-                }
+            .then(res => res.ok ? res : res.json().then(data => Promise.reject(data)))
+            .then(() => {
+                showAlert('Message sent!', 'success');
+                this.reset();
             })
-            .catch(err => showAlert(`Form submission error: ${err.message}`, 'error'))
+            .catch(err => showAlert(`Form submission error: ${err.errors?.map(e => e.message).join(', ') || 'Unknown error.'}`, 'error'))
             .finally(() => {
                 submitBtn.disabled = false;
                 document.getElementById('contactSubmitSpinner').classList.add('hidden');
             });
         });
-        
-        // --- TOOL LISTENERS (No changes needed here) ---
         document.getElementById('generateImageBtn')?.addEventListener('click', async function() {
             if (!canUseFeature('imageGen', 'ai-generator')) return;
             const prompt = document.getElementById('imagePrompt').value.trim();
@@ -1456,7 +1449,6 @@
                 document.getElementById('imagePlaceholderText').textContent = 'Image will appear here';
             }
         });
-
         document.getElementById('translateTextBtn')?.addEventListener('click', async function() {
             if (!canUseFeature('translate', 'translate')) return;
             const textToTranslate = document.getElementById('translatePageTextInput').value.trim();
@@ -1480,7 +1472,6 @@
                 document.getElementById('translateTextSpinner').classList.add('hidden');
             }
         });
-
         document.getElementById('summarizeTextBtn')?.addEventListener('click', async function() {
             if (!canUseFeature('summarize', 'summarization')) return;
             const textToSummarize = document.getElementById('summarizeTextInput').value.trim();
@@ -1505,105 +1496,19 @@
                 document.getElementById('summarizeTextSpinner').classList.add('hidden');
             }
         });
-        
         const textTabBtn = document.getElementById('textTabBtn');
         const docTabBtn = document.getElementById('docTabBtn');
         if (textTabBtn && docTabBtn) {
-            textTabBtn.addEventListener('click', () => {
-                textTabBtn.classList.add('active', 'text-white'); textTabBtn.classList.remove('text-gray-300');
-                docTabBtn.classList.remove('active', 'text-white'); docTabBtn.classList.add('text-gray-300');
-                document.getElementById('textTranslationSection').classList.remove('hidden'); document.getElementById('docTranslationSection').classList.add('hidden');
-            });
-            docTabBtn.addEventListener('click', () => {
-                docTabBtn.classList.add('active', 'text-white'); docTabBtn.classList.remove('text-gray-300');
-                textTabBtn.classList.remove('active', 'text-white'); textTabBtn.classList.add('text-gray-300');
-                document.getElementById('docTranslationSection').classList.remove('hidden'); document.getElementById('textTranslationSection').classList.add('hidden');
-            });
+            textTabBtn.addEventListener('click', () => { textTabBtn.classList.add('active', 'text-white'); textTabBtn.classList.remove('text-gray-300'); docTabBtn.classList.remove('active', 'text-white'); docTabBtn.classList.add('text-gray-300'); document.getElementById('textTranslationSection').classList.remove('hidden'); document.getElementById('docTranslationSection').classList.add('hidden'); });
+            docTabBtn.addEventListener('click', () => { docTabBtn.classList.add('active', 'text-white'); docTabBtn.classList.remove('text-gray-300'); textTabBtn.classList.remove('active', 'text-white'); textTabBtn.classList.add('text-gray-300'); document.getElementById('docTranslationSection').classList.remove('hidden'); document.getElementById('textTranslationSection').classList.add('hidden'); });
         }
-
-        document.getElementById('summarizeDocInput')?.addEventListener('change', async (event) => {
-            const file = event.target.files[0]; if (!file) return;
-            const nameDisplay = document.getElementById('summarizeDocNameDisplay');
-            const statusDisplay = document.getElementById('summarizeDocExtractStatus');
-            const textInput = document.getElementById('summarizeTextInput');
-            nameDisplay.textContent = escapeHtml(file.name);
-            statusDisplay.classList.remove('hidden'); textInput.value = ''; 
-            try {
-                textInput.value = await extractTextFromFile(file);
-                showAlert('Document text extracted successfully!', 'success');
-            } catch (err) {
-                showAlert(`Error: ${err.message}`, 'error'); nameDisplay.textContent = ''; 
-            } finally {
-                statusDisplay.classList.add('hidden'); event.target.value = null; 
-            }
-        });
-        
-        document.getElementById('docFileInput')?.addEventListener('change', async (event) => {
-            const file = event.target.files[0]; if (!file) return;
-            const nameDisplay = document.getElementById('docFileNameDisplay');
-            const statusDisplay = document.getElementById('docFileExtractStatus');
-            const previewContainer = document.getElementById('docTextPreview');
-            const previewDiv = previewContainer.querySelector('div');
-            const translateBtn = document.getElementById('translateDocBtn');
-            const outputContainer = document.getElementById('docTranslationOutput');
-            nameDisplay.textContent = escapeHtml(file.name);
-            statusDisplay.classList.remove('hidden');
-            translateBtn.disabled = true; previewContainer.classList.add('hidden'); outputContainer.dataset.originalText = '';
-            try {
-                const text = await extractTextFromFile(file);
-                outputContainer.dataset.originalText = text;
-                previewDiv.textContent = text.substring(0, 500) + (text.length > 500 ? '...' : '');
-                previewContainer.classList.remove('hidden'); translateBtn.disabled = false;
-                showAlert('Document ready for translation!', 'success');
-            } catch (err) {
-                showAlert(`Error: ${err.message}`, 'error'); nameDisplay.textContent = '';
-            } finally {
-                statusDisplay.classList.add('hidden'); event.target.value = null;
-            }
-        });
-
-        document.getElementById('translateDocBtn')?.addEventListener('click', async function() {
-            if (!canUseFeature('translate', 'translate')) return;
-            const outputContainer = document.getElementById('docTranslationOutput');
-            const textToTranslate = outputContainer.dataset.originalText;
-            if (!textToTranslate) return showAlert('No document text found. Please upload a file first.', 'error');
-            this.disabled = true;
-            document.getElementById('translateDocSpinner').classList.remove('hidden');
-            outputContainer.innerHTML = `<p class="text-gray-400 text-sm">Translating document...</p>`;
-            document.getElementById('copyDocBtn').classList.add('hidden'); document.getElementById('downloadTranslationBtn').classList.add('hidden');
-            try {
-                const targetLangName = document.getElementById('docTargetLanguage').selectedOptions[0].text;
-                const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text, without any additional explanations or context.\n\nText:\n"""${textToTranslate}"""`;
-                const translation = await callGeminiAPI(prompt);
-                outputContainer.innerHTML = `<h3 class="text-sky-400 font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
-                outputContainer.dataset.translatedText = translation;
-                document.getElementById('copyDocBtn').classList.remove('hidden'); document.getElementById('downloadTranslationBtn').classList.remove('hidden');
-                incrementFeatureUsage('translate');
-            } catch (err) {
-                outputContainer.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
-            } finally {
-                this.disabled = false;
-                document.getElementById('translateDocSpinner').classList.add('hidden');
-            }
-        });
-
-        document.getElementById('copyTextBtn')?.addEventListener('click', () => {
-            const textToCopy = document.getElementById('textOutput').querySelector('p.text-white')?.innerText;
-            if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied to clipboard!', 'success'));
-        });
-        document.getElementById('copySummaryBtn')?.addEventListener('click', () => {
-            const textToCopy = document.getElementById('summaryOutput').dataset.rawSummary;
-            if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied to clipboard!', 'success'));
-        });
-        document.getElementById('copyDocBtn')?.addEventListener('click', () => {
-            const textToCopy = document.getElementById('docTranslationOutput').dataset.translatedText;
-            if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied to clipboard!', 'success'));
-        });
-        document.getElementById('downloadTranslationBtn')?.addEventListener('click', () => {
-            const textToDownload = document.getElementById('docTranslationOutput').dataset.translatedText;
-            const originalFilename = document.getElementById('docFileNameDisplay').textContent.split('.').slice(0, -1).join('.') || 'document';
-            if (textToDownload) downloadContent(textToDownload, `${originalFilename}_translated.txt`);
-        });
+        document.getElementById('summarizeDocInput')?.addEventListener('change', async (event) => { const file = event.target.files[0]; if (!file) return; const nameDisplay = document.getElementById('summarizeDocNameDisplay'); const statusDisplay = document.getElementById('summarizeDocExtractStatus'); const textInput = document.getElementById('summarizeTextInput'); nameDisplay.textContent = escapeHtml(file.name); statusDisplay.classList.remove('hidden'); textInput.value = '';  try { textInput.value = await extractTextFromFile(file); showAlert('Document text extracted successfully!', 'success'); } catch (err) { showAlert(`Error: ${err.message}`, 'error'); nameDisplay.textContent = '';  } finally { statusDisplay.classList.add('hidden'); event.target.value = null;  } });
+        document.getElementById('docFileInput')?.addEventListener('change', async (event) => { const file = event.target.files[0]; if (!file) return; const nameDisplay = document.getElementById('docFileNameDisplay'); const statusDisplay = document.getElementById('docFileExtractStatus'); const previewContainer = document.getElementById('docTextPreview'); const previewDiv = previewContainer.querySelector('div'); const translateBtn = document.getElementById('translateDocBtn'); const outputContainer = document.getElementById('docTranslationOutput'); nameDisplay.textContent = escapeHtml(file.name); statusDisplay.classList.remove('hidden'); translateBtn.disabled = true; previewContainer.classList.add('hidden'); outputContainer.dataset.originalText = ''; try { const text = await extractTextFromFile(file); outputContainer.dataset.originalText = text; previewDiv.textContent = text.substring(0, 500) + (text.length > 500 ? '...' : ''); previewContainer.classList.remove('hidden'); translateBtn.disabled = false; showAlert('Document ready for translation!', 'success'); } catch (err) { showAlert(`Error: ${err.message}`, 'error'); nameDisplay.textContent = ''; } finally { statusDisplay.classList.add('hidden'); event.target.value = null; } });
+        document.getElementById('translateDocBtn')?.addEventListener('click', async function() { if (!canUseFeature('translate', 'translate')) return; const outputContainer = document.getElementById('docTranslationOutput'); const textToTranslate = outputContainer.dataset.originalText; if (!textToTranslate) return showAlert('No document text found. Please upload a file first.', 'error'); this.disabled = true; document.getElementById('translateDocSpinner').classList.remove('hidden'); outputContainer.innerHTML = `<p class="text-gray-400 text-sm">Translating document...</p>`; document.getElementById('copyDocBtn').classList.add('hidden'); document.getElementById('downloadTranslationBtn').classList.add('hidden'); try { const targetLangName = document.getElementById('docTargetLanguage').selectedOptions[0].text; const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text, without any additional explanations or context.\n\nText:\n"""${textToTranslate}"""`; const translation = await callGeminiAPI(prompt); outputContainer.innerHTML = `<h3 class="text-sky-400 font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`; outputContainer.dataset.translatedText = translation; document.getElementById('copyDocBtn').classList.remove('hidden'); document.getElementById('downloadTranslationBtn').classList.remove('hidden'); incrementFeatureUsage('translate'); } catch (err) { outputContainer.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`; } finally { this.disabled = false; document.getElementById('translateDocSpinner').classList.add('hidden'); } });
+        document.getElementById('copyTextBtn')?.addEventListener('click', () => { const textToCopy = document.getElementById('textOutput').querySelector('p.text-white')?.innerText; if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied to clipboard!', 'success')); });
+        document.getElementById('copySummaryBtn')?.addEventListener('click', () => { const textToCopy = document.getElementById('summaryOutput').dataset.rawSummary; if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied to clipboard!', 'success')); });
+        document.getElementById('copyDocBtn')?.addEventListener('click', () => { const textToCopy = document.getElementById('docTranslationOutput').dataset.translatedText; if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied to clipboard!', 'success')); });
+        document.getElementById('downloadTranslationBtn')?.addEventListener('click', () => { const textToDownload = document.getElementById('docTranslationOutput').dataset.translatedText; const originalFilename = document.getElementById('docFileNameDisplay').textContent.split('.').slice(0, -1).join('.') || 'document'; if (textToDownload) downloadContent(textToDownload, `${originalFilename}_translated.txt`); });
     }
 
     // --- MAIN EXECUTION ---
@@ -1611,44 +1516,43 @@
         initializeEventListeners();
 
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
-            const user = session ? session.user : null;
-            await loadCurrentUserProfile(user);
+            await loadCurrentUserProfile(session?.user);
             updateAuthUI();
             resetInactivityTimer();
 
-            if (event === 'INITIAL_SESSION') {
-                const pageId = getCurrentPageIdFromUrl();
-                showPage(pageId, true);
-            } else if (event === 'SIGNED_IN') {
-                 // A user can be "signed in" after confirming their email via a link,
-                 // or by logging in directly.
-                 showAlert('Login successful!', 'success');
-                 const intendedPage = sessionStorage.getItem('intendedPage');
-                 const pendingPlanId = sessionStorage.getItem('pendingPlan');
-                 sessionStorage.removeItem('intendedPage');
-                 sessionStorage.removeItem('pendingPlan');
-                 if (pendingPlanId) {
-                     initiatePayment(pendingPlanId);
-                 } else if (intendedPage) {
-                     showPage(intendedPage);
-                 } else {
-                     // If there's no specific intended page, just go home.
-                     // This handles the case where a user confirms their email and is redirected back.
-                     showPage('home');
-                 }
-            } else if (event === 'SIGNED_OUT') {
-                currentUser = null;
-                updateAuthUI();
-                showAlert('You have been signed out.', 'info');
-                const currentPage = getCurrentPageIdFromUrl();
-                const authRequiredPages = ['accountPage', 'paymentPage'];
-                if (authRequiredPages.includes(currentPage)) {
-                    showPage('home');
-                }
-            } else if (event === 'PASSWORD_RECOVERY') {
-                // This event fires when the user clicks the password reset link.
-                // The URL will contain the necessary tokens.
-                showPage('resetPassword');
+            // This logic handles all authentication-related page routing.
+            switch (event) {
+                case 'INITIAL_SESSION':
+                    showPage(getCurrentPageIdFromUrl(), true);
+                    break;
+                case 'SIGNED_IN':
+                    showAlert('Login successful!', 'success');
+                    const intendedPage = sessionStorage.getItem('intendedPage');
+                    const pendingPlanId = sessionStorage.getItem('pendingPlan');
+                    sessionStorage.removeItem('intendedPage');
+                    sessionStorage.removeItem('pendingPlan');
+
+                    if (pendingPlanId) {
+                        initiatePayment(pendingPlanId);
+                    } else if (intendedPage) {
+                        showPage(intendedPage);
+                    } else {
+                        showPage('home');
+                    }
+                    break;
+                case 'SIGNED_OUT':
+                    showAlert('You have been signed out.', 'info');
+                    if (authPageIds.includes(getCurrentPageIdFromUrl())) {
+                        showPage('home'); // Don't show auth pages if logged out
+                    }
+                    break;
+                case 'PASSWORD_RECOVERY':
+                    showPage('resetPassword');
+                    break;
+                case 'USER_UPDATED':
+                    await loadCurrentUserProfile(session?.user);
+                    updateAuthUI();
+                    break;
             }
         });
     });
