@@ -280,7 +280,7 @@
       </section>
     </div> 
 
-    <!-- NEW Account Page -->
+    <!-- UPDATED Account Page -->
     <div id="account" class="page">
         <header class="gradient-bg text-white py-8">
             <div class="container mx-auto px-4 text-center">
@@ -316,6 +316,15 @@
                         <div id="accountPlanDescription" class="text-sm">
                             <!-- Description will be populated by JS -->
                         </div>
+                        
+                        <!-- NEW: Usage Details Container -->
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <h3 class="text-md font-semibold text-gray-700 mb-2">Session Usage</h3>
+                            <div id="accountUsageDetails" class="space-y-2 text-sm text-gray-600">
+                                <!-- JS will populate this section -->
+                            </div>
+                        </div>
+
                         <button onclick="showPage('pricing')" class="mt-4 w-full bg-blue-900 text-white py-2 px-4 rounded-md hover:bg-blue-900 transition">
                             View & Manage Plans
                         </button>
@@ -499,7 +508,7 @@
               </div>
               <form id="paymentForm" class="p-6 space-y-6">
                 <p class="text-gray-700">You are purchasing: <strong id="paymentPlanName" class="text-gray-900">Premium Plan</strong></p>
-                <p class="text-gray-700">Price: <strong id="paymentPlanPrice" class="text-gray-900">₹499</strong></p>
+                <p class="text-gray-700">Price: <strong id="paymentPlanPrice" class="text-gray-900">₹1</strong></p>
     
                 <div>
                   <label for="cardNameInput" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
@@ -1006,7 +1015,7 @@
                 <div class="pricing-card bg-white rounded-lg shadow-lg p-6 border-4 border-blue-900 flex flex-col relative">
                     <span class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-900 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase">Most Popular</span>
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2 mt-4">Pro</h3>
-                    <p class="text-4xl font-bold text-gray-900 mb-4" id="proPlanPriceDisplay">₹499<span class="text-lg font-normal text-gray-500">/month</span></p>
+                    <p class="text-4xl font-bold text-gray-900 mb-4" id="proPlanPriceDisplay">₹1<span class="text-lg font-normal text-gray-500">/month</span></p>
                     <p class="text-gray-600 mb-6">Ideal for professionals and small teams needing more power.</p>
                     <ul class="text-gray-700 mb-8 flex-grow">
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
@@ -1273,15 +1282,15 @@
     const INACTIVITY_TIMEOUT = 5 * 60 * 1000;
     const GUEST_TOTAL_USAGE_LIMIT = 10; 
     const FREE_TIER_LIMITS = { 
-        imageGen: 5,
-        translate: 10,
-        summarize: 5
+        imageGen: 15,
+        translate: 15,
+        summarize: 15
     };
     let guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
 
     const plansData = {
         free: { name: "Free", priceDisplay: "₹0/month", priceAmount: 0, currency: "INR", id: 'free', description: "Access to basic features with session-based limits. Perfect for trying out our tools." },
-        pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 49900, currency: "INR", id: 'pro', description: "Unlimited access to all our AI tools. Ideal for professionals and power users." },
+        pro: { name: "Pro", priceDisplay: "₹1/month", priceAmount: 100, currency: "INR", id: 'pro', description: "Unlimited access to all our AI tools. Ideal for professionals and power users." },
         business: { name: "Business", priceDisplay: "₹1499/month", priceAmount: 149900, currency: "INR", id: 'business', description: "All Pro features plus dedicated support and team tools for your organization." }
     };
     
@@ -1352,7 +1361,7 @@
         }
     }
 
-    // --- NEW: FUNCTION TO POPULATE ACCOUNT PAGE ---
+    // --- UPDATED: FUNCTION TO POPULATE ACCOUNT PAGE ---
     function populateAccountPage() {
         if (currentUser) {
             document.getElementById('accountName').textContent = escapeHtml(currentUser.name);
@@ -1363,11 +1372,34 @@
                 document.getElementById('accountPlan').textContent = escapeHtml(planDetails.name);
                 document.getElementById('accountPlanDescription').textContent = escapeHtml(planDetails.description);
             }
+
+            // --- Populate Usage Details ---
+            const usageDetailsContainer = document.getElementById('accountUsageDetails');
+            if (usageDetailsContainer) {
+                usageDetailsContainer.innerHTML = ''; // Clear previous content
+
+                if (currentUser.plan === 'free') {
+                    const usage = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
+                    const limits = FREE_TIER_LIMITS;
+
+                    usageDetailsContainer.innerHTML = `
+                        <p><strong>AI Image Generations:</strong> ${usage.imageGen} / ${limits.imageGen}</p>
+                        <p><strong>Translations:</strong> ${usage.translate} / ${limits.translate}</p>
+                        <p><strong>Text Summarizations:</strong> ${usage.summarize} / ${limits.summarize}</p>
+                        <p class="text-xs text-gray-500 mt-2">Limits reset when you close your browser session.</p>
+                    `;
+                } else if (currentUser.plan === 'pro' || currentUser.plan === 'business') {
+                    usageDetailsContainer.innerHTML = `
+                        <p><strong>AI Image Generations:</strong> Unlimited</p>
+                        <p><strong>Translations:</strong> Unlimited</p>
+                        <p><strong>Text Summarizations:</strong> Unlimited</p>
+                    `;
+                }
+            }
         }
     }
     
     function showPage(pageId, isInitialLoad = false) {
-        // NEW: Protect account page from non-logged-in users
         if (pageId === 'account' && !currentUser) {
             showAlert('You must be logged in to view your account page.', 'info');
             sessionStorage.setItem('intendedPage', 'account');
@@ -1391,7 +1423,6 @@
             targetPage.classList.add('active');
             updateMetaTags(pageId);
 
-            // NEW: Populate account page if it's the one being shown
             if (pageId === 'account') {
                 populateAccountPage();
             }
@@ -1782,6 +1813,7 @@
             window.addEventListener(eventName, resetInactivityTimer, true);
         });
 
+        // --- UPDATED: onAuthStateChange logic ---
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
             
@@ -1815,8 +1847,8 @@
                     } else if (intendedPage && document.getElementById(intendedPage) && intendedPage !== 'login') {
                         showPage(intendedPage);
                     } else {
-                        // MODIFIED: Redirect to account page on login
-                        showPage('account');
+                        // --- CHANGE: Redirect to home page on login ---
+                        showPage('home');
                     }
                 } else if (event === 'PASSWORD_RECOVERY') {
                     showAlert('You are in password recovery mode. Please set a new password.', 'info');
