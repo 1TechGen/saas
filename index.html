@@ -211,7 +211,7 @@
                         <p class="text-sm text-gray-800 font-semibold" id="userEmailDisplay">User Name (Plan)</p>
                     </div>
                     <button onclick="showPage('accountPage')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Dashboard</button>
-                    <button id="logoutButton" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100">Logout</button>
+                    <button onclick="handleLogout()" id="logoutButton" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100">Logout</button>
                 </div>
             </div>
         </div>
@@ -221,7 +221,7 @@
 
   <main>
     <!-- Home Page -->
-    <div id="home" class="page">
+    <div id="home" class="page active">
       <section class="bg-gray-900 text-white py-20">
         <div class="container mx-auto text-center px-4">
           <h2 class="text-4xl font-bold mb-4">Transform Your Workflow with AI</h2>
@@ -325,7 +325,7 @@
                     <button id="upgradePlanBtn" onclick="showPage('pricing')" class="w-full sm:w-auto bg-green-600 text-white py-2 px-6 rounded-md hover:bg-green-700 transition font-semibold">
                         Upgrade Plan
                     </button>
-                    <button onclick="document.getElementById('logoutButton').click()" class="w-full sm:w-auto bg-red-600 text-white py-2 px-6 rounded-md hover:bg-red-700 transition font-semibold">
+                    <button onclick="handleLogout()" class="w-full sm:w-auto bg-red-600 text-white py-2 px-6 rounded-md hover:bg-red-700 transition font-semibold">
                         Logout
                     </button>
                 </div>
@@ -724,7 +724,7 @@
               <p class="text-gray-600 text-sm flex-grow">Discover how artificial intelligence is changing the game for marketers, writers, and designers, from generating ideas to producing final assets.</p>
               <div class="mt-6 flex items-center">
                 <div class="text-sm text-gray-500">
-                  <p class="font-semibold text-gray-700">Jane Doe</p>
+                  <p class="font-semibold text-gray-700"></p>
                   <p>June 15, 2025</p>
                 </div>
               </div>
@@ -740,7 +740,7 @@
               <p class="text-gray-600 text-sm flex-grow">Overwhelmed by reading? Learn practical tips on leveraging AI summarizers to quickly extract key information from dense documents and articles.</p>
               <div class="mt-6 flex items-center">
                 <div class="text-sm text-gray-500">
-                  <p class="font-semibold text-gray-700">John Smith</p>
+                  <p class="font-semibold text-gray-700"></p>
                   <p>June 10, 2025</p>
                 </div>
               </div>
@@ -756,7 +756,7 @@
               <p class="text-gray-600 text-sm flex-grow">Explore a real-world example of how our AI translation tool helped a small business expand into international markets with ease and accuracy.</p>
               <div class="mt-6 flex items-center">
                 <div class="text-sm text-gray-500">
-                  <p class="font-semibold text-gray-700">Alice Johnson</p>
+                  <p class="font-semibold text-gray-700"></p>
                   <p>June 05, 2025</p>
                 </div>
               </div>
@@ -767,7 +767,7 @@
 
         <!-- RSS Feed Link at the bottom -->
         <div class="text-center mt-16 border-t pt-8">
-            <a href="/rss.xml" target="_blank" title="Subscribe to RSS Feed" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-gray-600 hover:text-orange-500 transition-colors">
+            <a href="https://#.com/" target="_blank" title="Subscribe to RSS Feed" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-gray-600 hover:text-orange-500 transition-colors">
                 <svg class="w-6 h-6 text-orange-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 18c-1.105 0-2-.895-2-2s.895-2 2-2 2 .895 2 2-.895 2-2 2zm-2-5.5c0-1.873 1.258-3.444 3-3.868V5.868C2.129 6.29 0 8.525 0 11.25h2zm0-4.5C2 3.485 5.485 0 9.75 0v2C6.567 2 4 4.567 4 7.75H2z"/></svg>
                 <span>Subscribe to our Feed</span>
             </a>
@@ -811,9 +811,9 @@
 
   <script>
     // =================================================================================
-    // IMPORTANT: This script requires a specific backend setup in Supabase.
-    // Please run the SQL queries provided in the documentation before using this file.
-    // You need to create a `profiles` table, a trigger, and an RPC function.
+    // Supabase Backend Setup:
+    // This script assumes your Supabase has "Confirm email" turned OFF in the auth settings.
+    // This allows for automatic login after registration.
     // =================================================================================
 
     if (typeof pdfjsLib !== 'undefined') {
@@ -1011,8 +1011,8 @@
             inactivityTimer = setTimeout(async () => {
                 if (currentUser) { 
                     console.log(`Inactivity timeout reached. Logging out ${currentUser.email}.`);
+                    await handleLogout();
                     showAlert('You have been logged out due to inactivity.', 'info');
-                    await supabaseClient.auth.signOut();
                 }
             }, INACTIVITY_TIMEOUT);
         }
@@ -1271,6 +1271,11 @@
         rzp.open();
     }
     
+    // --- LOGOUT FUNCTION ---
+    async function handleLogout() {
+      await supabaseClient.auth.signOut();
+    }
+
     // --- APP INITIALIZATION AND EVENT LISTENERS ---
     
     function initializeEventListeners() {
@@ -1296,6 +1301,8 @@
             } else {
                 showAlert('Welcome back!', 'success');
                 e.target.reset();
+                // *** FIX 1: Explicitly navigate to home after successful login ***
+                showPage('home'); 
             }
         });
 
@@ -1313,15 +1320,12 @@
                 return;
             }
 
-            // IMPORTANT: This logic relies on the "Confirm email" setting being turned OFF
-            // in your Supabase project's Email Provider settings. 
-            // If it's ON, Supabase will not return an error for a duplicate email.
             const { data, error } = await supabaseClient.auth.signUp({
                 email, password, options: { data: { full_name: fullName } }
             });
             
             if (error) {
-                console.error("Registration Error:", error); // Log the full error for debugging
+                console.error("Registration Error:", error);
                 if (error.message && error.message.toLowerCase().includes("user already registered")) {
                     errorEl.innerHTML = 'This email is already registered. Please <button type="button" onclick="showPage(\'login\')" class="font-bold underline text-sky-700 hover:text-sky-500">log in</button>.';
                 } else {
@@ -1329,16 +1333,11 @@
                 }
                 errorEl.classList.remove('hidden');
             } else {
-                // This block now only runs on a truly successful new registration.
-                showAlert('Registration successful!', 'success');
+                showAlert('Registration successful! Welcome.', 'success');
                 e.target.reset();
-                showPage('login');
+                // *** FIX 2: Explicitly navigate to home after successful registration ***
+                showPage('home');
             }
-        });
-
-        document.getElementById('logoutButton')?.addEventListener('click', async () => {
-            await supabaseClient.auth.signOut();
-            showAlert('You have been signed out.', 'info');
         });
 
         document.getElementById('forgotPasswordForm')?.addEventListener('submit', async (e) => {
@@ -1375,7 +1374,7 @@
                 errorEl.classList.remove('hidden');
             } else {
                 showAlert('Password updated successfully. Please log in.', 'success');
-                await supabaseClient.auth.signOut();
+                await handleLogout();
             }
         });
 
@@ -1611,22 +1610,33 @@
             await loadCurrentUserProfile(user);
             updateAuthUI();
             resetInactivityTimer();
+
+            // This block handles state changes but does NOT navigate on login/registration,
+            // as the form handlers now do that explicitly. It's still needed for other events.
             if (event === 'INITIAL_SESSION') {
                 const initialPageId = getCurrentPageIdFromUrl();
-                showPage(initialPageId, true);
+                // If the URL has a hash, navigate to that page. Otherwise, stay on the default homepage.
+                if (initialPageId !== 'home') {
+                    showPage(initialPageId, true);
+                }
             } else if (event === 'SIGNED_IN') {
                 const intendedPage = sessionStorage.getItem('intendedPage');
                 const pendingPlanId = sessionStorage.getItem('pendingPlan');
-                sessionStorage.removeItem('intendedPage');
-                sessionStorage.removeItem('pendingPlan');
+                
                 if (pendingPlanId) {
+                    sessionStorage.removeItem('pendingPlan');
+                    sessionStorage.removeItem('intendedPage');
                     initiatePayment(pendingPlanId);
-                } else {
-                    showPage(intendedPage || 'accountPage');
+                } else if (intendedPage) {
+                    sessionStorage.removeItem('intendedPage');
+                    showPage(intendedPage);
                 }
+                // NOTE: No default navigation here. The form handlers are responsible.
+                
             } else if (event === 'SIGNED_OUT') {
                 currentUser = null;
                 updateAuthUI();
+                showAlert('You have been signed out.', 'info');
                 const currentPage = getCurrentPageIdFromUrl();
                 const authRequiredPages = ['accountPage', 'paymentPage'];
                 if (authRequiredPages.includes(currentPage)) {
