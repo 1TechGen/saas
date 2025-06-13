@@ -280,7 +280,7 @@
       </section>
     </div> 
 
-    <!-- UPDATED Account Page -->
+    <!-- Account Page -->
     <div id="account" class="page">
         <header class="gradient-bg text-white py-8">
             <div class="container mx-auto px-4 text-center">
@@ -317,9 +317,9 @@
                             <!-- Description will be populated by JS -->
                         </div>
                         
-                        <!-- NEW: Usage Details Container -->
+                        <!-- Usage Details Container -->
                         <div class="mt-4 pt-4 border-t border-gray-200">
-                            <h3 class="text-md font-semibold text-gray-700 mb-2">Session Usage</h3>
+                            <h3 class="text-md font-semibold text-gray-700 mb-2">Usage This Period</h3>
                             <div id="accountUsageDetails" class="space-y-2 text-sm text-gray-600">
                                 <!-- JS will populate this section -->
                             </div>
@@ -334,7 +334,7 @@
         </div>
     </div>
     
-    <!-- NEW Blog Page -->
+    <!-- Blog Page -->
     <div id="blog" class="page">
         <header class="gradient-bg text-white py-8">
             <div class="container mx-auto px-4 text-center">
@@ -1005,13 +1005,13 @@
                     <p class="text-4xl font-bold text-gray-900 mb-4">₹0<span class="text-lg font-normal text-gray-500">/month</span></p>
                     <p class="text-gray-600 mb-6">Perfect for individuals starting out or trying our basic features.</p>
                     <ul class="text-gray-700 mb-8 flex-grow">
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 AI Image Generations (session limit)</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 10 Text/Doc Translations (session limit)</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 Text Summarizations (session limit)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 AI Image Generations (total uses)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 10 Text/Doc Translations (total uses)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 Text Summarizations (total uses)</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Community Support</li>
                          <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Guest Users: 10 total uses (session limit)</li>
                     </ul>
-                                    </div>
+                </div>
                 <div class="pricing-card bg-white rounded-lg shadow-lg p-6 border-4 border-blue-900 flex flex-col relative">
                     <span class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-900 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase">Most Popular</span>
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2 mt-4">Pro</h3>
@@ -1271,25 +1271,25 @@
     const RAZORPAY_KEY_ID = "rzp_live_xoN2xNuHMZnCup";
 
     // --- SUPABASE INITIALIZATION ---
-    const supabaseUrl = "https://cgognoeajifmecdwxkes.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnb2dub2VhamlmbWVjZHd4a2VzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3ODg2MTgsImV4cCI6MjA2NTM2NDYxOH0.xtvF3QWggG_SlJo_KDz5Jg8aBJAI4D_siAiizggZPQE";
+    const supabaseUrl = "https://sensgfxuvavktqmjuqkh.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlbnNnZnh1dmF2a3RxbWp1cWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3OTA1MjUsImV4cCI6MjA2NTM2NjUyNX0.bCEBDcBfeXAHJeojOscPSQdW3JbEQwQRkNMdc7Ii3xk";
     const { createClient } = supabase;
     const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
     // --- APPLICATION STATE AND CONSTANTS ---
     let currentUser = null; 
     let inactivityTimer;
-    const INACTIVITY_TIMEOUT = 5 * 60 * 1000;
+    const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
     const GUEST_TOTAL_USAGE_LIMIT = 10; 
     const FREE_TIER_LIMITS = { 
-        imageGen: 15,
-        translate: 15,
-        summarize: 15
+        imageGen: 5,
+        translate: 10,
+        summarize: 5
     };
     let guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
 
     const plansData = {
-        free: { name: "Free", priceDisplay: "₹0/month", priceAmount: 0, currency: "INR", id: 'free', description: "Access to basic features with session-based limits. Perfect for trying out our tools." },
+        free: { name: "Free", priceDisplay: "₹0/month", priceAmount: 0, currency: "INR", id: 'free', description: "Access to basic features with a limited number of total uses. Perfect for trying out our tools." },
         pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 49900, currency: "INR", id: 'pro', description: "Unlimited access to all our AI tools. Ideal for professionals and power users." },
         business: { name: "Business", priceDisplay: "₹1499/month", priceAmount: 149900, currency: "INR", id: 'business', description: "All Pro features plus dedicated support and team tools for your organization." }
     };
@@ -1350,7 +1350,6 @@
             }
             supabaseClient.auth.signOut(); 
             showAlert('You have been logged out due to inactivity. Please log in to continue.', 'info', 8000);
-            showPage('login');
         }
     }
 
@@ -1361,7 +1360,7 @@
         }
     }
 
-    // --- UPDATED: FUNCTION TO POPULATE ACCOUNT PAGE ---
+    // --- FUNCTION TO POPULATE ACCOUNT PAGE (DATABASE-DRIVEN) ---
     function populateAccountPage() {
         if (currentUser) {
             document.getElementById('accountName').textContent = escapeHtml(currentUser.name);
@@ -1373,7 +1372,6 @@
                 document.getElementById('accountPlanDescription').textContent = escapeHtml(planDetails.description);
             }
 
-            // --- Populate Usage Details ---
             const usageDetailsContainer = document.getElementById('accountUsageDetails');
             if (usageDetailsContainer) {
                 usageDetailsContainer.innerHTML = ''; // Clear previous content
@@ -1386,7 +1384,7 @@
                         <p><strong>AI Image Generations:</strong> ${usage.imageGen} / ${limits.imageGen}</p>
                         <p><strong>Translations:</strong> ${usage.translate} / ${limits.translate}</p>
                         <p><strong>Text Summarizations:</strong> ${usage.summarize} / ${limits.summarize}</p>
-                        <p class="text-xs text-gray-500 mt-2">Limits reset when you close your browser session.</p>
+                        <p class="text-xs text-gray-500 mt-2">These are one-time use limits for the free plan. Upgrade for unlimited access.</p>
                     `;
                 } else if (currentUser.plan === 'pro' || currentUser.plan === 'business') {
                     usageDetailsContainer.innerHTML = `
@@ -1423,7 +1421,7 @@
             targetPage.classList.add('active');
             updateMetaTags(pageId);
 
-            if (pageId === 'account') {
+            if (pageId === 'account' && currentUser) {
                 populateAccountPage();
             }
             
@@ -1491,7 +1489,7 @@
         }
     }
 
-    // --- FEATURE GATING AND USAGE TRACKING ---
+    // --- FEATURE GATING AND USAGE TRACKING (DATABASE-DRIVEN) ---
 
     function updateGuestUsage() {
         guestUsage.total++;
@@ -1520,20 +1518,31 @@
             if (currentCount < limit) {
                 return true;
             }
-            showAlert(`You've reached your Free plan session limit of ${limit} ${featureType.replace(/([A-Z])/g, ' $1').toLowerCase()}s. Upgrade to a Pro plan for unlimited access.`, 'info');
-            sessionStorage.setItem('intendedPage', currentPageId || 'pricing'); 
+            showAlert(`You've reached your Free plan limit of ${limit} ${featureType.replace(/([A-Z])/g, ' $1').toLowerCase()}s. Upgrade to a Pro plan for unlimited access.`, 'info');
             showPage('pricing');
             return false;
         }
-        return false;
+        return false; // Should not be reached
     }
 
-    function incrementFeatureUsage(featureType) {
-        if (currentUser && currentUser.plan === 'free') {
-            currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
-            sessionStorage.setItem(`techGenUsage_${currentUser.email}`, JSON.stringify(currentUser.usageCounts));
-        } else if (!currentUser) {
+    async function incrementFeatureUsage(featureType) {
+        if (!currentUser) {
             updateGuestUsage();
+            return;
+        }
+
+        if (currentUser.plan === 'free') {
+            // Optimistically update local state for immediate UI feedback
+            currentUser.usageCounts[featureType]++;
+            
+            // Call RPC to update database. No need to await if optimistic update is acceptable.
+            const { error } = await supabaseClient.rpc('increment_usage_count', { feature_name: featureType });
+            if (error) {
+                console.error(`Failed to update usage count for ${featureType}:`, error);
+                // Optionally revert local state or show an error
+                currentUser.usageCounts[featureType]--;
+                showAlert('Could not save usage data. Please try again.', 'error');
+            }
         }
     }
 
@@ -1754,39 +1763,57 @@
         showPage('paymentPage');
     }
 
-    function handlePayment(event) {
+    async function handlePayment(event) {
         event.preventDefault(); 
         const paymentForm = document.getElementById('paymentForm');
         const planId = paymentForm.dataset.planId;
         const planDetails = plansData[planId];
 
-        if (!planDetails) {
-            showAlert("Error: Plan details not found.", 'error'); return;
+        if (!planDetails || !currentUser) {
+            showAlert("Error: Plan or user details not found.", 'error'); return;
         }
         if (!RAZORPAY_KEY_ID) {
             showAlert("Payment processor is not configured.", 'error'); return;
         }
 
-        const customerName = document.getElementById('cardNameInput').value;
-        const customerEmail = document.getElementById('emailInput').value;
-        
         const options = {
             key: RAZORPAY_KEY_ID,
             amount: planDetails.priceAmount,
             currency: planDetails.currency,
             name: "Tech_Gen AI Solutions",
             description: `Subscription: ${planDetails.name}`,
-            prefill: { name: customerName, email: customerEmail },
-            notes: { plan_id: planId, user_email: currentUser.email },
+            prefill: { name: currentUser.name, email: currentUser.email },
+            notes: { plan_id: planId, user_id: currentUser.id },
             theme: { color: "#1B2EFD" },
-            handler: function (response) {
-                showAlert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}.`, 'success', 6000);
+            handler: async function (response) {
+                showAlert(`Payment successful! Processing your subscription...`, 'success', 6000);
                 
-                currentUser.plan = planDetails.id;
-                delete currentUser.usageCounts;
-                
-                localStorage.setItem(`techGenPlan_${currentUser.email}`, planDetails.id);
-                
+                // Update Supabase database
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .update({ 
+                        plan: planDetails.id, 
+                        image_gen_count: 0, 
+                        translate_count: 0, 
+                        summarize_count: 0 
+                    })
+                    .eq('id', currentUser.id)
+                    .select()
+                    .single();
+
+                if (error) {
+                    showAlert(`Payment was successful, but we couldn't update your plan. Please contact support. Error: ${error.message}`, 'error', 10000);
+                    return;
+                }
+
+                // Update local state to reflect the new plan
+                currentUser.plan = data.plan;
+                currentUser.usageCounts = {
+                    imageGen: data.image_gen_count,
+                    translate: data.translate_count,
+                    summarize: data.summarize_count
+                };
+
                 updateAuthUI();
                 showAlert(`Your ${planDetails.name} plan is now active!`, 'success', 8000);
                 showPage('account'); 
@@ -1813,24 +1840,35 @@
             window.addEventListener(eventName, resetInactivityTimer, true);
         });
 
-        // --- UPDATED: onAuthStateChange logic ---
+        // Main authentication state change handler
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
             
             if (userSession) {
-                let userPlan = localStorage.getItem(`techGenPlan_${userSession.email}`) || 'free';
-                let usageCounts = {};
-                if (userPlan === 'free') {
-                    usageCounts = JSON.parse(sessionStorage.getItem(`techGenUsage_${userSession.email}`)) || { imageGen: 0, translate: 0, summarize: 0 };
+                // Fetch profile from Supabase
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', userSession.id)
+                    .single();
+                
+                if (error) {
+                    console.error("Error fetching user profile:", error.message);
+                    showAlert("Could not load your user profile. Please try refreshing.", "error");
+                    currentUser = null;
+                } else if (data) {
+                    currentUser = {
+                        id: data.id,
+                        email: userSession.email,
+                        name: data.full_name || userSession.email,
+                        plan: data.plan,
+                        usageCounts: {
+                            imageGen: data.image_gen_count,
+                            translate: data.translate_count,
+                            summarize: data.summarize_count
+                        }
+                    };
                 }
-
-                currentUser = {
-                    id: userSession.id,
-                    email: userSession.email,
-                    name: userSession.user_metadata.full_name || userSession.email,
-                    plan: userPlan,
-                    usageCounts: usageCounts
-                };
                 
                 updateAuthUI();
                 resetInactivityTimer();
@@ -1840,24 +1878,28 @@
                     const intendedPage = sessionStorage.getItem('intendedPage');
                     const pendingPlanId = sessionStorage.getItem('pendingPlan');
                     sessionStorage.removeItem('intendedPage');
+                    sessionStorage.removeItem('pendingPlan');
 
                     if (pendingPlanId) {
-                        sessionStorage.removeItem('pendingPlan');
                         initiatePayment(pendingPlanId);
                     } else if (intendedPage && document.getElementById(intendedPage) && intendedPage !== 'login') {
                         showPage(intendedPage);
                     } else {
-                        // --- CHANGE: Redirect to home page on login ---
                         showPage('home');
                     }
                 } else if (event === 'PASSWORD_RECOVERY') {
-                    showAlert('You are in password recovery mode. Please set a new password.', 'info');
+                    showAlert('You can now set a new password.', 'info');
                     showPage('resetPassword');
                 }
-            } else {
+            } else { // User is logged out
                 currentUser = null;
                 updateAuthUI();
                 clearTimeout(inactivityTimer);
+                // If user is on a protected page, redirect them
+                const currentPageId = getCurrentPageIdFromUrl();
+                if (currentPageId === 'account') {
+                    showPage('login');
+                }
             }
         });
 
@@ -1878,16 +1920,11 @@
             const errorEl = document.getElementById('loginError');
             errorEl.classList.add('hidden');
 
-            if (!email || !password) { 
-                errorEl.textContent = 'Email and password are required.'; errorEl.classList.remove('hidden'); return; 
-            }
-            
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
             if (error) {
                 errorEl.textContent = error.message; errorEl.classList.remove('hidden');
             } else {
-                // onAuthStateChange handles success UI and redirection
                 loginFormEl.reset();
             }
         });
@@ -1900,10 +1937,6 @@
             const password = document.getElementById('registerPassword').value.trim();
             const errorEl = document.getElementById('registerError');
             errorEl.classList.add('hidden');
-
-            if (!fullName || !email || password.length < 6) { 
-                errorEl.textContent = 'All fields are required and password must be at least 6 characters.'; errorEl.classList.remove('hidden'); return; 
-            }
 
             const { error } = await supabaseClient.auth.signUp({
                 email, password, options: { data: { full_name: fullName } }
@@ -1920,32 +1953,25 @@
 
         const logoutButton = document.getElementById('logoutButton');
         if (logoutButton) logoutButton.addEventListener('click', async () => {
-            const { error } = await supabaseClient.auth.signOut();
-            if (error) {
-                showAlert(`Logout failed: ${error.message}`, 'error');
-            } else {
-                showAlert('You have been signed out.', 'info');
-                showPage('home');
-            }
+            await supabaseClient.auth.signOut();
+            showAlert('You have been signed out.', 'info');
+            showPage('home');
         });
 
         const forgotPasswordFormEl = document.getElementById('forgotPasswordForm');
         if (forgotPasswordFormEl) {
             forgotPasswordFormEl.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                const errorEl = document.getElementById('forgotPasswordError');
-                const successEl = document.getElementById('forgotPasswordSuccess');
-                errorEl.classList.add('hidden');
-                
                 const email = document.getElementById('forgotPasswordEmail').value;
                 const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
                     redirectTo: window.location.origin + window.location.pathname,
                 });
                 
                 if (error) {
-                    errorEl.textContent = error.message; errorEl.classList.remove('hidden');
+                    document.getElementById('forgotPasswordError').textContent = error.message;
+                    document.getElementById('forgotPasswordError').classList.remove('hidden');
                 } else {
-                    successEl.classList.remove('hidden');
+                    document.getElementById('forgotPasswordSuccess').classList.remove('hidden');
                 }
             });
         }
@@ -1954,20 +1980,16 @@
         if (resetPasswordFormEl) {
             resetPasswordFormEl.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                const errorEl = document.getElementById('resetPasswordError');
                 const newPassword = document.getElementById('resetNewPassword').value;
-
-                if (newPassword.length < 6) {
-                    errorEl.textContent = 'Password must be at least 6 characters.'; errorEl.classList.remove('hidden'); return;
-                }
                 
                 const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
 
                 if (error) {
-                    errorEl.textContent = error.message; errorEl.classList.remove('hidden');
+                    document.getElementById('resetPasswordError').textContent = error.message;
+                    document.getElementById('resetPasswordError').classList.remove('hidden');
                 } else {
-                    showAlert('Password updated successfully. Signing you out now.', 'success');
-                    await supabaseClient.auth.signOut();
+                    showAlert('Password updated successfully. You can now log in.', 'success');
+                    await supabaseClient.auth.signOut(); // Log out from recovery state
                     showPage('login');
                 }
             });
@@ -1977,39 +1999,11 @@
             document.getElementById('paymentForm').addEventListener('submit', handlePayment);
         }
         
-        const contactFormEl = document.getElementById('contactForm');
-        if (contactFormEl) {
-            contactFormEl.addEventListener('submit', function(event) {
-                event.preventDefault(); 
-                const formData = new FormData(contactFormEl);
-                const contactSubmitButtonEl = this.querySelector('button[type="submit"]');
-
-                contactSubmitButtonEl.disabled = true;
-
-                fetch(this.action, {
-                    method: this.method, body: formData, headers: { 'Accept': 'application/json' }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        showAlert('Message sent successfully!', 'success');
-                        this.reset();
-                    } else {
-                        response.json().then(data => {
-                            const errorMessage = data.errors?.map(e => e.message).join(', ') || 'An unknown error occurred.';
-                            throw new Error(errorMessage);
-                        });
-                    }
-                })
-                .catch(error => {
-                    showAlert(`Form submission error: ${error.message}`, 'error');
-                })
-                .finally(() => {
-                    contactSubmitButtonEl.disabled = false;
-                });
-            });
-        }
+        // --- Tool-Specific and other Event Listeners ---
+        // These listeners remain largely the same, as they call the gating and incrementing functions
+        // which now handle the database logic. No changes are needed in this section.
         
-        // --- Tool-Specific Event Listeners ---
+        // --- Generate Image Button Listener ---
         const generateImageBtn = document.getElementById('generateImageBtn');
         if (generateImageBtn) { 
             generateImageBtn.addEventListener('click', async function() {
@@ -2018,8 +2012,7 @@
                 if (!prompt) { showAlert('Please enter an image description.', 'error'); return; }
                 
                 this.disabled = true;
-                const spinner = document.getElementById('generateSpinner');
-                spinner.classList.remove('hidden');
+                document.getElementById('generateSpinner').classList.remove('hidden');
                 
                 try {
                     const initRes = await initiateMonsterImageGeneration(prompt, document.getElementById('monsterAspectRatio').value, document.getElementById('monsterImageStyle').value);
@@ -2039,7 +2032,7 @@
                             showAlert('Image generated successfully!', 'success');
                             incrementFeatureUsage('imageGen');
                             this.disabled = false;
-                            spinner.classList.add('hidden');
+                            document.getElementById('generateSpinner').classList.add('hidden');
                         } else {
                             throw new Error(`Image generation failed: ${statusRes.message || 'Unknown API error'}`);
                         }
@@ -2048,11 +2041,13 @@
                 } catch (err) { 
                     showAlert(`Failed to generate image: ${err.message}`, 'error');
                     this.disabled = false;
-                    spinner.classList.add('hidden');
+                    document.getElementById('generateSpinner').classList.add('hidden');
                 }
             });
         }
 
+        // --- All other listeners for tools, tabs, file inputs, etc. ---
+        // No changes needed here, they will work with the new auth logic.
         const translateTextBtn = document.getElementById('translateTextBtn');
         if (translateTextBtn) { 
             translateTextBtn.addEventListener('click', async function() {
@@ -2111,8 +2106,7 @@
                 spinner.classList.add('hidden');
             }
         });
-        
-        // --- Translate Page Tab Switching ---
+
         const textTabBtn = document.getElementById('textTabBtn');
         const docTabBtn = document.getElementById('docTabBtn');
         const textTranslationSection = document.getElementById('textTranslationSection');
@@ -2133,7 +2127,6 @@
             });
         }
 
-        // --- File Input Listeners ---
         const summarizeDocInput = document.getElementById('summarizeDocInput');
         if (summarizeDocInput) {
             summarizeDocInput.addEventListener('change', async (event) => {
@@ -2238,7 +2231,6 @@
             });
         }
 
-        // --- Copy & Download Listeners ---
         const copyTextBtn = document.getElementById('copyTextBtn');
         if (copyTextBtn) copyTextBtn.addEventListener('click', () => {
             const textToCopy = document.getElementById('textOutput').querySelector('p.text-white')?.innerText;
@@ -2262,6 +2254,37 @@
                 downloadContent(textToDownload, `${originalFilename}_translated.txt`);
             }
         });
+        const contactFormEl = document.getElementById('contactForm');
+        if (contactFormEl) {
+            contactFormEl.addEventListener('submit', function(event) {
+                event.preventDefault(); 
+                const formData = new FormData(contactFormEl);
+                const contactSubmitButtonEl = this.querySelector('button[type="submit"]');
+
+                contactSubmitButtonEl.disabled = true;
+
+                fetch(this.action, {
+                    method: this.method, body: formData, headers: { 'Accept': 'application/json' }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        showAlert('Message sent successfully!', 'success');
+                        this.reset();
+                    } else {
+                        response.json().then(data => {
+                            const errorMessage = data.errors?.map(e => e.message).join(', ') || 'An unknown error occurred.';
+                            throw new Error(errorMessage);
+                        });
+                    }
+                })
+                .catch(error => {
+                    showAlert(`Form submission error: ${error.message}`, 'error');
+                })
+                .finally(() => {
+                    contactSubmitButtonEl.disabled = false;
+                });
+            });
+        }
     });
   </script>
 </body>
