@@ -92,7 +92,7 @@
       height: 16px;
       border: 2px solid rgba(255,255,255,.3);
       border-radius: 50%;
-      border-top-color: #00F5FF;
+      border-top-color: #fff;
       animation: spin 1s ease-in-out infinite;
     }
     @keyframes spin {
@@ -1855,41 +1855,51 @@
             window.addEventListener(eventName, resetInactivityTimer, true);
         });
 
-        // Main authentication state change handler
+        // --- NEW, ROBUST AUTHENTICATION HANDLER ---
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
-            
+
             if (userSession) {
-                // Fetch profile from Supabase
-                const { data, error } = await supabaseClient
+                // Step 1: Immediately set a basic currentUser object. User is logged in.
+                currentUser = {
+                    id: userSession.id,
+                    email: userSession.email,
+                    name: userSession.user_metadata.full_name || userSession.email,
+                    // Set default plan and usage until profile is fetched
+                    plan: 'free', 
+                    usageCounts: { imageGen: 0, translate: 0, summarize: 0 }
+                };
+
+                // Step 2: Try to fetch the detailed profile from the database.
+                const { data: profile, error } = await supabaseClient
                     .from('profiles')
                     .select('*')
                     .eq('id', userSession.id)
                     .single();
                 
-                if (error && error.code !== 'PGRST116') { // Ignore "No rows found" error on new sign up
-                    console.error("Error fetching user profile:", error.message);
-                    showAlert("Could not load your user profile. Please try refreshing.", "error");
-                    currentUser = null;
-                } else if (data) {
-                     currentUser = {
-                        id: data.id,
-                        email: userSession.email,
-                        name: data.full_name || userSession.email,
-                        plan: data.plan,
-                        usageCounts: {
-                            imageGen: data.image_gen_count,
-                            translate: data.translate_count,
-                            summarize: data.summarize_count
-                        }
+                // Step 3: If profile fetch succeeds, enrich the currentUser object.
+                if (profile) {
+                    currentUser.name = profile.full_name || currentUser.name;
+                    currentUser.plan = profile.plan;
+                    currentUser.usageCounts = {
+                        imageGen: profile.image_gen_count,
+                        translate: profile.translate_count,
+                        summarize: profile.summarize_count
                     };
+                } else if (error) {
+                    // Log the error but DO NOT nullify currentUser. The user remains logged in.
+                    console.error("Could not fetch user profile details:", error.message);
+                    if (event === 'SIGNED_IN') {
+                        showAlert("Logged in, but couldn't sync profile details.", 'info');
+                    }
                 }
                 
+                // Step 4: Update UI and timers now that we have the best available user data.
                 updateAuthUI();
                 resetInactivityTimer();
 
                 if (event === 'SIGNED_IN') {
-                    showAlert(`Welcome back, ${escapeHtml(currentUser?.name || 'User')}!`, 'success');
+                    showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
                     const intendedPage = sessionStorage.getItem('intendedPage');
                     const pendingPlanId = sessionStorage.getItem('pendingPlan');
                     sessionStorage.removeItem('intendedPage');
@@ -1906,11 +1916,13 @@
                     showAlert('You can now set a new password.', 'info');
                     showPage('resetPassword');
                 }
+
             } else { // User is logged out
                 currentUser = null;
                 updateAuthUI();
                 clearTimeout(inactivityTimer);
                 const currentPageId = getCurrentPageIdFromUrl();
+                // If on a protected page, kick to login. Otherwise, stay.
                 if (currentPageId === 'account') {
                     showPage('login');
                 }
@@ -1950,8 +1962,7 @@
                     submitButton.disabled = false;
                     submitButton.innerHTML = originalButtonText;
                 }
-                // On success, we do nothing here. The onAuthStateChange listener handles the redirection.
-                // The button will be on the old page which gets replaced.
+                // On success, do nothing. onAuthStateChange handles everything.
             });
         }
 
@@ -2025,7 +2036,7 @@
             document.getElementById('paymentForm').addEventListener('submit', handlePayment);
         }
         
-        // --- Tool-Specific and other Event Listeners ---
+        // --- Tool-Specific and other Event Listeners (No changes needed below) ---
         const generateImageBtn = document.getElementById('generateImageBtn');
         if (generateImageBtn) { 
             generateImageBtn.addEventListener('click', async function() {
@@ -2035,7 +2046,8 @@
                 
                 this.disabled = true;
                 document.getElementById('generateSpinner').classList.remove('hidden');
-                
+                document.getElementById('generateSpinner').style.borderTopColor = '#00F5FF';
+
                 try {
                     const initRes = await initiateMonsterImageGeneration(prompt, document.getElementById('monsterAspectRatio').value, document.getElementById('monsterImageStyle').value);
                     let attempts = 0, maxAttempts = 40, pollInterval = 5000;
@@ -2052,7 +2064,7 @@
                             document.getElementById('imageResultContainer').classList.remove('hidden');
                             document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
                             showAlert('Image generated successfully!', 'success');
-                            incrementFeatureUsage('imageGen');
+                            await incrementFeatureUsage('imageGen');
                             this.disabled = false;
                             document.getElementById('generateSpinner').classList.add('hidden');
                         } else {
@@ -2078,6 +2090,7 @@
                 this.disabled = true;
                 const spinner = document.getElementById('translateTextSpinner');
                 spinner.classList.remove('hidden');
+                spinner.style.borderTopColor = '#00F5FF';
                 const outputDiv = document.getElementById('textOutput');
                 outputDiv.innerHTML = `<p class="text-gray-400 text-sm">Translating...</p>`;
                 document.getElementById('copyTextBtn').classList.add('hidden');
@@ -2088,7 +2101,7 @@
                     const translation = await callGeminiAPI(prompt);
                     outputDiv.innerHTML = `<h3 class="text-[#00F5FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
                     document.getElementById('copyTextBtn').classList.remove('hidden');
-                    incrementFeatureUsage('translate');
+                    await incrementFeatureUsage('translate');
                 } catch (err) {
                     outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
                 } finally { 
@@ -2107,6 +2120,7 @@
             this.disabled = true;
             const spinner = document.getElementById('summarizeTextSpinner');
             spinner.classList.remove('hidden');
+            spinner.style.borderTopColor = '#00F5FF';
             const outputDiv = document.getElementById('summaryOutput');
             outputDiv.innerHTML = `<p class="text-gray-400 text-sm">Summarizing...</p>`;
             document.getElementById('copySummaryBtn').classList.add('hidden');
@@ -2118,7 +2132,7 @@
                 outputDiv.innerHTML = `<h3 class="text-[#00F5FF] font-medium text-sm mb-2">Summary:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(summary)}</p>`;
                 outputDiv.setAttribute('data-raw-summary', summary);
                 document.getElementById('copySummaryBtn').classList.remove('hidden');
-                incrementFeatureUsage('summarize');
+                await incrementFeatureUsage('summarize');
             } catch (err) {
                 outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
             } finally {
@@ -2227,6 +2241,7 @@
                 this.disabled = true;
                 const spinner = document.getElementById('translateDocSpinner');
                 spinner.classList.remove('hidden');
+                spinner.style.borderTopColor = '#00F5FF';
                 outputContainer.innerHTML = `<p class="text-gray-400 text-sm">Translating document...</p>`;
                 document.getElementById('copyDocBtn').classList.add('hidden');
                 document.getElementById('downloadTranslationBtn').classList.add('hidden');
@@ -2241,7 +2256,7 @@
 
                     document.getElementById('copyDocBtn').classList.remove('hidden');
                     document.getElementById('downloadTranslationBtn').classList.remove('hidden');
-                    incrementFeatureUsage('translate');
+                    await incrementFeatureUsage('translate');
                 } catch (err) {
                     outputContainer.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
                 } finally {
