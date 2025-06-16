@@ -399,7 +399,7 @@
                         <h2 class="text-2xl font-bold text-white">Welcome Back</h2>
                     </div>
                     <form id="loginForm" class="p-6 space-y-4">
-                        <div id="loginError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
+                        <div id="loginError" class="hidden text-red-400 text-sm bg-red-900/20 p-3 rounded-md border border-red-500"></div>
                         <div>
                             <label for="loginEmail" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
                             <input type="email" id="loginEmail" name="email" class="w-full px-4 py-2 bg-[#0a0a0a] text-white border border-[#2a2a2a] rounded-md focus:ring-[#0066FF] focus:border-[#00F5FF]" required>
@@ -411,7 +411,7 @@
                         <div class="text-right">
                             <button type="button" onclick="showPage('forgotPassword')" class="text-sm text-[#00F5FF] hover:underline">Forgot password?</button>
                         </div>
-                        <button type="submit" class="w-full bg-[#0066FF] text-white py-2 px-4 rounded-md hover:bg-[#008cff] transition focus:outline-none focus:ring-2 focus:ring-[#0066FF] focus:ring-offset-2">
+                        <button type="submit" class="w-full bg-[#0066FF] text-white py-2 px-4 rounded-md hover:bg-[#008cff] transition focus:outline-none focus:ring-2 focus:ring-[#0066FF] focus:ring-offset-2 flex items-center justify-center">
                             Sign In
                         </button>
                     </form>
@@ -431,7 +431,7 @@
                         <h2 class="text-2xl font-bold text-white">Create Account</h2>
                     </div>
                     <form id="registerForm" class="p-6 space-y-4">
-                        <div id="registerError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
+                        <div id="registerError" class="hidden text-red-400 text-sm bg-red-900/20 p-3 rounded-md border border-red-500"></div>
                         <div>
                             <label for="registerFullName" class="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
                             <input type="text" id="registerFullName" name="fullName" class="w-full px-4 py-2 bg-[#0a0a0a] text-white border border-[#2a2a2a] rounded-md focus:ring-[#0066FF] focus:border-[#00F5FF]" required>
@@ -465,8 +465,8 @@
                         <h2 class="text-2xl font-bold text-white">Reset Password</h2>
                     </div>
                     <form id="forgotPasswordForm" class="p-6 space-y-4">
-                        <div id="forgotPasswordError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
-                        <div id="forgotPasswordSuccess" class="hidden text-green-600 bg-green-100 p-2 rounded mb-4">
+                        <div id="forgotPasswordError" class="hidden text-red-400 text-sm bg-red-900/20 p-3 rounded-md border border-red-500"></div>
+                        <div id="forgotPasswordSuccess" class="hidden text-green-400 bg-green-900/20 p-3 rounded-md border border-green-500">
                             If an account exists for this email, a password reset link has been sent.
                         </div>
                         <div>
@@ -493,8 +493,8 @@
                         <h2 class="text-2xl font-bold text-white">Set New Password</h2>
                     </div>
                     <form id="resetPasswordForm" class="p-6 space-y-4">
-                        <div id="resetPasswordError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
-                        <div id="resetPasswordSuccess" class="hidden text-green-600 bg-green-100 p-2 rounded mb-4">
+                        <div id="resetPasswordError" class="hidden text-red-400 text-sm bg-red-900/20 p-3 rounded-md border border-red-500"></div>
+                        <div id="resetPasswordSuccess" class="hidden text-green-400 bg-green-900/20 p-3 rounded-md border border-green-500">
                             Your password has been updated successfully.
                         </div>
                         <div>
@@ -1867,12 +1867,12 @@
                     .eq('id', userSession.id)
                     .single();
                 
-                if (error) {
+                if (error && error.code !== 'PGRST116') { // Ignore "No rows found" error on new sign up
                     console.error("Error fetching user profile:", error.message);
                     showAlert("Could not load your user profile. Please try refreshing.", "error");
                     currentUser = null;
                 } else if (data) {
-                    currentUser = {
+                     currentUser = {
                         id: data.id,
                         email: userSession.email,
                         name: data.full_name || userSession.email,
@@ -1889,7 +1889,7 @@
                 resetInactivityTimer();
 
                 if (event === 'SIGNED_IN') {
-                    showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
+                    showAlert(`Welcome back, ${escapeHtml(currentUser?.name || 'User')}!`, 'success');
                     const intendedPage = sessionStorage.getItem('intendedPage');
                     const pendingPlanId = sessionStorage.getItem('pendingPlan');
                     sessionStorage.removeItem('intendedPage');
@@ -1910,7 +1910,6 @@
                 currentUser = null;
                 updateAuthUI();
                 clearTimeout(inactivityTimer);
-                // If user is on a protected page, redirect them
                 const currentPageId = getCurrentPageIdFromUrl();
                 if (currentPageId === 'account') {
                     showPage('login');
@@ -1928,21 +1927,33 @@
         
         // --- Form Event Listeners ---
         const loginFormEl = document.getElementById('loginForm');
-        if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
-            event.preventDefault(); 
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim(); 
-            const errorEl = document.getElementById('loginError');
-            errorEl.classList.add('hidden');
+        if (loginFormEl) {
+            const submitButton = loginFormEl.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
 
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            loginFormEl.addEventListener('submit', async (event) => {
+                event.preventDefault();
 
-            if (error) {
-                errorEl.textContent = error.message; errorEl.classList.remove('hidden');
-            } else {
-                loginFormEl.reset();
-            }
-        });
+                submitButton.disabled = true;
+                submitButton.innerHTML = `<span class="loading inline-block mr-2"></span> Signing In...`;
+
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+                const errorEl = document.getElementById('loginError');
+                errorEl.classList.add('hidden');
+
+                const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+                if (error) {
+                    errorEl.textContent = error.message;
+                    errorEl.classList.remove('hidden');
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalButtonText;
+                }
+                // On success, we do nothing here. The onAuthStateChange listener handles the redirection.
+                // The button will be on the old page which gets replaced.
+            });
+        }
 
         const registerFormEl = document.getElementById('registerForm');
         if (registerFormEl) registerFormEl.addEventListener('submit', async (event) => {
@@ -1953,7 +1964,7 @@
             const errorEl = document.getElementById('registerError');
             errorEl.classList.add('hidden');
 
-            const { error } = await supabaseClient.auth.signUp({
+            const { data, error } = await supabaseClient.auth.signUp({
                 email, password, options: { data: { full_name: fullName } }
             });
 
@@ -2015,10 +2026,6 @@
         }
         
         // --- Tool-Specific and other Event Listeners ---
-        // These listeners remain largely the same, as they call the gating and incrementing functions
-        // which now handle the database logic. No changes are needed in this section.
-        
-        // --- Generate Image Button Listener ---
         const generateImageBtn = document.getElementById('generateImageBtn');
         if (generateImageBtn) { 
             generateImageBtn.addEventListener('click', async function() {
@@ -2061,8 +2068,6 @@
             });
         }
 
-        // --- All other listeners for tools, tabs, file inputs, etc. ---
-        // No changes needed here, they will work with the new auth logic.
         const translateTextBtn = document.getElementById('translateTextBtn');
         if (translateTextBtn) { 
             translateTextBtn.addEventListener('click', async function() {
