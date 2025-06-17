@@ -67,7 +67,7 @@
     .page { display: none; }
     .page.active { display: block; }
     /* New style for auth-pages-container when active */
-    .auth-pages-container.active-auth {
+    #auth-pages-wrapper.active-auth {
         min-height: 100vh; /* Use 100vh for full viewport height */
         display: flex;
         align-items: center;
@@ -1291,10 +1291,11 @@
     // 1. Go to your Supabase Project -> Authentication -> URL Configuration.
     // 2. Set "Site URL" to: https://www.techgentools.site
     // 3. Add a new "Redirect URL": https://www.techgentools.site/**
-    // 4. Click Save.
+    // 4. Add another "Redirect URL" for local testing: http://127.0.0.1:5500/**
+    // 5. Click Save.
     //
-    // This tells Supabase that your live website is allowed to handle logins.
-    // Without this, all login, registration, and password reset attempts will fail.
+    // This tells Supabase that your live website AND local server are allowed to handle logins.
+    // Without this, all login, registration, and password reset attempts will fail in one of the environments.
     // =========================================================================================
     const supabaseUrl = "https://sensgfxuvavktqmjuqkh.supabase.co";
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlbnNnZnh1dmF2a3RxbWp1cWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3OTA1MjUsImV4cCI6MjA2NTM2NjUyNX0.bCEBDcBfeXAHJeojOscPSQdW3JbEQwQRkNMdc7Ii3xk";
