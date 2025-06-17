@@ -58,20 +58,26 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
   <style>
+    /* New Color Palette & Global Styles */
+    body {
+        background-color: #0D0D0D;
+        color: #e5e7eb; /* Default text color: gray-200 */
+        background-image: radial-gradient(circle at 15% 50%, rgba(107, 0, 215, 0.1), transparent 40%), 
+                          radial-gradient(circle at 85% 30%, rgba(36, 0, 75, 0.1), transparent 40%);
+    }
     .page { display: none; }
     .page.active { display: block; }
-    /* New style for auth-pages-container when active */
     .auth-pages-container.active-auth {
-        min-height: 100vh; /* Use 100vh for full viewport height */
+        min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
     }
     .gradient-bg {
-      background: linear-gradient(135deg, #1B2EFD 0%, #00C5FF 100%);
+      background: linear-gradient(135deg, #6C00FF 0%, #A800FF 50%, #0070FF 100%);
     }
     .hover-glow:hover {
-      filter: drop-shadow(0 0 6px rgba(0, 255, 209, 0.7));
+      filter: drop-shadow(0 0 8px rgba(212, 128, 255, 0.8));
     }
     .loading {
       display: inline-block;
@@ -79,7 +85,7 @@
       height: 16px;
       border: 2px solid rgba(255,255,255,.3);
       border-radius: 50%;
-      border-top-color: #00C5FF;
+      border-top-color: #A800FF;
       animation: spin 1s ease-in-out infinite;
     }
     @keyframes spin {
@@ -103,7 +109,7 @@
       transition: all 0.3s ease;
     }
     .tab-button.active {
-      background: linear-gradient(135deg, #1B2EFD 0%, #00C5FF 100%);
+      background: linear-gradient(135deg, #6C00FF 0%, #A800FF 100%);
       color: white;
     }
     .alert-message {
@@ -116,27 +122,31 @@
       z-index: 1050; 
       transition: opacity 0.3s ease;
       max-width: 90%;
+      backdrop-filter: blur(5px);
     }
     .alert-error {
-      background-color: #EF4444; 
+      background-color: #EF444499; 
+      border: 1px solid #EF4444;
     }
     .alert-success {
-      background-color: #10B981; 
+      background-color: #10B98199; 
+      border: 1px solid #10B981;
     }
     .alert-info {
-      background-color: #3B82F6; 
+      background-color: #3B82F699; 
+      border: 1px solid #3B82F6;
     }
     .pricing-card ul { list-style: none; padding: 0; }
     .pricing-card ul li { display: flex; align-items: center; margin-bottom: 0.5rem; }
     .pricing-card ul li svg { margin-right: 0.5rem; color: #10B981; } 
     .adsense-placeholder {
-        background-color: #f0f0f0;
-        border: 1px dashed #ccc;
+        background-color: #1a1a1a;
+        border: 1px dashed #4b5563;
         text-align: center;
         padding: 20px;
         margin: 15px auto;
         font-size: 0.9em;
-        color: #777;
+        color: #9ca3af;
         min-height: 90px;
         display: flex;
         align-items: center;
@@ -152,14 +162,18 @@
     .hidden {
         display: none !important;
     }
+    .prose { color: #d1d5db; }
+    .prose h1, .prose h2, .prose h3, .prose h4, .prose a, .prose strong { color: #ffffff; }
+    .prose a:hover { color: #D480FF; }
+    .prose a { text-decoration: underline; }
   </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-[#0D0D0D]">
   <!-- Navigation Bar -->
-  <nav class="bg-gray-800 text-white p-4 sticky top-0 z-50">
+  <nav class="bg-black/30 backdrop-blur-md text-white p-4 sticky top-0 z-50 border-b border-gray-800">
     <div class="container mx-auto flex justify-between items-center">
       <div class="flex items-center cursor-pointer" onclick="showPage('home')">
-        <svg class="h-8 w-auto mr-2 text-sky-400" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="h-8 w-auto mr-2 text-[#A800FF]" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <title>Tech_Gen Logo Icon</title>
             <path d="M24 5C16.8203 5 11 10.8203 11 18C11 25.1797 16.8203 31 24 31"
                   stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -172,32 +186,32 @@
       </div>
       <div class="flex items-center space-x-6">
         <ul class="flex space-x-4">
-          <li><button onclick="showPage('home')" class="hover:text-blue-900">Home</button></li>
+          <li><button onclick="showPage('home')" class="hover:text-[#D480FF]">Home</button></li>
           <li class="relative group">
-            <button class="hover:text-blue-900 flex items-center">
+            <button class="hover:text-[#D480FF] flex items-center">
               Features
               <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
             </button>
-            <div class="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg py-2 z-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-              <button onclick="showPage('ai-generator')" class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-100">AI Image Generator</button>
-              <button onclick="showPage('translate')" class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-100">Translate Documents</button>
-              <button onclick="showPage('summarization')" class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-100">Text Summarization</button>
+            <div class="absolute left-0 mt-2 w-64 bg-[#1A1A1A] rounded-md shadow-lg py-2 z-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-700">
+              <button onclick="showPage('ai-generator')" class="block w-full text-left px-4 py-2 text-gray-200 hover:bg-[#6C00FF]/30">AI Image Generator</button>
+              <button onclick="showPage('translate')" class="block w-full text-left px-4 py-2 text-gray-200 hover:bg-[#6C00FF]/30">Translate Documents</button>
+              <button onclick="showPage('summarization')" class="block w-full text-left px-4 py-2 text-gray-200 hover:bg-[#6C00FF]/30">Text Summarization</button>
             </div>
           </li>
-          <li><button onclick="showPage('pricing')" class="hover:text-blue-900">Pricing</button></li>
-          <li><button onclick="showPage('blog')" class="hover:text-blue-900">Blog</button></li>
-          <li><button onclick="showPage('contact')" class="hover:text-blue-900">Contact</button></li>
+          <li><button onclick="showPage('pricing')" class="hover:text-[#D480FF]">Pricing</button></li>
+          <li><button onclick="showPage('blog')" class="hover:text-[#D480FF]">Blog</button></li>
+          <li><button onclick="showPage('contact')" class="hover:text-[#D480FF]">Contact</button></li>
         </ul>
         <div id="authContainer" class="flex items-center">
             <div id="authButtonsContainer" class="flex space-x-2">
-              <button onclick="showPage('login')" class="px-4 py-2 rounded-md hover:bg-gray-700 transition">Login</button>
-              <button onclick="showPage('register')" class="bg-blue-900 px-4 py-2 rounded-md hover:bg-blue-900 transition">Register</button>
+              <button onclick="showPage('login')" class="px-4 py-2 rounded-md hover:bg-gray-800 transition">Login</button>
+              <button onclick="showPage('register')" class="bg-[#6C00FF] px-4 py-2 rounded-md hover:bg-[#A800FF] transition">Register</button>
             </div>
             <div id="userInfoContainer" class="hidden items-center"> 
-                <span id="userEmailDisplay" class="text-sm mr-2"></span>
-                <button onclick="showPage('account')" class="px-3 py-1.5 rounded-md hover:bg-gray-700 transition text-sm font-medium">My Account</button>
+                <span id="userEmailDisplay" class="text-sm mr-2 text-gray-300"></span>
+                <button onclick="showPage('account')" class="px-3 py-1.5 rounded-md hover:bg-gray-800 transition text-sm font-medium">My Account</button>
                 <button id="logoutButton" class="bg-red-600 px-3 py-1.5 rounded-md hover:bg-red-700 transition text-sm font-medium">Logout</button>
             </div>
         </div>
@@ -208,72 +222,72 @@
   <main>
     <!-- Home Page (and other non-auth content pages) -->
     <div id="home" class="page">
-      <section class="bg-blue-950 text-white py-20">
+      <section class="gradient-bg text-white py-20">
         <div class="container mx-auto text-center px-4">
           <h2 class="text-4xl font-bold mb-4">Transform Your Workflow with AI</h2>
-          <p class="text-lg mb-6 max-w-2xl mx-auto">Our AI-powered SaaS platform helps businesses streamline operations and boost productivity with tools for image generation, document translation, and text summarization.</p>
+          <p class="text-lg mb-6 max-w-2xl mx-auto text-gray-200">Our AI-powered SaaS platform helps businesses streamline operations and boost productivity with tools for image generation, document translation, and text summarization.</p>
           </div>
       </section>
       
       <section class="py-16 container mx-auto px-4">
-        <h3 class="text-3xl font-bold text-center mb-12">Powerful Features</h3>
+        <h3 class="text-3xl font-bold text-center mb-12 text-white">Powerful Features</h3>
         <div class="adsense-placeholder">Home Page - Ad Unit Placeholder (e.g., 728x90 Leaderboard)</div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="p-6 bg-white rounded-lg shadow-md">
-            <h4 class="text-xl font-semibold mb-2">AI Image Generator</h4>
-            <p class="mb-4">Create stunning, unique visuals from text prompts instantly with our advanced AI image generator. Perfect for artists, marketers, and content creators.</p>
-            <button onclick="showPage('ai-generator')" class="text-blue-900 font-medium hover:underline">Try it now →</button>
+          <div class="p-6 bg-[#1A1A1A]/70 rounded-lg shadow-md border border-gray-800">
+            <h4 class="text-xl font-semibold mb-2 text-white">AI Image Generator</h4>
+            <p class="mb-4 text-gray-300">Create stunning, unique visuals from text prompts instantly with our advanced AI image generator. Perfect for artists, marketers, and content creators.</p>
+            <button onclick="showPage('ai-generator')" class="text-[#A800FF] font-medium hover:text-[#D480FF] transition-colors">Try it now →</button>
           </div>
-          <div class="p-6 bg-white rounded-lg shadow-md">
-            <h4 class="text-xl font-semibold mb-2">Translate Documents</h4>
-            <p class="mb-4">Effortlessly translate text and entire documents into multiple languages with high accuracy. Break down language barriers for global communication.</p>
-            <button onclick="showPage('translate')" class="text-blue-900 font-medium hover:underline">Try it now →</button>
+          <div class="p-6 bg-[#1A1A1A]/70 rounded-lg shadow-md border border-gray-800">
+            <h4 class="text-xl font-semibold mb-2 text-white">Translate Documents</h4>
+            <p class="mb-4 text-gray-300">Effortlessly translate text and entire documents into multiple languages with high accuracy. Break down language barriers for global communication.</p>
+            <button onclick="showPage('translate')" class="text-[#A800FF] font-medium hover:text-[#D480FF] transition-colors">Try it now →</button>
           </div>
-          <div class="p-6 bg-white rounded-lg shadow-md">
-            <h4 class="text-xl font-semibold mb-2">Text Summarization</h4>
-            <p class="mb-4">Get concise and coherent summaries of long articles, reports, or documents in seconds. Save time and quickly grasp key information.</p>
-            <button onclick="showPage('summarization')" class="text-blue-900 font-medium hover:underline">Try it now →</button>
+          <div class="p-6 bg-[#1A1A1A]/70 rounded-lg shadow-md border border-gray-800">
+            <h4 class="text-xl font-semibold mb-2 text-white">Text Summarization</h4>
+            <p class="mb-4 text-gray-300">Get concise and coherent summaries of long articles, reports, or documents in seconds. Save time and quickly grasp key information.</p>
+            <button onclick="showPage('summarization')" class="text-[#A800FF] font-medium hover:text-[#D480FF] transition-colors">Try it now →</button>
           </div>
         </div>
         <div class="adsense-placeholder">Home Page - Ad Unit Placeholder (e.g., 300x250 Medium Rectangle)</div>
       </section>
 
-      <section class="bg-gray-100 py-16">
+      <section class="py-16">
         <div class="container mx-auto px-4 text-center">
-            <h3 class="text-3xl font-bold text-gray-800 mb-6">Why Choose Tech_Gen?</h3>
-            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+            <h3 class="text-3xl font-bold text-white mb-6">Why Choose Tech_Gen?</h3>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
                 Tech_Gen provides cutting-edge artificial intelligence tools designed to be intuitive, powerful, and accessible.
                 We leverage state-of-the-art models to deliver high-quality results, helping you save time, enhance creativity, and
                 improve your workflows. Our platform is continuously evolving with new features and improvements.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="p-6">
-                    <div class="text-blue-900 mb-4">
+                    <div class="text-[#A800FF] mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                     </div>
-                    <h4 class="text-xl font-semibold text-gray-800 mb-2">User-Friendly Interface</h4>
-                    <p class="text-gray-600">Easy-to-use tools that don't require technical expertise.</p>
+                    <h4 class="text-xl font-semibold text-white mb-2">User-Friendly Interface</h4>
+                    <p class="text-gray-400">Easy-to-use tools that don't require technical expertise.</p>
                 </div>
                 <div class="p-6">
-                     <div class="text-blue-900 mb-4">
+                     <div class="text-[#A800FF] mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
-                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Fast & Accurate</h4>
-                    <p class="text-gray-600">Get high-quality AI-powered results in seconds.</p>
+                    <h4 class="text-xl font-semibold text-white mb-2">Fast & Accurate</h4>
+                    <p class="text-gray-400">Get high-quality AI-powered results in seconds.</p>
                 </div>
                 <div class="p-6">
-                    <div class="text-blue-900 mb-4">
+                    <div class="text-[#A800FF] mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <h4 class="text-xl font-semibold text-gray-800 mb-2">Time Saving</h4>
-                    <p class="text-gray-600">Automate tasks and boost your overall productivity.</p>
+                    <h4 class="text-xl font-semibold text-white mb-2">Time Saving</h4>
+                    <p class="text-gray-400">Automate tasks and boost your overall productivity.</p>
                 </div>
             </div>
         </div>
@@ -285,47 +299,47 @@
         <header class="gradient-bg text-white py-8">
             <div class="container mx-auto px-4 text-center">
                 <h1 class="text-3xl font-bold">My Account</h1>
-                <p class="mt-2 text-[#A1A5B7]">Manage your profile and subscription details.</p>
+                <p class="mt-2 text-gray-200">Manage your profile and subscription details.</p>
             </div>
         </header>
         <div class="container mx-auto px-4 py-12 max-w-4xl">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Profile Details Card -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-semibold text-gray-800 border-b pb-3 mb-4">Profile Details</h2>
-                    <div class="space-y-4 text-gray-700">
+                <div class="bg-[#1A1A1A]/70 p-6 rounded-lg shadow-md border border-gray-800">
+                    <h2 class="text-2xl font-semibold text-white border-b border-gray-700 pb-3 mb-4">Profile Details</h2>
+                    <div class="space-y-4 text-gray-300">
                         <div>
                             <p class="text-sm text-gray-500">Full Name</p>
-                            <p id="accountName" class="font-medium text-lg"></p>
+                            <p id="accountName" class="font-medium text-lg text-white"></p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-500">Email Address</p>
-                            <p id="accountEmail" class="font-medium text-lg"></p>
+                            <p id="accountEmail" class="font-medium text-lg text-white"></p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Subscription Status Card -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-semibold text-gray-800 border-b pb-3 mb-4">Subscription Status</h2>
-                    <div class="space-y-4 text-gray-700">
+                <div class="bg-[#1A1A1A]/70 p-6 rounded-lg shadow-md border border-gray-800">
+                    <h2 class="text-2xl font-semibold text-white border-b border-gray-700 pb-3 mb-4">Subscription Status</h2>
+                    <div class="space-y-4 text-gray-300">
                         <div>
                             <p class="text-sm text-gray-500">Current Plan</p>
-                            <p id="accountPlan" class="font-medium text-lg bg-blue-100 text-blue-800 px-3 py-1 rounded-full inline-block"></p>
+                            <p id="accountPlan" class="font-medium text-lg bg-[#6C00FF]/30 text-[#D480FF] px-3 py-1 rounded-full inline-block"></p>
                         </div>
-                        <div id="accountPlanDescription" class="text-sm">
+                        <div id="accountPlanDescription" class="text-sm text-gray-400">
                             <!-- Description will be populated by JS -->
                         </div>
                         
                         <!-- NEW: Usage Details Container -->
-                        <div class="mt-4 pt-4 border-t border-gray-200">
-                            <h3 class="text-md font-semibold text-gray-700 mb-2">Session Usage</h3>
-                            <div id="accountUsageDetails" class="space-y-2 text-sm text-gray-600">
+                        <div class="mt-4 pt-4 border-t border-gray-700">
+                            <h3 class="text-md font-semibold text-gray-200 mb-2">Session Usage</h3>
+                            <div id="accountUsageDetails" class="space-y-2 text-sm text-gray-400">
                                 <!-- JS will populate this section -->
                             </div>
                         </div>
 
-                        <button onclick="showPage('pricing')" class="mt-4 w-full bg-blue-900 text-white py-2 px-4 rounded-md hover:bg-blue-900 transition">
+                        <button onclick="showPage('pricing')" class="mt-4 w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition">
                             View & Manage Plans
                         </button>
                     </div>
@@ -339,38 +353,38 @@
         <header class="gradient-bg text-white py-8">
             <div class="container mx-auto px-4 text-center">
                 <h1 class="text-3xl font-bold">Tech_Gen Blog</h1>
-                <p class="mt-2 text-[#A1A5B7]">Insights, tutorials, and updates on the world of AI.</p>
+                <p class="mt-2 text-gray-200">Insights, tutorials, and updates on the world of AI.</p>
             </div>
         </header>
         <div class="container mx-auto px-4 py-16">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Blog Post 1 (Resized from full article) -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+                <div class="bg-[#1A1A1A]/70 rounded-lg shadow-lg overflow-hidden flex flex-col border border-gray-800">
                     <img src="https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=1740&auto=format&fit=crop" alt="AI generated art of a futuristic city" class="w-full h-48 object-cover">
                     <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Unlock Creativity with Our AI Image Generator</h3>
-                        <p class="text-gray-600 mb-4 flex-grow">
+                        <h3 class="text-xl font-semibold text-white mb-2">Unlock Creativity with Our AI Image Generator</h3>
+                        <p class="text-gray-300 mb-4 flex-grow">
                             Turn your ideas into stunning visuals with just a simple text prompt. Learn how our AI empowers you to create unique, high-resolution images effortlessly—no design skills needed.
                         </p>
-                        <button class="text-blue-900 font-medium hover:underline self-start mt-auto" onclick="showAlert('Full blog post coming soon!', 'info')">Read More →</button>
+                        <button class="text-[#A800FF] font-medium hover:text-[#D480FF] self-start mt-auto" onclick="showAlert('Full blog post coming soon!', 'info')">Read More →</button>
                     </div>
                 </div>
                 <!-- Blog Post 2 -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+                <div class="bg-[#1A1A1A]/70 rounded-lg shadow-lg overflow-hidden flex flex-col border border-gray-800">
                     <img src="https://images.unsplash.com/photo-1554415707-6e8cf63328a3?q=80&w=1740&auto=format&fit=crop" alt="Creative AI art" class="w-full h-48 object-cover">
                     <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Unlocking Creativity: A Guide to Writing Effective AI Image Prompts</h3>
-                        <p class="text-gray-600 mb-4 flex-grow">From "photorealistic" to "fantasy art," learn the secrets to crafting prompts that generate exactly the image you're imagining.</p>
-                        <button class="text-blue-900 font-medium hover:underline self-start mt-auto" onclick="showAlert('Full blog post coming soon!', 'info')">Read More →</button>
+                        <h3 class="text-xl font-semibold text-white mb-2">Unlocking Creativity: A Guide to Writing Effective AI Image Prompts</h3>
+                        <p class="text-gray-300 mb-4 flex-grow">From "photorealistic" to "fantasy art," learn the secrets to crafting prompts that generate exactly the image you're imagining.</p>
+                        <button class="text-[#A800FF] font-medium hover:text-[#D480FF] self-start mt-auto" onclick="showAlert('Full blog post coming soon!', 'info')">Read More →</button>
                     </div>
                 </div>
                 <!-- Blog Post 3 -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+                <div class="bg-[#1A1A1A]/70 rounded-lg shadow-lg overflow-hidden flex flex-col border border-gray-800">
                     <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1740&auto=format&fit=crop" alt="Team collaborating" class="w-full h-48 object-cover">
                     <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">The Future of Work: Why Your Next Team Member Might Be an AI</h3>
-                        <p class="text-gray-600 mb-4 flex-grow">We explore the evolving landscape of AI in the workplace and how to best integrate these powerful tools into your daily workflow.</p>
-                        <button class="text-blue-900 font-medium hover:underline self-start mt-auto" onclick="showAlert('Full blog post coming soon!', 'info')">Read More →</button>
+                        <h3 class="text-xl font-semibold text-white mb-2">The Future of Work: Why Your Next Team Member Might Be an AI</h3>
+                        <p class="text-gray-300 mb-4 flex-grow">We explore the evolving landscape of AI in the workplace and how to best integrate these powerful tools into your daily workflow.</p>
+                        <button class="text-[#A800FF] font-medium hover:text-[#D480FF] self-start mt-auto" onclick="showAlert('Full blog post coming soon!', 'info')">Read More →</button>
                     </div>
                 </div>
             </div>
@@ -381,29 +395,29 @@
     <div id="auth-pages-wrapper"> <!-- This div will get the .active-auth class from JS -->
         <div id="login" class="page">
             <div class="container mx-auto px-4 py-8 max-w-md">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="bg-blue-900 py-4 px-6">
+                <div class="bg-[#1A1A1A]/90 backdrop-blur-sm border border-gray-800 rounded-lg shadow-lg overflow-hidden">
+                    <div class="gradient-bg py-4 px-6">
                         <h2 class="text-2xl font-bold text-white">Welcome Back</h2>
                     </div>
                     <form id="loginForm" class="p-6 space-y-4">
-                        <div id="loginError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
+                        <div id="loginError" class="hidden text-red-400 text-sm bg-red-500/20 p-2 rounded"></div>
                         <div>
-                            <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input type="email" id="loginEmail" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required>
+                            <label for="loginEmail" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                            <input type="email" id="loginEmail" name="email" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required>
                         </div>
                         <div>
-                            <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                            <input type="password" id="loginPassword" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required>
+                            <label for="loginPassword" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                            <input type="password" id="loginPassword" name="password" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required>
                         </div>
                         <div class="text-right">
-                            <button type="button" onclick="showPage('forgotPassword')" class="text-sm text-blue-900 hover:underline">Forgot password?</button>
+                            <button type="button" onclick="showPage('forgotPassword')" class="text-sm text-[#A800FF] hover:text-[#D480FF]">Forgot password?</button>
                         </div>
-                        <button type="submit" class="w-full bg-blue-900 text-white py-2 px-4 rounded-md hover:bg-blue-900 transition focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2">
+                        <button type="submit" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition focus:outline-none focus:ring-2 focus:ring-[#A800FF] focus:ring-offset-2 focus:ring-offset-[#0D0D0D]">
                             Sign In
                         </button>
                     </form>
-                    <div class="px-6 py-4 bg-gray-50 text-center">
-                        <button type="button" onclick="showPage('register')" class="text-blue-900 font-medium hover:underline focus:outline-none">
+                    <div class="px-6 py-4 bg-black/30 text-center">
+                        <button type="button" onclick="showPage('register')" class="text-[#A800FF] font-medium hover:text-[#D480FF] focus:outline-none">
                             Create an account
                         </button>
                     </div>
@@ -413,31 +427,31 @@
 
         <div id="register" class="page">
             <div class="container mx-auto px-4 py-8 max-w-md">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="bg-blue-900 py-4 px-6">
+                <div class="bg-[#1A1A1A]/90 backdrop-blur-sm border border-gray-800 rounded-lg shadow-lg overflow-hidden">
+                    <div class="gradient-bg py-4 px-6">
                         <h2 class="text-2xl font-bold text-white">Create Account</h2>
                     </div>
                     <form id="registerForm" class="p-6 space-y-4">
-                        <div id="registerError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
+                        <div id="registerError" class="hidden text-red-400 text-sm bg-red-500/20 p-2 rounded"></div>
                         <div>
-                            <label for="registerFullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                            <input type="text" id="registerFullName" name="fullName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required>
+                            <label for="registerFullName" class="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
+                            <input type="text" id="registerFullName" name="fullName" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required>
                         </div>
                         <div>
-                            <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input type="email" id="registerEmail" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required>
+                            <label for="registerEmail" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                            <input type="email" id="registerEmail" name="email" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required>
                         </div>
                         <div>
-                            <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                            <input type="password" id="registerPassword" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required minlength="6">
+                            <label for="registerPassword" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                            <input type="password" id="registerPassword" name="password" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required minlength="6">
                             <p class="text-xs text-gray-500 mt-1">Minimum 6 characters.</p>
                         </div>
-                        <button type="submit" class="w-full bg-blue-900 text-white py-2 px-4 rounded-md hover:bg-blue-900 transition focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2">
+                        <button type="submit" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition focus:outline-none focus:ring-2 focus:ring-[#A800FF] focus:ring-offset-2 focus:ring-offset-[#0D0D0D]">
                             Sign Up
                         </button>
                     </form>
-                    <div class="px-6 py-4 bg-gray-50 text-center">
-                        <button type="button" onclick="showPage('login')" class="text-blue-900 font-medium hover:underline focus:outline-none">
+                    <div class="px-6 py-4 bg-black/30 text-center">
+                        <button type="button" onclick="showPage('login')" class="text-[#A800FF] font-medium hover:text-[#D480FF] focus:outline-none">
                             Already have an account? Sign in
                         </button>
                     </div>
@@ -447,25 +461,25 @@
 
         <div id="forgotPassword" class="page">
             <div class="container mx-auto px-4 py-8 max-w-md">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="bg-blue-900 py-4 px-6">
+                <div class="bg-[#1A1A1A]/90 backdrop-blur-sm border border-gray-800 rounded-lg shadow-lg overflow-hidden">
+                    <div class="gradient-bg py-4 px-6">
                         <h2 class="text-2xl font-bold text-white">Reset Password</h2>
                     </div>
                     <form id="forgotPasswordForm" class="p-6 space-y-4">
-                        <div id="forgotPasswordError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
-                        <div id="forgotPasswordSuccess" class="hidden text-green-600 bg-green-100 p-2 rounded mb-4">
+                        <div id="forgotPasswordError" class="hidden text-red-400 text-sm bg-red-500/20 p-2 rounded"></div>
+                        <div id="forgotPasswordSuccess" class="hidden text-green-400 bg-green-500/20 p-2 rounded mb-4">
                             If an account exists for this email, a password reset link has been sent.
                         </div>
                         <div>
-                            <label for="forgotPasswordEmail" class="block text-sm font-medium text-gray-700 mb-1">Enter your account email</label>
-                            <input type="email" id="forgotPasswordEmail" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required>
+                            <label for="forgotPasswordEmail" class="block text-sm font-medium text-gray-300 mb-1">Enter your account email</label>
+                            <input type="email" id="forgotPasswordEmail" name="email" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required>
                         </div>
-                        <button type="submit" class="w-full bg-blue-900 text-white py-2 px-4 rounded-md hover:bg-blue-900 transition focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2">
+                        <button type="submit" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition focus:outline-none focus:ring-2 focus:ring-[#A800FF] focus:ring-offset-2 focus:ring-offset-[#0D0D0D]">
                             Send Reset Link
                         </button>
                     </form>
-                    <div class="px-6 py-4 bg-gray-50 text-center">
-                        <button type="button" onclick="showPage('login')" class="text-blue-900 font-medium hover:underline focus:outline-none">
+                    <div class="px-6 py-4 bg-black/30 text-center">
+                        <button type="button" onclick="showPage('login')" class="text-[#A800FF] font-medium hover:text-[#D480FF] focus:outline-none">
                             Back to Sign In
                         </button>
                     </div>
@@ -475,26 +489,26 @@
 
         <div id="resetPassword" class="page">
             <div class="container mx-auto px-4 py-8 max-w-md">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div class="bg-blue-900 py-4 px-6">
+                <div class="bg-[#1A1A1A]/90 backdrop-blur-sm border border-gray-800 rounded-lg shadow-lg overflow-hidden">
+                    <div class="gradient-bg py-4 px-6">
                         <h2 class="text-2xl font-bold text-white">Set New Password</h2>
                     </div>
                     <form id="resetPasswordForm" class="p-6 space-y-4">
-                        <div id="resetPasswordError" class="hidden text-red-600 text-sm bg-red-100 p-2 rounded"></div>
-                        <div id="resetPasswordSuccess" class="hidden text-green-600 bg-green-100 p-2 rounded mb-4">
+                        <div id="resetPasswordError" class="hidden text-red-400 text-sm bg-red-500/20 p-2 rounded"></div>
+                        <div id="resetPasswordSuccess" class="hidden text-green-400 bg-green-500/20 p-2 rounded mb-4">
                             Your password has been updated successfully.
                         </div>
                         <div>
-                            <label for="resetNewPassword" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                            <input type="password" id="resetNewPassword" name="newPassword" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required minlength="6">
+                            <label for="resetNewPassword" class="block text-sm font-medium text-gray-300 mb-1">New Password</label>
+                            <input type="password" id="resetNewPassword" name="newPassword" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required minlength="6">
                             <p class="text-xs text-gray-500 mt-1">Minimum 6 characters.</p>
                         </div>
-                         <button type="submit" class="w-full bg-blue-900 text-white py-2 px-4 rounded-md hover:bg-blue-900 transition focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2">
+                         <button type="submit" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition focus:outline-none focus:ring-2 focus:ring-[#A800FF] focus:ring-offset-2 focus:ring-offset-[#0D0D0D]">
                             Update Password
                         </button>
                     </form>
-                    <div class="px-6 py-4 bg-gray-50 text-center">
-                        <button type="button" onclick="showPage('login')" class="text-blue-900 font-medium hover:underline focus:outline-none">
+                    <div class="px-6 py-4 bg-black/30 text-center">
+                        <button type="button" onclick="showPage('login')" class="text-[#A800FF] font-medium hover:text-[#D480FF] focus:outline-none">
                             Back to Sign In
                         </button>
                     </div>
@@ -504,35 +518,35 @@
 
         <div id="paymentPage" class="page">
           <div class="container mx-auto px-4 py-8 max-w-md">
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-              <div class="bg-blue-900 py-4 px-6">
+            <div class="bg-[#1A1A1A]/90 backdrop-blur-sm border border-gray-800 rounded-lg shadow-lg overflow-hidden">
+              <div class="gradient-bg py-4 px-6">
                 <h2 class="text-2xl font-bold text-white">Complete Your Purchase</h2>
               </div>
               <form id="paymentForm" class="p-6 space-y-6">
-                <p class="text-gray-700">You are purchasing: <strong id="paymentPlanName" class="text-gray-900">Premium Plan</strong></p>
-                <p class="text-gray-700">Price: <strong id="paymentPlanPrice" class="text-gray-900">₹499</strong></p>
+                <p class="text-gray-300">You are purchasing: <strong id="paymentPlanName" class="text-white">Premium Plan</strong></p>
+                <p class="text-gray-300">Price: <strong id="paymentPlanPrice" class="text-white">₹499</strong></p>
     
                 <div>
-                  <label for="cardNameInput" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                  <input type="text" id="cardNameInput" name="cardName" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
+                  <label for="cardNameInput" class="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                  <input type="text" id="cardNameInput" name="cardName" class="w-full px-4 py-2 border border-gray-700 rounded-md bg-transparent text-white" required>
                 </div>
     
                 <div>
-                  <label for="emailInput" class="block text-sm font-medium text-gray-700 mb-1">Email ID</label>
-                  <input type="email" id="emailInput" name="email" placeholder="your.email@example.com" class="w-full px-4 py-2 border border-gray-300 rounded-md" required>
+                  <label for="emailInput" class="block text-sm font-medium text-gray-300 mb-1">Email ID</label>
+                  <input type="email" id="emailInput" name="email" placeholder="your.email@example.com" class="w-full px-4 py-2 border border-gray-700 rounded-md bg-transparent text-white" required>
                 </div>
     
                 <div>
-                    <label for="usertypeInput" class="block text-sm font-medium text-gray-700 mb-1">User Type (Optional)</label>
-                    <input type="text" id="usertypeInput" name="usertype" placeholder="e.g., Individual, Business" class="w-full px-4 py-2 border border-gray-300 rounded-md">
+                    <label for="usertypeInput" class="block text-sm font-medium text-gray-300 mb-1">User Type (Optional)</label>
+                    <input type="text" id="usertypeInput" name="usertype" placeholder="e.g., Individual, Business" class="w-full px-4 py-2 border border-gray-700 rounded-md bg-transparent text-white">
                 </div>
     
                 <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition">
                   Proceed to Pay with Razorpay
                 </button>
               </form>
-              <div class="px-6 py-4 bg-gray-50 text-center">
-                <button onclick="showPage('pricing')" class="text-blue-900 font-medium hover:underline">
+              <div class="px-6 py-4 bg-black/30 text-center">
+                <button onclick="showPage('pricing')" class="text-[#A800FF] font-medium hover:text-[#D480FF]">
                   Cancel
                 </button>
               </div>
@@ -546,36 +560,36 @@
       <header class="gradient-bg text-white py-8">
         <div class="container mx-auto px-4 text-center">
           <h1 class="text-3xl font-bold">AI Image Generator</h1>
-          <p class="mt-2 text-[#A1A5B7]">Transform your ideas into stunning visuals with Tech_Gen</p>
+          <p class="mt-2 text-gray-200">Transform your ideas into stunning visuals with Tech_Gen</p>
         </div>
       </header>
 
        <div class="adsense-placeholder">AI Image Gen - Ad Unit Placeholder (e.g., Responsive)</div>
 
         <section class="mb-8 container mx-auto px-4 py-8"> 
-          <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Try the Generator</h2>
-          <div class="bg-[#151A27] p-4 rounded-lg border border-[#252A37] max-w-3xl mx-auto">
-            <p class="text-[#A1A5B7] mb-3 text-sm">Describe the image you want to create.</p>
+          <h2 class="text-2xl font-semibold text-white mb-4 text-center">Try the Generator</h2>
+          <div class="bg-[#1A1A1A]/70 p-4 rounded-lg border border-gray-800 max-w-3xl mx-auto">
+            <p class="text-gray-400 mb-3 text-sm">Describe the image you want to create.</p>
             <div class="flex flex-col sm:flex-row gap-2">
               <input type="text" id="imagePrompt" placeholder="e.g., 'A majestic lion in a surreal landscape, digital art'" 
-                     class="flex-1 p-2 text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white">
-              <button id="generateImageBtn" class="bg-[#00C5FF] text-[#0B0F19] text-sm font-medium px-4 py-2 rounded hover-glow flex items-center justify-center min-w-[120px]">
+                     class="flex-1 p-2 text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white">
+              <button id="generateImageBtn" class="bg-[#A800FF] text-white text-sm font-medium px-4 py-2 rounded hover-glow flex items-center justify-center min-w-[120px]">
                 <span id="generateBtnText">Generate</span>
                 <span id="generateSpinner" class="loading hidden ml-2"></span>
               </button>
             </div>
             <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div>
-                <label class="block text-[#A1A5B7] text-xs mb-1">Aspect Ratio</label>
-                <select id="monsterAspectRatio" class="w-full text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white p-1">
+                <label class="block text-gray-400 text-xs mb-1">Aspect Ratio</label>
+                <select id="monsterAspectRatio" class="w-full text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white p-1">
                   <option value="square" selected>Square (1:1)</option>
                   <option value="portrait">Portrait (2:3)</option>
                   <option value="landscape">Landscape (3:2)</option>
                 </select>
               </div>
               <div>
-                <label class="block text-[#A1A5B7] text-xs mb-1">Style (Optional)</label>
-                 <select id="monsterImageStyle" class="w-full text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white p-1">
+                <label class="block text-gray-400 text-xs mb-1">Style (Optional)</label>
+                 <select id="monsterImageStyle" class="w-full text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white p-1">
                     <option value="">None</option>
                     <option value="photorealistic">Photorealistic</option>
                     <option value="digital-art">Digital Art</option>
@@ -590,12 +604,12 @@
               </div>
             </div>
             <div class="mt-4 text-center">
-              <div id="imagePlaceholder" class="bg-[#0B0F19] border border-[#252A37] rounded flex items-center justify-center h-64">
-                <p id="imagePlaceholderText" class="text-[#A1A5B7] text-sm">Image will appear here</p>
+              <div id="imagePlaceholder" class="bg-[#0D0D0D] border border-gray-700 rounded flex items-center justify-center h-64">
+                <p id="imagePlaceholderText" class="text-gray-400 text-sm">Image will appear here</p>
               </div>
               <div id="imageResultContainer" class="hidden">
-                <img id="generatedImage" src="" alt="Generated image" class="rounded mx-auto border border-[#252A37] max-w-full h-64 object-contain">
-                <button id="downloadImageBtn" class="mt-2 bg-[#00FFD1] text-[#0B0F19] text-sm font-medium px-4 py-2 rounded hover-glow">
+                <img id="generatedImage" src="" alt="Generated image" class="rounded mx-auto border border-gray-700 max-w-full h-64 object-contain">
+                <button id="downloadImageBtn" class="mt-2 bg-[#D480FF] text-black text-sm font-medium px-4 py-2 rounded hover-glow">
                   Download Image
                 </button>
               </div>
@@ -604,7 +618,7 @@
         </section>
      
     <div class="container mx-auto py-8 px-4">
-        <article class="prose lg:prose-xl mx-auto mb-8 bg-white p-6 rounded-lg shadow">
+        <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
             <h2>Unleash Your Creativity with AI Image Generation</h2>
             <p>Our AI Image Generator, powered by advanced models via Monster API, allows you to turn simple text prompts into breathtaking visuals. Whether you're an artist looking for inspiration, a marketer needing unique ad creatives, or just curious about the power of AI, this tool is for you.</p>
             <p><strong>How it works:</strong> Simply type a description of the image you envision. Be as detailed or as abstract as you like. Choose your preferred aspect ratio and an optional style to guide the AI. Our system will then process your request and generate a unique image based on your input. Explore different prompts and styles to discover endless possibilities!</p>
@@ -616,30 +630,30 @@
       <header class="gradient-bg text-white py-8">
         <div class="container mx-auto px-4 text-center">
           <h1 class="text-3xl font-bold">AI Document & Text Translator</h1>
-          <p class="mt-2 text-[#A1A5B7]">Translate text and documents with high accuracy using AI</p>
+          <p class="mt-2 text-gray-200">Translate text and documents with high accuracy using AI</p>
         </div>
       </header>
       
         <div class="adsense-placeholder">Translate Page - Ad Unit Placeholder</div>
         
         <div class="max-w-3xl mx-auto container px-4 py-8">
-            <div class="flex mb-6 bg-[#151A27] rounded-lg p-1">
+            <div class="flex mb-6 bg-[#1A1A1A] rounded-lg p-1">
               <button id="textTabBtn" class="tab-button flex-1 py-2 px-4 rounded-lg font-medium text-white active">
                 Text Translation
               </button>
-              <button id="docTabBtn" class="tab-button flex-1 py-2 px-4 rounded-lg font-medium text-[#A1A5B7]">
+              <button id="docTabBtn" class="tab-button flex-1 py-2 px-4 rounded-lg font-medium text-gray-400">
                 Document Translation
               </button>
             </div>
 
             <section id="textTranslationSection" class="mb-8">
-              <div class="bg-[#151A27] p-4 rounded-lg border border-[#252A37]">
+              <div class="bg-[#1A1A1A]/70 p-4 rounded-lg border border-gray-800">
                 <div class="mb-4">
-                  <label class="block text-[#A1A5B7] text-sm mb-1">Text to translate</label>
-                  <textarea id="translatePageTextInput" class="w-full p-2 text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white h-32" placeholder="Enter your text here..."></textarea>
+                  <label class="block text-gray-400 text-sm mb-1">Text to translate</label>
+                  <textarea id="translatePageTextInput" class="w-full p-2 text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white h-32" placeholder="Enter your text here..."></textarea>
                 </div>
                 <div class="flex flex-wrap gap-2 mb-4">
-                  <select id="targetLanguage" class="text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white p-2 flex-1">
+                  <select id="targetLanguage" class="text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white p-2 flex-1">
                     <option value="af">Afrikaans</option>
                     <option value="sq">Albanian</option>
                     <option value="am">Amharic</option>
@@ -747,38 +761,38 @@
                     <option value="yo">Yoruba</option>
                     <option value="zu">Zulu</option>
                   </select>
-                  <button id="translateTextBtn" class="bg-[#6E44FF] text-white text-sm font-medium px-6 py-2 rounded hover-glow flex items-center">
+                  <button id="translateTextBtn" class="bg-[#0070FF] text-white text-sm font-medium px-6 py-2 rounded hover-glow flex items-center">
                     <span>Translate Text</span>
                     <span id="translateTextSpinner" class="loading hidden ml-2"></span>
                   </button>
                 </div>
-                <div id="textOutput" class="mt-4 p-3 bg-[#0B0F19] rounded border border-[#252A37] min-h-32">
-                  <p class="text-[#A1A5B7] text-sm">Translation results will appear here...</p>
+                <div id="textOutput" class="mt-4 p-3 bg-[#0D0D0D] rounded border border-gray-700 min-h-32">
+                  <p class="text-gray-400 text-sm">Translation results will appear here...</p>
                 </div>
                 <div class="flex justify-end mt-2">
-                  <button id="copyTextBtn" class="text-[#00C5FF] text-xs hover:underline hidden">Copy to Clipboard</button>
+                  <button id="copyTextBtn" class="text-[#A800FF] text-xs hover:underline hidden">Copy to Clipboard</button>
                 </div>
               </div>
             </section>
 
             <section id="docTranslationSection" class="mb-8 hidden">
-              <div class="bg-[#151A27] p-4 rounded-lg border border-[#252A37]">
+              <div class="bg-[#1A1A1A]/70 p-4 rounded-lg border border-gray-800">
                 <div class="mb-4">
-                  <label class="block text-[#A1A5B7] text-sm mb-1">Upload document to translate</label>
-                  <div class="file-upload bg-[#0B0F19] border border-[#252A37] rounded p-2 text-center">
-                    <button class="bg-[#6E44FF] text-white text-sm font-medium px-4 py-2 rounded hover-glow">
+                  <label class="block text-gray-400 text-sm mb-1">Upload document to translate</label>
+                  <div class="file-upload bg-[#0D0D0D] border border-gray-700 rounded p-2 text-center">
+                    <button class="bg-[#0070FF] text-white text-sm font-medium px-4 py-2 rounded hover-glow">
                       Choose File (PDF, DOCX, TXT)
                     </button>
                     <input type="file" id="docFileInput" class="file-upload-input" accept=".pdf,.docx,.txt">
                   </div>
-                  <div id="docFileNameDisplay" class="text-[#A1A5B7] text-xs mt-1"></div>
-                  <div id="docFileExtractStatus" class="text-[#A1A5B7] text-xs mt-1 hidden">
+                  <div id="docFileNameDisplay" class="text-gray-400 text-xs mt-1"></div>
+                  <div id="docFileExtractStatus" class="text-gray-400 text-xs mt-1 hidden">
                     <span class="loading inline-block mr-2"></span>
                     Extracting text from document...
                   </div>
                 </div>
                 <div class="flex flex-wrap gap-2 mb-4">
-                  <select id="docTargetLanguage" class="text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white p-2 flex-1">
+                  <select id="docTargetLanguage" class="text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white p-2 flex-1">
                     <option value="af">Afrikaans</option>
                     <option value="sq">Albanian</option>
                     <option value="am">Amharic</option>
@@ -887,27 +901,27 @@
                     <option value="zu">Zulu</option>
 
                   </select>
-                  <button id="translateDocBtn" class="bg-[#6E44FF] text-white text-sm font-medium px-6 py-2 rounded hover-glow flex items-center" disabled>
+                  <button id="translateDocBtn" class="bg-[#0070FF] text-white text-sm font-medium px-6 py-2 rounded hover-glow flex items-center" disabled>
                     <span>Translate Document</span>
                     <span id="translateDocSpinner" class="loading hidden ml-2"></span>
                   </button>
                 </div>
                 <div id="docTextPreview" class="mb-4 hidden">
-                  <label class="block text-[#A1A5B7] text-sm mb-1">Original Text Preview (first 500 characters)</label>
-                  <div class="p-3 bg-[#0B0F19] rounded border border-[#252A37] max-h-32 overflow-y-auto text-sm text-[#A1A5B7]"></div>
+                  <label class="block text-gray-400 text-sm mb-1">Original Text Preview (first 500 characters)</label>
+                  <div class="p-3 bg-[#0D0D0D] rounded border border-gray-700 max-h-32 overflow-y-auto text-sm text-gray-400"></div>
                 </div>
-                <div id="docTranslationOutput" class="mt-4 p-3 bg-[#0B0F19] rounded border border-[#252A37] min-h-32" data-original-text="">
-                  <p class="text-[#A1A5B7] text-sm">Document translation results will appear here...</p>
+                <div id="docTranslationOutput" class="mt-4 p-3 bg-[#0D0D0D] rounded border border-gray-700 min-h-32" data-original-text="">
+                  <p class="text-gray-400 text-sm">Document translation results will appear here...</p>
                 </div>
                 <div class="flex justify-between mt-2">
-                  <button id="downloadTranslationBtn" class="text-[#00C5FF] text-xs hover:underline hidden">Download Translation</button>
-                  <button id="copyDocBtn" class="text-[#00C5FF] text-xs hover:underline hidden">Copy to Clipboard</button>
+                  <button id="downloadTranslationBtn" class="text-[#A800FF] text-xs hover:underline hidden">Download Translation</button>
+                  <button id="copyDocBtn" class="text-[#A800FF] text-xs hover:underline hidden">Copy to Clipboard</button>
                 </div>
               </div>
             </section>
         </div>
       <div class="container mx-auto py-8 px-4">
-        <article class="prose lg:prose-xl mx-auto mb-8 bg-white p-6 rounded-lg shadow">
+        <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
             <h2>Break Language Barriers with AI Translation</h2>
             <p>Our AI-powered translation tool provides fast and accurate translations for both plain text and full documents. Whether you're dealing with business correspondence, academic research, or personal messages, bridge communication gaps effortlessly.</p>
             <ul>
@@ -925,60 +939,60 @@
         <header class="gradient-bg text-white py-8">
             <div class="container mx-auto px-4 text-center">
               <h1 class="text-3xl font-bold">AI Text Summarizer</h1>
-              <p class="mt-2 text-[#A1A5B7]">Condense long texts into concise summaries using AI</p>
+              <p class="mt-2 text-gray-200">Condense long texts into concise summaries using AI</p>
             </div>
         </header>
         
             <div class="adsense-placeholder">Summarization Page - Ad Unit Placeholder</div>
 
             <section class="mb-8 container mx-auto px-4 py-8">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Try the Summarizer</h2>
-              <div class="bg-[#151A27] p-4 rounded-lg border border-[#252A37] max-w-3xl mx-auto">
+                <h2 class="text-2xl font-semibold text-white mb-4 text-center">Try the Summarizer</h2>
+              <div class="bg-[#1A1A1A]/70 p-4 rounded-lg border border-gray-800 max-w-3xl mx-auto">
                 <div class="mb-4">
-                  <label class="block text-[#A1A5B7] text-sm mb-1">Enter text to summarize</label>
-                  <textarea id="summarizeTextInput" class="w-full p-2 text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white h-40" placeholder="Paste your text here..."></textarea>
+                  <label class="block text-gray-400 text-sm mb-1">Enter text to summarize</label>
+                  <textarea id="summarizeTextInput" class="w-full p-2 text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white h-40" placeholder="Paste your text here..."></textarea>
                 </div>
                 <div class="flex items-center my-4">
-                  <hr class="flex-grow border-t border-[#252A37]">
-                  <span class="px-3 text-[#A1A5B7] text-sm">OR</span>
-                  <hr class="flex-grow border-t border-[#252A37]">
+                  <hr class="flex-grow border-t border-gray-700">
+                  <span class="px-3 text-gray-400 text-sm">OR</span>
+                  <hr class="flex-grow border-t border-gray-700">
                 </div>
                 <div class="mb-4">
-                  <label class="block text-[#A1A5B7] text-sm mb-1">Upload document to summarize</label>
-                  <div class="file-upload bg-[#0B0F19] border border-[#252A37] rounded p-2 text-center">
-                    <button class="bg-[#6E44FF] text-white text-sm font-medium px-4 py-2 rounded hover-glow">
+                  <label class="block text-gray-400 text-sm mb-1">Upload document to summarize</label>
+                  <div class="file-upload bg-[#0D0D0D] border border-gray-700 rounded p-2 text-center">
+                    <button class="bg-[#0070FF] text-white text-sm font-medium px-4 py-2 rounded hover-glow">
                       Choose File (PDF, DOCX, TXT)
                     </button>
                     <input type="file" id="summarizeDocInput" class="file-upload-input" accept=".pdf,.docx,.txt">
                   </div>
-                  <div id="summarizeDocNameDisplay" class="text-[#A1A5B7] text-xs mt-1"></div>
-                  <div id="summarizeDocExtractStatus" class="text-[#A1A5B7] text-xs mt-1 hidden">
+                  <div id="summarizeDocNameDisplay" class="text-gray-400 text-xs mt-1"></div>
+                  <div id="summarizeDocExtractStatus" class="text-gray-400 text-xs mt-1 hidden">
                     <span class="loading inline-block mr-2"></span>
                     Extracting text from document...
                   </div>
                 </div>
                 <div class="mb-4">
-                  <label for="summaryLength" class="block text-[#A1A5B7] text-sm mb-1">Summary Length</label>
-                  <select id="summaryLength" class="w-full sm:w-1/2 text-sm bg-[#0B0F19] border border-[#252A37] rounded focus:ring-2 focus:ring-[#00C5FF] text-white p-2">
+                  <label for="summaryLength" class="block text-gray-400 text-sm mb-1">Summary Length</label>
+                  <select id="summaryLength" class="w-full sm:w-1/2 text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white p-2">
                     <option value="short">Short (1-2 sentences)</option>
                     <option value="medium" selected>Medium (a paragraph)</option>
                     <option value="long">Long (multiple paragraphs, detailed)</option>
                   </select>
                 </div>
-                <button id="summarizeTextBtn" class="bg-[#00C5FF] text-[#0B0F19] text-sm font-medium px-6 py-2 rounded hover-glow flex items-center justify-center w-full sm:w-auto">
+                <button id="summarizeTextBtn" class="bg-[#A800FF] text-white text-sm font-medium px-6 py-2 rounded hover-glow flex items-center justify-center w-full sm:w-auto">
                   <span id="summarizeBtnText">Summarize</span>
                   <span id="summarizeTextSpinner" class="loading hidden ml-2"></span>
                 </button>
-                <div id="summaryOutput" class="mt-4 p-3 bg-[#0B0F19] rounded border border-[#252A37] min-h-32">
-                  <p class="text-[#A1A5B7] text-sm">Summary will appear here...</p>
+                <div id="summaryOutput" class="mt-4 p-3 bg-[#0D0D0D] rounded border border-gray-700 min-h-32">
+                  <p class="text-gray-400 text-sm">Summary will appear here...</p>
                 </div>
                 <div class="flex justify-end mt-2">
-                  <button id="copySummaryBtn" class="text-[#00C5FF] text-xs hover:underline hidden">Copy Summary</button>
+                  <button id="copySummaryBtn" class="text-[#A800FF] text-xs hover:underline hidden">Copy Summary</button>
                 </div>
               </div>
             </section>
       <div class="container mx-auto py-8 px-4">
-            <article class="prose lg:prose-xl mx-auto mb-8 bg-white p-6 rounded-lg shadow">
+            <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
                 <h2>Quickly Grasp Key Information with AI Summaries</h2>
                 <p>Overwhelmed by lengthy articles or documents? Our AI Text Summarizer distills vast amounts of text into clear, concise summaries, helping you understand key points quickly and efficiently.</p>
                 <ul>
@@ -996,50 +1010,50 @@
         <header class="gradient-bg text-white py-8">
             <div class="container mx-auto px-4 text-center">
                 <h1 class="text-3xl font-bold">Our Pricing Plans</h1>
-                <p class="mt-2 text-[#A1A5B7]">Choose the plan that's right for you, offering great value for powerful AI tools.</p>
+                <p class="mt-2 text-gray-200">Choose the plan that's right for you, offering great value for powerful AI tools.</p>
             </div>
         </header>
         <div class="container mx-auto px-4 py-16">
             <div class="adsense-placeholder">Pricing Page - Ad Unit Placeholder</div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="pricing-card bg-white rounded-lg shadow-lg p-6 flex flex-col">
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Free</h3>
-                    <p class="text-4xl font-bold text-gray-900 mb-4">₹0<span class="text-lg font-normal text-gray-500">/month</span></p>
-                    <p class="text-gray-600 mb-6">Perfect for individuals starting out or trying our basic features.</p>
-                    <ul class="text-gray-700 mb-8 flex-grow">
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 AI Image Generations (session limit)</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 10 Text/Doc Translations (session limit)</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 5 Text Summarizations (session limit)</li>
+                <div class="pricing-card bg-[#1A1A1A]/70 border border-gray-800 rounded-lg shadow-lg p-6 flex flex-col">
+                    <h3 class="text-2xl font-semibold text-white mb-2">Free</h3>
+                    <p class="text-4xl font-bold text-white mb-4">₹0<span class="text-lg font-normal text-gray-400">/month</span></p>
+                    <p class="text-gray-400 mb-6">Perfect for individuals starting out or trying our basic features.</p>
+                    <ul class="text-gray-300 mb-8 flex-grow">
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 AI Image Generations (session limit)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 Text/Doc Translations (session limit)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 Text Summarizations (session limit)</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Community Support</li>
                          <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Guest Users: 10 total uses (session limit)</li>
                     </ul>
-                                    </div>
-                <div class="pricing-card bg-white rounded-lg shadow-lg p-6 border-4 border-blue-900 flex flex-col relative">
-                    <span class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-900 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase">Most Popular</span>
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-2 mt-4">Pro</h3>
-                    <p class="text-4xl font-bold text-gray-900 mb-4" id="proPlanPriceDisplay">₹499<span class="text-lg font-normal text-gray-500">/month</span></p>
-                    <p class="text-gray-600 mb-6">Ideal for professionals and small teams needing more power.</p>
-                    <ul class="text-gray-700 mb-8 flex-grow">
+                </div>
+                <div class="pricing-card bg-[#1A1A1A]/70 rounded-lg shadow-lg p-6 border-4 border-[#A800FF] flex flex-col relative">
+                    <span class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#A800FF] text-white text-xs font-semibold px-3 py-1 rounded-full uppercase">Most Popular</span>
+                    <h3 class="text-2xl font-semibold text-white mb-2 mt-4">Pro</h3>
+                    <p class="text-4xl font-bold text-white mb-4" id="proPlanPriceDisplay">₹499<span class="text-lg font-normal text-gray-400">/month</span></p>
+                    <p class="text-gray-400 mb-6">Ideal for professionals and small teams needing more power.</p>
+                    <ul class="text-gray-300 mb-8 flex-grow">
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Text & Document Translation</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Text Summarization</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Priority Email Support</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Access to new features first</li>
                     </ul>
-                    <button onclick="initiatePayment('pro')" class="w-full bg-blue-900 text-white py-2 px-4 rounded-md hover:bg-blue-900 transition mt-auto">Choose Pro</button>
+                    <button onclick="initiatePayment('pro')" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition mt-auto">Choose Pro</button>
                 </div>
-                <div class="pricing-card bg-white rounded-lg shadow-lg p-6 flex flex-col">
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Business</h3>
-                     <p class="text-4xl font-bold text-gray-900 mb-4" id="businessPlanPriceDisplay">₹1499<span class="text-lg font-normal text-gray-500">/month</span></p>
-                    <p class="text-gray-600 mb-6">For larger teams and businesses requiring extensive usage and support.</p>
-                    <ul class="text-gray-700 mb-8 flex-grow">
+                <div class="pricing-card bg-[#1A1A1A]/70 border border-gray-800 rounded-lg shadow-lg p-6 flex flex-col">
+                    <h3 class="text-2xl font-semibold text-white mb-2">Business</h3>
+                     <p class="text-4xl font-bold text-white mb-4" id="businessPlanPriceDisplay">₹1499<span class="text-lg font-normal text-gray-400">/month</span></p>
+                    <p class="text-gray-400 mb-6">For larger teams and businesses requiring extensive usage and support.</p>
+                    <ul class="text-gray-300 mb-8 flex-grow">
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Text & Document Translation</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Summarization</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Dedicated 24/7 Support</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Team Collaboration Tools (Coming Soon)</li>
                     </ul>
-                    <button onclick="initiatePayment('business')" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition mt-auto">Choose Business</button>
+                    <button onclick="initiatePayment('business')" class="w-full bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-white transition mt-auto">Choose Business</button>
                 </div>
             </div>
         </div>
@@ -1054,26 +1068,26 @@
       </header>
       <div class="container mx-auto px-4 py-16 max-w-2xl">
         <div class="adsense-placeholder">Contact Page - Ad Unit Placeholder</div>
-        <div class="bg-white p-8 rounded-lg shadow-md">
+        <div class="bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
             <form id="contactForm" action="https://formspree.io/f/mldnezke" method="POST">
                 <div class="mb-6">
-                    <label for="contactName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input type="text" id="contactName" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required>
+                    <label for="contactName" class="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
+                    <input type="text" id="contactName" name="name" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required>
                 </div>
                 <div class="mb-6">
-                    <label for="contactEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input type="email" id="contactEmail" name="_replyto" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required>
+                    <label for="contactEmail" class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                    <input type="email" id="contactEmail" name="_replyto" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required>
                 </div>
                 <div class="mb-6">
-                    <label for="contactSubject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
-                    <input type="text" id="contactSubject" name="subject" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required>
+                    <label for="contactSubject" class="block text-sm font-medium text-gray-300 mb-1">Subject</label>
+                    <input type="text" id="contactSubject" name="subject" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required>
                 </div>
                 <div class="mb-6">
-                    <label for="contactMessage" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                    <textarea id="contactMessage" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-900 focus:border-blue-900" required></textarea>
+                    <label for="contactMessage" class="block text-sm font-medium text-gray-300 mb-1">Message</label>
+                    <textarea id="contactMessage" name="message" rows="4" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required></textarea>
                 </div>
                 <div>
-                    <button type="submit" id="contactSubmitButton" class="w-full bg-blue-900 text-white py-3 px-4 rounded-md hover:bg-blue-900 transition font-semibold flex items-center justify-center">
+                    <button type="submit" id="contactSubmitButton" class="w-full bg-[#6C00FF] text-white py-3 px-4 rounded-md hover:bg-[#A800FF] transition font-semibold flex items-center justify-center">
                         <span id="contactSubmitButtonText">Send Message</span>
                         <span id="contactSubmitSpinner" class="loading hidden ml-2"></span>
                     </button>
@@ -1086,156 +1100,160 @@
   
     <!-- In the main content section - fixed the privacy policy and terms pages -->
 <div id="privacyPolicyPage" class="page">
-  <div class="container mx-auto px-4 py-16 prose lg:prose-xl">
-    <h2 class="text-3xl font-bold mb-6 text-center">Privacy Policy</h2>
-    <p class="mb-4 text-sm text-gray-600 text-center">Last updated: May 30, 2025</p>
-    
-    <p>At Tech_Gen SaaS, we respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
+  <div class="container mx-auto px-4 py-16">
+    <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
+      <h2 class="text-3xl font-bold mb-6 text-center">Privacy Policy</h2>
+      <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 30, 2025</p>
+      
+      <p>At Tech_Gen SaaS, we respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
 
-    <h2>1. Information We Collect</h2>
-    <p>We may collect the following data when you interact with our Service:</p>
+      <h2>1. Information We Collect</h2>
+      <p>We may collect the following data when you interact with our Service:</p>
 
-    <h3>Personal Information</h3>
-    <p>Name, email, contact details (when you sign up or contact us).</p>
-    <p>Payment/billing information (processed securely via third-party providers like Stripe/PayPal).</p>
+      <h3>Personal Information</h3>
+      <p>Name, email, contact details (when you sign up or contact us).</p>
+      <p>Payment/billing information (processed securely via third-party providers like Stripe/PayPal).</p>
 
-    <h3>Automated Data</h3>
-    <p>Cookies & Tracking: We use cookies to improve user experience (e.g., login sessions, analytics).</p>
-    <p>Log Files: IP address, browser type, pages visited, and timestamps.</p>
+      <h3>Automated Data</h3>
+      <p>Cookies & Tracking: We use cookies to improve user experience (e.g., login sessions, analytics).</p>
+      <p>Log Files: IP address, browser type, pages visited, and timestamps.</p>
 
-    <h3>Third-Party Data</h3>
-    <p>If you log in via Google/GitHub/etc., we may receive your public profile info (per your permissions).</p>
+      <h3>Third-Party Data</h3>
+      <p>If you log in via Google/GitHub/etc., we may receive your public profile info (per your permissions).</p>
 
-    <h2>2. How We Use Your Data</h2>
-    <p>We process your information to:</p>
-    <ul>
-        <li>Provide and maintain the Service.</li>
-        <li>Process payments and prevent fraud.</li>
-        <li>Communicate updates, offers, or support requests.</li>
-        <li>Analyze usage trends to improve our Service.</li>
-    </ul>
+      <h2>2. How We Use Your Data</h2>
+      <p>We process your information to:</p>
+      <ul>
+          <li>Provide and maintain the Service.</li>
+          <li>Process payments and prevent fraud.</li>
+          <li>Communicate updates, offers, or support requests.</li>
+          <li>Analyze usage trends to improve our Service.</li>
+      </ul>
 
-    <h2>3. Data Sharing & Disclosure</h2>
-    <p>We do not sell your data. We may share it only in these cases:</p>
-    <ul>
-        <li><strong>Service Providers:</strong> Trusted vendors (e.g., hosting, payment processors) under strict confidentiality.</li>
-        <li><strong>Legal Compliance:</strong> If required by law (e.g., subpoenas, fraud investigations).</li>
-        <li><strong>Business Transfers:</strong> In case of mergers/acquisitions (users will be notified).</li>
-    </ul>
+      <h2>3. Data Sharing & Disclosure</h2>
+      <p>We do not sell your data. We may share it only in these cases:</p>
+      <ul>
+          <li><strong>Service Providers:</strong> Trusted vendors (e.g., hosting, payment processors) under strict confidentiality.</li>
+          <li><strong>Legal Compliance:</strong> If required by law (e.g., subpoenas, fraud investigations).</li>
+          <li><strong>Business Transfers:</strong> In case of mergers/acquisitions (users will be notified).</li>
+      </ul>
 
-    <h2>4. Data Security</h2>
-    <p>We implement SSL encryption, access controls, and regular audits to protect your data. However, no online method is 100% secure—please safeguard your account credentials.</p>
+      <h2>4. Data Security</h2>
+      <p>We implement SSL encryption, access controls, and regular audits to protect your data. However, no online method is 100% secure—please safeguard your account credentials.</p>
 
-    <h2>5. Your Rights</h2>
-    <p>Depending on your location, you may:</p>
-    <ul>
-        <li>Access, correct, or delete your personal data.</li>
-        <li>Opt out of marketing emails (via unsubscribe links).</li>
-        <li>Disable cookies (via browser settings).</li>
-        <li>Request data portability or restriction of processing.</li>
-    </ul>
-    <p>To exercise these rights, contact us at <a href="mailto:privacy@Tech_Gen.com">privacy@Tech_Gen.com</a>.</p>
+      <h2>5. Your Rights</h2>
+      <p>Depending on your location, you may:</p>
+      <ul>
+          <li>Access, correct, or delete your personal data.</li>
+          <li>Opt out of marketing emails (via unsubscribe links).</li>
+          <li>Disable cookies (via browser settings).</li>
+          <li>Request data portability or restriction of processing.</li>
+      </ul>
+      <p>To exercise these rights, contact us at <a href="mailto:privacy@Tech_Gen.com">privacy@Tech_Gen.com</a>.</p>
 
-    <h2>6. Cookies Policy</h2>
-    <p>We use:</p>
-    <ul>
-        <li><strong>Essential Cookies:</strong> Necessary for site functionality (e.g., login).</li>
-        <li><strong>Analytics Cookies:</strong> Google Analytics to track traffic (anonymous data).</li>
-        <li><strong>Marketing Cookies:</strong> If running ads (e.g., Facebook Pixel).</li>
-    </ul>
+      <h2>6. Cookies Policy</h2>
+      <p>We use:</p>
+      <ul>
+          <li><strong>Essential Cookies:</strong> Necessary for site functionality (e.g., login).</li>
+          <li><strong>Analytics Cookies:</strong> Google Analytics to track traffic (anonymous data).</li>
+          <li><strong>Marketing Cookies:</strong> If running ads (e.g., Facebook Pixel).</li>
+      </ul>
 
-    <h2>7. Third-Party Links</h2>
-    <p>Our Service may link to external sites (e.g., documentation, social media). We are not responsible for their privacy practices.</p>
+      <h2>7. Third-Party Links</h2>
+      <p>Our Service may link to external sites (e.g., documentation, social media). We are not responsible for their privacy practices.</p>
 
-    <h2>8. Children's Privacy</h2>
-    <p>Our Service is not intended for users under 13. We do not knowingly collect their data.</p>
+      <h2>8. Children's Privacy</h2>
+      <p>Our Service is not intended for users under 13. We do not knowingly collect their data.</p>
 
-    <h2>9. International Data Transfers</h2>
-    <p>If data crosses borders, we ensure protections (e.g., GDPR Standard Contractual Clauses).</p>
+      <h2>9. International Data Transfers</h2>
+      <p>If data crosses borders, we ensure protections (e.g., GDPR Standard Contractual Clauses).</p>
 
-    <h2>10. Policy Updates</h2>
-    <p>We may update this policy and will notify users via email or website notices.</p>
+      <h2>10. Policy Updates</h2>
+      <p>We may update this policy and will notify users via email or website notices.</p>
 
-    <div class="contact-info">
-        <h2>11. Contact Us</h2>
-        <p>For privacy-related questions, contact:</p>
-        <p><a href="mailto:privacy@Tech_Gen.com" class="text-blue-900 hover:underline">privacy@Tech_Gen.com</a></p>
+      <div class="contact-info">
+          <h2>11. Contact Us</h2>
+          <p>For privacy-related questions, contact:</p>
+          <p><a href="mailto:privacy@Tech_Gen.com">privacy@Tech_Gen.com</a></p>
+      </div>
     </div>
   </div>
 </div>
 
 <div id="termsOfServicePage" class="page">
-  <div class="container mx-auto px-4 py-16 prose lg:prose-xl">
-    <h2 class="text-3xl font-bold mb-6 text-center">Terms of Service</h2>
-    <p class="mb-4 text-sm text-gray-600 text-center">Last updated: May 30, 2025</p>
+  <div class="container mx-auto px-4 py-16">
+    <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
+      <h2 class="text-3xl font-bold mb-6 text-center">Terms of Service</h2>
+      <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 30, 2025</p>
 
-    <p>Welcome to Tech_Gen SaaS (the "Service"). By accessing or using our website and services, you agree to comply with and be bound by the following Terms and Conditions. If you do not agree, please refrain from using our Service.</p>
+      <p>Welcome to Tech_Gen SaaS (the "Service"). By accessing or using our website and services, you agree to comply with and be bound by the following Terms and Conditions. If you do not agree, please refrain from using our Service.</p>
 
-    <h2>1. Acceptance of Terms</h2>
-    <p>By using our Service, you confirm that you are at least 18 years old or have legal guardian consent. You also agree to provide accurate and complete information when registering.</p>
+      <h2>1. Acceptance of Terms</h2>
+      <p>By using our Service, you confirm that you are at least 18 years old or have legal guardian consent. You also agree to provide accurate and complete information when registering.</p>
 
-    <h2>2. Service Description</h2>
-    <p>Tech_Gen SaaS provides cloud-based AI tools including image generation, document translation, and text summarization. We reserve the right to modify or discontinue any part of the Service without prior notice.</p>
+      <h2>2. Service Description</h2>
+      <p>Tech_Gen SaaS provides cloud-based AI tools including image generation, document translation, and text summarization. We reserve the right to modify or discontinue any part of the Service without prior notice.</p>
 
-    <h2>3. User Responsibilities</h2>
-    <p>You agree not to misuse the Service (e.g., hacking, spamming, or distributing malware).</p>
-    <p>You are responsible for maintaining the confidentiality of your account credentials.</p>
-    <p>Any unauthorized use of your account must be reported immediately.</p>
+      <h2>3. User Responsibilities</h2>
+      <p>You agree not to misuse the Service (e.g., hacking, spamming, or distributing malware).</p>
+      <p>You are responsible for maintaining the confidentiality of your account credentials.</p>
+      <p>Any unauthorized use of your account must be reported immediately.</p>
 
-    <h2>4. Payments & Subscriptions</h2>
-    <p>Fees for the Service are as listed on our pricing page.</p>
-    <p>Payments are non-refundable unless otherwise stated.</p>
-    <p>We may change pricing with prior notice.</p>
+      <h2>4. Payments & Subscriptions</h2>
+      <p>Fees for the Service are as listed on our pricing page.</p>
+      <p>Payments are non-refundable unless otherwise stated.</p>
+      <p>We may change pricing with prior notice.</p>
 
-    <h2>5. Intellectual Property</h2>
-    <p>All content, trademarks, and software on the Service are owned by Tech_Gen or its licensors. Unauthorized use, reproduction, or distribution is prohibited.</p>
+      <h2>5. Intellectual Property</h2>
+      <p>All content, trademarks, and software on the Service are owned by Tech_Gen or its licensors. Unauthorized use, reproduction, or distribution is prohibited.</p>
 
-    <h2>6. Privacy Policy</h2>
-    <p>Your use of the Service is also governed by our <a href="#privacyPolicyPage" onclick="showPage('privacyPolicyPage'); return false;" class="text-blue-900 hover:underline">Privacy Policy</a>.</p>
+      <h2>6. Privacy Policy</h2>
+      <p>Your use of the Service is also governed by our <a href="#privacyPolicyPage" onclick="showPage('privacyPolicyPage'); return false;">Privacy Policy</a>.</p>
 
-    <h2>7. Termination</h2>
-    <p>We may suspend or terminate your access for violations of these Terms, illegal activities, or non-payment.</p>
+      <h2>7. Termination</h2>
+      <p>We may suspend or terminate your access for violations of these Terms, illegal activities, or non-payment.</p>
 
-    <h2>8. Limitation of Liability</h2>
-    <p>Tech_Gen is not liable for any indirect, incidental, or consequential damages arising from your use of the Service.</p>
+      <h2>8. Limitation of Liability</h2>
+      <p>Tech_Gen is not liable for any indirect, incidental, or consequential damages arising from your use of the Service.</p>
 
-    <h2>9. Governing Law</h2>
-    <p>These Terms shall be governed by the laws of India, without regard to conflict of law principles.</p>
+      <h2>9. Governing Law</h2>
+      <p>These Terms shall be governed by the laws of India, without regard to conflict of law principles.</p>
 
-    <h2>10. Changes to Terms</h2>
-    <p>We may update these Terms periodically. Continued use after changes constitutes acceptance.</p>
+      <h2>10. Changes to Terms</h2>
+      <p>We may update these Terms periodically. Continued use after changes constitutes acceptance.</p>
 
-    <h3 class="text-2xl font-semibold mt-8 mb-3">Contact Us</h3>
-    <p>If you have any questions about these Terms, please contact us via the <a href="#contact" onclick="showPage('contact'); return false;" class="text-blue-900 hover:underline">Contact page</a>.</p>
+      <h3 class="text-2xl font-semibold mt-8 mb-3">Contact Us</h3>
+      <p>If you have any questions about these Terms, please contact us via the <a href="#contact" onclick="showPage('contact'); return false;">Contact page</a>.</p>
+    </div>
   </div>
 </div>
   </main>
 
-  <footer class="bg-gray-800 text-white py-8">
+  <footer class="bg-black/50 text-white py-8 border-t border-gray-800">
     <div class="container mx-auto px-4 text-center">
       
       <div class="mb-6">
-        <h4 class="text-lg font-semibold mb-4">Connect With Us</h4>
+        <h4 class="text-lg font-semibold mb-4 text-white">Connect With Us</h4>
         <div class="flex justify-center space-x-4">
-          <a href="https://www.facebook.com/share/1E4dYSnnYw/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
+          <a href="https://www.facebook.com/share/1E4dYSnnYw/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <title>Facebook</title>
               <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"></path>
             </svg>
           </a>
-          <a href="https://x.com/manjeshsharma8?t=6FU-OLj9YMIPd_92uoUHPw&s=09" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
+          <a href="https://x.com/manjeshsharma8?t=6FU-OLj9YMIPd_92uoUHPw&s=09" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <title>Twitter</title>
               <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
             </svg>
           </a>
-          <a href="https://www.instagram.com/mjsharma7321?igsh=ZW0yMmhyZ2Z0bmp6" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
+          <a href="https://www.instagram.com/mjsharma7321?igsh=ZW0yMmhyZ2Z0bmp6" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <title>Instagram</title>
               <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path>
             </svg>
           </a>
-          <a href="https://youtube.com/@manjeshsharma?si=cvazHP7_fLn3mZrd" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
+          <a href="https://youtube.com/@manjeshsharma?si=cvazHP7_fLn3mZrd" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <title>YouTube</title>
               <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
@@ -1244,14 +1262,14 @@
         </div>
       </div>
       
-      <div class="mb-4">
-        <a href="#home" onclick="showPage('home'); return false;" class="hover:text-blue-900 underline">Home</a> | 
-        <a href="#privacyPolicyPage" onclick="showPage('privacyPolicyPage'); return false;" class="hover:text-blue-900 underline">Privacy Policy</a> | 
-        <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;" class="hover:text-blue-900 underline">Terms of Service</a> |
-        <a href="#contact" onclick="showPage('contact'); return false;" class="hover:text-blue-900 underline">Contact Us</a>
+      <div class="mb-4 text-gray-400">
+        <a href="#home" onclick="showPage('home'); return false;" class="hover:text-[#D480FF] underline">Home</a> | 
+        <a href="#privacyPolicyPage" onclick="showPage('privacyPolicyPage'); return false;" class="hover:text-[#D480FF] underline">Privacy Policy</a> | 
+        <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;" class="hover:text-[#D480FF] underline">Terms of Service</a> |
+        <a href="#contact" onclick="showPage('contact'); return false;" class="hover:text-[#D480FF] underline">Contact Us</a>
       </div>
 
-      <p>© 2025 Tech_Gen. All rights reserved.</p>
+      <p class="text-gray-500">© 2025 Tech_Gen. All rights reserved.</p>
       </div>
   </footer>
 
@@ -1284,15 +1302,15 @@
     const INACTIVITY_TIMEOUT = 5 * 60 * 1000;
     const GUEST_TOTAL_USAGE_LIMIT = 10; 
     const FREE_TIER_LIMITS = { 
-        imageGen: 15,
-        translate: 15,
-        summarize: 15
+        imageGen: 50,
+        translate: 50,
+        summarize: 50
     };
     let guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
 
     const plansData = {
         free: { name: "Free", priceDisplay: "₹0/month", priceAmount: 0, currency: "INR", id: 'free', description: "Access to basic features with session-based limits. Perfect for trying out our tools." },
-        pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 100, currency: "INR", id: 'pro', description: "Unlimited access to all our AI tools. Ideal for professionals and power users." },
+        pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 49900, currency: "INR", id: 'pro', description: "Unlimited access to all our AI tools. Ideal for professionals and power users." },
         business: { name: "Business", priceDisplay: "₹1499/month", priceAmount: 149900, currency: "INR", id: 'business', description: "All Pro features plus dedicated support and team tools for your organization." }
     };
     
@@ -1317,19 +1335,17 @@
     const authPageIds = ['login', 'register', 'forgotPassword', 'resetPassword', 'paymentPage'];
 
     // --- UI AND HELPER FUNCTIONS ---
-
+    // ... No changes here ...
     function updateMetaTags(pageId) {
         const meta = pageMetaInfo[pageId];
         document.title = meta ? meta.title : "Tech_Gen - AI Platform";
         const descriptionTag = document.querySelector('meta[name="description"]');
         if (descriptionTag) descriptionTag.setAttribute('content', meta ? meta.description : "Powerful AI tools from Tech_Gen.");
     }
-
     function escapeHtml(unsafe) { 
       if (typeof unsafe !== 'string') unsafe = String(unsafe === null || unsafe === undefined ? '' : unsafe);
       return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
-
     function showAlert(message, type = 'info', duration = 4000) { 
       document.querySelectorAll('.alert-message').forEach(alert => alert.remove());
       const alert = document.createElement('div');
@@ -1341,9 +1357,6 @@
         setTimeout(() => alert.remove(), 300); 
       }, type === 'error' ? Math.max(duration, 7000) : duration); 
     }
-
-    // --- INACTIVITY LOGOUT FUNCTIONS ---
-    
     function logoutDueToInactivity() {
         if (currentUser) {
             const currentPageId = getCurrentPageIdFromUrl();
@@ -1355,15 +1368,18 @@
             showPage('login');
         }
     }
-
     function resetInactivityTimer() {
         clearTimeout(inactivityTimer);
         if (currentUser) {
             inactivityTimer = setTimeout(logoutDueToInactivity, INACTIVITY_TIMEOUT);
         }
     }
-
-    // --- UPDATED: FUNCTION TO POPULATE ACCOUNT PAGE ---
+    function pauseInactivityTimer() {
+        clearTimeout(inactivityTimer);
+    }
+    function resumeInactivityTimer() {
+        resetInactivityTimer();
+    }
     function populateAccountPage() {
         if (currentUser) {
             document.getElementById('accountName').textContent = escapeHtml(currentUser.name);
@@ -1374,16 +1390,12 @@
                 document.getElementById('accountPlan').textContent = escapeHtml(planDetails.name);
                 document.getElementById('accountPlanDescription').textContent = escapeHtml(planDetails.description);
             }
-
-            // --- Populate Usage Details ---
             const usageDetailsContainer = document.getElementById('accountUsageDetails');
             if (usageDetailsContainer) {
-                usageDetailsContainer.innerHTML = ''; // Clear previous content
-
+                usageDetailsContainer.innerHTML = ''; 
                 if (currentUser.plan === 'free') {
                     const usage = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
                     const limits = FREE_TIER_LIMITS;
-
                     usageDetailsContainer.innerHTML = `
                         <p><strong>AI Image Generations:</strong> ${usage.imageGen} / ${limits.imageGen}</p>
                         <p><strong>Translations:</strong> ${usage.translate} / ${limits.translate}</p>
@@ -1400,7 +1412,6 @@
             }
         }
     }
-    
     function showPage(pageId, isInitialLoad = false) {
         if (pageId === 'account' && !currentUser) {
             showAlert('You must be logged in to view your account page.', 'info');
@@ -1408,11 +1419,9 @@
             showPage('login');
             return;
         }
-
         document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
         const targetPage = document.getElementById(pageId);
         const authPagesWrapper = document.getElementById('auth-pages-wrapper');
-
         if (authPagesWrapper) {
             if (authPageIds.includes(pageId)) {
                 authPagesWrapper.classList.add('active-auth');
@@ -1420,18 +1429,14 @@
                 authPagesWrapper.classList.remove('active-auth');
             }
         }
-
         if (targetPage) {
             targetPage.classList.add('active');
             updateMetaTags(pageId);
-
             if (pageId === 'account') {
                 populateAccountPage();
             }
-            
             const newURL = `${window.location.pathname}#${pageId}`;
             const pageTitle = pageMetaInfo[pageId]?.title || `Tech_Gen - ${pageId}`;
-            
             if (window.location.hash !== `#${pageId}`) {
                 if (isInitialLoad) {
                     window.history.replaceState({ page: pageId }, pageTitle, newURL);
@@ -1444,7 +1449,6 @@
             showPage('home');
         }
         window.scrollTo(0, 0);
-
         document.querySelectorAll('#loginError, #registerError, #forgotPasswordError, #resetPasswordError').forEach(el => {
             el.classList.add('hidden'); el.textContent = '';
         });
@@ -1452,7 +1456,6 @@
             el.classList.add('hidden');
         });
     }
-
     function getCurrentPageIdFromUrl() {
         const hash = window.location.hash;
         if (hash.includes('access_token')) {
@@ -1461,30 +1464,25 @@
         const pageId = hash.substring(1);
         return (pageId && document.getElementById(pageId)) ? pageId : 'home';
     }
-
     function updatePricingDisplay() {
         if (plansData.pro && document.getElementById('proPlanPriceDisplay')) {
-            document.getElementById('proPlanPriceDisplay').innerHTML = `${plansData.pro.priceDisplay.split('/')[0]}<span class="text-lg font-normal text-gray-500">/month</span>`;
+            document.getElementById('proPlanPriceDisplay').innerHTML = `${plansData.pro.priceDisplay.split('/')[0]}<span class="text-lg font-normal text-gray-400">/month</span>`;
         }
         if (plansData.business && document.getElementById('businessPlanPriceDisplay')) {
-            document.getElementById('businessPlanPriceDisplay').innerHTML = `${plansData.business.priceDisplay.split('/')[0]}<span class="text-lg font-normal text-gray-500">/month</span>`;
+            document.getElementById('businessPlanPriceDisplay').innerHTML = `${plansData.business.priceDisplay.split('/')[0]}<span class="text-lg font-normal text-gray-400">/month</span>`;
         }
     }
-
     function updateAuthUI() {
         const authButtonsContainer = document.getElementById('authButtonsContainer');
         const userInfoContainer = document.getElementById('userInfoContainer');
         const userEmailDisplay = document.getElementById('userEmailDisplay');
-
         if (!authButtonsContainer || !userInfoContainer) {
             console.error("Auth UI containers not found in the DOM!");
             return;
         }
-
         if (currentUser) { 
             authButtonsContainer.classList.add('hidden');
             userInfoContainer.classList.remove('hidden'); 
-            
             if(userEmailDisplay) userEmailDisplay.textContent = `Welcome, ${escapeHtml(currentUser.name)}!`;
         } else { 
             authButtonsContainer.classList.remove('hidden');
@@ -1492,14 +1490,10 @@
             if(userEmailDisplay) userEmailDisplay.textContent = '';
         }
     }
-
-    // --- FEATURE GATING AND USAGE TRACKING ---
-
     function updateGuestUsage() {
         guestUsage.total++;
         sessionStorage.setItem('techGenGuestUsage', JSON.stringify(guestUsage));
     }
-
     function canGuestUseFeature(currentPageId) {
         if (guestUsage.total < GUEST_TOTAL_USAGE_LIMIT) {
             return true;
@@ -1509,16 +1503,12 @@
         showPage('login');
         return false;
     }
-    
     function canLoggedInUserUseFeature(featureType, currentPageId) {
         if (!currentUser) return canGuestUseFeature(currentPageId); 
-
         if (currentUser.plan === 'pro' || currentUser.plan === 'business') return true;
-
         if (currentUser.plan === 'free') {
             const limit = FREE_TIER_LIMITS[featureType];
             const currentCount = currentUser.usageCounts[featureType] || 0;
-
             if (currentCount < limit) {
                 return true;
             }
@@ -1529,7 +1519,6 @@
         }
         return false;
     }
-
     function incrementFeatureUsage(featureType) {
         if (currentUser && currentUser.plan === 'free') {
             currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
@@ -1538,9 +1527,6 @@
             updateGuestUsage();
         }
     }
-
-    // --- API CALL FUNCTIONS ---
-
     async function callGeminiAPI(promptText) {
         if (!GEMINI_API_KEY) {
              showAlert('API Key is not configured correctly. AI features will not work.', 'error');
@@ -1570,7 +1556,6 @@
             throw error; 
         }
     }
-
     async function initiateMonsterImageGeneration(prompt, aspectRatio, style) {
         if (!MONSTER_API_BEARER_TOKEN) {
             showAlert('Monster API Token is not configured correctly. Image generation will not work.', 'error');
@@ -1597,7 +1582,6 @@
             throw error;
         }
     }
-
     async function fetchMonsterImageStatus(statusUrl) {
         if (!MONSTER_API_BEARER_TOKEN) throw new Error('Monster API Token not configured.');
         try {
@@ -1615,9 +1599,6 @@
             throw error;
         }
     }
-        
-    // --- FILE HANDLING AND UTILITIES ---
-
     function downloadContent(content, filename) {
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
@@ -1630,7 +1611,6 @@
         URL.revokeObjectURL(url);
         showAlert(`Downloaded ${filename}`, 'success');
     }
-
     function downloadImage(url, filename) { 
       fetch(url, { mode: 'cors' }) 
         .then(response => {
@@ -1662,7 +1642,6 @@
             showAlert(`Image download error: ${error.message}. Please try to save the image manually.`, 'error');
         });
     }
-
     async function extractTextFromFile(file) { 
         const extension = file.name.split('.').pop().toLowerCase();
         if (extension === 'pdf') {
@@ -1676,7 +1655,6 @@
         if (extension === 'txt') return await extractTextFromTXT(file);
         throw new Error('Unsupported file type. Please use PDF, DOCX, or TXT.');
     }
-    
     async function extractTextFromPDF(file) { 
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -1699,7 +1677,6 @@
             fileReader.readAsArrayBuffer(file);
         });
     }
-    
     async function extractTextFromDOCX(file) { 
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -1712,7 +1689,6 @@
             fileReader.readAsArrayBuffer(file);
         });
     }
-    
     async function extractTextFromTXT(file) { 
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -1721,9 +1697,6 @@
             fileReader.readAsText(file);
         });
     }
-
-    // --- PAYMENT HANDLING ---
-
     function initiatePayment(planId) {
         const planToPurchase = plansData[planId];
         if (!planToPurchase) { 
@@ -1735,7 +1708,6 @@
             showAlert('For Business plans, please contact our sales team.', 'info');
             return;
         }
-
         if (!currentUser) { 
             sessionStorage.setItem('pendingPlan', planId); 
             sessionStorage.setItem('intendedPage', 'paymentPage'); 
@@ -1743,7 +1715,6 @@
             showPage('login');
             return;
         }
-
         document.getElementById('paymentPlanName').textContent = planToPurchase.name;
         document.getElementById('paymentPlanPrice').textContent = planToPurchase.priceDisplay;
         document.getElementById('paymentForm').dataset.planId = planId;
@@ -1755,20 +1726,17 @@
         
         showPage('paymentPage');
     }
-
     function handlePayment(event) {
         event.preventDefault(); 
         const paymentForm = document.getElementById('paymentForm');
         const planId = paymentForm.dataset.planId;
         const planDetails = plansData[planId];
-
         if (!planDetails) {
             showAlert("Error: Plan details not found.", 'error'); return;
         }
         if (!RAZORPAY_KEY_ID) {
             showAlert("Payment processor is not configured.", 'error'); return;
         }
-
         const customerName = document.getElementById('cardNameInput').value;
         const customerEmail = document.getElementById('emailInput').value;
         
@@ -1780,22 +1748,18 @@
             description: `Subscription: ${planDetails.name}`,
             prefill: { name: customerName, email: customerEmail },
             notes: { plan_id: planId, user_email: currentUser.email },
-            theme: { color: "#1B2EFD" },
+            theme: { color: "#6C00FF" },
             handler: function (response) {
                 showAlert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}.`, 'success', 6000);
-                
                 currentUser.plan = planDetails.id;
                 delete currentUser.usageCounts;
-                
                 localStorage.setItem(`techGenPlan_${currentUser.email}`, planDetails.id);
-                
                 updateAuthUI();
                 showAlert(`Your ${planDetails.name} plan is now active!`, 'success', 8000);
                 showPage('account'); 
             },
             modal: { ondismiss: () => showAlert("Payment process was cancelled.", 'info') }
         };
-
         try {
             const rzp = new Razorpay(options);
             rzp.on('payment.failed', (response) => showAlert(`Payment Failed: ${response.error.description}`, 'error', 10000));
@@ -1805,7 +1769,7 @@
             console.error("Razorpay initialization error: ", error);
         }
     }
-
+    
     // --- MAIN INITIALIZATION AND EVENT LISTENERS ---
     document.addEventListener('DOMContentLoaded', () => {
         updatePricingDisplay(); 
@@ -1815,7 +1779,6 @@
             window.addEventListener(eventName, resetInactivityTimer, true);
         });
 
-        // --- UPDATED: onAuthStateChange logic ---
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
             
@@ -1849,7 +1812,6 @@
                     } else if (intendedPage && document.getElementById(intendedPage) && intendedPage !== 'login') {
                         showPage(intendedPage);
                     } else {
-                        // --- CHANGE: Redirect to home page on login ---
                         showPage('home');
                     }
                 } else if (event === 'PASSWORD_RECOVERY') {
@@ -1871,7 +1833,8 @@
             if (pageIdToShow) showPage(pageIdToShow);
         });
         
-        // --- Form Event Listeners ---
+        // --- Form Event Listeners (No changes) ---
+        // ... (omitted for brevity, they are unchanged) ...
         const loginFormEl = document.getElementById('loginForm');
         if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
             event.preventDefault(); 
@@ -1889,7 +1852,6 @@
             if (error) {
                 errorEl.textContent = error.message; errorEl.classList.remove('hidden');
             } else {
-                // onAuthStateChange handles success UI and redirection
                 loginFormEl.reset();
             }
         });
@@ -2010,7 +1972,7 @@
                 });
             });
         }
-        
+
         // --- Tool-Specific Event Listeners ---
         const generateImageBtn = document.getElementById('generateImageBtn');
         if (generateImageBtn) { 
@@ -2022,39 +1984,65 @@
                 this.disabled = true;
                 const spinner = document.getElementById('generateSpinner');
                 spinner.classList.remove('hidden');
-                
+                pauseInactivityTimer();
+
                 try {
                     const initRes = await initiateMonsterImageGeneration(prompt, document.getElementById('monsterAspectRatio').value, document.getElementById('monsterImageStyle').value);
-                    let attempts = 0, maxAttempts = 40, pollInterval = 5000;
+                    
+                    // <--- FIX: Increased timeout duration and improved logic ---
+                    let attempts = 0;
+                    const maxAttempts = 60; // Increased from 40 to 60 (5 minutes total)
+                    const pollInterval = 5000;
+                    
                     const poll = async () => {
-                        if (attempts++ >= maxAttempts) throw new Error('Image generation timed out.');
-                        const statusRes = await fetchMonsterImageStatus(initRes.status_url);
-                        if (statusRes.status === 'IN_PROGRESS' || statusRes.status === 'IN_QUEUE') {
-                            setTimeout(poll, pollInterval);
-                        } else if (statusRes.status === 'COMPLETED') {
-                            const img = document.getElementById('generatedImage');
-                            img.src = statusRes.result.output[0]; 
-                            img.alt = prompt;
-                            document.getElementById('imagePlaceholder').style.display = 'none';
-                            document.getElementById('imageResultContainer').classList.remove('hidden');
-                            document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
-                            showAlert('Image generated successfully!', 'success');
-                            incrementFeatureUsage('imageGen');
+                        try {
+                            if (attempts++ >= maxAttempts) {
+                                // Improved timeout message
+                                throw new Error('The image is taking longer than usual to generate. The API might be busy. Please try again in a moment, or try a simpler prompt.');
+                            }
+                            
+                            const statusRes = await fetchMonsterImageStatus(initRes.status_url);
+                            console.log('Polling status:', statusRes);
+
+                            if (statusRes.status === 'IN_PROGRESS' || statusRes.status === 'IN_QUEUE') {
+                                setTimeout(poll, pollInterval);
+                            } else if (statusRes.status === 'COMPLETED' && statusRes.result?.output?.length > 0) {
+                                const img = document.getElementById('generatedImage');
+                                img.src = statusRes.result.output[0]; 
+                                img.alt = prompt;
+                                document.getElementById('imagePlaceholder').style.display = 'none';
+                                document.getElementById('imageResultContainer').classList.remove('hidden');
+                                document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
+                                showAlert('Image generated successfully!', 'success');
+                                incrementFeatureUsage('imageGen');
+                                this.disabled = false;
+                                spinner.classList.add('hidden');
+                                resumeInactivityTimer();
+                            } else if (statusRes.status === 'FAILED') {
+                                // More specific error message for failures
+                                throw new Error(statusRes.message || 'The generation process failed on the server. This can happen with restrictive prompts.');
+                            } else {
+                                // Catch-all for other unexpected states
+                                throw new Error('An unknown error occurred during image generation.');
+                            }
+                        } catch(pollError) {
+                            showAlert(`Error: ${pollError.message}`, 'error');
                             this.disabled = false;
                             spinner.classList.add('hidden');
-                        } else {
-                            throw new Error(`Image generation failed: ${statusRes.message || 'Unknown API error'}`);
+                            resumeInactivityTimer();
                         }
                     };
                     setTimeout(poll, pollInterval);
                 } catch (err) { 
-                    showAlert(`Failed to generate image: ${err.message}`, 'error');
+                    showAlert(`Failed to start image generation: ${err.message}`, 'error');
                     this.disabled = false;
                     spinner.classList.add('hidden');
+                    resumeInactivityTimer();
                 }
             });
         }
-
+        
+        // --- Other listeners unchanged ---
         const translateTextBtn = document.getElementById('translateTextBtn');
         if (translateTextBtn) { 
             translateTextBtn.addEventListener('click', async function() {
@@ -2066,14 +2054,15 @@
                 const spinner = document.getElementById('translateTextSpinner');
                 spinner.classList.remove('hidden');
                 const outputDiv = document.getElementById('textOutput');
-                outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating...</p>`;
+                outputDiv.innerHTML = `<p class="text-gray-400 text-sm">Translating...</p>`;
                 document.getElementById('copyTextBtn').classList.add('hidden');
+                pauseInactivityTimer(); 
 
                 try {
                     const targetLangName = document.getElementById('targetLanguage').selectedOptions[0].text;
                     const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text.\n\n"${textToTranslate}"`;
                     const translation = await callGeminiAPI(prompt);
-                    outputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
+                    outputDiv.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
                     document.getElementById('copyTextBtn').classList.remove('hidden');
                     incrementFeatureUsage('translate');
                 } catch (err) {
@@ -2081,10 +2070,10 @@
                 } finally { 
                     this.disabled = false;
                     spinner.classList.add('hidden');
+                    resumeInactivityTimer(); 
                 }
             });
         }
-
         const summarizeTextBtn = document.getElementById('summarizeTextBtn');
         if (summarizeTextBtn) summarizeTextBtn.addEventListener('click', async function() {
             if (!canLoggedInUserUseFeature('summarize', 'summarization')) return;
@@ -2095,14 +2084,15 @@
             const spinner = document.getElementById('summarizeTextSpinner');
             spinner.classList.remove('hidden');
             const outputDiv = document.getElementById('summaryOutput');
-            outputDiv.innerHTML = `<p class="text-[#A1A5B7] text-sm">Summarizing...</p>`;
+            outputDiv.innerHTML = `<p class="text-gray-400 text-sm">Summarizing...</p>`;
             document.getElementById('copySummaryBtn').classList.add('hidden');
+            pauseInactivityTimer(); 
 
             try {
                 const summaryLength = document.getElementById('summaryLength').value;
                 const prompt = `Provide a ${summaryLength} summary of the following text. The output should be a clean, direct summary without any introductory phrases like "Here is the summary".\n\nText: "${textToSummarize}"`;
                 const summary = await callGeminiAPI(prompt);
-                outputDiv.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Summary:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(summary)}</p>`;
+                outputDiv.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Summary:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(summary)}</p>`;
                 outputDiv.setAttribute('data-raw-summary', summary);
                 document.getElementById('copySummaryBtn').classList.remove('hidden');
                 incrementFeatureUsage('summarize');
@@ -2111,15 +2101,13 @@
             } finally {
                 this.disabled = false;
                 spinner.classList.add('hidden');
+                resumeInactivityTimer(); 
             }
         });
-        
-        // --- Translate Page Tab Switching ---
         const textTabBtn = document.getElementById('textTabBtn');
         const docTabBtn = document.getElementById('docTabBtn');
         const textTranslationSection = document.getElementById('textTranslationSection');
         const docTranslationSection = document.getElementById('docTranslationSection');
-
         if (textTabBtn && docTabBtn) {
             textTabBtn.addEventListener('click', () => {
                 textTabBtn.classList.add('active');
@@ -2134,22 +2122,17 @@
                 textTranslationSection.classList.add('hidden');
             });
         }
-
-        // --- File Input Listeners ---
         const summarizeDocInput = document.getElementById('summarizeDocInput');
         if (summarizeDocInput) {
             summarizeDocInput.addEventListener('change', async (event) => {
                 const file = event.target.files[0];
                 if (!file) return;
-
                 const nameDisplay = document.getElementById('summarizeDocNameDisplay');
                 const statusDisplay = document.getElementById('summarizeDocExtractStatus');
                 const textInput = document.getElementById('summarizeTextInput');
-
                 nameDisplay.textContent = escapeHtml(file.name);
                 statusDisplay.classList.remove('hidden');
                 textInput.value = '';
-
                 try {
                     const text = await extractTextFromFile(file);
                     textInput.value = text;
@@ -2163,26 +2146,22 @@
                 }
             });
         }
-        
         const docFileInput = document.getElementById('docFileInput');
         if(docFileInput) {
             docFileInput.addEventListener('change', async (event) => {
                 const file = event.target.files[0];
                 if (!file) return;
-
                 const nameDisplay = document.getElementById('docFileNameDisplay');
                 const statusDisplay = document.getElementById('docFileExtractStatus');
                 const previewContainer = document.getElementById('docTextPreview');
                 const previewDiv = previewContainer.querySelector('div');
                 const translateBtn = document.getElementById('translateDocBtn');
                 const outputContainer = document.getElementById('docTranslationOutput');
-
                 nameDisplay.textContent = escapeHtml(file.name);
                 statusDisplay.classList.remove('hidden');
                 translateBtn.disabled = true;
                 previewContainer.classList.add('hidden');
                 outputContainer.dataset.originalText = '';
-
                 try {
                     const text = await extractTextFromFile(file);
                     outputContainer.dataset.originalText = text;
@@ -2199,35 +2178,29 @@
                 }
             });
         }
-
         const translateDocBtn = document.getElementById('translateDocBtn');
         if(translateDocBtn) {
             translateDocBtn.addEventListener('click', async function() {
                 if (!canLoggedInUserUseFeature('translate', 'translate')) return;
-                
                 const outputContainer = document.getElementById('docTranslationOutput');
                 const textToTranslate = outputContainer.dataset.originalText;
-
                 if (!textToTranslate) {
                     showAlert('No document text found. Please upload a file first.', 'error');
                     return;
                 }
-
                 this.disabled = true;
                 const spinner = document.getElementById('translateDocSpinner');
                 spinner.classList.remove('hidden');
-                outputContainer.innerHTML = `<p class="text-[#A1A5B7] text-sm">Translating document...</p>`;
+                outputContainer.innerHTML = `<p class="text-gray-400 text-sm">Translating document...</p>`;
                 document.getElementById('copyDocBtn').classList.add('hidden');
                 document.getElementById('downloadTranslationBtn').classList.add('hidden');
-
+                pauseInactivityTimer(); 
                 try {
                     const targetLangName = document.getElementById('docTargetLanguage').selectedOptions[0].text;
                     const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text.\n\n"${textToTranslate}"`;
                     const translation = await callGeminiAPI(prompt);
-
-                    outputContainer.innerHTML = `<h3 class="text-[#00C5FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
+                    outputContainer.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
                     outputContainer.dataset.translatedText = translation;
-
                     document.getElementById('copyDocBtn').classList.remove('hidden');
                     document.getElementById('downloadTranslationBtn').classList.remove('hidden');
                     incrementFeatureUsage('translate');
@@ -2236,11 +2209,10 @@
                 } finally {
                     this.disabled = false;
                     spinner.classList.add('hidden');
+                    resumeInactivityTimer(); 
                 }
             });
         }
-
-        // --- Copy & Download Listeners ---
         const copyTextBtn = document.getElementById('copyTextBtn');
         if (copyTextBtn) copyTextBtn.addEventListener('click', () => {
             const textToCopy = document.getElementById('textOutput').querySelector('p.text-white')?.innerText;
