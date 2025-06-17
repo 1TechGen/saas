@@ -1858,15 +1858,24 @@
             const errorEl = document.getElementById('loginError');
             errorEl.classList.add('hidden');
 
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            // --- FIXED LOGIN LOGIC ---
+            // The original code only checked for `error`. However, Supabase can return
+            // a `user` object without a `session` if the email is not confirmed.
+            // This new logic handles that case explicitly.
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
             if (error) {
-                // Supabase provides helpful error messages like "Invalid login credentials" or "Email not confirmed"
+                // Handles errors like "Invalid login credentials".
                 errorEl.textContent = error.message; 
                 errorEl.classList.remove('hidden');
+            } else if (data.user && !data.session) {
+                // Handles the case where the user has signed up but not confirmed their email.
+                errorEl.textContent = "Please check your email to confirm your account before logging in.";
+                errorEl.classList.remove('hidden');
             } else {
+                // Successful login. Reset the form.
+                // The onAuthStateChange listener will now handle the UI updates.
                 loginFormEl.reset();
-                // The onAuthStateChange listener will handle the successful login UI changes.
             }
         });
 
