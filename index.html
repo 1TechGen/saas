@@ -1852,29 +1852,22 @@
         // --- Form Event Listeners ---
         const loginFormEl = document.getElementById('loginForm');
         if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
-            event.preventDefault(); 
+            event.preventDefault();
             const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim(); 
+            const password = document.getElementById('loginPassword').value.trim();
             const errorEl = document.getElementById('loginError');
             errorEl.classList.add('hidden');
 
-            // --- FIXED LOGIN LOGIC ---
-            // The original code only checked for `error`. However, Supabase can return
-            // a `user` object without a `session` if the email is not confirmed.
-            // This new logic handles that case explicitly.
-            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            // --- Simplified Login Logic ---
+            // This relies on the onAuthStateChange listener to handle successful logins
+            // and shows an error message directly from Supabase if the login fails for any reason.
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
             if (error) {
-                // Handles errors like "Invalid login credentials".
-                errorEl.textContent = error.message; 
-                errorEl.classList.remove('hidden');
-            } else if (data.user && !data.session) {
-                // Handles the case where the user has signed up but not confirmed their email.
-                errorEl.textContent = "Please check your email to confirm your account before logging in.";
+                errorEl.textContent = error.message;
                 errorEl.classList.remove('hidden');
             } else {
-                // Successful login. Reset the form.
-                // The onAuthStateChange listener will now handle the UI updates.
+                // On success, clear the form. The onAuthStateChange listener will handle the redirect and UI updates.
                 loginFormEl.reset();
             }
         });
