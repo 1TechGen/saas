@@ -88,6 +88,9 @@
       border-top-color: #A800FF;
       animation: spin 1s ease-in-out infinite;
     }
+    button:disabled .loading {
+        border-top-color: #ffffff;
+    }
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
@@ -649,7 +652,7 @@
                         <div class="text-right">
                             <button type="button" onclick="showPage('forgotPassword')" class="text-sm text-[#A800FF] hover:text-[#D480FF]">Forgot password?</button>
                         </div>
-                        <button type="submit" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition focus:outline-none focus:ring-2 focus:ring-[#A800FF] focus:ring-offset-2 focus:ring-offset-[#0D0D0D]">
+                        <button type="submit" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition focus:outline-none focus:ring-2 focus:ring-[#A800FF] focus:ring-offset-2 focus:ring-offset-[#0D0D0D] flex items-center justify-center">
                             Sign In
                         </button>
                     </form>
@@ -2086,25 +2089,45 @@
         
         // --- Form Event Listeners ---
         const loginFormEl = document.getElementById('loginForm');
-        if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
-            event.preventDefault(); 
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim(); 
-            const errorEl = document.getElementById('loginError');
-            errorEl.classList.add('hidden');
+        // --- FIXED: Login form handler with loading state and email verification check ---
+        if (loginFormEl) {
+            loginFormEl.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const submitButton = loginFormEl.querySelector('button[type="submit"]');
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+                const errorEl = document.getElementById('loginError');
 
-            if (!email || !password) { 
-                errorEl.textContent = 'Email and password are required.'; errorEl.classList.remove('hidden'); return; 
-            }
-            
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                errorEl.classList.add('hidden');
+                submitButton.disabled = true;
+                submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing In...`;
 
-            if (error) {
-                errorEl.textContent = error.message; errorEl.classList.remove('hidden');
-            } else {
-                loginFormEl.reset();
-            }
-        });
+                if (!email || !password) {
+                    errorEl.textContent = 'Email and password are required.';
+                    errorEl.classList.remove('hidden');
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = 'Sign In';
+                    return;
+                }
+
+                const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+                if (error) {
+                    if (error.message.includes("Email not confirmed")) {
+                        errorEl.textContent = 'Please check your inbox to verify your email before logging in.';
+                    } else {
+                        errorEl.textContent = "Invalid login credentials. Please try again.";
+                    }
+                    errorEl.classList.remove('hidden');
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = 'Sign In';
+                } else {
+                    // Success! onAuthStateChange will handle the rest.
+                    loginFormEl.reset();
+                    // The button will be restored by the page navigation.
+                }
+            });
+        }
 
         const registerFormEl = document.getElementById('registerForm');
         if (registerFormEl) registerFormEl.addEventListener('submit', async (event) => {
