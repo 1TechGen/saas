@@ -381,7 +381,7 @@
                 </div>
                 <!-- Blog Post 2 -->
                 <div class="bg-[#1A1A1A]/70 rounded-lg shadow-lg overflow-hidden flex flex-col border border-gray-800">
-                    <img src="https://images.unsplash.com/photo-1554415707-6e8cf63328a3?q=80&w=1740&auto=format&fit=crop" alt="Creative AI art" class="w-full h-48 object-cover">
+                    <img src="https://images.unsplash.com/photo-155441 १५707-6e8cf63328a3?q=80&w=1740&auto=format&fit=crop" alt="Creative AI art" class="w-full h-48 object-cover">
                     <div class="p-6 flex flex-col flex-grow">
                         <h3 class="text-xl font-semibold text-white mb-2">A Guide to Writing Effective AI Image Prompts</h3>
                         <p class="text-gray-300 mb-4 flex-grow">From "photorealistic" to "fantasy art," learn the secrets to crafting prompts that generate exactly the image you're imagining.</p>
@@ -1572,7 +1572,6 @@
 
     const authPageIds = ['login', 'register', 'forgotPassword', 'resetPassword', 'paymentPage'];
     
-    // --- NEW: Function to load user profile from Supabase DB ---
     async function loadUserProfile(user) {
         if (!user) return null;
 
@@ -1584,17 +1583,15 @@
 
         if (error) {
             console.error('Error fetching profile:', error);
-            // Fallback to basic info if profile fetch fails
             return {
                 id: user.id,
                 email: user.email,
                 name: user.user_metadata.full_name || user.email.split('@')[0],
-                plan: 'free', // Default to free on error
+                plan: 'free',
                 usageCounts: JSON.parse(sessionStorage.getItem(`techGenUsage_${user.email}`)) || { imageGen: 0, translate: 0, summarize: 0 }
             };
         }
         
-        // Successfully fetched profile
         return {
             id: user.id,
             email: user.email,
@@ -1602,8 +1599,30 @@
             plan: data.plan || 'free',
             usageCounts: data.plan === 'free' 
                 ? JSON.parse(sessionStorage.getItem(`techGenUsage_${user.email}`)) || { imageGen: 0, translate: 0, summarize: 0 }
-                : {} // No usage counts for paid plans
+                : {}
         };
+    }
+
+    // --- NEW HELPER FUNCTION ---
+    // This centralizes the logic for what happens after a successful sign-in.
+    function handleSuccessfulLogin() {
+        if (!currentUser) return; // Should not happen, but a good safeguard.
+        
+        showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
+        
+        const intendedPage = sessionStorage.getItem('intendedPage');
+        const pendingPlanId = sessionStorage.getItem('pendingPlan');
+        
+        sessionStorage.removeItem('intendedPage');
+        sessionStorage.removeItem('pendingPlan');
+
+        if (pendingPlanId) {
+            initiatePayment(pendingPlanId);
+        } else if (intendedPage && document.getElementById(intendedPage) && intendedPage !== 'login') {
+            showPage(intendedPage);
+        } else {
+            showPage('home');
+        }
     }
 
     // --- UI AND HELPER FUNCTIONS ---
@@ -1866,9 +1885,6 @@
         showAlert(`Downloaded ${filename}`, 'success');
     }
     function downloadImage(url, filename) { 
-      // Using a CORS proxy is unreliable for production.
-      // A better long-term solution is a server-side endpoint to fetch the image.
-      // For this demo, we'll try fetch and fallback to direct link.
       fetch(url)
         .then(response => {
           if (!response.ok) { throw new Error(`Network response was not ok. Status: ${response.status}`); }
@@ -1977,7 +1993,6 @@
         showPage('paymentPage');
     }
     
-    // --- UPDATED: Payment handler now updates Supabase DB ---
     async function handlePayment(event) {
         event.preventDefault(); 
         const paymentForm = document.getElementById('paymentForm');
@@ -2004,7 +2019,6 @@
             handler: async function (response) {
                 showAlert(`Payment Successful! Updating your plan...`, 'info', 6000);
                 
-                // Update the plan in the Supabase 'profiles' table
                 const { error } = await supabaseClient
                     .from('profiles')
                     .update({ plan: planDetails.id })
@@ -2015,9 +2029,8 @@
                     return;
                 }
                 
-                // Update local state
                 currentUser.plan = planDetails.id;
-                currentUser.usageCounts = {}; // Clear usage limits
+                currentUser.usageCounts = {};
                 
                 updateAuthUI();
                 showAlert(`Your ${planDetails.name} plan is now active!`, 'success', 8000);
@@ -2044,7 +2057,6 @@
             window.addEventListener(eventName, resetInactivityTimer, true);
         });
 
-        // --- UPDATED: Auth state change now fetches profile from DB ---
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
             
@@ -2054,20 +2066,8 @@
                 resetInactivityTimer();
 
                 if (event === 'SIGNED_IN') {
-                    showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
-                    const intendedPage = sessionStorage.getItem('intendedPage');
-                    const pendingPlanId = sessionStorage.getItem('pendingPlan');
-                    
-                    sessionStorage.removeItem('intendedPage');
-                    sessionStorage.removeItem('pendingPlan');
-
-                    if (pendingPlanId) {
-                        initiatePayment(pendingPlanId);
-                    } else if (intendedPage && document.getElementById(intendedPage) && intendedPage !== 'login') {
-                        showPage(intendedPage);
-                    } else {
-                        showPage('home');
-                    }
+                    // Call the helper function to handle redirection logic
+                    handleSuccessfulLogin();
                 } else if (event === 'PASSWORD_RECOVERY') {
                     showAlert('You are in password recovery mode. Please set a new password.', 'info');
                     showPage('resetPassword');
@@ -2089,7 +2089,7 @@
         
         // --- Form Event Listeners ---
         const loginFormEl = document.getElementById('loginForm');
-        // --- FIXED: Login form handler with loading state and email verification check ---
+        // --- FIXED: Login form handler now handles redirection ---
         if (loginFormEl) {
             loginFormEl.addEventListener('submit', async (event) => {
                 event.preventDefault();
@@ -2110,7 +2110,7 @@
                     return;
                 }
 
-                const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
                 if (error) {
                     if (error.message.includes("Email not confirmed")) {
@@ -2119,12 +2119,14 @@
                         errorEl.textContent = "Invalid login credentials. Please try again.";
                     }
                     errorEl.classList.remove('hidden');
+                }
+                
+                // Regardless of success or failure, the onAuthStateChange event will
+                // handle the UI update and redirection if successful.
+                // We just need to restore the button state on failure.
+                if(error) {
                     submitButton.disabled = false;
                     submitButton.innerHTML = 'Sign In';
-                } else {
-                    // Success! onAuthStateChange will handle the rest.
-                    loginFormEl.reset();
-                    // The button will be restored by the page navigation.
                 }
             });
         }
