@@ -1522,10 +1522,9 @@
     const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs"; 
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
     
-    // Razorpay and Supabase configuration remains the same
     const RAZORPAY_KEY_ID = "rzp_live_xoN2xNuHMZnCup";
-    const supabaseUrl = "https://xcdnppxnhpiqzfbkzyub.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjZG5wcHhuaHBpcXpmYmt6eXViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMzAwNDYsImV4cCI6MjA2NTkwNjA0Nn0.NY31w4NwFAjyW_oTe2S9Viv_B3bfRazukr1DuQl6-EA";
+    const supabaseUrl = "https://vvxterjluzwjqakwhydd.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2eHRlcmpsdXp3anFha3doeWRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMzA1NjEsImV4cCI6MjA2NTkwNjU2MX0.LkFFJ9V4NhQhITHq-nRaTNpHUpAr2QoV90tv11QHaO4";
     const { createClient } = supabase;
     const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
@@ -1569,6 +1568,40 @@
     };
 
     const authPageIds = ['login', 'register', 'forgotPassword', 'resetPassword', 'paymentPage'];
+    
+    // --- NEW: Function to load user profile from Supabase DB ---
+    async function loadUserProfile(user) {
+        if (!user) return null;
+
+        const { data, error } = await supabaseClient
+            .from('profiles')
+            .select('full_name, plan')
+            .eq('id', user.id)
+            .single();
+
+        if (error) {
+            console.error('Error fetching profile:', error);
+            // Fallback to basic info if profile fetch fails
+            return {
+                id: user.id,
+                email: user.email,
+                name: user.user_metadata.full_name || user.email.split('@')[0],
+                plan: 'free', // Default to free on error
+                usageCounts: JSON.parse(sessionStorage.getItem(`techGenUsage_${user.email}`)) || { imageGen: 0, translate: 0, summarize: 0 }
+            };
+        }
+        
+        // Successfully fetched profile
+        return {
+            id: user.id,
+            email: user.email,
+            name: data.full_name || user.email.split('@')[0],
+            plan: data.plan || 'free',
+            usageCounts: data.plan === 'free' 
+                ? JSON.parse(sessionStorage.getItem(`techGenUsage_${user.email}`)) || { imageGen: 0, translate: 0, summarize: 0 }
+                : {} // No usage counts for paid plans
+        };
+    }
 
     // --- UI AND HELPER FUNCTIONS ---
     function updateMetaTags(pageId) {
@@ -1794,14 +1827,10 @@
     
     function generateImageUrlWithPollinations(prompt, aspectRatio, style) {
         const baseUrl = "https://image.pollinations.ai/prompt/";
-        
         let fullPrompt = style ? `${prompt}, in the style of ${style}` : prompt;
         const encodedPrompt = encodeURIComponent(fullPrompt);
-        
         let url = baseUrl + encodedPrompt;
-        
         const params = new URLSearchParams();
-        
         if (aspectRatio === 'portrait') {
             params.append('width', '1024');
             params.append('height', '1792');
@@ -1812,15 +1841,12 @@
             params.append('width', '1024');
             params.append('height', '1024');
         }
-        
         params.append('model', 'dall-e-3');
         params.append('nologo', 'true');
-
         const paramString = params.toString();
         if (paramString) {
             url += `?${paramString}`;
         }
-        
         return url;
     }
 
@@ -1837,12 +1863,12 @@
         showAlert(`Downloaded ${filename}`, 'success');
     }
     function downloadImage(url, filename) { 
-      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-      fetch(proxyUrl + url) 
+      // Using a CORS proxy is unreliable for production.
+      // A better long-term solution is a server-side endpoint to fetch the image.
+      // For this demo, we'll try fetch and fallback to direct link.
+      fetch(url)
         .then(response => {
-          if (!response.ok) {
-            throw new Error(`Network response was not ok. Status: ${response.status}`);
-          }
+          if (!response.ok) { throw new Error(`Network response was not ok. Status: ${response.status}`); }
           return response.blob();
         })
         .then(blob => {
@@ -1859,12 +1885,8 @@
         })
         .catch(error => {
             console.error('Download error:', error);
-            showAlert(`Image download failed. Please try right-clicking the image to save.`, 'error');
-            const directLink = document.createElement('a');
-            directLink.href = url;
-            directLink.target = '_blank';
-            directLink.download = filename;
-            directLink.click();
+            showAlert(`Download failed due to browser restrictions. Trying to open in a new tab.`, 'error');
+            window.open(url, '_blank');
         });
     }
     async function extractTextFromFile(file) { 
@@ -1951,7 +1973,9 @@
         
         showPage('paymentPage');
     }
-    function handlePayment(event) {
+    
+    // --- UPDATED: Payment handler now updates Supabase DB ---
+    async function handlePayment(event) {
         event.preventDefault(); 
         const paymentForm = document.getElementById('paymentForm');
         const planId = paymentForm.dataset.planId;
@@ -1972,13 +1996,26 @@
             name: "Tech_Gen AI Solutions",
             description: `Subscription: ${planDetails.name}`,
             prefill: { name: customerName, email: customerEmail },
-            notes: { plan_id: planId, user_email: currentUser.email },
+            notes: { plan_id: planId, user_id: currentUser.id },
             theme: { color: "#6C00FF" },
-            handler: function (response) {
-                showAlert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}.`, 'success', 6000);
+            handler: async function (response) {
+                showAlert(`Payment Successful! Updating your plan...`, 'info', 6000);
+                
+                // Update the plan in the Supabase 'profiles' table
+                const { error } = await supabaseClient
+                    .from('profiles')
+                    .update({ plan: planDetails.id })
+                    .eq('id', currentUser.id);
+
+                if (error) {
+                    showAlert(`Payment was successful, but we couldn't update your plan. Please contact support. Error: ${error.message}`, 'error', 10000);
+                    return;
+                }
+                
+                // Update local state
                 currentUser.plan = planDetails.id;
-                delete currentUser.usageCounts;
-                localStorage.setItem(`techGenPlan_${currentUser.email}`, planDetails.id);
+                currentUser.usageCounts = {}; // Clear usage limits
+                
                 updateAuthUI();
                 showAlert(`Your ${planDetails.name} plan is now active!`, 'success', 8000);
                 showPage('account'); 
@@ -2004,24 +2041,12 @@
             window.addEventListener(eventName, resetInactivityTimer, true);
         });
 
+        // --- UPDATED: Auth state change now fetches profile from DB ---
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
             
             if (userSession) {
-                let userPlan = localStorage.getItem(`techGenPlan_${userSession.email}`) || 'free';
-                let usageCounts = {};
-                if (userPlan === 'free') {
-                    usageCounts = JSON.parse(sessionStorage.getItem(`techGenUsage_${userSession.email}`)) || { imageGen: 0, translate: 0, summarize: 0 };
-                }
-
-                currentUser = {
-                    id: userSession.id,
-                    email: userSession.email,
-                    name: userSession.user_metadata.full_name || userSession.email,
-                    plan: userPlan,
-                    usageCounts: usageCounts
-                };
-                
+                currentUser = await loadUserProfile(userSession);
                 updateAuthUI();
                 resetInactivityTimer();
 
@@ -2029,10 +2054,11 @@
                     showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
                     const intendedPage = sessionStorage.getItem('intendedPage');
                     const pendingPlanId = sessionStorage.getItem('pendingPlan');
+                    
                     sessionStorage.removeItem('intendedPage');
+                    sessionStorage.removeItem('pendingPlan');
 
                     if (pendingPlanId) {
-                        sessionStorage.removeItem('pendingPlan');
                         initiatePayment(pendingPlanId);
                     } else if (intendedPage && document.getElementById(intendedPage) && intendedPage !== 'login') {
                         showPage(intendedPage);
@@ -2100,7 +2126,7 @@
             if (error) {
                 errorEl.textContent = error.message; errorEl.classList.remove('hidden');
             } else {
-                showAlert('Registration successful! Please check your email to verify your account.', 'success', 8000);
+                showAlert('Registration successful! Please check your email to verify your account. You cannot log in until verified.', 'success', 10000);
                 registerFormEl.reset();
                 showPage('login');
             }
@@ -2197,7 +2223,7 @@
             });
         }
 
-        // --- Tool-Specific Event Listeners ---
+        // --- Tool-Specific Event Listeners (No changes needed here) ---
         const generateImageBtn = document.getElementById('generateImageBtn');
         if (generateImageBtn) {
             generateImageBtn.addEventListener('click', function() {
@@ -2260,7 +2286,6 @@
             });
         }
         
-        // --- Other listeners unchanged ---
         const translateTextBtn = document.getElementById('translateTextBtn');
         if (translateTextBtn) { 
             translateTextBtn.addEventListener('click', async function() {
