@@ -581,15 +581,15 @@
             <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div>
                 <label class="block text-gray-400 text-xs mb-1">Aspect Ratio</label>
-                <select id="monsterAspectRatio" class="w-full text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white p-1">
+                <select id="imageAspectRatio" class="w-full text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white p-1">
                   <option value="square" selected>Square (1:1)</option>
-                  <option value="portrait">Portrait (2:3)</option>
-                  <option value="landscape">Landscape (3:2)</option>
+                  <option value="portrait">Portrait (9:16)</option>
+                  <option value="landscape">Landscape (16:9)</option>
                 </select>
               </div>
               <div>
                 <label class="block text-gray-400 text-xs mb-1">Style (Optional)</label>
-                 <select id="monsterImageStyle" class="w-full text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white p-1">
+                 <select id="imageStyle" class="w-full text-sm bg-[#0D0D0D] border border-gray-700 rounded focus:ring-2 focus:ring-[#A800FF] text-white p-1">
                     <option value="">None</option>
                     <option value="photorealistic">Photorealistic</option>
                     <option value="digital-art">Digital Art</option>
@@ -620,7 +620,7 @@
     <div class="container mx-auto py-8 px-4">
         <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
             <h2>Unleash Your Creativity with AI Image Generation</h2>
-            <p>Our AI Image Generator, powered by advanced models via Monster API, allows you to turn simple text prompts into breathtaking visuals. Whether you're an artist looking for inspiration, a marketer needing unique ad creatives, or just curious about the power of AI, this tool is for you.</p>
+            <p>Our AI Image Generator, powered by advanced models via Pollinations API, allows you to turn simple text prompts into breathtaking visuals. Whether you're an artist looking for inspiration, a marketer needing unique ad creatives, or just curious about the power of AI, this tool is for you.</p>
             <p><strong>How it works:</strong> Simply type a description of the image you envision. Be as detailed or as abstract as you like. Choose your preferred aspect ratio and an optional style to guide the AI. Our system will then process your request and generate a unique image based on your input. Explore different prompts and styles to discover endless possibilities!</p>
           </article>
        </div>
@@ -1285,13 +1285,9 @@
     const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs"; 
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
     
-    const MONSTER_API_BEARER_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjhmMTQ4OWY2YWI2MWYzNDlkYTQzNWUyMDNjYmQ2YzVmIiwiY3JlYXRlZF9hdCI6IjIwMjUtMDUtMjhUMTA6MzU6MTguMDQ1NjI0In0.BjstW-i3Sq-ECUge4EcHWqsc9vxUoiCOIsFuWPw63-s"; 
-    const MONSTER_API_TXT2IMG_URL = "https://api.monsterapi.ai/v1/generate/txt2img";
-
+    // Razorpay and Supabase configuration remains the same
     const RAZORPAY_KEY_ID = "rzp_live_xoN2xNuHMZnCup";
-
-    // --- SUPABASE INITIALIZATION ---
-    const supabaseUrl = "https://sensgfxuvavktqmjuqkh.supabase.co";
+    const supabaseUrl = "https://sensgfxuvavavktqmjuqkh.supabase.co";
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlbnNnZnh1dmF2a3RxbWp1cWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3OTA1MjUsImV4cCI6MjA2NTM2NjUyNX0.bCEBDcBfeXAHJeojOscPSQdW3JbEQwQRkNMdc7Ii3xk";
     const { createClient } = supabase;
     const supabaseClient = createClient(supabaseUrl, supabaseKey);
@@ -1335,7 +1331,7 @@
     const authPageIds = ['login', 'register', 'forgotPassword', 'resetPassword', 'paymentPage'];
 
     // --- UI AND HELPER FUNCTIONS ---
-    // ... No changes here ...
+    // ... (omitted for brevity, no changes here) ...
     function updateMetaTags(pageId) {
         const meta = pageMetaInfo[pageId];
         document.title = meta ? meta.title : "Tech_Gen - AI Platform";
@@ -1556,49 +1552,46 @@
             throw error; 
         }
     }
-    async function initiateMonsterImageGeneration(prompt, aspectRatio, style) {
-        if (!MONSTER_API_BEARER_TOKEN) {
-            showAlert('Monster API Token is not configured correctly. Image generation will not work.', 'error');
-            throw new Error('Monster API Token not configured.');
-        }
-        const formData = new FormData();
-        formData.append('prompt', prompt);
-        formData.append('aspect_ratio', aspectRatio);
-        if (style) formData.append('style', style);
+    
+    // <<< CHANGE START: New, corrected function for Pollinations Image Generation >>>
+    function generateImageUrlWithPollinations(prompt, aspectRatio, style) {
+        const baseUrl = "https://image.pollinations.ai/prompt/";
         
-        try {
-            const response = await fetch(MONSTER_API_TXT2IMG_URL, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${MONSTER_API_BEARER_TOKEN}`, 'Accept': 'application/json' },
-                body: formData
-            });
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ message: `Monster API error: ${response.status}` }));
-                throw new Error(errorData.message || `Monster API error: ${response.status}`);
-            }
-            return await response.json(); 
-        } catch (error) {
-            console.error('Error initiating Monster image generation:', error);
-            throw error;
+        // Combine prompt and style for a richer description
+        let fullPrompt = style ? `${prompt}, in the style of ${style}` : prompt;
+        const encodedPrompt = encodeURIComponent(fullPrompt);
+        
+        let url = baseUrl + encodedPrompt;
+        
+        // Use URLSearchParams to build the query string
+        const params = new URLSearchParams();
+        
+        // Map aspect ratio to width and height parameters
+        if (aspectRatio === 'portrait') {
+            params.append('width', '1024');
+            params.append('height', '1792');
+        } else if (aspectRatio === 'landscape') {
+            params.append('width', '1792');
+            params.append('height', '1024');
+        } else { // square is default
+            params.append('width', '1024');
+            params.append('height', '1024');
         }
-    }
-    async function fetchMonsterImageStatus(statusUrl) {
-        if (!MONSTER_API_BEARER_TOKEN) throw new Error('Monster API Token not configured.');
-        try {
-            const response = await fetch(statusUrl, {
-                method: 'GET',
-                headers: { 'Authorization': `Bearer ${MONSTER_API_BEARER_TOKEN}`, 'Accept': 'application/json' }
-            });
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ message: `Monster API status error: ${response.status}`}));
-                throw new Error(errorData.message || `Monster API status error: ${response.status}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('Error fetching Monster image status:', error);
-            throw error;
+        
+        // Add other useful parameters
+        params.append('model', 'dall-e-3'); // A high-quality model available on Pollinations
+        params.append('nologo', 'true');   // To remove the Pollinations logo from the image
+
+        const paramString = params.toString();
+        if (paramString) {
+            url += `?${paramString}`;
         }
+        
+        // The function now simply returns the constructed URL
+        return url;
     }
+    // <<< CHANGE END >>>
+
     function downloadContent(content, filename) {
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
@@ -1612,17 +1605,12 @@
         showAlert(`Downloaded ${filename}`, 'success');
     }
     function downloadImage(url, filename) { 
-      fetch(url, { mode: 'cors' }) 
+      // Using cors-anywhere proxy to bypass potential CORS issues when downloading from Pollinations
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      fetch(proxyUrl + url) 
         .then(response => {
           if (!response.ok) {
-            const directLink = document.createElement('a');
-            directLink.href = url;
-            directLink.download = filename;
-            document.body.appendChild(directLink);
-            directLink.click();
-            document.body.removeChild(directLink);
-            showAlert('Image download initiated (direct link).', 'info');
-            return null; 
+            throw new Error(`Network response was not ok. Status: ${response.status}`);
           }
           return response.blob();
         })
@@ -1639,7 +1627,14 @@
           }
         })
         .catch(error => {
-            showAlert(`Image download error: ${error.message}. Please try to save the image manually.`, 'error');
+            console.error('Download error:', error);
+            showAlert(`Image download failed. Please try right-clicking the image to save.`, 'error');
+            // Fallback to direct link
+            const directLink = document.createElement('a');
+            directLink.href = url;
+            directLink.target = '_blank';
+            directLink.download = filename;
+            directLink.click();
         });
     }
     async function extractTextFromFile(file) { 
@@ -1975,71 +1970,73 @@
 
         // --- Tool-Specific Event Listeners ---
         const generateImageBtn = document.getElementById('generateImageBtn');
-        if (generateImageBtn) { 
-            generateImageBtn.addEventListener('click', async function() {
+        if (generateImageBtn) {
+            // <<< CHANGE START: Corrected event listener for image generation >>>
+            generateImageBtn.addEventListener('click', function() {
                 if (!canLoggedInUserUseFeature('imageGen', 'ai-generator')) return;
+                
                 const prompt = document.getElementById('imagePrompt').value.trim();
-                if (!prompt) { showAlert('Please enter an image description.', 'error'); return; }
+                if (!prompt) {
+                    showAlert('Please enter an image description.', 'error');
+                    return;
+                }
                 
                 this.disabled = true;
                 const spinner = document.getElementById('generateSpinner');
                 spinner.classList.remove('hidden');
+                const imagePlaceholder = document.getElementById('imagePlaceholder');
+                const imageResultContainer = document.getElementById('imageResultContainer');
+                const img = document.getElementById('generatedImage');
+
+                // Show placeholder and hide previous result
+                imagePlaceholder.style.display = 'flex';
+                imageResultContainer.classList.add('hidden');
+                imagePlaceholder.querySelector('p').textContent = 'Generating your image...';
+                
                 pauseInactivityTimer();
 
                 try {
-                    const initRes = await initiateMonsterImageGeneration(prompt, document.getElementById('monsterAspectRatio').value, document.getElementById('monsterImageStyle').value);
+                    // Generate the image URL
+                    const imageUrl = generateImageUrlWithPollinations(
+                        prompt,
+                        document.getElementById('imageAspectRatio').value,
+                        document.getElementById('imageStyle').value
+                    );
                     
-                    // <--- FIX: Increased timeout duration and improved logic ---
-                    let attempts = 0;
-                    const maxAttempts = 60; // Increased from 40 to 60 (5 minutes total)
-                    const pollInterval = 5000;
-                    
-                    const poll = async () => {
-                        try {
-                            if (attempts++ >= maxAttempts) {
-                                // Improved timeout message
-                                throw new Error('The image is taking longer than usual to generate. The API might be busy. Please try again in a moment, or try a simpler prompt.');
-                            }
-                            
-                            const statusRes = await fetchMonsterImageStatus(initRes.status_url);
-                            console.log('Polling status:', statusRes);
+                    // Set the image source. The browser will handle loading.
+                    img.src = imageUrl;
+                    img.alt = prompt;
 
-                            if (statusRes.status === 'IN_PROGRESS' || statusRes.status === 'IN_QUEUE') {
-                                setTimeout(poll, pollInterval);
-                            } else if (statusRes.status === 'COMPLETED' && statusRes.result?.output?.length > 0) {
-                                const img = document.getElementById('generatedImage');
-                                img.src = statusRes.result.output[0]; 
-                                img.alt = prompt;
-                                document.getElementById('imagePlaceholder').style.display = 'none';
-                                document.getElementById('imageResultContainer').classList.remove('hidden');
-                                document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
-                                showAlert('Image generated successfully!', 'success');
-                                incrementFeatureUsage('imageGen');
-                                this.disabled = false;
-                                spinner.classList.add('hidden');
-                                resumeInactivityTimer();
-                            } else if (statusRes.status === 'FAILED') {
-                                // More specific error message for failures
-                                throw new Error(statusRes.message || 'The generation process failed on the server. This can happen with restrictive prompts.');
-                            } else {
-                                // Catch-all for other unexpected states
-                                throw new Error('An unknown error occurred during image generation.');
-                            }
-                        } catch(pollError) {
-                            showAlert(`Error: ${pollError.message}`, 'error');
-                            this.disabled = false;
-                            spinner.classList.add('hidden');
-                            resumeInactivityTimer();
-                        }
+                    // Handle successful loading
+                    img.onload = () => {
+                        imagePlaceholder.style.display = 'none';
+                        imageResultContainer.classList.remove('hidden');
+                        document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
+                        showAlert('Image generated successfully!', 'success');
+                        incrementFeatureUsage('imageGen');
+                        this.disabled = false;
+                        spinner.classList.add('hidden');
+                        resumeInactivityTimer();
                     };
-                    setTimeout(poll, pollInterval);
-                } catch (err) { 
-                    showAlert(`Failed to start image generation: ${err.message}`, 'error');
+
+                    // Handle loading errors (e.g., broken link from API)
+                    img.onerror = () => {
+                        showAlert('Failed to load the generated image. The API may be busy. Please try again.', 'error', 8000);
+                        imagePlaceholder.querySelector('p').textContent = 'Image will appear here';
+                        this.disabled = false;
+                        spinner.classList.add('hidden');
+                        resumeInactivityTimer();
+                    };
+
+                } catch (err) {
+                    // This catch is for errors in URL construction, which is unlikely
+                    showAlert(`Image generation failed: ${err.message}`, 'error', 8000);
                     this.disabled = false;
                     spinner.classList.add('hidden');
                     resumeInactivityTimer();
                 }
             });
+            // <<< CHANGE END >>>
         }
         
         // --- Other listeners unchanged ---
