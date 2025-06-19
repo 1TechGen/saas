@@ -381,7 +381,7 @@
                 </div>
                 <!-- Blog Post 2 -->
                 <div class="bg-[#1A1A1A]/70 rounded-lg shadow-lg overflow-hidden flex flex-col border border-gray-800">
-                    <img src="https://images.unsplash.com/photo-155441 १५707-6e8cf63328a3?q=80&w=1740&auto=format&fit=crop" alt="Creative AI art" class="w-full h-48 object-cover">
+                    <img src="https://images.unsplash.com/photo-1554415707-6e8cf63328a3?q=80&w=1740&auto=format&fit=crop" alt="Creative AI art" class="w-full h-48 object-cover">
                     <div class="p-6 flex flex-col flex-grow">
                         <h3 class="text-xl font-semibold text-white mb-2">A Guide to Writing Effective AI Image Prompts</h3>
                         <p class="text-gray-300 mb-4 flex-grow">From "photorealistic" to "fantasy art," learn the secrets to crafting prompts that generate exactly the image you're imagining.</p>
@@ -1602,29 +1602,7 @@
                 : {}
         };
     }
-
-    // --- NEW HELPER FUNCTION ---
-    // This centralizes the logic for what happens after a successful sign-in.
-    function handleSuccessfulLogin() {
-        if (!currentUser) return; // Should not happen, but a good safeguard.
-        
-        showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
-        
-        const intendedPage = sessionStorage.getItem('intendedPage');
-        const pendingPlanId = sessionStorage.getItem('pendingPlan');
-        
-        sessionStorage.removeItem('intendedPage');
-        sessionStorage.removeItem('pendingPlan');
-
-        if (pendingPlanId) {
-            initiatePayment(pendingPlanId);
-        } else if (intendedPage && document.getElementById(intendedPage) && intendedPage !== 'login') {
-            showPage(intendedPage);
-        } else {
-            showPage('home');
-        }
-    }
-
+    
     // --- UI AND HELPER FUNCTIONS ---
     function updateMetaTags(pageId) {
         const meta = pageMetaInfo[pageId];
@@ -2060,22 +2038,24 @@
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
             
-            if (userSession) {
+            if (userSession && !currentUser) { // --- FIXED --- Only run if the user is newly detected
                 currentUser = await loadUserProfile(userSession);
                 updateAuthUI();
                 resetInactivityTimer();
-
+                
+                // This logic now only runs for the *initial* sign-in event for the session
                 if (event === 'SIGNED_IN') {
-                    // Call the helper function to handle redirection logic
                     handleSuccessfulLogin();
-                } else if (event === 'PASSWORD_RECOVERY') {
-                    showAlert('You are in password recovery mode. Please set a new password.', 'info');
-                    showPage('resetPassword');
                 }
-            } else {
+            } else if (!userSession) {
                 currentUser = null;
                 updateAuthUI();
                 clearTimeout(inactivityTimer);
+            }
+
+            if(event === 'PASSWORD_RECOVERY') {
+                showAlert('You are in password recovery mode. Please set a new password.', 'info');
+                showPage('resetPassword');
             }
         });
 
@@ -2089,7 +2069,8 @@
         
         // --- Form Event Listeners ---
         const loginFormEl = document.getElementById('loginForm');
-        // --- FIXED: Login form handler now handles redirection ---
+        
+        // --- FIXED: Login form handler now handles redirection proactively ---
         if (loginFormEl) {
             loginFormEl.addEventListener('submit', async (event) => {
                 event.preventDefault();
@@ -2102,14 +2083,6 @@
                 submitButton.disabled = true;
                 submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing In...`;
 
-                if (!email || !password) {
-                    errorEl.textContent = 'Email and password are required.';
-                    errorEl.classList.remove('hidden');
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = 'Sign In';
-                    return;
-                }
-
                 const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
                 if (error) {
@@ -2119,14 +2092,14 @@
                         errorEl.textContent = "Invalid login credentials. Please try again.";
                     }
                     errorEl.classList.remove('hidden');
-                }
-                
-                // Regardless of success or failure, the onAuthStateChange event will
-                // handle the UI update and redirection if successful.
-                // We just need to restore the button state on failure.
-                if(error) {
                     submitButton.disabled = false;
                     submitButton.innerHTML = 'Sign In';
+                } else if (data.user) {
+                    // SUCCESS! Proactively handle the UI changes.
+                    currentUser = await loadUserProfile(data.user);
+                    updateAuthUI();
+                    handleSuccessfulLogin();
+                    loginFormEl.reset();
                 }
             });
         }
@@ -2134,6 +2107,8 @@
         const registerFormEl = document.getElementById('registerForm');
         if (registerFormEl) registerFormEl.addEventListener('submit', async (event) => {
             event.preventDefault(); 
+            const submitButton = registerFormEl.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
             const fullName = document.getElementById('registerFullName').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
             const password = document.getElementById('registerPassword').value.trim();
@@ -2141,15 +2116,24 @@
             errorEl.classList.add('hidden');
 
             if (!fullName || !email || password.length < 6) { 
-                errorEl.textContent = 'All fields are required and password must be at least 6 characters.'; errorEl.classList.remove('hidden'); return; 
+                errorEl.textContent = 'All fields are required and password must be at least 6 characters.'; 
+                errorEl.classList.remove('hidden');
+                return; 
             }
+
+            submitButton.disabled = true;
+            submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing Up...`;
 
             const { error } = await supabaseClient.auth.signUp({
                 email, password, options: { data: { full_name: fullName } }
             });
+            
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
 
             if (error) {
-                errorEl.textContent = error.message; errorEl.classList.remove('hidden');
+                errorEl.textContent = error.message; 
+                errorEl.classList.remove('hidden');
             } else {
                 showAlert('Registration successful! Please check your email to verify your account. You cannot log in until verified.', 'success', 10000);
                 registerFormEl.reset();
@@ -2172,17 +2156,27 @@
         if (forgotPasswordFormEl) {
             forgotPasswordFormEl.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                const submitButton = forgotPasswordFormEl.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.innerHTML;
                 const errorEl = document.getElementById('forgotPasswordError');
                 const successEl = document.getElementById('forgotPasswordSuccess');
                 errorEl.classList.add('hidden');
+                successEl.classList.add('hidden');
                 
+                submitButton.disabled = true;
+                submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Sending...`;
+
                 const email = document.getElementById('forgotPasswordEmail').value;
                 const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
                     redirectTo: window.location.origin + window.location.pathname,
                 });
+
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
                 
                 if (error) {
-                    errorEl.textContent = error.message; errorEl.classList.remove('hidden');
+                    errorEl.textContent = error.message; 
+                    errorEl.classList.remove('hidden');
                 } else {
                     successEl.classList.remove('hidden');
                 }
