@@ -343,7 +343,7 @@
                         
                         <!-- Usage Details Container -->
                         <div class="mt-4 pt-4 border-t border-gray-700">
-                            <h3 class="text-md font-semibold text-gray-200 mb-2">Session Usage</h3>
+                            <h3 class="text-md font-semibold text-gray-200 mb-2">Usage This Month</h3>
                             <div id="accountUsageDetails" class="space-y-2 text-sm text-gray-400">
                                 <!-- JS will populate this section -->
                             </div>
@@ -1261,9 +1261,9 @@
                     <p class="text-4xl font-bold text-white mb-4">₹0<span class="text-lg font-normal text-gray-400">/month</span></p>
                     <p class="text-gray-400 mb-6">Perfect for individuals starting out or trying our basic features.</p>
                     <ul class="text-gray-300 mb-8 flex-grow">
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 15 AI Image Generations (session limit)</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 Text/Doc Translations (session limit)</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 Text Summarizations (session limit)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 15 AI Image Generations (per month)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 Text/Doc Translations (per month)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 Text Summarizations (per month)</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Community Support</li>
                          <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Guest Users: 10 total uses (session limit)</li>
                     </ul>
@@ -1542,9 +1542,16 @@
         summarize: 50
     };
     let guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
+    
+    // Maps JS feature names to Supabase column names
+    const featureToColumnMap = {
+        imageGen: 'image_gen_count',
+        translate: 'translate_count',
+        summarize: 'summarize_count'
+    };
 
     const plansData = {
-        free: { name: "Free", priceDisplay: "₹0/month", priceAmount: 0, currency: "INR", id: 'free', description: "Access to basic features with session-based limits. Perfect for trying out our tools." },
+        free: { name: "Free", priceDisplay: "₹0/month", priceAmount: 0, currency: "INR", id: 'free', description: "Access to basic features with monthly limits. Perfect for trying out our tools." },
         pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 49900, currency: "INR", id: 'pro', description: "Unlimited access to all our AI tools. Ideal for professionals and power users." },
         business: { name: "Business", priceDisplay: "₹1499/month", priceAmount: 149900, currency: "INR", id: 'business', description: "All Pro features plus dedicated support and team tools for your organization." }
     };
@@ -1572,23 +1579,26 @@
 
     const authPageIds = ['login', 'register', 'forgotPassword', 'resetPassword', 'paymentPage'];
     
+    // --- [MODIFIED] ---
     async function loadUserProfile(user) {
         if (!user) return null;
 
+        // Fetch profile including the new usage count columns
         const { data, error } = await supabaseClient
             .from('profiles')
-            .select('full_name, plan')
+            .select('full_name, plan, image_gen_count, translate_count, summarize_count')
             .eq('id', user.id)
             .single();
 
         if (error) {
             console.error('Error fetching profile:', error);
+            // Fallback for a user that exists in auth but not yet in profiles (e.g., due to trigger delay)
             return {
                 id: user.id,
                 email: user.email,
                 name: user.user_metadata.full_name || user.email.split('@')[0],
                 plan: 'free',
-                usageCounts: JSON.parse(sessionStorage.getItem(`techGenUsage_${user.email}`)) || { imageGen: 0, translate: 0, summarize: 0 }
+                usageCounts: { imageGen: 0, translate: 0, summarize: 0 } // Default to zero
             };
         }
         
@@ -1598,8 +1608,12 @@
             name: data.full_name || user.email.split('@')[0],
             plan: data.plan || 'free',
             usageCounts: data.plan === 'free' 
-                ? JSON.parse(sessionStorage.getItem(`techGenUsage_${user.email}`)) || { imageGen: 0, translate: 0, summarize: 0 }
-                : {}
+                ? { // Use data from the database
+                    imageGen: data.image_gen_count || 0,
+                    translate: data.translate_count || 0,
+                    summarize: data.summarize_count || 0
+                  }
+                : {} // Pro/Business plans don't need usage tracking
         };
     }
     
@@ -1649,8 +1663,6 @@
         resetInactivityTimer();
     }
     
-    // *** NEW/FIXED FUNCTION ***
-    // This function handles all post-login redirection and messaging.
     function handleSuccessfulLogin() {
         if (!currentUser) return; // Safety check
         showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
@@ -1658,16 +1670,15 @@
         const pendingPlan = sessionStorage.getItem('pendingPlan');
         const intendedPage = sessionStorage.getItem('intendedPage');
         
-        // Clear storage items after reading them
         if (pendingPlan) sessionStorage.removeItem('pendingPlan');
         if (intendedPage) sessionStorage.removeItem('intendedPage');
 
         if (pendingPlan) {
-            initiatePayment(pendingPlan); // Go to payment page if they were trying to buy
+            initiatePayment(pendingPlan);
         } else if (intendedPage && intendedPage !== 'login' && intendedPage !== 'register') {
-            showPage(intendedPage); // Go to the page they were trying to access
+            showPage(intendedPage);
         } else {
-            showPage('home'); // Default to home
+            showPage('home');
         }
     }
     
@@ -1691,7 +1702,7 @@
                         <p><strong>AI Image Generations:</strong> ${usage.imageGen} / ${limits.imageGen}</p>
                         <p><strong>Translations:</strong> ${usage.translate} / ${limits.translate}</p>
                         <p><strong>Text Summarizations:</strong> ${usage.summarize} / ${limits.summarize}</p>
-                        <p class="text-xs text-gray-500 mt-2">Limits reset when you close your browser session.</p>
+                        <p class="text-xs text-gray-500 mt-2">Usage limits reset monthly. Upgrade for unlimited access.</p>
                     `;
                 } else if (currentUser.plan === 'pro' || currentUser.plan === 'business') {
                     usageDetailsContainer.innerHTML = `
@@ -1803,21 +1814,45 @@
             if (currentCount < limit) {
                 return true;
             }
-            showAlert(`You've reached your Free plan session limit of ${limit} ${featureType.replace(/([A-Z])/g, ' $1').toLowerCase()}s. Upgrade to a Pro plan for unlimited access.`, 'info');
-            sessionStorage.setItem('intendedPage', currentPageId || 'pricing'); 
+            showAlert(`You've reached your Free plan limit of ${limit} ${featureType.replace(/([A-Z])/g, ' $1').toLowerCase()}s for this month. Upgrade to a Pro plan for unlimited access.`, 'info');
             showPage('pricing');
             return false;
         }
         return false;
     }
-    function incrementFeatureUsage(featureType) {
+    
+    // --- [MODIFIED] ---
+    async function incrementFeatureUsage(featureType) {
         if (currentUser && currentUser.plan === 'free') {
+            // 1. Increment local count for immediate UI feedback
             currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
-            sessionStorage.setItem(`techGenUsage_${currentUser.email}`, JSON.stringify(currentUser.usageCounts));
+
+            // 2. Prepare data for Supabase update
+            const columnName = featureToColumnMap[featureType];
+            if (!columnName) {
+                console.error(`Invalid featureType for usage tracking: ${featureType}`);
+                return;
+            }
+            const updateData = { [columnName]: currentUser.usageCounts[featureType] };
+
+            // 3. Persist the new count to the database (fire and forget)
+            const { error } = await supabaseClient
+                .from('profiles')
+                .update(updateData)
+                .eq('id', currentUser.id);
+
+            if (error) {
+                console.error(`Failed to update usage count for ${featureType}:`, error.message);
+                // The local count is still incremented, so the user will be blocked correctly for this session.
+                // It will re-sync on next login.
+            }
+
         } else if (!currentUser) {
+            // Guest usage remains in session storage
             updateGuestUsage();
         }
     }
+
     async function callGeminiAPI(promptText) {
         if (!GEMINI_API_KEY) {
              showAlert('API Key is not configured correctly. AI features will not work.', 'error');
@@ -2058,19 +2093,14 @@
             window.addEventListener(eventName, resetInactivityTimer, true);
         });
 
-        // *** FIXED AUTHENTICATION LISTENER ***
-        // This listener now handles sign-in, sign-out, and session restoration more robustly.
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
             
-            // Handle User SIGN IN or SESSION RESTORATION
             if (userSession && (!currentUser || currentUser.id !== userSession.id)) {
                 currentUser = await loadUserProfile(userSession);
                 updateAuthUI();
                 resetInactivityTimer();
 
-                // This logic handles "passive" sign-ins (e.g. magic link, session restoration on page load)
-                // and redirects the user if they land on an auth page while logged in.
                 if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
                     const currentPageId = getCurrentPageIdFromUrl();
                     if (authPageIds.includes(currentPageId)) {
@@ -2078,14 +2108,12 @@
                     }
                 }
             } 
-            // Handle User SIGN OUT
             else if (!userSession && currentUser) {
                 currentUser = null;
                 updateAuthUI();
                 clearTimeout(inactivityTimer);
             }
 
-            // Handle PASSWORD RECOVERY state
             if(event === 'PASSWORD_RECOVERY') {
                 showAlert('You are in password recovery mode. Please set a new password.', 'info');
                 showPage('resetPassword');
@@ -2102,8 +2130,6 @@
         
         // --- Form Event Listeners ---
         const loginFormEl = document.getElementById('loginForm');
-        
-        // *** FIXED LOGIN FORM HANDLER ***
         if (loginFormEl) {
             loginFormEl.addEventListener('submit', async (event) => {
                 event.preventDefault();
@@ -2128,12 +2154,10 @@
                     submitButton.disabled = false;
                     submitButton.innerHTML = 'Sign In';
                 } else if (data.user) {
-                    // SUCCESS! The onAuthStateChange will also fire, but this makes the UI feel instant.
                     currentUser = await loadUserProfile(data.user);
                     updateAuthUI();
-                    handleSuccessfulLogin(); // This handles redirection
+                    handleSuccessfulLogin();
                     loginFormEl.reset();
-                    // No need to re-enable the button, navigation will happen.
                 }
             });
         }
@@ -2276,7 +2300,7 @@
             });
         }
 
-        // --- Tool-Specific Event Listeners (Unchanged) ---
+        // --- Tool-Specific Event Listeners ---
         const generateImageBtn = document.getElementById('generateImageBtn');
         if (generateImageBtn) {
             generateImageBtn.addEventListener('click', function() {
