@@ -1648,6 +1648,29 @@
     function resumeInactivityTimer() {
         resetInactivityTimer();
     }
+    
+    // *** NEW/FIXED FUNCTION ***
+    // This function handles all post-login redirection and messaging.
+    function handleSuccessfulLogin() {
+        if (!currentUser) return; // Safety check
+        showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
+
+        const pendingPlan = sessionStorage.getItem('pendingPlan');
+        const intendedPage = sessionStorage.getItem('intendedPage');
+        
+        // Clear storage items after reading them
+        if (pendingPlan) sessionStorage.removeItem('pendingPlan');
+        if (intendedPage) sessionStorage.removeItem('intendedPage');
+
+        if (pendingPlan) {
+            initiatePayment(pendingPlan); // Go to payment page if they were trying to buy
+        } else if (intendedPage && intendedPage !== 'login' && intendedPage !== 'register') {
+            showPage(intendedPage); // Go to the page they were trying to access
+        } else {
+            showPage('home'); // Default to home
+        }
+    }
+    
     function populateAccountPage() {
         if (currentUser) {
             document.getElementById('accountName').textContent = escapeHtml(currentUser.name);
@@ -2035,24 +2058,34 @@
             window.addEventListener(eventName, resetInactivityTimer, true);
         });
 
+        // *** FIXED AUTHENTICATION LISTENER ***
+        // This listener now handles sign-in, sign-out, and session restoration more robustly.
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             const userSession = session?.user || null;
             
-            if (userSession && !currentUser) { // --- FIXED --- Only run if the user is newly detected
+            // Handle User SIGN IN or SESSION RESTORATION
+            if (userSession && (!currentUser || currentUser.id !== userSession.id)) {
                 currentUser = await loadUserProfile(userSession);
                 updateAuthUI();
                 resetInactivityTimer();
-                
-                // This logic now only runs for the *initial* sign-in event for the session
-                if (event === 'SIGNED_IN') {
-                    handleSuccessfulLogin();
+
+                // This logic handles "passive" sign-ins (e.g. magic link, session restoration on page load)
+                // and redirects the user if they land on an auth page while logged in.
+                if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
+                    const currentPageId = getCurrentPageIdFromUrl();
+                    if (authPageIds.includes(currentPageId)) {
+                       handleSuccessfulLogin();
+                    }
                 }
-            } else if (!userSession) {
+            } 
+            // Handle User SIGN OUT
+            else if (!userSession && currentUser) {
                 currentUser = null;
                 updateAuthUI();
                 clearTimeout(inactivityTimer);
             }
 
+            // Handle PASSWORD RECOVERY state
             if(event === 'PASSWORD_RECOVERY') {
                 showAlert('You are in password recovery mode. Please set a new password.', 'info');
                 showPage('resetPassword');
@@ -2070,7 +2103,7 @@
         // --- Form Event Listeners ---
         const loginFormEl = document.getElementById('loginForm');
         
-        // --- FIXED: Login form handler now handles redirection proactively ---
+        // *** FIXED LOGIN FORM HANDLER ***
         if (loginFormEl) {
             loginFormEl.addEventListener('submit', async (event) => {
                 event.preventDefault();
@@ -2095,11 +2128,12 @@
                     submitButton.disabled = false;
                     submitButton.innerHTML = 'Sign In';
                 } else if (data.user) {
-                    // SUCCESS! Proactively handle the UI changes.
+                    // SUCCESS! The onAuthStateChange will also fire, but this makes the UI feel instant.
                     currentUser = await loadUserProfile(data.user);
                     updateAuthUI();
-                    handleSuccessfulLogin();
+                    handleSuccessfulLogin(); // This handles redirection
                     loginFormEl.reset();
+                    // No need to re-enable the button, navigation will happen.
                 }
             });
         }
@@ -2242,7 +2276,7 @@
             });
         }
 
-        // --- Tool-Specific Event Listeners (No changes needed here) ---
+        // --- Tool-Specific Event Listeners (Unchanged) ---
         const generateImageBtn = document.getElementById('generateImageBtn');
         if (generateImageBtn) {
             generateImageBtn.addEventListener('click', function() {
