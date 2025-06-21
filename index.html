@@ -1540,7 +1540,7 @@
     }
 
     // --- FIREBASE SDK IMPORTS ---
-    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile, sendEmailVerification, signOut, sendPasswordResetEmail, getAdditionalUserInfo } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile, sendEmailVerification, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     // --- API KEYS AND CONFIGURATION ---
@@ -1614,7 +1614,7 @@
     async function loadUserProfile(user) {
         if (!user) return null;
         const userRef = doc(db, "users", user.uid);
-        let docSnap = await getDoc(userRef);
+        const docSnap = await getDoc(userRef);
 
         if (docSnap.exists()) {
             return { auth: user, profile: docSnap.data() };
@@ -1645,12 +1645,11 @@
       setTimeout(() => {
         alert.style.opacity = '0';
         setTimeout(() => alert.remove(), 300); 
-      }, type === 'error' ? Math.max(duration, 7000) : duration); 
+      }, type === 'error' ? Math.max(duration, 10000) : duration); 
     }
     function logoutDueToInactivity() {
         if (currentUser) {
             signOut(auth); 
-            showAlert('You have been logged out due to inactivity. Please log in to continue.', 'info', 8000);
         }
     }
     function resetInactivityTimer() {
@@ -1662,9 +1661,17 @@
     function pauseInactivityTimer() { clearTimeout(inactivityTimer); }
     function resumeInactivityTimer() { resetInactivityTimer(); }
     
-    function handleSuccessfulLogin() {
-        if (!currentUser || !currentUser.profile) return;
-        showAlert(`Welcome back, ${escapeHtml(currentUser.profile.displayName)}!`, 'success');
+    async function handleSuccessfulLogin(user) {
+        if (currentUser && currentUser.auth.uid === user.uid) {
+            // User is already logged in, no need to show welcome message again
+            return;
+        }
+
+        currentUser = await loadUserProfile(user);
+        updateAuthUI();
+        resetInactivityTimer();
+        showAlert(`Welcome, ${escapeHtml(currentUser.profile.displayName)}!`, 'success');
+
         const pendingPlan = sessionStorage.getItem('pendingPlan');
         const intendedPage = sessionStorage.getItem('intendedPage');
         
@@ -1831,7 +1838,7 @@
 
     async function callGeminiAPI(promptText) {
         if (!GEMINI_API_KEY) {
-             showAlert('API Key is not configured. AI features will not work.', 'error');
+             showAlert('API Key is not configured correctly. AI features will not work.', 'error');
              throw new Error('API Key not configured.');
         }
         const requestUrl = `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`;
@@ -2034,28 +2041,19 @@
         const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
         activityEvents.forEach(eventName => window.addEventListener(eventName, resetInactivityTimer, true));
 
-        // Firebase Auth State Listener
         onAuthStateChanged(auth, async (user) => {
-            const wasLoggedIn = !!currentUser;
             if (user && user.emailVerified) {
                 if (!currentUser || currentUser.auth.uid !== user.uid) {
-                    currentUser = await loadUserProfile(user);
-                    updateAuthUI();
-                    resetInactivityTimer();
-                    if (!wasLoggedIn) {
-                        handleSuccessfulLogin();
-                    }
+                    await handleSuccessfulLogin(user);
                 }
             } else {
-                if (user && !user.emailVerified) {
-                    // This case is handled in the login form to show a specific message.
-                    // If the user lands here directly, we sign them out to force a clean login flow.
-                    await signOut(auth);
+                if (currentUser) { // User was logged in, but now is not (or is not verified)
+                    currentUser = null;
+                    updateAuthUI();
+                    clearTimeout(inactivityTimer);
+                    showAlert('You have been signed out.', 'info');
+                    if(getCurrentPageIdFromUrl() === 'account') showPage('home');
                 }
-                currentUser = null;
-                updateAuthUI();
-                clearTimeout(inactivityTimer);
-                if (getCurrentPageIdFromUrl() === 'account') showPage('login');
             }
         });
 
@@ -2081,7 +2079,7 @@
                     if (!userCredential.user.emailVerified) {
                         errorEl.textContent = 'Please verify your email before logging in. Check your inbox for the link.';
                         errorEl.classList.remove('hidden');
-                        await signOut(auth);
+                        await signOut(auth); // Sign out user until they verify
                     }
                     // onAuthStateChanged will handle the successful, verified login
                 } catch (error) {
@@ -2115,19 +2113,14 @@
                 await updateProfile(userCredential.user, { displayName: fullName });
                 await createUserProfileInFirestore(userCredential.user, { fullName });
                 
-                try {
-                    await sendEmailVerification(userCredential.user);
-                    showAlert('Registration successful! A verification link has been sent to your email. Please verify before logging in.', 'success', 10000);
-                } catch (emailError) {
-                    console.error("Email verification send error:", emailError);
-                    showAlert('Account created, but failed to send verification email. Please contact support.', 'error', 10000);
-                }
+                await sendEmailVerification(userCredential.user);
+                showAlert('Registration successful! A verification link has been sent to your email. Please verify before logging in.', 'success', 10000);
                 
-                await signOut(auth); // Force sign out until email is verified
+                await signOut(auth);
                 registerFormEl.reset();
                 showPage('login');
             } catch (error) {
-                errorEl.textContent = error.code.includes('email-already-in-use') ? 'This email address is already in use.' : "Registration failed. Please try again."; 
+                errorEl.textContent = error.code.includes('auth/email-already-in-use') ? 'This email address is already in use.' : "Registration failed. Please try again."; 
                 errorEl.classList.remove('hidden');
             } finally {
                 submitButton.disabled = false;
@@ -2138,8 +2131,7 @@
         async function handleGoogleSignIn() {
             try {
                 const result = await signInWithPopup(auth, googleProvider);
-                // The onAuthStateChanged listener will now handle the logic,
-                // including creating a profile if it's a new user.
+                // onAuthStateChanged will detect the new verified user and trigger handleSuccessfulLogin
             } catch (error) {
                 console.error("Google Sign-In Error:", error);
                 showAlert(`Google Sign-In failed: ${error.message}`, 'error');
@@ -2148,11 +2140,7 @@
         document.getElementById('googleLoginBtn')?.addEventListener('click', handleGoogleSignIn);
         document.getElementById('googleRegisterBtn')?.addEventListener('click', handleGoogleSignIn);
 
-        document.getElementById('logoutButton')?.addEventListener('click', async () => {
-            await signOut(auth);
-            showAlert('You have been signed out.', 'info');
-            showPage('home');
-        });
+        document.getElementById('logoutButton')?.addEventListener('click', () => signOut(auth));
 
         document.getElementById('forgotPasswordForm')?.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2226,6 +2214,7 @@
                         document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
                         showAlert('Image generated successfully!', 'success');
                         await incrementFeatureUsage('imageGen');
+                        populateAccountPage();
                     };
                     img.onerror = () => showAlert('Failed to load the generated image. The API may be busy.', 'error');
                 } catch (err) {
@@ -2259,6 +2248,7 @@
                     outputDiv.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
                     document.getElementById('copyTextBtn').classList.remove('hidden');
                     await incrementFeatureUsage('translate');
+                    populateAccountPage();
                 } catch (err) {
                     outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
                 } finally { 
@@ -2289,6 +2279,7 @@
                 outputDiv.dataset.rawSummary = summary;
                 document.getElementById('copySummaryBtn').classList.remove('hidden');
                 await incrementFeatureUsage('summarize');
+                populateAccountPage();
             } catch (err) {
                 outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
             } finally {
@@ -2385,6 +2376,7 @@
                 outputContainer.dataset.translatedText = translation;
                 ['copyDocBtn', 'downloadTranslationBtn'].forEach(id => document.getElementById(id).classList.remove('hidden'));
                 await incrementFeatureUsage('translate');
+                populateAccountPage();
             } catch (err) {
                 outputContainer.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
             } finally {
@@ -2394,12 +2386,15 @@
             }
         });
         
-        const setupCopyButton = (buttonId, sourceElement, sourceAttribute = 'innerText') => {
+        const setupCopyButton = (buttonId, sourceElementId, sourceAttribute = 'innerText') => {
             document.getElementById(buttonId)?.addEventListener('click', () => {
-                const source = document.getElementById(sourceElement);
-                const textToCopy = sourceAttribute === 'innerText' 
-                    ? source.querySelector('p.text-white')?.innerText
-                    : source.dataset[sourceAttribute];
+                const sourceElement = document.getElementById(sourceElementId);
+                let textToCopy;
+                if(sourceAttribute === 'innerText') {
+                    textToCopy = sourceElement?.querySelector('p.text-white')?.innerText;
+                } else {
+                    textToCopy = sourceElement?.dataset[sourceAttribute];
+                }
                 if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
             });
         };
