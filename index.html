@@ -1540,7 +1540,7 @@
     }
 
     // --- FIREBASE SDK IMPORTS ---
-    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile, sendEmailVerification, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile, sendEmailVerification, signOut, sendPasswordResetEmail, getAdditionalUserInfo } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     // --- API KEYS AND CONFIGURATION ---
@@ -1550,7 +1550,7 @@
     const RAZORPAY_KEY_ID = "rzp_live_xoN2xNuHMZnCup";
     
     // --- FIREBASE INITIALIZATION ---
-    const firebaseApp = window.firebaseApp; // Get the initialized app from the previous script
+    const firebaseApp = window.firebaseApp;
     const auth = getAuth(firebaseApp);
     const db = getFirestore(firebaseApp);
     const googleProvider = new GoogleAuthProvider();
@@ -1558,7 +1558,7 @@
     // --- APPLICATION STATE AND CONSTANTS ---
     let currentUser = null; 
     let inactivityTimer;
-    const INACTIVITY_TIMEOUT = 5 * 60 * 1000;
+    const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
     const GUEST_TOTAL_USAGE_LIMIT = 10; 
     const FREE_TIER_LIMITS = { 
         imageGen: 15,
@@ -1596,7 +1596,7 @@
     const authPageIds = ['login', 'register', 'forgotPassword', 'paymentPage'];
     
     // --- FIREBASE-SPECIFIC FUNCTIONS ---
-    async function createUserProfile(user, additionalData = {}) {
+    async function createUserProfileInFirestore(user, additionalData = {}) {
         const userRef = doc(db, "users", user.uid);
         const profileData = {
             uid: user.uid,
@@ -1604,11 +1604,7 @@
             displayName: user.displayName || additionalData.fullName,
             createdAt: serverTimestamp(),
             plan: 'free',
-            usageCounts: {
-                imageGen: 0,
-                translate: 0,
-                summarize: 0
-            },
+            usageCounts: { imageGen: 0, translate: 0, summarize: 0 },
             ...additionalData
         };
         await setDoc(userRef, profileData);
@@ -1618,20 +1614,14 @@
     async function loadUserProfile(user) {
         if (!user) return null;
         const userRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(userRef);
+        let docSnap = await getDoc(userRef);
 
         if (docSnap.exists()) {
-            return {
-                auth: user,
-                profile: docSnap.data()
-            };
+            return { auth: user, profile: docSnap.data() };
         } else {
             console.warn("User profile not found in Firestore for UID:", user.uid, "- creating one.");
-            const newProfile = await createUserProfile(user, { fullName: user.displayName });
-             return {
-                auth: user,
-                profile: newProfile
-            };
+            const newProfileData = await createUserProfileInFirestore(user, { fullName: user.displayName });
+            return { auth: user, profile: newProfileData };
         }
     }
 
@@ -1673,9 +1663,8 @@
     function resumeInactivityTimer() { resetInactivityTimer(); }
     
     function handleSuccessfulLogin() {
-        if (!currentUser) return; // Safety check
+        if (!currentUser || !currentUser.profile) return;
         showAlert(`Welcome back, ${escapeHtml(currentUser.profile.displayName)}!`, 'success');
-
         const pendingPlan = sessionStorage.getItem('pendingPlan');
         const intendedPage = sessionStorage.getItem('intendedPage');
         
@@ -1684,7 +1673,7 @@
 
         if (pendingPlan) {
             initiatePayment(pendingPlan);
-        } else if (intendedPage && intendedPage !== 'login' && intendedPage !== 'register') {
+        } else if (intendedPage && !authPageIds.includes(intendedPage)) {
             showPage(intendedPage);
         } else {
             showPage('home');
@@ -1692,7 +1681,7 @@
     }
     
     function populateAccountPage() {
-        if (currentUser) {
+        if (currentUser && currentUser.profile) {
             document.getElementById('accountName').textContent = escapeHtml(currentUser.profile.displayName);
             document.getElementById('accountEmail').textContent = escapeHtml(currentUser.auth.email);
             
@@ -1724,7 +1713,6 @@
         }
     }
     
-    // Make showPage a global function so inline onclicks can call it
     window.showPage = (pageId, isInitialLoad = false) => {
         if (pageId === 'account' && !currentUser) {
             showAlert('You must be logged in to view your account page.', 'info');
@@ -1735,19 +1723,16 @@
         document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
         const targetPage = document.getElementById(pageId);
         const authPagesWrapper = document.getElementById('auth-pages-wrapper');
+        
         if (authPagesWrapper) {
-            if (authPageIds.includes(pageId)) {
-                authPagesWrapper.classList.add('active-auth');
-            } else {
-                authPagesWrapper.classList.remove('active-auth');
-            }
+            authPagesWrapper.classList.toggle('active-auth', authPageIds.includes(pageId));
         }
+
         if (targetPage) {
             targetPage.classList.add('active');
             updateMetaTags(pageId);
-            if (pageId === 'account') {
-                populateAccountPage();
-            }
+            if (pageId === 'account') populateAccountPage();
+            
             const newURL = `${window.location.pathname}#${pageId}`;
             const pageTitle = pageMetaInfo[pageId]?.title || `Tech_Gen - ${pageId}`;
             if (window.location.hash !== `#${pageId}`) {
@@ -1787,18 +1772,15 @@
         const authButtonsContainer = document.getElementById('authButtonsContainer');
         const userInfoContainer = document.getElementById('userInfoContainer');
         const userEmailDisplay = document.getElementById('userEmailDisplay');
-        if (!authButtonsContainer || !userInfoContainer) {
-            console.error("Auth UI containers not found in the DOM!");
-            return;
-        }
-        if (currentUser) { 
+
+        if (currentUser && currentUser.profile) { 
             authButtonsContainer.classList.add('hidden');
             userInfoContainer.classList.remove('hidden'); 
-            if(userEmailDisplay) userEmailDisplay.textContent = `Welcome, ${escapeHtml(currentUser.profile.displayName)}!`;
+            userEmailDisplay.textContent = `Welcome, ${escapeHtml(currentUser.profile.displayName)}!`;
         } else { 
             authButtonsContainer.classList.remove('hidden');
             userInfoContainer.classList.add('hidden');
-            if(userEmailDisplay) userEmailDisplay.textContent = '';
+            userEmailDisplay.textContent = '';
         }
     }
     function updateGuestUsage() {
@@ -1806,24 +1788,25 @@
         sessionStorage.setItem('techGenGuestUsage', JSON.stringify(guestUsage));
     }
     function canGuestUseFeature(currentPageId) {
-        if (guestUsage.total < GUEST_TOTAL_USAGE_LIMIT) {
-            return true;
-        }
-        showAlert(`You've reached your guest usage limit of ${GUEST_TOTAL_USAGE_LIMIT} actions. Please log in or register for more access.`, 'info');
+        if (guestUsage.total < GUEST_TOTAL_USAGE_LIMIT) return true;
+        
+        showAlert(`You've reached your guest usage limit. Please log in or register for more access.`, 'info');
         sessionStorage.setItem('intendedPage', currentPageId || 'home');
         showPage('login');
         return false;
     }
     function canLoggedInUserUseFeature(featureType, currentPageId) {
         if (!currentUser) return canGuestUseFeature(currentPageId); 
+        if (!currentUser.profile) return false; // Profile still loading
+        
         if (currentUser.profile.plan === 'pro' || currentUser.profile.plan === 'business') return true;
+        
         if (currentUser.profile.plan === 'free') {
             const limit = FREE_TIER_LIMITS[featureType];
             const currentCount = currentUser.profile.usageCounts[featureType] || 0;
-            if (currentCount < limit) {
-                return true;
-            }
-            showAlert(`You've reached your Free plan limit of ${limit} ${featureType.replace(/([A-Z])/g, ' $1').toLowerCase()}s for this month. Upgrade to a Pro plan for unlimited access.`, 'info');
+            if (currentCount < limit) return true;
+            
+            showAlert(`You've reached your Free plan limit for ${featureType.replace(/([A-Z])/g, ' $1').toLowerCase()}s. Upgrade for unlimited access.`, 'info');
             showPage('pricing');
             return false;
         }
@@ -1832,10 +1815,7 @@
     
     async function incrementFeatureUsage(featureType) {
         if (currentUser && currentUser.profile.plan === 'free') {
-            // 1. Increment local count for immediate UI feedback
-            currentUser.profile.usageCounts[featureType] = (currentUser.profile.usageCounts[featureType] || 0) + 1;
-
-            // 2. Persist the new count to the database atomically
+            currentUser.profile.usageCounts[featureType]++;
             const userRef = doc(db, "users", currentUser.auth.uid);
             try {
                 await updateDoc(userRef, {
@@ -1851,7 +1831,7 @@
 
     async function callGeminiAPI(promptText) {
         if (!GEMINI_API_KEY) {
-             showAlert('API Key is not configured correctly. AI features will not work.', 'error');
+             showAlert('API Key is not configured. AI features will not work.', 'error');
              throw new Error('API Key not configured.');
         }
         const requestUrl = `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`;
@@ -1884,24 +1864,13 @@
         let fullPrompt = style ? `${prompt}, in the style of ${style}` : prompt;
         const encodedPrompt = encodeURIComponent(fullPrompt);
         let url = baseUrl + encodedPrompt;
-        const params = new URLSearchParams();
-        if (aspectRatio === 'portrait') {
-            params.append('width', '1024');
-            params.append('height', '1792');
-        } else if (aspectRatio === 'landscape') {
-            params.append('width', '1792');
-            params.append('height', '1024');
-        } else {
-            params.append('width', '1024');
-            params.append('height', '1024');
-        }
-        params.append('model', 'dall-e-3');
-        params.append('nologo', 'true');
-        const paramString = params.toString();
-        if (paramString) {
-            url += `?${paramString}`;
-        }
-        return url;
+        const params = new URLSearchParams({
+            width: aspectRatio === 'landscape' ? 1792 : 1024,
+            height: aspectRatio === 'portrait' ? 1792 : 1024,
+            model: 'dall-e-3',
+            nologo: 'true'
+        });
+        return `${url}?${params.toString()}`;
     }
 
     function downloadContent(content, filename) {
@@ -1918,12 +1887,8 @@
     }
     function downloadImage(url, filename) { 
       fetch(url)
-        .then(response => {
-          if (!response.ok) { throw new Error(`Network response was not ok. Status: ${response.status}`); }
-          return response.blob();
-        })
+        .then(response => response.ok ? response.blob() : Promise.reject(`Network error: ${response.status}`))
         .then(blob => {
-          if (blob) { 
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob); 
             link.download = filename;
@@ -1932,11 +1897,10 @@
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href); 
             showAlert('Image downloaded successfully!', 'success');
-          }
         })
         .catch(error => {
             console.error('Download error:', error);
-            showAlert(`Download failed due to browser restrictions. Trying to open in a new tab.`, 'error');
+            showAlert(`Download failed. Trying to open in a new tab.`, 'info');
             window.open(url, '_blank');
         });
     }
@@ -1954,21 +1918,21 @@
         throw new Error('Unsupported file type. Please use PDF, DOCX, or TXT.');
     }
     async function extractTextFromPDF(file) { 
+        const fileReader = new FileReader();
         return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
             fileReader.onload = async function() {
                 try {
                     const typedarray = new Uint8Array(this.result);
                     const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                    let fullText = '';
+                    const textPromises = [];
                     for (let i = 1; i <= pdf.numPages; i++) {
-                        const page = await pdf.getPage(i);
-                        const textContent = await page.getTextContent();
-                        fullText += textContent.items.map(item => item.str).join(' ') + '\n';
+                        textPromises.push(pdf.getPage(i).then(page => page.getTextContent()));
                     }
+                    const allTextContents = await Promise.all(textPromises);
+                    const fullText = allTextContents.map(tc => tc.items.map(item => item.str).join(' ')).join('\n');
                     resolve(fullText.trim());
                 } catch (e) { 
-                    reject(new Error("Could not extract text from PDF. The file might be corrupted or an image-only PDF.")); 
+                    reject(new Error("Could not extract text from PDF. The file might be an image-only PDF.")); 
                 }
             };
             fileReader.onerror = () => reject(new Error("Error reading PDF file."));
@@ -1976,8 +1940,8 @@
         });
     }
     async function extractTextFromDOCX(file) { 
+        const fileReader = new FileReader();
         return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
             fileReader.onload = function() {
                 mammoth.extractRawText({arrayBuffer: this.result})
                     .then(result => resolve(result.value.trim()))
@@ -1990,29 +1954,25 @@
     async function extractTextFromTXT(file) { 
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
-            fileReader.onload = function() { resolve(this.result.trim()); };
+            fileReader.onload = () => resolve(fileReader.result.trim());
             fileReader.onerror = () => reject(new Error("Error reading TXT file."));
             fileReader.readAsText(file);
         });
     }
-    // Make initiatePayment a global function
     window.initiatePayment = (planId) => {
         const planToPurchase = plansData[planId];
         if (!planToPurchase) { 
-            showAlert('Invalid plan selected.', 'error'); 
-            return; 
+            showAlert('Invalid plan selected.', 'error'); return; 
         }
         if (planId === 'business' && !planToPurchase.priceAmount) { 
             showPage('contact');
-            showAlert('For Business plans, please contact our sales team.', 'info');
-            return;
+            showAlert('For Business plans, please contact our sales team.', 'info'); return;
         }
         if (!currentUser) { 
             sessionStorage.setItem('pendingPlan', planId); 
             sessionStorage.setItem('intendedPage', 'paymentPage'); 
             showAlert('Please log in or register to purchase a plan.', 'info');
-            showPage('login');
-            return;
+            showPage('login'); return;
         }
         document.getElementById('paymentPlanName').textContent = planToPurchase.name;
         document.getElementById('paymentPlanPrice').textContent = planToPurchase.priceDisplay;
@@ -2028,15 +1988,8 @@
     
     async function handlePayment(event) {
         event.preventDefault(); 
-        const paymentForm = document.getElementById('paymentForm');
-        const planId = paymentForm.dataset.planId;
+        const planId = event.target.dataset.planId;
         const planDetails = plansData[planId];
-        if (!planDetails) {
-            showAlert("Error: Plan details not found.", 'error'); return;
-        }
-        if (!RAZORPAY_KEY_ID) {
-            showAlert("Payment processor is not configured.", 'error'); return;
-        }
         const customerName = document.getElementById('cardNameInput').value;
         const customerEmail = document.getElementById('emailInput').value;
         
@@ -2050,28 +2003,27 @@
             notes: { plan_id: planId, user_id: currentUser.auth.uid },
             theme: { color: "#6C00FF" },
             handler: async function (response) {
-                showAlert(`Payment Successful! Updating your plan...`, 'info', 6000);
-                
+                showAlert(`Payment Successful! Updating your plan...`, 'info');
                 const userRef = doc(db, "users", currentUser.auth.uid);
                 try {
                     await updateDoc(userRef, { plan: planDetails.id });
                     currentUser.profile.plan = planDetails.id;
                     updateAuthUI();
-                    showAlert(`Your ${planDetails.name} plan is now active!`, 'success', 8000);
+                    showAlert(`Your ${planDetails.name} plan is now active!`, 'success');
                     showPage('account'); 
                 } catch(error) {
-                    showAlert(`Payment was successful, but we couldn't update your plan. Please contact support. Error: ${error.message}`, 'error', 10000);
+                    showAlert(`Payment successful, but we couldn't update your plan. Please contact support.`, 'error');
                 }
             },
-            modal: { ondismiss: () => showAlert("Payment process was cancelled.", 'info') }
+            modal: { ondismiss: () => showAlert("Payment cancelled.", 'info') }
         };
         try {
             const rzp = new Razorpay(options);
             rzp.on('payment.failed', (response) => showAlert(`Payment Failed: ${response.error.description}`, 'error', 10000));
             rzp.open();
         } catch (error) {
-            showAlert("Error initializing Razorpay checkout.", 'error');
-            console.error("Razorpay initialization error: ", error);
+            showAlert("Error initializing payment.", 'error');
+            console.error("Razorpay error: ", error);
         }
     }
     
@@ -2080,38 +2032,35 @@
         updatePricingDisplay(); 
 
         const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
-        activityEvents.forEach(eventName => {
-            window.addEventListener(eventName, resetInactivityTimer, true);
-        });
+        activityEvents.forEach(eventName => window.addEventListener(eventName, resetInactivityTimer, true));
 
         // Firebase Auth State Listener
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = await loadUserProfile(user);
-                updateAuthUI();
-                resetInactivityTimer();
-                const currentPageId = getCurrentPageIdFromUrl();
-                if (authPageIds.includes(currentPageId)) {
-                   handleSuccessfulLogin();
+            const wasLoggedIn = !!currentUser;
+            if (user && user.emailVerified) {
+                if (!currentUser || currentUser.auth.uid !== user.uid) {
+                    currentUser = await loadUserProfile(user);
+                    updateAuthUI();
+                    resetInactivityTimer();
+                    if (!wasLoggedIn) {
+                        handleSuccessfulLogin();
+                    }
                 }
             } else {
+                if (user && !user.emailVerified) {
+                    // This case is handled in the login form to show a specific message.
+                    // If the user lands here directly, we sign them out to force a clean login flow.
+                    await signOut(auth);
+                }
                 currentUser = null;
                 updateAuthUI();
                 clearTimeout(inactivityTimer);
-                const currentPageId = getCurrentPageIdFromUrl();
-                if (currentPageId === 'account') {
-                    showPage('login');
-                }
+                if (getCurrentPageIdFromUrl() === 'account') showPage('login');
             }
         });
 
-        const initialPageId = getCurrentPageIdFromUrl();
-        showPage(initialPageId, true); 
-
-        window.addEventListener('popstate', (event) => {
-            const pageIdToShow = getCurrentPageIdFromUrl();
-            if (pageIdToShow) showPage(pageIdToShow);
-        });
+        showPage(getCurrentPageIdFromUrl(), true); 
+        window.addEventListener('popstate', () => showPage(getCurrentPageIdFromUrl()));
         
         // --- Form Event Listeners ---
         const loginFormEl = document.getElementById('loginForm');
@@ -2130,12 +2079,11 @@
                 try {
                     const userCredential = await signInWithEmailAndPassword(auth, email, password);
                     if (!userCredential.user.emailVerified) {
-                        errorEl.textContent = 'Please verify your email before logging in. Check your inbox for a verification link.';
+                        errorEl.textContent = 'Please verify your email before logging in. Check your inbox for the link.';
                         errorEl.classList.remove('hidden');
-                        signOut(auth);
-                    } else {
-                        // onAuthStateChanged will handle the rest
+                        await signOut(auth);
                     }
+                    // onAuthStateChanged will handle the successful, verified login
                 } catch (error) {
                     errorEl.textContent = "Invalid login credentials. Please try again.";
                     errorEl.classList.remove('hidden');
@@ -2150,17 +2098,13 @@
         if (registerFormEl) registerFormEl.addEventListener('submit', async (event) => {
             event.preventDefault(); 
             const submitButton = registerFormEl.querySelector('button[type="submit"]');
-            const originalButtonText = submitButton.innerHTML;
-            const fullName = document.getElementById('registerFullName').value.trim();
-            const email = document.getElementById('registerEmail').value.trim();
-            const password = document.getElementById('registerPassword').value.trim();
+            const { fullName, email, password } = Object.fromEntries(new FormData(event.target));
             const errorEl = document.getElementById('registerError');
             errorEl.classList.add('hidden');
 
             if (!fullName || !email || password.length < 6) { 
                 errorEl.textContent = 'All fields are required and password must be at least 6 characters.'; 
-                errorEl.classList.remove('hidden');
-                return; 
+                errorEl.classList.remove('hidden'); return; 
             }
 
             submitButton.disabled = true;
@@ -2169,25 +2113,33 @@
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(userCredential.user, { displayName: fullName });
-                await createUserProfile(userCredential.user, { fullName });
-                await sendEmailVerification(userCredential.user);
+                await createUserProfileInFirestore(userCredential.user, { fullName });
                 
-                showAlert('Registration successful! Please check your email to verify your account.', 'success', 10000);
+                try {
+                    await sendEmailVerification(userCredential.user);
+                    showAlert('Registration successful! A verification link has been sent to your email. Please verify before logging in.', 'success', 10000);
+                } catch (emailError) {
+                    console.error("Email verification send error:", emailError);
+                    showAlert('Account created, but failed to send verification email. Please contact support.', 'error', 10000);
+                }
+                
+                await signOut(auth); // Force sign out until email is verified
                 registerFormEl.reset();
                 showPage('login');
             } catch (error) {
-                errorEl.textContent = error.code.includes('email-already-in-use') ? 'This email address is already in use.' : error.message; 
+                errorEl.textContent = error.code.includes('email-already-in-use') ? 'This email address is already in use.' : "Registration failed. Please try again."; 
                 errorEl.classList.remove('hidden');
             } finally {
                 submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonText;
+                submitButton.innerHTML = 'Sign Up';
             }
         });
         
         async function handleGoogleSignIn() {
             try {
                 const result = await signInWithPopup(auth, googleProvider);
-                // onAuthStateChanged will handle the profile creation and UI update
+                // The onAuthStateChanged listener will now handle the logic,
+                // including creating a profile if it's a new user.
             } catch (error) {
                 console.error("Google Sign-In Error:", error);
                 showAlert(`Google Sign-In failed: ${error.message}`, 'error');
@@ -2196,80 +2148,55 @@
         document.getElementById('googleLoginBtn')?.addEventListener('click', handleGoogleSignIn);
         document.getElementById('googleRegisterBtn')?.addEventListener('click', handleGoogleSignIn);
 
-        const logoutButton = document.getElementById('logoutButton');
-        if (logoutButton) logoutButton.addEventListener('click', async () => {
+        document.getElementById('logoutButton')?.addEventListener('click', async () => {
+            await signOut(auth);
+            showAlert('You have been signed out.', 'info');
+            showPage('home');
+        });
+
+        document.getElementById('forgotPasswordForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const submitButton = this.querySelector('button[type="submit"]');
+            const errorEl = document.getElementById('forgotPasswordError');
+            const successEl = document.getElementById('forgotPasswordSuccess');
+            errorEl.classList.add('hidden'); successEl.classList.add('hidden');
+            
+            submitButton.disabled = true;
+            submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Sending...`;
+            const email = document.getElementById('forgotPasswordEmail').value;
+
             try {
-                await signOut(auth);
-                showAlert('You have been signed out.', 'info');
-                showPage('home');
+                await sendPasswordResetEmail(auth, email);
+                successEl.classList.remove('hidden');
             } catch (error) {
-                 showAlert(`Logout failed: ${error.message}`, 'error');
+                errorEl.textContent = "Could not send reset email. Please check the address and try again.";
+                errorEl.classList.remove('hidden');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Send Reset Link';
             }
         });
 
-        const forgotPasswordFormEl = document.getElementById('forgotPasswordForm');
-        if (forgotPasswordFormEl) {
-            forgotPasswordFormEl.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const submitButton = forgotPasswordFormEl.querySelector('button[type="submit"]');
-                const originalButtonText = submitButton.innerHTML;
-                const errorEl = document.getElementById('forgotPasswordError');
-                const successEl = document.getElementById('forgotPasswordSuccess');
-                errorEl.classList.add('hidden');
-                successEl.classList.add('hidden');
-                
-                submitButton.disabled = true;
-                submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Sending...`;
-                const email = document.getElementById('forgotPasswordEmail').value;
-
-                try {
-                    await sendPasswordResetEmail(auth, email);
-                    successEl.classList.remove('hidden');
-                } catch (error) {
-                    errorEl.textContent = "Could not send reset email. Please check the address and try again.";
-                    errorEl.classList.remove('hidden');
-                } finally {
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = originalButtonText;
-                }
-            });
-        }
-
-        if (document.getElementById('paymentForm')) {
-            document.getElementById('paymentForm').addEventListener('submit', handlePayment);
-        }
+        document.getElementById('paymentForm')?.addEventListener('submit', handlePayment);
         
-        const contactFormEl = document.getElementById('contactForm');
-        if (contactFormEl) {
-            contactFormEl.addEventListener('submit', function(event) {
-                event.preventDefault(); 
-                const formData = new FormData(contactFormEl);
-                const contactSubmitButtonEl = this.querySelector('button[type="submit"]');
-
-                contactSubmitButtonEl.disabled = true;
-
-                fetch(this.action, {
-                    method: this.method, body: formData, headers: { 'Accept': 'application/json' }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        showAlert('Message sent successfully!', 'success');
-                        this.reset();
-                    } else {
-                        response.json().then(data => {
-                            const errorMessage = data.errors?.map(e => e.message).join(', ') || 'An unknown error occurred.';
-                            throw new Error(errorMessage);
-                        });
-                    }
-                })
-                .catch(error => {
-                    showAlert(`Form submission error: ${error.message}`, 'error');
-                })
-                .finally(() => {
-                    contactSubmitButtonEl.disabled = false;
-                });
-            });
-        }
+        document.getElementById('contactForm')?.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const contactSubmitButtonEl = this.querySelector('button[type="submit"]');
+            contactSubmitButtonEl.disabled = true;
+            fetch(this.action, {
+                method: this.method, body: new FormData(this), headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    showAlert('Message sent successfully!', 'success');
+                    this.reset();
+                } else {
+                    return response.json().then(data => Promise.reject(data.errors?.map(e => e.message).join(', ') || 'An unknown error occurred.'));
+                }
+            })
+            .catch(error => showAlert(`Form submission error: ${error}`, 'error'))
+            .finally(() => { contactSubmitButtonEl.disabled = false; });
+        });
 
         // --- Tool-Specific Event Listeners ---
         const generateImageBtn = document.getElementById('generateImageBtn');
@@ -2278,57 +2205,34 @@
                 if (!canLoggedInUserUseFeature('imageGen', 'ai-generator')) return;
                 
                 const prompt = document.getElementById('imagePrompt').value.trim();
-                if (!prompt) {
-                    showAlert('Please enter an image description.', 'error');
-                    return;
-                }
+                if (!prompt) { showAlert('Please enter an image description.', 'error'); return; }
                 
                 this.disabled = true;
-                const spinner = document.getElementById('generateSpinner');
-                spinner.classList.remove('hidden');
-                const imagePlaceholder = document.getElementById('imagePlaceholder');
-                const imageResultContainer = document.getElementById('imageResultContainer');
-                const img = document.getElementById('generatedImage');
-
-                imagePlaceholder.style.display = 'flex';
-                imageResultContainer.classList.add('hidden');
-                imagePlaceholder.querySelector('p').textContent = 'Generating your image...';
-                
+                document.getElementById('generateSpinner').classList.remove('hidden');
+                document.getElementById('imagePlaceholder').style.display = 'flex';
+                document.getElementById('imageResultContainer').classList.add('hidden');
+                document.getElementById('imagePlaceholderText').textContent = 'Generating your image...';
                 pauseInactivityTimer();
 
                 try {
-                    const imageUrl = generateImageUrlWithPollinations(
-                        prompt,
-                        document.getElementById('imageAspectRatio').value,
-                        document.getElementById('imageStyle').value
-                    );
-                    
+                    const imageUrl = generateImageUrlWithPollinations(prompt, document.getElementById('imageAspectRatio').value, document.getElementById('imageStyle').value);
+                    const img = document.getElementById('generatedImage');
                     img.src = imageUrl;
                     img.alt = prompt;
 
                     img.onload = async () => {
-                        imagePlaceholder.style.display = 'none';
-                        imageResultContainer.classList.remove('hidden');
+                        document.getElementById('imagePlaceholder').style.display = 'none';
+                        document.getElementById('imageResultContainer').classList.remove('hidden');
                         document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
                         showAlert('Image generated successfully!', 'success');
                         await incrementFeatureUsage('imageGen');
-                        this.disabled = false;
-                        spinner.classList.add('hidden');
-                        resumeInactivityTimer();
                     };
-
-                    img.onerror = () => {
-                        showAlert('Failed to load the generated image. The API may be busy. Please try again.', 'error', 8000);
-                        imagePlaceholder.querySelector('p').textContent = 'Image will appear here';
-                        this.disabled = false;
-                        spinner.classList.add('hidden');
-                        resumeInactivityTimer();
-                    };
-
+                    img.onerror = () => showAlert('Failed to load the generated image. The API may be busy.', 'error');
                 } catch (err) {
-                    showAlert(`Image generation failed: ${err.message}`, 'error', 8000);
+                    showAlert(`Image generation failed: ${err.message}`, 'error');
+                } finally {
                     this.disabled = false;
-                    spinner.classList.add('hidden');
+                    document.getElementById('generateSpinner').classList.add('hidden');
                     resumeInactivityTimer();
                 }
             });
@@ -2342,8 +2246,7 @@
                 if (!textToTranslate) { showAlert('Please enter text to translate.', 'error'); return; }
                 
                 this.disabled = true;
-                const spinner = document.getElementById('translateTextSpinner');
-                spinner.classList.remove('hidden');
+                document.getElementById('translateTextSpinner').classList.remove('hidden');
                 const outputDiv = document.getElementById('textOutput');
                 outputDiv.innerHTML = `<p class="text-gray-400 text-sm">Translating...</p>`;
                 document.getElementById('copyTextBtn').classList.add('hidden');
@@ -2360,7 +2263,7 @@
                     outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
                 } finally { 
                     this.disabled = false;
-                    spinner.classList.add('hidden');
+                    document.getElementById('translateTextSpinner').classList.add('hidden');
                     resumeInactivityTimer(); 
                 }
             });
@@ -2372,8 +2275,7 @@
             if (!textToSummarize) { showAlert('Please provide text to summarize.', 'error'); return; }
             
             this.disabled = true;
-            const spinner = document.getElementById('summarizeTextSpinner');
-            spinner.classList.remove('hidden');
+            document.getElementById('summarizeTextSpinner').classList.remove('hidden');
             const outputDiv = document.getElementById('summaryOutput');
             outputDiv.innerHTML = `<p class="text-gray-400 text-sm">Summarizing...</p>`;
             document.getElementById('copySummaryBtn').classList.add('hidden');
@@ -2384,49 +2286,43 @@
                 const prompt = `Provide a ${summaryLength} summary of the following text. The output should be a clean, direct summary without any introductory phrases like "Here is the summary".\n\nText: "${textToSummarize}"`;
                 const summary = await callGeminiAPI(prompt);
                 outputDiv.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Summary:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(summary)}</p>`;
-                outputDiv.setAttribute('data-raw-summary', summary);
+                outputDiv.dataset.rawSummary = summary;
                 document.getElementById('copySummaryBtn').classList.remove('hidden');
                 await incrementFeatureUsage('summarize');
             } catch (err) {
                 outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
             } finally {
                 this.disabled = false;
-                spinner.classList.add('hidden');
+                document.getElementById('summarizeTextSpinner').classList.add('hidden');
                 resumeInactivityTimer(); 
             }
         });
         const textTabBtn = document.getElementById('textTabBtn');
         const docTabBtn = document.getElementById('docTabBtn');
-        const textTranslationSection = document.getElementById('textTranslationSection');
-        const docTranslationSection = document.getElementById('docTranslationSection');
         if (textTabBtn && docTabBtn) {
             textTabBtn.addEventListener('click', () => {
-                textTabBtn.classList.add('active');
-                docTabBtn.classList.remove('active');
-                textTranslationSection.classList.remove('hidden');
-                docTranslationSection.classList.add('hidden');
+                textTabBtn.classList.add('active'); docTabBtn.classList.remove('active');
+                document.getElementById('textTranslationSection').classList.remove('hidden');
+                document.getElementById('docTranslationSection').classList.add('hidden');
             });
             docTabBtn.addEventListener('click', () => {
-                docTabBtn.classList.add('active');
-                textTabBtn.classList.remove('active');
-                docTranslationSection.classList.remove('hidden');
-                textTranslationSection.classList.add('hidden');
+                docTabBtn.classList.add('active'); textTabBtn.classList.remove('active');
+                document.getElementById('docTranslationSection').classList.remove('hidden');
+                document.getElementById('textTranslationSection').classList.add('hidden');
             });
         }
-        const summarizeDocInput = document.getElementById('summarizeDocInput');
-        if (summarizeDocInput) {
-            summarizeDocInput.addEventListener('change', async (event) => {
-                const file = event.target.files[0];
-                if (!file) return;
-                const nameDisplay = document.getElementById('summarizeDocNameDisplay');
-                const statusDisplay = document.getElementById('summarizeDocExtractStatus');
-                const textInput = document.getElementById('summarizeTextInput');
+        const setupDocUpload = (inputId, nameDisplayId, statusId, textInputId) => {
+            document.getElementById(inputId)?.addEventListener('change', async (event) => {
+                const file = event.target.files[0]; if (!file) return;
+                const nameDisplay = document.getElementById(nameDisplayId);
+                const statusDisplay = document.getElementById(statusId);
+                const textInput = document.getElementById(textInputId);
+                
                 nameDisplay.textContent = escapeHtml(file.name);
                 statusDisplay.classList.remove('hidden');
                 textInput.value = '';
                 try {
-                    const text = await extractTextFromFile(file);
-                    textInput.value = text;
+                    textInput.value = await extractTextFromFile(file);
                     showAlert('Document text extracted successfully!', 'success');
                 } catch (err) {
                     showAlert(`Error: ${err.message}`, 'error');
@@ -2437,95 +2333,85 @@
                 }
             });
         }
-        const docFileInput = document.getElementById('docFileInput');
-        if(docFileInput) {
-            docFileInput.addEventListener('change', async (event) => {
-                const file = event.target.files[0];
-                if (!file) return;
-                const nameDisplay = document.getElementById('docFileNameDisplay');
-                const statusDisplay = document.getElementById('docFileExtractStatus');
-                const previewContainer = document.getElementById('docTextPreview');
-                const previewDiv = previewContainer.querySelector('div');
-                const translateBtn = document.getElementById('translateDocBtn');
-                const outputContainer = document.getElementById('docTranslationOutput');
-                nameDisplay.textContent = escapeHtml(file.name);
-                statusDisplay.classList.remove('hidden');
-                translateBtn.disabled = true;
-                previewContainer.classList.add('hidden');
-                outputContainer.dataset.originalText = '';
-                try {
-                    const text = await extractTextFromFile(file);
-                    outputContainer.dataset.originalText = text;
-                    previewDiv.textContent = text.substring(0, 500) + (text.length > 500 ? '...' : '');
-                    previewContainer.classList.remove('hidden');
-                    translateBtn.disabled = false;
-                    showAlert('Document ready for translation!', 'success');
-                } catch (err) {
-                    showAlert(`Error: ${err.message}`, 'error');
-                    nameDisplay.textContent = '';
-                } finally {
-                    statusDisplay.classList.add('hidden');
-                    event.target.value = null;
-                }
+        setupDocUpload('summarizeDocInput', 'summarizeDocNameDisplay', 'summarizeDocExtractStatus', 'summarizeTextInput');
+        
+        document.getElementById('docFileInput')?.addEventListener('change', async (event) => {
+            const file = event.target.files[0]; if (!file) return;
+            const nameDisplay = document.getElementById('docFileNameDisplay');
+            const statusDisplay = document.getElementById('docFileExtractStatus');
+            const previewDiv = document.querySelector('#docTextPreview div');
+            const translateBtn = document.getElementById('translateDocBtn');
+            const outputContainer = document.getElementById('docTranslationOutput');
+            
+            nameDisplay.textContent = escapeHtml(file.name);
+            statusDisplay.classList.remove('hidden');
+            translateBtn.disabled = true;
+            document.getElementById('docTextPreview').classList.add('hidden');
+            outputContainer.dataset.originalText = '';
+            
+            try {
+                const text = await extractTextFromFile(file);
+                outputContainer.dataset.originalText = text;
+                previewDiv.textContent = text.substring(0, 500) + (text.length > 500 ? '...' : '');
+                document.getElementById('docTextPreview').classList.remove('hidden');
+                translateBtn.disabled = false;
+                showAlert('Document ready for translation!', 'success');
+            } catch (err) {
+                showAlert(`Error: ${err.message}`, 'error');
+                nameDisplay.textContent = '';
+            } finally {
+                statusDisplay.classList.add('hidden');
+                event.target.value = null;
+            }
+        });
+        
+        document.getElementById('translateDocBtn')?.addEventListener('click', async function() {
+            if (!canLoggedInUserUseFeature('translate', 'translate')) return;
+            const outputContainer = document.getElementById('docTranslationOutput');
+            const textToTranslate = outputContainer.dataset.originalText;
+            if (!textToTranslate) { showAlert('No document text found. Please upload a file first.', 'error'); return; }
+            
+            this.disabled = true;
+            document.getElementById('translateDocSpinner').classList.remove('hidden');
+            outputContainer.innerHTML = `<p class="text-gray-400 text-sm">Translating document...</p>`;
+            ['copyDocBtn', 'downloadTranslationBtn'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            pauseInactivityTimer();
+
+            try {
+                const targetLangName = document.getElementById('docTargetLanguage').selectedOptions[0].text;
+                const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text.\n\n"${textToTranslate}"`;
+                const translation = await callGeminiAPI(prompt);
+                outputContainer.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
+                outputContainer.dataset.translatedText = translation;
+                ['copyDocBtn', 'downloadTranslationBtn'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+                await incrementFeatureUsage('translate');
+            } catch (err) {
+                outputContainer.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+            } finally {
+                this.disabled = false;
+                document.getElementById('translateDocSpinner').classList.add('hidden');
+                resumeInactivityTimer();
+            }
+        });
+        
+        const setupCopyButton = (buttonId, sourceElement, sourceAttribute = 'innerText') => {
+            document.getElementById(buttonId)?.addEventListener('click', () => {
+                const source = document.getElementById(sourceElement);
+                const textToCopy = sourceAttribute === 'innerText' 
+                    ? source.querySelector('p.text-white')?.innerText
+                    : source.dataset[sourceAttribute];
+                if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
             });
-        }
-        const translateDocBtn = document.getElementById('translateDocBtn');
-        if(translateDocBtn) {
-            translateDocBtn.addEventListener('click', async function() {
-                if (!canLoggedInUserUseFeature('translate', 'translate')) return;
-                const outputContainer = document.getElementById('docTranslationOutput');
-                const textToTranslate = outputContainer.dataset.originalText;
-                if (!textToTranslate) {
-                    showAlert('No document text found. Please upload a file first.', 'error');
-                    return;
-                }
-                this.disabled = true;
-                const spinner = document.getElementById('translateDocSpinner');
-                spinner.classList.remove('hidden');
-                outputContainer.innerHTML = `<p class="text-gray-400 text-sm">Translating document...</p>`;
-                document.getElementById('copyDocBtn').classList.add('hidden');
-                document.getElementById('downloadTranslationBtn').classList.add('hidden');
-                pauseInactivityTimer(); 
-                try {
-                    const targetLangName = document.getElementById('docTargetLanguage').selectedOptions[0].text;
-                    const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text.\n\n"${textToTranslate}"`;
-                    const translation = await callGeminiAPI(prompt);
-                    outputContainer.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
-                    outputContainer.dataset.translatedText = translation;
-                    document.getElementById('copyDocBtn').classList.remove('hidden');
-                    document.getElementById('downloadTranslationBtn').classList.remove('hidden');
-                    await incrementFeatureUsage('translate');
-                } catch (err) {
-                    outputContainer.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
-                } finally {
-                    this.disabled = false;
-                    spinner.classList.add('hidden');
-                    resumeInactivityTimer(); 
-                }
-            });
-        }
-        const copyTextBtn = document.getElementById('copyTextBtn');
-        if (copyTextBtn) copyTextBtn.addEventListener('click', () => {
-            const textToCopy = document.getElementById('textOutput').querySelector('p.text-white')?.innerText;
-            if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
-        });
-        const copySummaryBtn = document.getElementById('copySummaryBtn');
-        if (copySummaryBtn) copySummaryBtn.addEventListener('click', () => {
-            const textToCopy = document.getElementById('summaryOutput').getAttribute('data-raw-summary');
-            if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
-        });
-        const copyDocBtn = document.getElementById('copyDocBtn');
-        if(copyDocBtn) copyDocBtn.addEventListener('click', () => {
-            const textToCopy = document.getElementById('docTranslationOutput').dataset.translatedText;
-            if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
-        });
-        const downloadTranslationBtn = document.getElementById('downloadTranslationBtn');
-        if(downloadTranslationBtn) downloadTranslationBtn.addEventListener('click', () => {
+        };
+        
+        setupCopyButton('copyTextBtn', 'textOutput');
+        setupCopyButton('copySummaryBtn', 'summaryOutput', 'rawSummary');
+        setupCopyButton('copyDocBtn', 'docTranslationOutput', 'translatedText');
+
+        document.getElementById('downloadTranslationBtn')?.addEventListener('click', () => {
             const textToDownload = document.getElementById('docTranslationOutput').dataset.translatedText;
             const originalFilename = document.getElementById('docFileNameDisplay').textContent.split('.').slice(0, -1).join('.');
-            if (textToDownload) {
-                downloadContent(textToDownload, `${originalFilename}_translated.txt`);
-            }
+            if (textToDownload) downloadContent(textToDownload, `${originalFilename}_translated.txt`);
         });
     });
   </script>
