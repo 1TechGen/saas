@@ -1670,7 +1670,7 @@
         }
     }
     
-    // --- UI AND HELPER FUNCTIONS ---
+    // --- UI AND HELPER FUNCTIONS (No change needed for most) ---
     function updateMetaTags(pageId) {
         const meta = pageMetaInfo[pageId];
         document.title = meta ? meta.title : "Tech_Gen - AI Platform";
@@ -1696,7 +1696,8 @@
         if (currentUser) {
             try {
                 await signOut(auth);
-                // The onAuthStateChanged listener will handle the rest
+                showAlert('You have been logged out.', 'info');
+                // The onAuthStateChanged listener will handle UI updates
             } catch(error) {
                 showAlert(`Logout failed: ${error.message}`, 'error');
             }
@@ -1798,6 +1799,7 @@
             const newURL = `${cleanPath}#${pageId}`;
             const pageTitle = pageMetaInfo[pageId]?.title || `Tech_Gen - ${pageId}`;
             if (window.location.hash !== `#${pageId}`) {
+                // Use replaceState only for the very first load or when handling redirects
                 if (isInitialLoad || (pageId === 'resetPassword' && getPasswordResetCodeFromUrl())) {
                     window.history.replaceState({ page: pageId }, pageTitle, newURL);
                 } else {
@@ -2119,37 +2121,19 @@
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
     activityEvents.forEach(eventName => window.addEventListener(eventName, resetInactivityTimer, true));
     
-    // **FINAL, ROBUST onAuthStateChanged listener**
-    // Its only job is to sync state for non-form actions (page load, social login, logout)
+    // Firebase Auth State Change Listener is the main driver
     onAuthStateChanged(auth, async (user) => {
-        let needsLoginFlow = false;
+        const wasLoggedIn = !!currentUser;
         if (user) {
-            // Check if user is from a social provider, as they are auto-verified
-            const isSocialProvider = user.providerData.some(
-                (pd) => pd.providerId !== 'password'
-            );
-
-            if (user.emailVerified || isSocialProvider) {
-                 // Check if this is a new login session
-                 if (!currentUser) {
-                     needsLoginFlow = true;
-                 }
-                 currentUser = await loadUserProfile(user);
-                 if (needsLoginFlow) {
-                     handleSuccessfulLogin();
-                 }
-            } else {
-                // User exists but is unverified (from a previous session), treat as logged out.
-                currentUser = null;
-                await signOut(auth); // Ensure they are fully logged out
+            // Note: We don't check emailVerified here anymore.
+            // The login form itself now handles that logic.
+            // This listener just syncs the application state.
+            currentUser = await loadUserProfile(user);
+            if (!wasLoggedIn && user.emailVerified) { // This is a new login session for a verified user
+                handleSuccessfulLogin();
             }
         } else {
-            // User is null, definitely logged out.
-            if (currentUser) {
-                // This means a logout just happened.
-                showPage('home'); // Redirect to home on logout
-                showAlert('You have been logged out.', 'info');
-            }
+            // User is logged out
             currentUser = null;
         }
         updateAuthUI();
@@ -2167,7 +2151,6 @@
     });
     
     // --- FORM EVENT LISTENERS ---
-    // **FINAL, ROBUST LOGIN HANDLER**
     const loginFormEl = document.getElementById('loginForm');
     if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -2181,29 +2164,27 @@
         submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing In...`;
 
         try {
-            // Step 1: Attempt to sign in.
+            // Step 1: Attempt to sign in the user. This may return a stale user object.
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            
-            // Step 2: **CRUCIAL** - Force a reload of the user's data from the server.
-            await userCredential.user.reload();
-            
-            // Step 3: Get the reloaded user object from the central auth instance.
-            const freshUser = auth.currentUser; 
+            const user = userCredential.user;
 
-            // Step 4: Check the reloaded user's verification status.
-            if (freshUser && freshUser.emailVerified) {
-                // Step 4.1: If verified, take control of the entire login flow.
-                // This prevents the onAuthStateChanged listener from causing a race condition.
-                currentUser = await loadUserProfile(freshUser); // Manually set global state
-                updateAuthUI(); // Manually update the UI
-                handleSuccessfulLogin(); // Manually trigger the success flow
+            // Step 2: **CRUCIAL FIX** - Force a reload of the user's data from the server.
+            await user.reload();
+
+            // Step 3: Now check the refreshed user object for verification status.
+            // It's safest to check auth.currentUser as it's guaranteed to be the reloaded one.
+            if (auth.currentUser && auth.currentUser.emailVerified) {
+                // Success! The onAuthStateChanged listener will now receive the
+                // verified user and handle the UI updates and redirection.
+                // No need to do anything else here.
             } else {
-                // Step 4.2: Email is still not verified. Show error and sign out.
+                // If the email is STILL not verified after reloading, sign them out and show the error.
                 await signOut(auth);
                 errorEl.textContent = 'Please verify your email before logging in. Check your inbox for a verification link.';
                 errorEl.classList.remove('hidden');
             }
         } catch (error) {
+            // This will catch errors like wrong password, user not found, etc.
             errorEl.textContent = getAuthErrorMessage(error.code);
             errorEl.classList.remove('hidden');
         } finally {
@@ -2256,12 +2237,11 @@
         }
     });
 
-    // Google Sign-In is handled by the updated onAuthStateChanged listener
     const handleGoogleSignIn = async () => {
         const provider = new GoogleAuthProvider();
         try {
-            await signInWithPopup(auth, provider);
-            // onAuthStateChanged will now correctly handle the rest.
+            const result = await signInWithPopup(auth, provider);
+            // onAuthStateChanged will handle the rest, including profile creation if new
         } catch (error) {
             showAlert(getAuthErrorMessage(error.code), 'error');
         }
