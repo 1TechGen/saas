@@ -2125,14 +2125,12 @@
     onAuthStateChanged(auth, async (user) => {
         const wasLoggedIn = !!currentUser;
         if (user) {
-            if (user.emailVerified) {
-                currentUser = await loadUserProfile(user);
-                if (!wasLoggedIn) { // This is a new login session
-                    handleSuccessfulLogin();
-                }
-            } else {
-                // If user is not verified, keep them logged out of the app state
-                currentUser = null;
+            // Note: We don't check emailVerified here anymore.
+            // The login form itself now handles that logic.
+            // This listener just syncs the application state.
+            currentUser = await loadUserProfile(user);
+            if (!wasLoggedIn && user.emailVerified) { // This is a new login session for a verified user
+                handleSuccessfulLogin();
             }
         } else {
             // User is logged out
@@ -2166,14 +2164,27 @@
         submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing In...`;
 
         try {
+            // Step 1: Attempt to sign in the user. This may return a stale user object.
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            if (!userCredential.user.emailVerified) {
-                await signOut(auth); // Sign out the unverified user
+            const user = userCredential.user;
+
+            // Step 2: **CRUCIAL FIX** - Force a reload of the user's data from the server.
+            await user.reload();
+
+            // Step 3: Now check the refreshed user object for verification status.
+            // It's safest to check auth.currentUser as it's guaranteed to be the reloaded one.
+            if (auth.currentUser && auth.currentUser.emailVerified) {
+                // Success! The onAuthStateChanged listener will now receive the
+                // verified user and handle the UI updates and redirection.
+                // No need to do anything else here.
+            } else {
+                // If the email is STILL not verified after reloading, sign them out and show the error.
+                await signOut(auth);
                 errorEl.textContent = 'Please verify your email before logging in. Check your inbox for a verification link.';
                 errorEl.classList.remove('hidden');
             }
-            // If successful & verified, onAuthStateChanged will handle the rest.
         } catch (error) {
+            // This will catch errors like wrong password, user not found, etc.
             errorEl.textContent = getAuthErrorMessage(error.code);
             errorEl.classList.remove('hidden');
         } finally {
