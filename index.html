@@ -55,33 +55,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <!-- Firebase SDKs -->
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    // Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
   
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyApRTJz5zunEpL6tRyOlzmcyvIJsi4pn30",
-      authDomain: "project1-4140a.firebaseapp.com",
-      projectId: "project1-4140a",
-      storageBucket: "project1-4140a.firebasestorage.app",
-      messagingSenderId: "657968169730",
-      appId: "1:657968169730:web:146f05d515ea832136781b",
-      measurementId: "G-6JLSPZ6BG8"
-    };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    // You can export app if needed by other scripts, but for a single script file, it's not necessary.
-    window.firebaseApp = app;
-  </script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js"></script>
-
-    
   <style>
     /* New Color Palette & Global Styles */
     body {
@@ -680,22 +654,18 @@
                         <button type="submit" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition focus:outline-none focus:ring-2 focus:ring-[#A800FF] focus:ring-offset-2 focus:ring-offset-[#0D0D0D] flex items-center justify-center">
                             Sign In
                         </button>
-                    </form>
-                    <div class="px-6 py-4 bg-black/30">
                         <div class="flex items-center my-2">
-                            <hr class="flex-grow border-t border-gray-700">
-                            <span class="px-3 text-gray-400 text-sm">OR</span>
-                            <hr class="flex-grow border-t border-gray-700">
+                            <hr class="flex-grow border-t border-gray-700"><span class="px-3 text-gray-500 text-xs">OR</span><hr class="flex-grow border-t border-gray-700">
                         </div>
-                        <button type="button" id="googleLoginBtn" class="w-full bg-white text-black py-2 px-4 rounded-md hover:bg-gray-200 transition focus:outline-none flex items-center justify-center mb-4">
-                            <svg class="w-5 h-5 mr-2" viewBox="0 0 48 48"><defs><path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></defs><clipPath id="b"><use xlink:href="#a" overflow="visible"/></clipPath><path clip-path="url(#b)" fill="#FBBC05" d="M0 37V11l17 13z"/><path clip-path="url(#b)" fill="#EA4335" d="M0 11l17 13 7-6.1L48 14V0H0z"/><path clip-path="url(#b)" fill="#34A853" d="M0 37l30-23 7.9 1L48 0v48H0z"/><path clip-path="url(#b)" fill="#4285F4" d="M48 48L17 24l-4-3 35-10z"/></svg>
-                            Sign In with Google
+                        <button type="button" id="googleSignInBtn" class="w-full bg-white text-black py-2 px-4 rounded-md hover:bg-gray-200 transition focus:outline-none flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_17_40)"><path d="M47.532 24.5528C47.532 22.9214 47.3899 21.3214 47.1179 19.75H24.48V28.9181H37.4434C36.9244 31.8857 35.1772 34.3357 32.6411 36.0043V42.22H40.2456C44.7554 38.2257 47.532 31.9671 47.532 24.5528Z" fill="#4285F4"></path><path d="M24.48 48.0001C30.9527 48.0001 36.4116 45.8629 40.2456 42.22L32.6411 36.0043C30.3644 37.5314 27.6181 38.4557 24.48 38.4557C18.6181 38.4557 13.7127 34.6186 11.9316 29.5714H4.14V35.9529C7.99021 43.4371 15.6559 48.0001 24.48 48.0001Z" fill="#34A853"></path><path d="M11.9316 29.5714C11.5244 28.3243 11.2827 27.0129 11.2827 25.6414C11.2827 24.27 11.5244 22.9586 11.9316 21.7114V15.4929H4.14C2.85357 18.1071 2.08008 21.2743 2.08008 24.78C2.08008 28.2857 2.85357 31.4529 4.14 34.0671L11.9316 29.5714Z" fill="#FBBC05"></path><path d="M24.48 9.54429C28.0241 9.54429 31.3414 10.76 33.733 13.06L40.4487 6.34429C36.273 2.41714 30.7716 0 24.48 0C15.6559 0 7.99021 4.56286 4.14 12.0471L11.9316 18.4286C13.7127 13.3814 18.6181 9.54429 24.48 9.54429Z" fill="#EA4335"></path></g><defs><clipPath id="clip0_17_40"><rect width="48" height="48" fill="white"></rect></clipPath></defs></svg>
+                            Sign in with Google
                         </button>
-                        <div class="text-center">
-                            <button type="button" onclick="showPage('register')" class="text-[#A800FF] font-medium hover:text-[#D480FF] focus:outline-none">
-                                Create an account
-                            </button>
-                        </div>
+                    </form>
+                    <div class="px-6 py-4 bg-black/30 text-center">
+                        <button type="button" onclick="showPage('register')" class="text-[#A800FF] font-medium hover:text-[#D480FF] focus:outline-none">
+                            Create an account
+                        </button>
                     </div>
                 </div>
             </div>
@@ -725,22 +695,18 @@
                         <button type="submit" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition focus:outline-none focus:ring-2 focus:ring-[#A800FF] focus:ring-offset-2 focus:ring-offset-[#0D0D0D]">
                             Sign Up
                         </button>
-                    </form>
-                     <div class="px-6 py-4 bg-black/30">
-                        <div class="flex items-center my-2">
-                            <hr class="flex-grow border-t border-gray-700">
-                            <span class="px-3 text-gray-400 text-sm">OR</span>
-                            <hr class="flex-grow border-t border-gray-700">
+                         <div class="flex items-center my-2">
+                            <hr class="flex-grow border-t border-gray-700"><span class="px-3 text-gray-500 text-xs">OR</span><hr class="flex-grow border-t border-gray-700">
                         </div>
-                        <button type="button" id="googleRegisterBtn" class="w-full bg-white text-black py-2 px-4 rounded-md hover:bg-gray-200 transition focus:outline-none flex items-center justify-center mb-4">
-                            <svg class="w-5 h-5 mr-2" viewBox="0 0 48 48"><defs><path id="a-reg" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></defs><clipPath id="b-reg"><use xlink:href="#a-reg" overflow="visible"/></clipPath><path clip-path="url(#b-reg)" fill="#FBBC05" d="M0 37V11l17 13z"/><path clip-path="url(#b-reg)" fill="#EA4335" d="M0 11l17 13 7-6.1L48 14V0H0z"/><path clip-path="url(#b-reg)" fill="#34A853" d="M0 37l30-23 7.9 1L48 0v48H0z"/><path clip-path="url(#b-reg)" fill="#4285F4" d="M48 48L17 24l-4-3 35-10z"/></svg>
-                            Sign Up with Google
+                        <button type="button" id="googleSignUpBtn" class="w-full bg-white text-black py-2 px-4 rounded-md hover:bg-gray-200 transition focus:outline-none flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_17_40)"><path d="M47.532 24.5528C47.532 22.9214 47.3899 21.3214 47.1179 19.75H24.48V28.9181H37.4434C36.9244 31.8857 35.1772 34.3357 32.6411 36.0043V42.22H40.2456C44.7554 38.2257 47.532 31.9671 47.532 24.5528Z" fill="#4285F4"></path><path d="M24.48 48.0001C30.9527 48.0001 36.4116 45.8629 40.2456 42.22L32.6411 36.0043C30.3644 37.5314 27.6181 38.4557 24.48 38.4557C18.6181 38.4557 13.7127 34.6186 11.9316 29.5714H4.14V35.9529C7.99021 43.4371 15.6559 48.0001 24.48 48.0001Z" fill="#34A853"></path><path d="M11.9316 29.5714C11.5244 28.3243 11.2827 27.0129 11.2827 25.6414C11.2827 24.27 11.5244 22.9586 11.9316 21.7114V15.4929H4.14C2.85357 18.1071 2.08008 21.2743 2.08008 24.78C2.08008 28.2857 2.85357 31.4529 4.14 34.0671L11.9316 29.5714Z" fill="#FBBC05"></path><path d="M24.48 9.54429C28.0241 9.54429 31.3414 10.76 33.733 13.06L40.4487 6.34429C36.273 2.41714 30.7716 0 24.48 0C15.6559 0 7.99021 4.56286 4.14 12.0471L11.9316 18.4286C13.7127 13.3814 18.6181 9.54429 24.48 9.54429Z" fill="#EA4335"></path></g><defs><clipPath id="clip0_17_40"><rect width="48" height="48" fill="white"></rect></clipPath></defs></svg>
+                            Sign up with Google
                         </button>
-                        <div class="text-center">
-                            <button type="button" onclick="showPage('login')" class="text-[#A800FF] font-medium hover:text-[#D480FF] focus:outline-none">
-                                Already have an account? Sign in
-                            </button>
-                        </div>
+                    </form>
+                    <div class="px-6 py-4 bg-black/30 text-center">
+                        <button type="button" onclick="showPage('login')" class="text-[#A800FF] font-medium hover:text-[#D480FF] focus:outline-none">
+                            Already have an account? Sign in
+                        </button>
                     </div>
                 </div>
             </div>
@@ -755,7 +721,7 @@
                     <form id="forgotPasswordForm" class="p-6 space-y-4">
                         <div id="forgotPasswordError" class="hidden text-red-400 text-sm bg-red-500/20 p-2 rounded"></div>
                         <div id="forgotPasswordSuccess" class="hidden text-green-400 bg-green-500/20 p-2 rounded mb-4">
-                            If an account exists for this email, a password reset link has been sent. Please check your inbox.
+                            If an account exists for this email, a password reset link has been sent.
                         </div>
                         <div>
                             <label for="forgotPasswordEmail" class="block text-sm font-medium text-gray-300 mb-1">Enter your account email</label>
@@ -763,6 +729,33 @@
                         </div>
                         <button type="submit" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition focus:outline-none focus:ring-2 focus:ring-[#A800FF] focus:ring-offset-2 focus:ring-offset-[#0D0D0D]">
                             Send Reset Link
+                        </button>
+                    </form>
+                    <div class="px-6 py-4 bg-black/30 text-center">
+                        <button type="button" onclick="showPage('login')" class="text-[#A800FF] font-medium hover:text-[#D480FF] focus:outline-none">
+                            Back to Sign In
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resetPassword" class="page">
+            <div class="container mx-auto px-4 py-8 max-w-md">
+                <div class="bg-[#1A1A1A]/90 backdrop-blur-sm border border-gray-800 rounded-lg shadow-lg overflow-hidden">
+                    <div class="gradient-bg py-4 px-6">
+                        <h2 class="text-2xl font-bold text-white">Set New Password</h2>
+                    </div>
+                    <form id="resetPasswordForm" class="p-6 space-y-4">
+                        <div id="resetPasswordError" class="hidden text-red-400 text-sm bg-red-500/20 p-2 rounded"></div>
+                        <p class="text-gray-300 text-sm">Please enter a new password for your account.</p>
+                        <div>
+                            <label for="resetNewPassword" class="block text-sm font-medium text-gray-300 mb-1">New Password</label>
+                            <input type="password" id="resetNewPassword" name="newPassword" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-transparent text-white" required minlength="6">
+                            <p class="text-xs text-gray-500 mt-1">Minimum 6 characters.</p>
+                        </div>
+                         <button type="submit" class="w-full bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition focus:outline-none focus:ring-2 focus:ring-[#A800FF] focus:ring-offset-2 focus:ring-offset-[#0D0D0D]">
+                            Update Password
                         </button>
                     </form>
                     <div class="px-6 py-4 bg-black/30 text-center">
@@ -1532,6 +1525,30 @@
   </footer>
 
   <script type="module">
+    // --- FIREBASE SDK IMPORTS ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { 
+        getAuth, 
+        onAuthStateChanged,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        sendEmailVerification,
+        signOut,
+        sendPasswordResetEmail,
+        confirmPasswordReset,
+        GoogleAuthProvider,
+        signInWithPopup,
+        getAdditionalUserInfo
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { 
+        getFirestore,
+        doc,
+        getDoc,
+        setDoc,
+        updateDoc,
+        increment 
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
     // Initialize PDF.js worker
     if (typeof pdfjsLib !== 'undefined') {
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
@@ -1539,25 +1556,31 @@
         console.error("pdf.js library not loaded. PDF functionality will be affected.");
     }
 
-    // --- FIREBASE SDK IMPORTS ---
-    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile, sendEmailVerification, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-
     // --- API KEYS AND CONFIGURATION ---
     const GEMINI_API_KEY = "AIzaSyBkqwiILRTyfMCfzulzRR1oY8lowy63WOs"; 
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
-    
     const RAZORPAY_KEY_ID = "rzp_live_xoN2xNuHMZnCup";
-    
-    // --- FIREBASE INITIALIZATION ---
-    const firebaseApp = window.firebaseApp;
-    const auth = getAuth(firebaseApp);
-    const db = getFirestore(firebaseApp);
-    const googleProvider = new GoogleAuthProvider();
+
+    // --- FIREBASE CONFIGURATION ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyApRTJz5zunEpL6tRyOlzmcyvIJsi4pn30",
+      authDomain: "project1-4140a.firebaseapp.com",
+      projectId: "project1-4140a",
+      storageBucket: "project1-4140a.firebasestorage.app",
+      messagingSenderId: "657968169730",
+      appId: "1:657968169730:web:146f05d515ea832136781b",
+      measurementId: "G-6JLSPZ6BG8"
+    };
+
+    // Initialize Firebase and export auth/db instances
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
     // --- APPLICATION STATE AND CONSTANTS ---
     let currentUser = null; 
     let inactivityTimer;
+    let passwordResetCode = null; // To store oobCode from URL
     const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
     const GUEST_TOTAL_USAGE_LIMIT = 10; 
     const FREE_TIER_LIMITS = { 
@@ -1567,6 +1590,13 @@
     };
     let guestUsage = JSON.parse(sessionStorage.getItem('techGenGuestUsage')) || { total: 0 };
     
+    // Maps JS feature names to Firestore field names
+    const featureToColumnMap = {
+        imageGen: 'image_gen_count',
+        translate: 'translate_count',
+        summarize: 'summarize_count'
+    };
+
     const plansData = {
         free: { name: "Free", priceDisplay: "₹0/month", priceAmount: 0, currency: "INR", id: 'free', description: "Access to basic features with monthly limits. Perfect for trying out our tools." },
         pro: { name: "Pro", priceDisplay: "₹499/month", priceAmount: 49900, currency: "INR", id: 'pro', description: "Unlimited access to all our AI tools. Ideal for professionals and power users." },
@@ -1590,42 +1620,57 @@
         privacyPolicyPage: { title: "Privacy Policy - Tech_Gen", description: "Read the Privacy Policy for Tech_Gen to understand how we collect, use, and protect your personal information." },
         termsOfServicePage: { title: "Terms of Service - Tech_Gen", description: "Review the Terms of Service for using the Tech_Gen platform and its AI-powered tools." },
         paymentPage: { title: "Complete Purchase - Tech_Gen", description: "Securely complete your subscription purchase for Tech_Gen AI tools."},
-        forgotPassword: { title: "Forgot Password - Tech_Gen", description: "Reset your Tech_Gen account password."}
+        forgotPassword: { title: "Forgot Password - Tech_Gen", description: "Reset your Tech_Gen account password."},
+        resetPassword: { title: "Set New Password - Tech_Gen", description: "Set a new password for your Tech_Gen account."}
     };
 
-    const authPageIds = ['login', 'register', 'forgotPassword', 'paymentPage'];
+    const authPageIds = ['login', 'register', 'forgotPassword', 'resetPassword', 'paymentPage'];
     
-    // --- FIREBASE-SPECIFIC FUNCTIONS ---
-    async function createUserProfileInFirestore(user, additionalData = {}) {
-        const userRef = doc(db, "users", user.uid);
-        const profileData = {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName || additionalData.fullName,
-            createdAt: serverTimestamp(),
-            plan: 'free',
-            usageCounts: { imageGen: 0, translate: 0, summarize: 0 },
-            ...additionalData
-        };
-        await setDoc(userRef, profileData);
-        return profileData;
-    }
-
+    // --- [FIREBASE] Load User Profile from Firestore ---
     async function loadUserProfile(user) {
         if (!user) return null;
-        const userRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(userRef);
 
-        if (docSnap.exists()) {
-            return { auth: user, profile: docSnap.data() };
+        const profileRef = doc(db, 'profiles', user.uid);
+        const profileSnap = await getDoc(profileRef);
+
+        if (profileSnap.exists()) {
+            const profileData = profileSnap.data();
+            return {
+                id: user.uid,
+                email: user.email,
+                name: profileData.fullName || user.displayName || user.email.split('@')[0],
+                plan: profileData.plan || 'free',
+                usageCounts: profileData.plan === 'free' 
+                    ? {
+                        imageGen: profileData.image_gen_count || 0,
+                        translate: profileData.translate_count || 0,
+                        summarize: profileData.summarize_count || 0
+                      }
+                    : {}
+            };
         } else {
-            console.warn("User profile not found in Firestore for UID:", user.uid, "- creating one.");
-            const newProfileData = await createUserProfileInFirestore(user, { fullName: user.displayName });
-            return { auth: user, profile: newProfileData };
+            // Profile doesn't exist, create a default one (e.g., for new Google sign-in)
+            const newProfile = {
+                fullName: user.displayName || user.email.split('@')[0],
+                email: user.email,
+                plan: 'free',
+                image_gen_count: 0,
+                translate_count: 0,
+                summarize_count: 0,
+                createdAt: new Date().toISOString()
+            };
+            await setDoc(profileRef, newProfile);
+            return {
+                id: user.uid,
+                email: user.email,
+                name: newProfile.fullName,
+                plan: 'free',
+                usageCounts: { imageGen: 0, translate: 0, summarize: 0 }
+            };
         }
     }
-
-    // --- UI AND HELPER FUNCTIONS ---
+    
+    // --- UI AND HELPER FUNCTIONS (No change needed for most) ---
     function updateMetaTags(pageId) {
         const meta = pageMetaInfo[pageId];
         document.title = meta ? meta.title : "Tech_Gen - AI Platform";
@@ -1636,7 +1681,7 @@
       if (typeof unsafe !== 'string') unsafe = String(unsafe === null || unsafe === undefined ? '' : unsafe);
       return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
-    function showAlert(message, type = 'info', duration = 4000) { 
+    window.showAlert = function(message, type = 'info', duration = 4000) { 
       document.querySelectorAll('.alert-message').forEach(alert => alert.remove());
       const alert = document.createElement('div');
       alert.className = `alert-message alert-${type}`; 
@@ -1645,11 +1690,23 @@
       setTimeout(() => {
         alert.style.opacity = '0';
         setTimeout(() => alert.remove(), 300); 
-      }, type === 'error' ? Math.max(duration, 10000) : duration); 
+      }, type === 'error' ? Math.max(duration, 7000) : duration); 
+    }
+    async function logoutUser() {
+        if (currentUser) {
+            try {
+                await signOut(auth);
+                showAlert('You have been logged out.', 'info');
+                // The onAuthStateChanged listener will handle UI updates
+            } catch(error) {
+                showAlert(`Logout failed: ${error.message}`, 'error');
+            }
+        }
     }
     function logoutDueToInactivity() {
         if (currentUser) {
-            signOut(auth); 
+            showAlert('You have been logged out due to inactivity. Please log in to continue.', 'info', 8000);
+            logoutUser();
         }
     }
     function resetInactivityTimer() {
@@ -1661,26 +1718,19 @@
     function pauseInactivityTimer() { clearTimeout(inactivityTimer); }
     function resumeInactivityTimer() { resetInactivityTimer(); }
     
-    async function handleSuccessfulLogin(user) {
-        if (currentUser && currentUser.auth.uid === user.uid) {
-            // User is already logged in, no need to show welcome message again
-            return;
-        }
-
-        currentUser = await loadUserProfile(user);
-        updateAuthUI();
-        resetInactivityTimer();
-        showAlert(`Welcome, ${escapeHtml(currentUser.profile.displayName)}!`, 'success');
+    function handleSuccessfulLogin() {
+        if (!currentUser) return; 
+        showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
 
         const pendingPlan = sessionStorage.getItem('pendingPlan');
         const intendedPage = sessionStorage.getItem('intendedPage');
         
-        sessionStorage.removeItem('pendingPlan');
-        sessionStorage.removeItem('intendedPage');
+        if (pendingPlan) sessionStorage.removeItem('pendingPlan');
+        if (intendedPage) sessionStorage.removeItem('intendedPage');
 
         if (pendingPlan) {
             initiatePayment(pendingPlan);
-        } else if (intendedPage && !authPageIds.includes(intendedPage)) {
+        } else if (intendedPage && intendedPage !== 'login' && intendedPage !== 'register') {
             showPage(intendedPage);
         } else {
             showPage('home');
@@ -1688,11 +1738,11 @@
     }
     
     function populateAccountPage() {
-        if (currentUser && currentUser.profile) {
-            document.getElementById('accountName').textContent = escapeHtml(currentUser.profile.displayName);
-            document.getElementById('accountEmail').textContent = escapeHtml(currentUser.auth.email);
+        if (currentUser) {
+            document.getElementById('accountName').textContent = escapeHtml(currentUser.name);
+            document.getElementById('accountEmail').textContent = escapeHtml(currentUser.email);
             
-            const planDetails = plansData[currentUser.profile.plan];
+            const planDetails = plansData[currentUser.plan];
             if (planDetails) {
                 document.getElementById('accountPlan').textContent = escapeHtml(planDetails.name);
                 document.getElementById('accountPlanDescription').textContent = escapeHtml(planDetails.description);
@@ -1700,8 +1750,8 @@
             const usageDetailsContainer = document.getElementById('accountUsageDetails');
             if (usageDetailsContainer) {
                 usageDetailsContainer.innerHTML = ''; 
-                if (currentUser.profile.plan === 'free') {
-                    const usage = currentUser.profile.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
+                if (currentUser.plan === 'free') {
+                    const usage = currentUser.usageCounts || { imageGen: 0, translate: 0, summarize: 0 };
                     const limits = FREE_TIER_LIMITS;
                     usageDetailsContainer.innerHTML = `
                         <p><strong>AI Image Generations:</strong> ${usage.imageGen} / ${limits.imageGen}</p>
@@ -1709,7 +1759,7 @@
                         <p><strong>Text Summarizations:</strong> ${usage.summarize} / ${limits.summarize}</p>
                         <p class="text-xs text-gray-500 mt-2">Usage limits reset monthly. Upgrade for unlimited access.</p>
                     `;
-                } else if (currentUser.profile.plan === 'pro' || currentUser.profile.plan === 'business') {
+                } else if (currentUser.plan === 'pro' || currentUser.plan === 'business') {
                     usageDetailsContainer.innerHTML = `
                         <p><strong>AI Image Generations:</strong> Unlimited</p>
                         <p><strong>Translations:</strong> Unlimited</p>
@@ -1719,8 +1769,8 @@
             }
         }
     }
-    
-    window.showPage = (pageId, isInitialLoad = false) => {
+
+    window.showPage = function(pageId, isInitialLoad = false) {
         if (pageId === 'account' && !currentUser) {
             showAlert('You must be logged in to view your account page.', 'info');
             sessionStorage.setItem('intendedPage', 'account');
@@ -1732,18 +1782,25 @@
         const authPagesWrapper = document.getElementById('auth-pages-wrapper');
         
         if (authPagesWrapper) {
-            authPagesWrapper.classList.toggle('active-auth', authPageIds.includes(pageId));
+            if (authPageIds.includes(pageId)) {
+                authPagesWrapper.classList.add('active-auth');
+            } else {
+                authPagesWrapper.classList.remove('active-auth');
+            }
         }
-
+        
         if (targetPage) {
             targetPage.classList.add('active');
             updateMetaTags(pageId);
-            if (pageId === 'account') populateAccountPage();
-            
-            const newURL = `${window.location.pathname}#${pageId}`;
+            if (pageId === 'account') {
+                populateAccountPage();
+            }
+            const cleanPath = window.location.origin + window.location.pathname;
+            const newURL = `${cleanPath}#${pageId}`;
             const pageTitle = pageMetaInfo[pageId]?.title || `Tech_Gen - ${pageId}`;
             if (window.location.hash !== `#${pageId}`) {
-                if (isInitialLoad) {
+                // Use replaceState only for the very first load or when handling redirects
+                if (isInitialLoad || (pageId === 'resetPassword' && getPasswordResetCodeFromUrl())) {
                     window.history.replaceState({ page: pageId }, pageTitle, newURL);
                 } else {
                     window.history.pushState({ page: pageId }, pageTitle, newURL);
@@ -1754,19 +1811,30 @@
             showPage('home');
         }
         window.scrollTo(0, 0);
-        document.querySelectorAll('#loginError, #registerError, #forgotPasswordError').forEach(el => {
+        document.querySelectorAll('#loginError, #registerError, #forgotPasswordError, #resetPasswordError').forEach(el => {
             el.classList.add('hidden'); el.textContent = '';
         });
-        document.querySelectorAll('#forgotPasswordSuccess').forEach(el => {
+        document.querySelectorAll('#forgotPasswordSuccess, #resetPasswordSuccess').forEach(el => {
             el.classList.add('hidden');
         });
-    };
+    }
+
+    function getPasswordResetCodeFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('oobCode');
+    }
 
     function getCurrentPageIdFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('mode') === 'resetPassword') {
+            passwordResetCode = params.get('oobCode');
+            return 'resetPassword';
+        }
         const hash = window.location.hash;
         const pageId = hash.substring(1);
         return (pageId && document.getElementById(pageId)) ? pageId : 'home';
     }
+
     function updatePricingDisplay() {
         if (plansData.pro && document.getElementById('proPlanPriceDisplay')) {
             document.getElementById('proPlanPriceDisplay').innerHTML = `${plansData.pro.priceDisplay.split('/')[0]}<span class="text-lg font-normal text-gray-400">/month</span>`;
@@ -1779,11 +1847,12 @@
         const authButtonsContainer = document.getElementById('authButtonsContainer');
         const userInfoContainer = document.getElementById('userInfoContainer');
         const userEmailDisplay = document.getElementById('userEmailDisplay');
-
-        if (currentUser && currentUser.profile) { 
+        if (!authButtonsContainer || !userInfoContainer || !userEmailDisplay) return;
+        
+        if (currentUser) { 
             authButtonsContainer.classList.add('hidden');
             userInfoContainer.classList.remove('hidden'); 
-            userEmailDisplay.textContent = `Welcome, ${escapeHtml(currentUser.profile.displayName)}!`;
+            userEmailDisplay.textContent = `Welcome, ${escapeHtml(currentUser.name)}!`;
         } else { 
             authButtonsContainer.classList.remove('hidden');
             userInfoContainer.classList.add('hidden');
@@ -1797,23 +1866,21 @@
     function canGuestUseFeature(currentPageId) {
         if (guestUsage.total < GUEST_TOTAL_USAGE_LIMIT) return true;
         
-        showAlert(`You've reached your guest usage limit. Please log in or register for more access.`, 'info');
+        showAlert(`You've reached your guest usage limit of ${GUEST_TOTAL_USAGE_LIMIT} actions. Please log in or register for more access.`, 'info');
         sessionStorage.setItem('intendedPage', currentPageId || 'home');
         showPage('login');
         return false;
     }
     function canLoggedInUserUseFeature(featureType, currentPageId) {
         if (!currentUser) return canGuestUseFeature(currentPageId); 
-        if (!currentUser.profile) return false; // Profile still loading
+        if (currentUser.plan === 'pro' || currentUser.plan === 'business') return true;
         
-        if (currentUser.profile.plan === 'pro' || currentUser.profile.plan === 'business') return true;
-        
-        if (currentUser.profile.plan === 'free') {
+        if (currentUser.plan === 'free') {
             const limit = FREE_TIER_LIMITS[featureType];
-            const currentCount = currentUser.profile.usageCounts[featureType] || 0;
+            const currentCount = currentUser.usageCounts[featureType] || 0;
             if (currentCount < limit) return true;
             
-            showAlert(`You've reached your Free plan limit for ${featureType.replace(/([A-Z])/g, ' $1').toLowerCase()}s. Upgrade for unlimited access.`, 'info');
+            showAlert(`You've reached your Free plan limit for this feature. Upgrade to a Pro plan for unlimited access.`, 'info');
             showPage('pricing');
             return false;
         }
@@ -1821,18 +1888,24 @@
     }
     
     async function incrementFeatureUsage(featureType) {
-        if (currentUser && currentUser.profile.plan === 'free') {
-            currentUser.profile.usageCounts[featureType]++;
-            const userRef = doc(db, "users", currentUser.auth.uid);
-            try {
-                await updateDoc(userRef, {
-                    [`usageCounts.${featureType}`]: increment(1)
-                });
-            } catch (error) {
-                 console.error(`Failed to update usage count for ${featureType}:`, error.message);
-            }
-        } else if (!currentUser) {
+        if (!currentUser) {
             updateGuestUsage();
+            return;
+        }
+
+        if (currentUser.plan === 'free') {
+            currentUser.usageCounts[featureType] = (currentUser.usageCounts[featureType] || 0) + 1;
+            const columnName = featureToColumnMap[featureType];
+            if (!columnName) {
+                console.error(`Invalid featureType for usage tracking: ${featureType}`);
+                return;
+            }
+            const userProfileRef = doc(db, 'profiles', currentUser.id);
+            try {
+                await updateDoc(userProfileRef, { [columnName]: increment(1) });
+            } catch (error) {
+                console.error(`Failed to update usage count for ${featureType}:`, error.message);
+            }
         }
     }
 
@@ -1865,90 +1938,80 @@
             throw error; 
         }
     }
-    
     function generateImageUrlWithPollinations(prompt, aspectRatio, style) {
         const baseUrl = "https://image.pollinations.ai/prompt/";
         let fullPrompt = style ? `${prompt}, in the style of ${style}` : prompt;
         const encodedPrompt = encodeURIComponent(fullPrompt);
         let url = baseUrl + encodedPrompt;
-        const params = new URLSearchParams({
-            width: aspectRatio === 'landscape' ? 1792 : 1024,
-            height: aspectRatio === 'portrait' ? 1792 : 1024,
-            model: 'dall-e-3',
-            nologo: 'true'
-        });
-        return `${url}?${params.toString()}`;
+        const params = new URLSearchParams();
+        if (aspectRatio === 'portrait') { params.append('width', '1024'); params.append('height', '1792'); } 
+        else if (aspectRatio === 'landscape') { params.append('width', '1792'); params.append('height', '1024'); }
+        else { params.append('width', '1024'); params.append('height', '1024'); }
+        params.append('model', 'dall-e-3'); params.append('nologo', 'true');
+        const paramString = params.toString();
+        if (paramString) { url += `?${paramString}`; }
+        return url;
     }
-
     function downloadContent(content, filename) {
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        link.href = url; link.download = filename;
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
         URL.revokeObjectURL(url);
         showAlert(`Downloaded ${filename}`, 'success');
     }
     function downloadImage(url, filename) { 
       fetch(url)
-        .then(response => response.ok ? response.blob() : Promise.reject(`Network error: ${response.status}`))
+        .then(response => {
+          if (!response.ok) { throw new Error(`Network response was not ok. Status: ${response.status}`); }
+          return response.blob();
+        })
         .then(blob => {
+          if (blob) { 
             const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob); 
-            link.download = filename;
-            document.body.appendChild(link); 
-            link.click(); 
-            document.body.removeChild(link);
+            link.href = URL.createObjectURL(blob); link.download = filename;
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
             URL.revokeObjectURL(link.href); 
             showAlert('Image downloaded successfully!', 'success');
+          }
         })
         .catch(error => {
             console.error('Download error:', error);
-            showAlert(`Download failed. Trying to open in a new tab.`, 'info');
+            showAlert(`Download failed due to browser restrictions. Trying to open in a new tab.`, 'error');
             window.open(url, '_blank');
         });
     }
     async function extractTextFromFile(file) { 
         const extension = file.name.split('.').pop().toLowerCase();
-        if (extension === 'pdf') {
-            if (typeof pdfjsLib === 'undefined') throw new Error('PDF.js library missing.');
-            return await extractTextFromPDF(file);
-        }
-        if (extension === 'docx') {
-            if (typeof mammoth === 'undefined') throw new Error('Mammoth.js library missing.');
-            return await extractTextFromDOCX(file);
-        }
+        if (extension === 'pdf') { if (typeof pdfjsLib === 'undefined') throw new Error('PDF.js library missing.'); return await extractTextFromPDF(file); }
+        if (extension === 'docx') { if (typeof mammoth === 'undefined') throw new Error('Mammoth.js library missing.'); return await extractTextFromDOCX(file); }
         if (extension === 'txt') return await extractTextFromTXT(file);
         throw new Error('Unsupported file type. Please use PDF, DOCX, or TXT.');
     }
     async function extractTextFromPDF(file) { 
-        const fileReader = new FileReader();
         return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
             fileReader.onload = async function() {
                 try {
                     const typedarray = new Uint8Array(this.result);
                     const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                    const textPromises = [];
+                    let fullText = '';
                     for (let i = 1; i <= pdf.numPages; i++) {
-                        textPromises.push(pdf.getPage(i).then(page => page.getTextContent()));
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        fullText += textContent.items.map(item => item.str).join(' ') + '\n';
                     }
-                    const allTextContents = await Promise.all(textPromises);
-                    const fullText = allTextContents.map(tc => tc.items.map(item => item.str).join(' ')).join('\n');
                     resolve(fullText.trim());
-                } catch (e) { 
-                    reject(new Error("Could not extract text from PDF. The file might be an image-only PDF.")); 
-                }
+                } catch (e) { reject(new Error("Could not extract text from PDF. The file might be corrupted or an image-only PDF.")); }
             };
             fileReader.onerror = () => reject(new Error("Error reading PDF file."));
             fileReader.readAsArrayBuffer(file);
         });
     }
     async function extractTextFromDOCX(file) { 
-        const fileReader = new FileReader();
         return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
             fileReader.onload = function() {
                 mammoth.extractRawText({arrayBuffer: this.result})
                     .then(result => resolve(result.value.trim()))
@@ -1961,42 +2024,39 @@
     async function extractTextFromTXT(file) { 
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
-            fileReader.onload = () => resolve(fileReader.result.trim());
+            fileReader.onload = function() { resolve(this.result.trim()); };
             fileReader.onerror = () => reject(new Error("Error reading TXT file."));
             fileReader.readAsText(file);
         });
     }
-    window.initiatePayment = (planId) => {
+    window.initiatePayment = function(planId) {
         const planToPurchase = plansData[planId];
-        if (!planToPurchase) { 
-            showAlert('Invalid plan selected.', 'error'); return; 
-        }
-        if (planId === 'business' && !planToPurchase.priceAmount) { 
-            showPage('contact');
-            showAlert('For Business plans, please contact our sales team.', 'info'); return;
-        }
+        if (!planToPurchase) { showAlert('Invalid plan selected.', 'error'); return; }
+        if (planId === 'business' && !planToPurchase.priceAmount) { showPage('contact'); showAlert('For Business plans, please contact our sales team.', 'info'); return; }
         if (!currentUser) { 
             sessionStorage.setItem('pendingPlan', planId); 
             sessionStorage.setItem('intendedPage', 'paymentPage'); 
             showAlert('Please log in or register to purchase a plan.', 'info');
-            showPage('login'); return;
+            showPage('login');
+            return;
         }
         document.getElementById('paymentPlanName').textContent = planToPurchase.name;
         document.getElementById('paymentPlanPrice').textContent = planToPurchase.priceDisplay;
         document.getElementById('paymentForm').dataset.planId = planId;
-        
         const cardNameInput = document.getElementById('cardNameInput');
         const emailInput = document.getElementById('emailInput');
-        if (cardNameInput && currentUser.profile.displayName) cardNameInput.value = currentUser.profile.displayName;
-        if (emailInput && currentUser.auth.email) emailInput.value = currentUser.auth.email;
-        
+        if (cardNameInput && currentUser.name) cardNameInput.value = currentUser.name;
+        if (emailInput && currentUser.email) emailInput.value = currentUser.email;
         showPage('paymentPage');
     }
     
     async function handlePayment(event) {
         event.preventDefault(); 
-        const planId = event.target.dataset.planId;
+        const paymentForm = document.getElementById('paymentForm');
+        const planId = paymentForm.dataset.planId;
         const planDetails = plansData[planId];
+        if (!planDetails) { showAlert("Error: Plan details not found.", 'error'); return; }
+        if (!RAZORPAY_KEY_ID) { showAlert("Payment processor is not configured.", 'error'); return; }
         const customerName = document.getElementById('cardNameInput').value;
         const customerEmail = document.getElementById('emailInput').value;
         
@@ -2007,407 +2067,434 @@
             name: "Tech_Gen AI Solutions",
             description: `Subscription: ${planDetails.name}`,
             prefill: { name: customerName, email: customerEmail },
-            notes: { plan_id: planId, user_id: currentUser.auth.uid },
+            notes: { plan_id: planId, user_id: currentUser.id },
             theme: { color: "#6C00FF" },
             handler: async function (response) {
-                showAlert(`Payment Successful! Updating your plan...`, 'info');
-                const userRef = doc(db, "users", currentUser.auth.uid);
+                showAlert(`Payment Successful! Updating your plan...`, 'info', 6000);
+                
+                const userProfileRef = doc(db, 'profiles', currentUser.id);
                 try {
-                    await updateDoc(userRef, { plan: planDetails.id });
-                    currentUser.profile.plan = planDetails.id;
+                    await updateDoc(userProfileRef, { plan: planDetails.id });
+                    
+                    currentUser.plan = planDetails.id;
+                    currentUser.usageCounts = {};
+                    
                     updateAuthUI();
-                    showAlert(`Your ${planDetails.name} plan is now active!`, 'success');
+                    showAlert(`Your ${planDetails.name} plan is now active!`, 'success', 8000);
                     showPage('account'); 
-                } catch(error) {
-                    showAlert(`Payment successful, but we couldn't update your plan. Please contact support.`, 'error');
+                } catch (error) {
+                    showAlert(`Payment was successful, but we couldn't update your plan. Please contact support. Error: ${error.message}`, 'error', 10000);
                 }
             },
-            modal: { ondismiss: () => showAlert("Payment cancelled.", 'info') }
+            modal: { ondismiss: () => showAlert("Payment process was cancelled.", 'info') }
         };
         try {
             const rzp = new Razorpay(options);
             rzp.on('payment.failed', (response) => showAlert(`Payment Failed: ${response.error.description}`, 'error', 10000));
             rzp.open();
         } catch (error) {
-            showAlert("Error initializing payment.", 'error');
-            console.error("Razorpay error: ", error);
+            showAlert("Error initializing Razorpay checkout.", 'error');
+            console.error("Razorpay initialization error: ", error);
+        }
+    }
+
+    function getAuthErrorMessage(errorCode) {
+        switch (errorCode) {
+            case 'auth/invalid-email': return 'Invalid email address format.';
+            case 'auth/user-not-found':
+            case 'auth/wrong-password': return 'Invalid login credentials. Please try again.';
+            case 'auth/email-already-in-use': return 'This email address is already registered.';
+            case 'auth/weak-password': return 'Password is too weak. It should be at least 6 characters.';
+            case 'auth/requires-recent-login': return 'This operation is sensitive. Please log out and log in again.';
+            case 'auth/popup-blocked': return 'Popup blocked by browser. Please allow popups for this site to sign in with Google.';
+            case 'auth/popup-closed-by-user': return 'Sign-in window was closed before completion.';
+            case 'auth/invalid-action-code': return 'Invalid or expired password reset link. Please request a new one.';
+            default:
+                console.error("Firebase Auth Error:", errorCode);
+                return 'An authentication error occurred. Please try again.';
         }
     }
     
     // --- MAIN INITIALIZATION AND EVENT LISTENERS ---
-    document.addEventListener('DOMContentLoaded', () => {
-        updatePricingDisplay(); 
-
-        const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
-        activityEvents.forEach(eventName => window.addEventListener(eventName, resetInactivityTimer, true));
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user && user.emailVerified) {
-                if (!currentUser || currentUser.auth.uid !== user.uid) {
-                    await handleSuccessfulLogin(user);
+    
+    // Set up global activity listeners
+    const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
+    activityEvents.forEach(eventName => window.addEventListener(eventName, resetInactivityTimer, true));
+    
+    // Firebase Auth State Change Listener is the main driver
+    onAuthStateChanged(auth, async (user) => {
+        const wasLoggedIn = !!currentUser;
+        if (user) {
+            if (user.emailVerified) {
+                currentUser = await loadUserProfile(user);
+                if (!wasLoggedIn) { // This is a new login session
+                    handleSuccessfulLogin();
                 }
             } else {
-                if (currentUser) { // User was logged in, but now is not (or is not verified)
-                    currentUser = null;
-                    updateAuthUI();
-                    clearTimeout(inactivityTimer);
-                    showAlert('You have been signed out.', 'info');
-                    if(getCurrentPageIdFromUrl() === 'account') showPage('home');
-                }
+                // If user is not verified, keep them logged out of the app state
+                currentUser = null;
             }
-        });
+        } else {
+            // User is logged out
+            currentUser = null;
+        }
+        updateAuthUI();
+        resetInactivityTimer();
+    });
 
-        showPage(getCurrentPageIdFromUrl(), true); 
-        window.addEventListener('popstate', () => showPage(getCurrentPageIdFromUrl()));
-        
-        // --- Form Event Listeners ---
-        const loginFormEl = document.getElementById('loginForm');
-        if (loginFormEl) {
-            loginFormEl.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                const submitButton = loginFormEl.querySelector('button[type="submit"]');
-                const email = document.getElementById('loginEmail').value.trim();
-                const password = document.getElementById('loginPassword').value.trim();
-                const errorEl = document.getElementById('loginError');
+    // Initial page load logic
+    updatePricingDisplay(); 
+    const initialPageId = getCurrentPageIdFromUrl();
+    showPage(initialPageId, true); 
 
-                errorEl.classList.add('hidden');
-                submitButton.disabled = true;
-                submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing In...`;
+    window.addEventListener('popstate', (event) => {
+        const pageIdToShow = event.state ? event.state.page : getCurrentPageIdFromUrl();
+        if (pageIdToShow) showPage(pageIdToShow);
+    });
+    
+    // --- FORM EVENT LISTENERS ---
+    const loginFormEl = document.getElementById('loginForm');
+    if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const submitButton = loginFormEl.querySelector('button[type="submit"]');
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+        const errorEl = document.getElementById('loginError');
 
-                try {
-                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                    if (!userCredential.user.emailVerified) {
-                        errorEl.textContent = 'Please verify your email before logging in. Check your inbox for the link.';
-                        errorEl.classList.remove('hidden');
-                        await signOut(auth); // Sign out user until they verify
-                    }
-                    // onAuthStateChanged will handle the successful, verified login
-                } catch (error) {
-                    errorEl.textContent = "Invalid login credentials. Please try again.";
-                    errorEl.classList.remove('hidden');
-                } finally {
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = 'Sign In';
-                }
+        errorEl.classList.add('hidden');
+        submitButton.disabled = true;
+        submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing In...`;
+
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            if (!userCredential.user.emailVerified) {
+                await signOut(auth); // Sign out the unverified user
+                errorEl.textContent = 'Please verify your email before logging in. Check your inbox for a verification link.';
+                errorEl.classList.remove('hidden');
+            }
+            // If successful & verified, onAuthStateChanged will handle the rest.
+        } catch (error) {
+            errorEl.textContent = getAuthErrorMessage(error.code);
+            errorEl.classList.remove('hidden');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Sign In';
+        }
+    });
+
+    const registerFormEl = document.getElementById('registerForm');
+    if (registerFormEl) registerFormEl.addEventListener('submit', async (event) => {
+        event.preventDefault(); 
+        const submitButton = registerFormEl.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+        const fullName = document.getElementById('registerFullName').value.trim();
+        const email = document.getElementById('registerEmail').value.trim();
+        const password = document.getElementById('registerPassword').value.trim();
+        const errorEl = document.getElementById('registerError');
+        errorEl.classList.add('hidden');
+
+        if (!fullName || !email || password.length < 6) { 
+            errorEl.textContent = 'All fields are required and password must be at least 6 characters.'; 
+            errorEl.classList.remove('hidden'); return; 
+        }
+        submitButton.disabled = true;
+        submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing Up...`;
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await setDoc(doc(db, 'profiles', user.uid), {
+                fullName: fullName, email: email, plan: 'free',
+                image_gen_count: 0, translate_count: 0, summarize_count: 0,
+                createdAt: new Date().toISOString()
             });
-        }
-
-        const registerFormEl = document.getElementById('registerForm');
-        if (registerFormEl) registerFormEl.addEventListener('submit', async (event) => {
-            event.preventDefault(); 
-            const submitButton = registerFormEl.querySelector('button[type="submit"]');
-            const { fullName, email, password } = Object.fromEntries(new FormData(event.target));
-            const errorEl = document.getElementById('registerError');
-            errorEl.classList.add('hidden');
-
-            if (!fullName || !email || password.length < 6) { 
-                errorEl.textContent = 'All fields are required and password must be at least 6 characters.'; 
-                errorEl.classList.remove('hidden'); return; 
-            }
-
-            submitButton.disabled = true;
-            submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing Up...`;
-
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, { displayName: fullName });
-                await createUserProfileInFirestore(userCredential.user, { fullName });
-                
-                await sendEmailVerification(userCredential.user);
-                showAlert('Registration successful! A verification link has been sent to your email. Please verify before logging in.', 'success', 10000);
-                
-                await signOut(auth);
-                registerFormEl.reset();
-                showPage('login');
-            } catch (error) {
-                errorEl.textContent = error.code.includes('auth/email-already-in-use') ? 'This email address is already in use.' : "Registration failed. Please try again."; 
-                errorEl.classList.remove('hidden');
-            } finally {
-                submitButton.disabled = false;
-                submitButton.innerHTML = 'Sign Up';
-            }
-        });
-        
-        async function handleGoogleSignIn() {
-            try {
-                const result = await signInWithPopup(auth, googleProvider);
-                // onAuthStateChanged will detect the new verified user and trigger handleSuccessfulLogin
-            } catch (error) {
-                console.error("Google Sign-In Error:", error);
-                showAlert(`Google Sign-In failed: ${error.message}`, 'error');
-            }
-        }
-        document.getElementById('googleLoginBtn')?.addEventListener('click', handleGoogleSignIn);
-        document.getElementById('googleRegisterBtn')?.addEventListener('click', handleGoogleSignIn);
-
-        document.getElementById('logoutButton')?.addEventListener('click', () => signOut(auth));
-
-        document.getElementById('forgotPasswordForm')?.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const submitButton = this.querySelector('button[type="submit"]');
-            const errorEl = document.getElementById('forgotPasswordError');
-            const successEl = document.getElementById('forgotPasswordSuccess');
-            errorEl.classList.add('hidden'); successEl.classList.add('hidden');
             
-            submitButton.disabled = true;
-            submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Sending...`;
-            const email = document.getElementById('forgotPasswordEmail').value;
+            await sendEmailVerification(user);
+            await signOut(auth); // Log user out until they verify
+            
+            showAlert('Registration successful! Please check your email to verify your account. You cannot log in until verified.', 'success', 10000);
+            registerFormEl.reset();
+            showPage('login');
 
-            try {
-                await sendPasswordResetEmail(auth, email);
-                successEl.classList.remove('hidden');
-            } catch (error) {
-                errorEl.textContent = "Could not send reset email. Please check the address and try again.";
-                errorEl.classList.remove('hidden');
-            } finally {
-                submitButton.disabled = false;
-                submitButton.innerHTML = 'Send Reset Link';
-            }
-        });
+        } catch (error) {
+            errorEl.textContent = getAuthErrorMessage(error.code);
+            errorEl.classList.remove('hidden');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+        }
+    });
 
-        document.getElementById('paymentForm')?.addEventListener('submit', handlePayment);
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            // onAuthStateChanged will handle the rest, including profile creation if new
+        } catch (error) {
+            showAlert(getAuthErrorMessage(error.code), 'error');
+        }
+    };
+    document.getElementById('googleSignInBtn')?.addEventListener('click', handleGoogleSignIn);
+    document.getElementById('googleSignUpBtn')?.addEventListener('click', handleGoogleSignIn);
+
+    document.getElementById('logoutButton')?.addEventListener('click', logoutUser);
+
+    const forgotPasswordFormEl = document.getElementById('forgotPasswordForm');
+    if (forgotPasswordFormEl) forgotPasswordFormEl.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+        const errorEl = document.getElementById('forgotPasswordError');
+        const successEl = document.getElementById('forgotPasswordSuccess');
+        errorEl.classList.add('hidden'); successEl.classList.add('hidden');
+        submitButton.disabled = true;
+        submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Sending...`;
+
+        const email = document.getElementById('forgotPasswordEmail').value;
+        try {
+            await sendPasswordResetEmail(auth, email);
+            successEl.classList.remove('hidden');
+        } catch (error) {
+            successEl.classList.remove('hidden');
+            console.error("Password reset error:", error);
+        } finally {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+        }
+    });
+
+    const resetPasswordFormEl = document.getElementById('resetPasswordForm');
+    if (resetPasswordFormEl) resetPasswordFormEl.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const errorEl = document.getElementById('resetPasswordError');
+        const newPassword = document.getElementById('resetNewPassword').value;
+
+        if (!passwordResetCode) {
+            errorEl.textContent = 'Invalid or expired password reset link. Please request a new one from the login page.';
+            errorEl.classList.remove('hidden');
+            return;
+        }
+        if (newPassword.length < 6) {
+            errorEl.textContent = 'Password must be at least 6 characters.';
+            errorEl.classList.remove('hidden');
+            return;
+        }
         
-        document.getElementById('contactForm')?.addEventListener('submit', function(event) {
-            event.preventDefault();
+        try {
+            await confirmPasswordReset(auth, passwordResetCode, newPassword);
+            showAlert('Password updated successfully. You can now log in with your new password.', 'success', 8000);
+            passwordResetCode = null; // Invalidate the code
+            showPage('login');
+        } catch (error) {
+            errorEl.textContent = getAuthErrorMessage(error.code);
+            errorEl.classList.remove('hidden');
+        }
+    });
+
+    document.getElementById('paymentForm')?.addEventListener('submit', handlePayment);
+    
+    const contactFormEl = document.getElementById('contactForm');
+    if (contactFormEl) {
+        contactFormEl.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const formData = new FormData(contactFormEl);
             const contactSubmitButtonEl = this.querySelector('button[type="submit"]');
             contactSubmitButtonEl.disabled = true;
-            fetch(this.action, {
-                method: this.method, body: new FormData(this), headers: { 'Accept': 'application/json' }
-            })
+
+            fetch(this.action, { method: this.method, body: formData, headers: { 'Accept': 'application/json' } })
             .then(response => {
                 if (response.ok) {
                     showAlert('Message sent successfully!', 'success');
                     this.reset();
                 } else {
-                    return response.json().then(data => Promise.reject(data.errors?.map(e => e.message).join(', ') || 'An unknown error occurred.'));
+                    response.json().then(data => {
+                        const errorMessage = data.errors?.map(e => e.message).join(', ') || 'An unknown error occurred.';
+                        throw new Error(errorMessage);
+                    });
                 }
             })
-            .catch(error => showAlert(`Form submission error: ${error}`, 'error'))
+            .catch(error => { showAlert(`Form submission error: ${error.message}`, 'error'); })
             .finally(() => { contactSubmitButtonEl.disabled = false; });
         });
+    }
 
-        // --- Tool-Specific Event Listeners ---
-        const generateImageBtn = document.getElementById('generateImageBtn');
-        if (generateImageBtn) {
-            generateImageBtn.addEventListener('click', async function() {
-                if (!canLoggedInUserUseFeature('imageGen', 'ai-generator')) return;
-                
-                const prompt = document.getElementById('imagePrompt').value.trim();
-                if (!prompt) { showAlert('Please enter an image description.', 'error'); return; }
-                
-                this.disabled = true;
-                document.getElementById('generateSpinner').classList.remove('hidden');
-                document.getElementById('imagePlaceholder').style.display = 'flex';
-                document.getElementById('imageResultContainer').classList.add('hidden');
-                document.getElementById('imagePlaceholderText').textContent = 'Generating your image...';
-                pauseInactivityTimer();
-
-                try {
-                    const imageUrl = generateImageUrlWithPollinations(prompt, document.getElementById('imageAspectRatio').value, document.getElementById('imageStyle').value);
-                    const img = document.getElementById('generatedImage');
-                    img.src = imageUrl;
-                    img.alt = prompt;
-
-                    img.onload = async () => {
-                        document.getElementById('imagePlaceholder').style.display = 'none';
-                        document.getElementById('imageResultContainer').classList.remove('hidden');
-                        document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
-                        showAlert('Image generated successfully!', 'success');
-                        await incrementFeatureUsage('imageGen');
-                        populateAccountPage();
-                    };
-                    img.onerror = () => showAlert('Failed to load the generated image. The API may be busy.', 'error');
-                } catch (err) {
-                    showAlert(`Image generation failed: ${err.message}`, 'error');
-                } finally {
-                    this.disabled = false;
-                    document.getElementById('generateSpinner').classList.add('hidden');
-                    resumeInactivityTimer();
-                }
-            });
-        }
+    // --- TOOL-SPECIFIC EVENT LISTENERS (No changes needed here) ---
+    document.getElementById('generateImageBtn')?.addEventListener('click', function() {
+        if (!canLoggedInUserUseFeature('imageGen', 'ai-generator')) return;
         
-        const translateTextBtn = document.getElementById('translateTextBtn');
-        if (translateTextBtn) { 
-            translateTextBtn.addEventListener('click', async function() {
-                if (!canLoggedInUserUseFeature('translate', 'translate')) return;
-                const textToTranslate = document.getElementById('translatePageTextInput').value.trim();
-                if (!textToTranslate) { showAlert('Please enter text to translate.', 'error'); return; }
-                
-                this.disabled = true;
-                document.getElementById('translateTextSpinner').classList.remove('hidden');
-                const outputDiv = document.getElementById('textOutput');
-                outputDiv.innerHTML = `<p class="text-gray-400 text-sm">Translating...</p>`;
-                document.getElementById('copyTextBtn').classList.add('hidden');
-                pauseInactivityTimer(); 
-
-                try {
-                    const targetLangName = document.getElementById('targetLanguage').selectedOptions[0].text;
-                    const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text.\n\n"${textToTranslate}"`;
-                    const translation = await callGeminiAPI(prompt);
-                    outputDiv.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
-                    document.getElementById('copyTextBtn').classList.remove('hidden');
-                    await incrementFeatureUsage('translate');
-                    populateAccountPage();
-                } catch (err) {
-                    outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
-                } finally { 
-                    this.disabled = false;
-                    document.getElementById('translateTextSpinner').classList.add('hidden');
-                    resumeInactivityTimer(); 
-                }
-            });
-        }
-        const summarizeTextBtn = document.getElementById('summarizeTextBtn');
-        if (summarizeTextBtn) summarizeTextBtn.addEventListener('click', async function() {
-            if (!canLoggedInUserUseFeature('summarize', 'summarization')) return;
-            const textToSummarize = document.getElementById('summarizeTextInput').value.trim();
-            if (!textToSummarize) { showAlert('Please provide text to summarize.', 'error'); return; }
-            
-            this.disabled = true;
-            document.getElementById('summarizeTextSpinner').classList.remove('hidden');
-            const outputDiv = document.getElementById('summaryOutput');
-            outputDiv.innerHTML = `<p class="text-gray-400 text-sm">Summarizing...</p>`;
-            document.getElementById('copySummaryBtn').classList.add('hidden');
-            pauseInactivityTimer(); 
-
-            try {
-                const summaryLength = document.getElementById('summaryLength').value;
-                const prompt = `Provide a ${summaryLength} summary of the following text. The output should be a clean, direct summary without any introductory phrases like "Here is the summary".\n\nText: "${textToSummarize}"`;
-                const summary = await callGeminiAPI(prompt);
-                outputDiv.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Summary:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(summary)}</p>`;
-                outputDiv.dataset.rawSummary = summary;
-                document.getElementById('copySummaryBtn').classList.remove('hidden');
-                await incrementFeatureUsage('summarize');
-                populateAccountPage();
-            } catch (err) {
-                outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
-            } finally {
-                this.disabled = false;
-                document.getElementById('summarizeTextSpinner').classList.add('hidden');
-                resumeInactivityTimer(); 
-            }
-        });
-        const textTabBtn = document.getElementById('textTabBtn');
-        const docTabBtn = document.getElementById('docTabBtn');
-        if (textTabBtn && docTabBtn) {
-            textTabBtn.addEventListener('click', () => {
-                textTabBtn.classList.add('active'); docTabBtn.classList.remove('active');
-                document.getElementById('textTranslationSection').classList.remove('hidden');
-                document.getElementById('docTranslationSection').classList.add('hidden');
-            });
-            docTabBtn.addEventListener('click', () => {
-                docTabBtn.classList.add('active'); textTabBtn.classList.remove('active');
-                document.getElementById('docTranslationSection').classList.remove('hidden');
-                document.getElementById('textTranslationSection').classList.add('hidden');
-            });
-        }
-        const setupDocUpload = (inputId, nameDisplayId, statusId, textInputId) => {
-            document.getElementById(inputId)?.addEventListener('change', async (event) => {
-                const file = event.target.files[0]; if (!file) return;
-                const nameDisplay = document.getElementById(nameDisplayId);
-                const statusDisplay = document.getElementById(statusId);
-                const textInput = document.getElementById(textInputId);
-                
-                nameDisplay.textContent = escapeHtml(file.name);
-                statusDisplay.classList.remove('hidden');
-                textInput.value = '';
-                try {
-                    textInput.value = await extractTextFromFile(file);
-                    showAlert('Document text extracted successfully!', 'success');
-                } catch (err) {
-                    showAlert(`Error: ${err.message}`, 'error');
-                    nameDisplay.textContent = '';
-                } finally {
-                    statusDisplay.classList.add('hidden');
-                    event.target.value = null;
-                }
-            });
-        }
-        setupDocUpload('summarizeDocInput', 'summarizeDocNameDisplay', 'summarizeDocExtractStatus', 'summarizeTextInput');
+        const prompt = document.getElementById('imagePrompt').value.trim();
+        if (!prompt) { showAlert('Please enter an image description.', 'error'); return; }
         
-        document.getElementById('docFileInput')?.addEventListener('change', async (event) => {
-            const file = event.target.files[0]; if (!file) return;
-            const nameDisplay = document.getElementById('docFileNameDisplay');
-            const statusDisplay = document.getElementById('docFileExtractStatus');
-            const previewDiv = document.querySelector('#docTextPreview div');
-            const translateBtn = document.getElementById('translateDocBtn');
-            const outputContainer = document.getElementById('docTranslationOutput');
-            
-            nameDisplay.textContent = escapeHtml(file.name);
-            statusDisplay.classList.remove('hidden');
-            translateBtn.disabled = true;
-            document.getElementById('docTextPreview').classList.add('hidden');
-            outputContainer.dataset.originalText = '';
-            
-            try {
-                const text = await extractTextFromFile(file);
-                outputContainer.dataset.originalText = text;
-                previewDiv.textContent = text.substring(0, 500) + (text.length > 500 ? '...' : '');
-                document.getElementById('docTextPreview').classList.remove('hidden');
-                translateBtn.disabled = false;
-                showAlert('Document ready for translation!', 'success');
-            } catch (err) {
-                showAlert(`Error: ${err.message}`, 'error');
-                nameDisplay.textContent = '';
-            } finally {
-                statusDisplay.classList.add('hidden');
-                event.target.value = null;
-            }
-        });
-        
-        document.getElementById('translateDocBtn')?.addEventListener('click', async function() {
-            if (!canLoggedInUserUseFeature('translate', 'translate')) return;
-            const outputContainer = document.getElementById('docTranslationOutput');
-            const textToTranslate = outputContainer.dataset.originalText;
-            if (!textToTranslate) { showAlert('No document text found. Please upload a file first.', 'error'); return; }
-            
-            this.disabled = true;
-            document.getElementById('translateDocSpinner').classList.remove('hidden');
-            outputContainer.innerHTML = `<p class="text-gray-400 text-sm">Translating document...</p>`;
-            ['copyDocBtn', 'downloadTranslationBtn'].forEach(id => document.getElementById(id).classList.add('hidden'));
-            pauseInactivityTimer();
+        this.disabled = true;
+        const spinner = document.getElementById('generateSpinner'); spinner.classList.remove('hidden');
+        const imagePlaceholder = document.getElementById('imagePlaceholder');
+        const imageResultContainer = document.getElementById('imageResultContainer');
+        const img = document.getElementById('generatedImage');
 
-            try {
-                const targetLangName = document.getElementById('docTargetLanguage').selectedOptions[0].text;
-                const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text.\n\n"${textToTranslate}"`;
-                const translation = await callGeminiAPI(prompt);
-                outputContainer.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
-                outputContainer.dataset.translatedText = translation;
-                ['copyDocBtn', 'downloadTranslationBtn'].forEach(id => document.getElementById(id).classList.remove('hidden'));
-                await incrementFeatureUsage('translate');
-                populateAccountPage();
-            } catch (err) {
-                outputContainer.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
-            } finally {
-                this.disabled = false;
-                document.getElementById('translateDocSpinner').classList.add('hidden');
+        imagePlaceholder.style.display = 'flex';
+        imageResultContainer.classList.add('hidden');
+        imagePlaceholder.querySelector('p').textContent = 'Generating your image...';
+        pauseInactivityTimer();
+        try {
+            const imageUrl = generateImageUrlWithPollinations(prompt, document.getElementById('imageAspectRatio').value, document.getElementById('imageStyle').value);
+            img.src = imageUrl; img.alt = prompt;
+            img.onload = () => {
+                imagePlaceholder.style.display = 'none';
+                imageResultContainer.classList.remove('hidden');
+                document.getElementById('downloadImageBtn').onclick = () => downloadImage(img.src, `techgen-ai-image-${Date.now()}.png`);
+                showAlert('Image generated successfully!', 'success');
+                incrementFeatureUsage('imageGen'); this.disabled = false; spinner.classList.add('hidden');
                 resumeInactivityTimer();
-            }
-        });
+            };
+            img.onerror = () => {
+                showAlert('Failed to load the generated image. The API may be busy. Please try again.', 'error', 8000);
+                imagePlaceholder.querySelector('p').textContent = 'Image will appear here';
+                this.disabled = false; spinner.classList.add('hidden'); resumeInactivityTimer();
+            };
+        } catch (err) {
+            showAlert(`Image generation failed: ${err.message}`, 'error', 8000);
+            this.disabled = false; spinner.classList.add('hidden'); resumeInactivityTimer();
+        }
+    });
+    
+    document.getElementById('translateTextBtn')?.addEventListener('click', async function() {
+        if (!canLoggedInUserUseFeature('translate', 'translate')) return;
+        const textToTranslate = document.getElementById('translatePageTextInput').value.trim();
+        if (!textToTranslate) { showAlert('Please enter text to translate.', 'error'); return; }
         
-        const setupCopyButton = (buttonId, sourceElementId, sourceAttribute = 'innerText') => {
-            document.getElementById(buttonId)?.addEventListener('click', () => {
-                const sourceElement = document.getElementById(sourceElementId);
-                let textToCopy;
-                if(sourceAttribute === 'innerText') {
-                    textToCopy = sourceElement?.querySelector('p.text-white')?.innerText;
-                } else {
-                    textToCopy = sourceElement?.dataset[sourceAttribute];
-                }
-                if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
-            });
-        };
+        this.disabled = true;
+        const spinner = document.getElementById('translateTextSpinner'); spinner.classList.remove('hidden');
+        const outputDiv = document.getElementById('textOutput');
+        outputDiv.innerHTML = `<p class="text-gray-400 text-sm">Translating...</p>`;
+        document.getElementById('copyTextBtn').classList.add('hidden');
+        pauseInactivityTimer(); 
+        try {
+            const targetLangName = document.getElementById('targetLanguage').selectedOptions[0].text;
+            const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text.\n\n"${textToTranslate}"`;
+            const translation = await callGeminiAPI(prompt);
+            outputDiv.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
+            document.getElementById('copyTextBtn').classList.remove('hidden');
+            incrementFeatureUsage('translate');
+        } catch (err) {
+            outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+        } finally { 
+            this.disabled = false; spinner.classList.add('hidden'); resumeInactivityTimer(); 
+        }
+    });
+    document.getElementById('summarizeTextBtn')?.addEventListener('click', async function() {
+        if (!canLoggedInUserUseFeature('summarize', 'summarization')) return;
+        const textToSummarize = document.getElementById('summarizeTextInput').value.trim();
+        if (!textToSummarize) { showAlert('Please provide text to summarize.', 'error'); return; }
         
-        setupCopyButton('copyTextBtn', 'textOutput');
-        setupCopyButton('copySummaryBtn', 'summaryOutput', 'rawSummary');
-        setupCopyButton('copyDocBtn', 'docTranslationOutput', 'translatedText');
-
-        document.getElementById('downloadTranslationBtn')?.addEventListener('click', () => {
-            const textToDownload = document.getElementById('docTranslationOutput').dataset.translatedText;
-            const originalFilename = document.getElementById('docFileNameDisplay').textContent.split('.').slice(0, -1).join('.');
-            if (textToDownload) downloadContent(textToDownload, `${originalFilename}_translated.txt`);
-        });
+        this.disabled = true;
+        const spinner = document.getElementById('summarizeTextSpinner'); spinner.classList.remove('hidden');
+        const outputDiv = document.getElementById('summaryOutput');
+        outputDiv.innerHTML = `<p class="text-gray-400 text-sm">Summarizing...</p>`;
+        document.getElementById('copySummaryBtn').classList.add('hidden');
+        pauseInactivityTimer(); 
+        try {
+            const summaryLength = document.getElementById('summaryLength').value;
+            const prompt = `Provide a ${summaryLength} summary of the following text. The output should be a clean, direct summary without any introductory phrases like "Here is the summary".\n\nText: "${textToSummarize}"`;
+            const summary = await callGeminiAPI(prompt);
+            outputDiv.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Summary:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(summary)}</p>`;
+            outputDiv.setAttribute('data-raw-summary', summary);
+            document.getElementById('copySummaryBtn').classList.remove('hidden');
+            incrementFeatureUsage('summarize');
+        } catch (err) {
+            outputDiv.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+        } finally {
+            this.disabled = false; spinner.classList.add('hidden'); resumeInactivityTimer(); 
+        }
+    });
+    document.getElementById('textTabBtn')?.addEventListener('click', () => {
+        document.getElementById('textTabBtn').classList.add('active'); document.getElementById('docTabBtn').classList.remove('active');
+        document.getElementById('textTranslationSection').classList.remove('hidden'); document.getElementById('docTranslationSection').classList.add('hidden');
+    });
+    document.getElementById('docTabBtn')?.addEventListener('click', () => {
+        document.getElementById('docTabBtn').classList.add('active'); document.getElementById('textTabBtn').classList.remove('active');
+        document.getElementById('docTranslationSection').classList.remove('hidden'); document.getElementById('textTranslationSection').classList.add('hidden');
+    });
+    document.getElementById('summarizeDocInput')?.addEventListener('change', async (event) => {
+        const file = event.target.files[0]; if (!file) return;
+        const nameDisplay = document.getElementById('summarizeDocNameDisplay');
+        const statusDisplay = document.getElementById('summarizeDocExtractStatus');
+        const textInput = document.getElementById('summarizeTextInput');
+        nameDisplay.textContent = escapeHtml(file.name);
+        statusDisplay.classList.remove('hidden'); textInput.value = '';
+        try {
+            const text = await extractTextFromFile(file);
+            textInput.value = text;
+            showAlert('Document text extracted successfully!', 'success');
+        } catch (err) {
+            showAlert(`Error: ${err.message}`, 'error'); nameDisplay.textContent = '';
+        } finally {
+            statusDisplay.classList.add('hidden'); event.target.value = null;
+        }
+    });
+    document.getElementById('docFileInput')?.addEventListener('change', async (event) => {
+        const file = event.target.files[0]; if (!file) return;
+        const nameDisplay = document.getElementById('docFileNameDisplay');
+        const statusDisplay = document.getElementById('docFileExtractStatus');
+        const previewContainer = document.getElementById('docTextPreview');
+        const previewDiv = previewContainer.querySelector('div');
+        const translateBtn = document.getElementById('translateDocBtn');
+        const outputContainer = document.getElementById('docTranslationOutput');
+        nameDisplay.textContent = escapeHtml(file.name); statusDisplay.classList.remove('hidden');
+        translateBtn.disabled = true; previewContainer.classList.add('hidden'); outputContainer.dataset.originalText = '';
+        try {
+            const text = await extractTextFromFile(file);
+            outputContainer.dataset.originalText = text;
+            previewDiv.textContent = text.substring(0, 500) + (text.length > 500 ? '...' : '');
+            previewContainer.classList.remove('hidden'); translateBtn.disabled = false;
+            showAlert('Document ready for translation!', 'success');
+        } catch (err) {
+            showAlert(`Error: ${err.message}`, 'error'); nameDisplay.textContent = '';
+        } finally {
+            statusDisplay.classList.add('hidden'); event.target.value = null;
+        }
+    });
+    document.getElementById('translateDocBtn')?.addEventListener('click', async function() {
+        if (!canLoggedInUserUseFeature('translate', 'translate')) return;
+        const outputContainer = document.getElementById('docTranslationOutput');
+        const textToTranslate = outputContainer.dataset.originalText;
+        if (!textToTranslate) { showAlert('No document text found. Please upload a file first.', 'error'); return; }
+        this.disabled = true;
+        const spinner = document.getElementById('translateDocSpinner'); spinner.classList.remove('hidden');
+        outputContainer.innerHTML = `<p class="text-gray-400 text-sm">Translating document...</p>`;
+        document.getElementById('copyDocBtn').classList.add('hidden'); document.getElementById('downloadTranslationBtn').classList.add('hidden');
+        pauseInactivityTimer(); 
+        try {
+            const targetLangName = document.getElementById('docTargetLanguage').selectedOptions[0].text;
+            const prompt = `Translate the following text to ${targetLangName}. Provide only the translated text.\n\n"${textToTranslate}"`;
+            const translation = await callGeminiAPI(prompt);
+            outputContainer.innerHTML = `<h3 class="text-[#A800FF] font-medium text-sm mb-2">Translated to ${escapeHtml(targetLangName)}:</h3><p class="text-white text-sm whitespace-pre-wrap">${escapeHtml(translation)}</p>`;
+            outputContainer.dataset.translatedText = translation;
+            document.getElementById('copyDocBtn').classList.remove('hidden');
+            document.getElementById('downloadTranslationBtn').classList.remove('hidden');
+            incrementFeatureUsage('translate');
+        } catch (err) {
+            outputContainer.innerHTML = `<p class="text-red-400 text-sm">Error: ${escapeHtml(err.message)}</p>`;
+        } finally {
+            this.disabled = false; spinner.classList.add('hidden'); resumeInactivityTimer(); 
+        }
+    });
+    document.getElementById('copyTextBtn')?.addEventListener('click', () => {
+        const textToCopy = document.getElementById('textOutput').querySelector('p.text-white')?.innerText;
+        if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
+    });
+    document.getElementById('copySummaryBtn')?.addEventListener('click', () => {
+        const textToCopy = document.getElementById('summaryOutput').getAttribute('data-raw-summary');
+        if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
+    });
+    document.getElementById('copyDocBtn')?.addEventListener('click', () => {
+        const textToCopy = document.getElementById('docTranslationOutput').dataset.translatedText;
+        if (textToCopy) navigator.clipboard.writeText(textToCopy).then(() => showAlert('Copied!', 'success'));
+    });
+    document.getElementById('downloadTranslationBtn')?.addEventListener('click', () => {
+        const textToDownload = document.getElementById('docTranslationOutput').dataset.translatedText;
+        const originalFilename = document.getElementById('docFileNameDisplay').textContent.split('.').slice(0, -1).join('.');
+        if (textToDownload) { downloadContent(textToDownload, `${originalFilename}_translated.txt`); }
     });
   </script>
 </body>
