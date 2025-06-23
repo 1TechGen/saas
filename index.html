@@ -1696,8 +1696,8 @@
         if (currentUser) {
             try {
                 await signOut(auth);
+                showPage('home'); // Redirect to home on logout
                 showAlert('You have been logged out.', 'info');
-                // The onAuthStateChanged listener will handle UI updates
             } catch(error) {
                 showAlert(`Logout failed: ${error.message}`, 'error');
             }
@@ -1718,9 +1718,10 @@
     function pauseInactivityTimer() { clearTimeout(inactivityTimer); }
     function resumeInactivityTimer() { resetInactivityTimer(); }
     
-    function handleSuccessfulLogin() {
-        if (!currentUser) return; 
-        showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
+    // **MODIFIED**
+    function handleSuccessfulLogin(userName) {
+        if (!userName) return; 
+        showAlert(`Welcome back, ${escapeHtml(userName)}!`, 'success');
 
         const pendingPlan = sessionStorage.getItem('pendingPlan');
         const intendedPage = sessionStorage.getItem('intendedPage');
@@ -2121,19 +2122,13 @@
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
     activityEvents.forEach(eventName => window.addEventListener(eventName, resetInactivityTimer, true));
     
-    // Firebase Auth State Change Listener is the main driver
+    // **MODIFIED** - onAuthStateChanged is now just for state sync
     onAuthStateChanged(auth, async (user) => {
-        const wasLoggedIn = !!currentUser;
         if (user) {
-            // Note: We don't check emailVerified here anymore.
-            // The login form itself now handles that logic.
-            // This listener just syncs the application state.
+            // This listener simply ensures the global currentUser object and UI are in sync
+            // with the auth state. It doesn't trigger login flows anymore.
             currentUser = await loadUserProfile(user);
-            if (!wasLoggedIn && user.emailVerified) { // This is a new login session for a verified user
-                handleSuccessfulLogin();
-            }
         } else {
-            // User is logged out
             currentUser = null;
         }
         updateAuthUI();
@@ -2151,6 +2146,7 @@
     });
     
     // --- FORM EVENT LISTENERS ---
+    // **REVISED AND FINAL LOGIN LOGIC**
     const loginFormEl = document.getElementById('loginForm');
     if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -2164,27 +2160,29 @@
         submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing In...`;
 
         try {
-            // Step 1: Attempt to sign in the user. This may return a stale user object.
+            // Step 1: Attempt to sign in.
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
+            let user = userCredential.user;
 
-            // Step 2: **CRUCIAL FIX** - Force a reload of the user's data from the server.
+            // Step 2: Force a reload of the user's data from the server.
             await user.reload();
+            
+            // Re-assign user from auth.currentUser to ensure we have the reloaded instance
+            user = auth.currentUser; 
 
-            // Step 3: Now check the refreshed user object for verification status.
-            // It's safest to check auth.currentUser as it's guaranteed to be the reloaded one.
-            if (auth.currentUser && auth.currentUser.emailVerified) {
-                // Success! The onAuthStateChanged listener will now receive the
-                // verified user and handle the UI updates and redirection.
-                // No need to do anything else here.
+            // Step 3: Check the reloaded user's verification status.
+            if (user && user.emailVerified) {
+                // User is verified. Load their profile and trigger the welcome flow.
+                const userProfile = await loadUserProfile(user);
+                currentUser = userProfile; // Immediately update global state
+                handleSuccessfulLogin(userProfile.name);
             } else {
-                // If the email is STILL not verified after reloading, sign them out and show the error.
+                // Email is still not verified.
                 await signOut(auth);
                 errorEl.textContent = 'Please verify your email before logging in. Check your inbox for a verification link.';
                 errorEl.classList.remove('hidden');
             }
         } catch (error) {
-            // This will catch errors like wrong password, user not found, etc.
             errorEl.textContent = getAuthErrorMessage(error.code);
             errorEl.classList.remove('hidden');
         } finally {
@@ -2241,7 +2239,13 @@
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
-            // onAuthStateChanged will handle the rest, including profile creation if new
+            // After google sign in, the onAuthStateChanged listener will naturally
+            // pick up the new user, load their profile, and set the UI.
+            // We can also directly trigger the welcome message here for a better UX.
+            const userProfile = await loadUserProfile(result.user);
+            currentUser = userProfile;
+            handleSuccessfulLogin(userProfile.name);
+
         } catch (error) {
             showAlert(getAuthErrorMessage(error.code), 'error');
         }
