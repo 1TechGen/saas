@@ -140,7 +140,9 @@
     }
     .pricing-card ul { list-style: none; padding: 0; }
     .pricing-card ul li { display: flex; align-items: center; margin-bottom: 0.5rem; }
-    .pricing-card ul li svg { margin-right: 0.5rem; color: #10B981; } 
+    .pricing-card ul li svg { margin-right: 0.5rem; color: #10B981; flex-shrink: 0; }
+    .pricing-card ul a { text-decoration: underline; }
+    .pricing-card ul a:hover { color: #D480FF; } 
     .adsense-placeholder {
         background-color: #1a1a1a;
         border: 1px dashed #4b5563;
@@ -419,19 +421,15 @@
                 
                 <div class="bg-[#0D0D0D] border-l-4 border-[#A800FF] p-4 my-6">
                     <h3>Endless Inspiration</h3>
-                    <p>Overcome creative blocks by letting our AI suggest unexpected compositions, color palettes, and styles based on your initial input.</p>
-                </div>
-                
-                <div class="bg-[#0D0D0D] border-l-4 border-[#A800FF] p-4 my-6">
-                    <h3>Democratize Design</h3>
-                    <p>Even without formal artistic training, anyone can now create professional-quality visuals for their projects, presentations, or personal expression.</p>
+                    <p>Overcome creative blocks by let our AI suggest unexpected compositions, color palettes, and styles based on your initial input.</p>
                 </div>
                 
                 <h2>How It Works</h2>
+                <p>To get the best results, you need to write a good prompt. To learn the secrets, read our guide on <a href="#blog-post-2" onclick="showPage('blog-post-2'); return false;">writing effective AI prompts</a>.</p>
                 <ol>
-                    <li><strong>Describe Your Vision</strong>: Enter a text prompt describing what you want to create (e.g., "A futuristic cityscape at sunset, anime style").</li>
-                    <li><strong>Choose a Style</strong>: Select from various artistic styles like photorealistic, digital art, or comic book to guide the AI.</li>
-                    <li><strong>Generate & Refine</strong>: Our AI creates multiple options in seconds that you can refine by tweaking your prompt or use as-is.</li>
+                    <li><strong>Describe Your Vision</strong>: Enter a text prompt describing what you want to create.</li>
+                    <li><strong>Choose a Style</strong>: Select from various artistic styles like photorealistic or digital art.</li>
+                    <li><strong>Generate & Refine</strong>: Our AI creates multiple options in seconds.</li>
                 </ol>
                 
                 <h2>Use Cases</h2>
@@ -439,22 +437,18 @@
                     <li><strong>Concept Artists</strong>: Rapidly prototype character designs, environments, and props.</li>
                     <li><strong>Marketers</strong>: Create unique visuals for ad campaigns without expensive photoshoots.</li>
                     <li><strong>Content Creators</strong>: Generate eye-catching thumbnails and social media graphics.</li>
-                    <li><strong>Educators</strong>: Visualize complex concepts for teaching materials.</li>
-                    <li><strong>Hobbyists</strong>: Bring your imagination to life just for fun!</li>
                 </ul>
                 
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
                     <h2 class="mt-0">Ready to Unleash Your Creativity?</h2>
                     <p>Join thousands of creators already using our AI Image Generator to bring their ideas to life.</p>
-                    <button onclick="showPage('register')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition mt-4 font-semibold">
-                        Try It Now & Register
+                    <button onclick="showPage('ai-generator')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition mt-4 font-semibold">
+                        Try The AI Image Generator
                     </button>
                 </div>
                 
                 <h2>The Future of Creative Expression</h2>
-                <p>Our AI Image Generator isn't here to replace human creativity—it's here to amplify it. By handling the technical execution, we free you to focus on what truly matters: your vision, your message, and your unique creative perspective.</p>
-                <p>As the technology continues to evolve, we're committed to developing tools that serve as collaborative partners in the creative process, opening new possibilities for artistic expression that we're only beginning to imagine.</p>
-                <p class="italic mt-4">What will you create today?</p>
+                <p>Our AI Image Generator isn't here to replace human creativity—it's here to amplify it. By handling the technical execution, we free you to focus on what truly matters: your vision, your message, and your unique creative perspective. This is just one aspect of the <a href="#blog-post-3" onclick="showPage('blog-post-3'); return false;">future of work with AI</a>.</p>
             </div>
         </div>
     </div>
@@ -469,12 +463,8 @@
                     <p class="text-lg italic text-gray-400">AI image generators have revolutionized digital art, but how do you craft the perfect prompt? This guide will teach you the art of writing AI image prompts that produce amazing results.</p>
                 </div>
                 
-                <div class="my-8 text-center">
-                    <p class="text-sm text-gray-500 mt-2"><em>Example of an AI-generated image using a detailed prompt.</em></p>
-                </div>
-                
                 <h2>Why Prompt Engineering Matters</h2>
-                <p>AI models generate images based on textual descriptions—the more precise and descriptive your prompt, the better the output. A vague prompt may give unpredictable results, while a well-structured one can produce professional-quality artwork.</p>
+                <p>AI models generate images based on textual descriptions—the more precise and descriptive your prompt, the better the output. A vague prompt may give unpredictable results, while a well-structured one can produce professional-quality artwork. To see the tool in action, check out our <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generator</a>.</p>
                 
                 <div class="bg-[#0D0D0D] border-l-4 border-[#A800FF] p-4 my-6">
                     <h3 class="mt-0">Key Elements of a Strong Prompt</h3>
@@ -483,7 +473,6 @@
                         <li><strong>Style</strong>: Art medium or aesthetic (e.g., "digital painting, anime style")</li>
                         <li><strong>Details</strong>: Lighting, colors, textures (e.g., "neon lights, rainy streets")</li>
                         <li><strong>Composition</strong>: Perspective, framing (e.g., "close-up portrait, cinematic")</li>
-                        <li><strong>Mood/Atmosphere</strong>: Emotional tone (e.g., "mysterious, futuristic")</li>
                     </ol>
                 </div>
                 
@@ -495,34 +484,10 @@
                     <p>"A majestic black panther standing on a mossy ancient ruin at sunset, golden hour lighting, hyper-detailed fur, cinematic composition, 8K resolution"</p>
                 </div>
                 
-                <h3>2. Use Artistic Styles for Better Results</h3>
-                <p>Specify styles like:</p>
-                <ul>
-                    <li><code>Photorealistic</code> – "Ultra HD, 4K, DSLR photo"</li>
-                    <li><code>Digital Painting</code> – "Concept art, fantasy illustration"</li>
-                    <li><code>Vintage</code> – "1950s pulp magazine cover"</li>
-                    <li><code>Minimalist</code> – "Flat design, pastel colors"</li>
-                </ul>
-                
-                <h3>3. Leverage Lighting & Atmosphere</h3>
-                <p>Examples:</p>
-                <div class="bg-black/50 p-4 rounded-lg my-4 font-mono text-sm text-gray-300">
-                    <p>"A futuristic city at night, neon reflections on wet pavement, cyberpunk aesthetic, volumetric lighting"</p>
-                </div>
-                
-                <h3>4. Experiment with Famous Artists & Techniques</h3>
-                <p>Try referencing styles like:</p>
-                <ul>
-                    <li>"In the style of Studio Ghibli"</li>
-                    <li>"Van Gogh's Starry Night texture"</li>
-                    <li>"Pixar 3D animation style"</li>
-                </ul>
-                
                 <h2>Common Mistakes to Avoid</h2>
                 <ul>
                     <li><strong>Too vague</strong>: Instead of "A beautiful landscape," try "A serene mountain lake at dawn with misty forests."</li>
                     <li><strong>Overcomplicating</strong>: Avoid long, conflicting descriptions that can confuse the AI.</li>
-                    <li><strong>Ignoring style keywords</strong>: Without style cues, results can be inconsistent. Always add a style.</li>
                 </ul>
                 
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
@@ -534,7 +499,7 @@
                 </div>
                 
                 <h2>Final Thoughts</h2>
-                <p>Writing effective AI image prompts is both an art and a science. The more you experiment, the better you'll understand how different keywords influence the output. Keep refining your prompts, and soon you'll be generating stunning AI artwork with ease!</p>
+                <p>Writing effective AI image prompts is both an art and a science. For a more general overview of AI creativity, read our post on <a href="#blog-post-1" onclick="showPage('blog-post-1'); return false;">unlocking creativity with AI</a>.</p>
             </div>
         </div>
     </div>
@@ -546,37 +511,15 @@
                 <h1 class="text-3xl font-bold mb-6 text-center">The Future of Work: Why Your Next Team Member Might Be an AI</h1>
                 
                 <div class="bg-[#0D0D0D] p-4 rounded-lg my-6">
-                    <p class="text-lg italic text-gray-400">The workplace is evolving at an unprecedented pace, and artificial intelligence is no longer just a tool—it's becoming a collaborative partner. From automating repetitive tasks to enhancing creative processes, AI is reshaping how teams operate. Here's why your next hire might not be human.</p>
-                </div>
-                
-                <div class="my-8 text-center">
-                    <p class="text-sm text-gray-500 mt-2"><em>Illustration of human-AI collaboration in a modern workplace.</em></p>
-                </div>
-                
-                <h2>How AI Is Changing Team Dynamics</h2>
-                <p>AI team members offer unique advantages that complement human skills:</p>
-                
-                <div class="bg-[#0D0D0D] border-l-4 border-[#A800FF] p-4 my-6">
-                    <h3 class="mt-0">24/7 Productivity Without Burnout</h3>
-                    <p>AI assistants can work around the clock, handling time-sensitive tasks across time zones without fatigue.</p>
-                </div>
-                
-                <div class="bg-[#0D0D0D] border-l-4 border-[#A800FF] p-4 my-6">
-                    <h3>Instant Access to Specialized Expertise</h3>
-                    <p>Need a data analyst, copywriter, or graphic designer? Our AI tools can fill multiple roles on demand.</p>
-                </div>
-                
-                <div class="bg-[#0D0D0D] border-l-4 border-[#A800FF] p-4 my-6">
-                    <h3>Enhanced Decision Making</h3>
-                    <p>With the ability to process vast amounts of data, AI provides insights that humans might miss, leading to more informed strategies.</p>
+                    <p class="text-lg italic text-gray-400">The workplace is evolving at an unprecedented pace, and artificial intelligence is no longer just a tool—it's becoming a collaborative partner. From automating repetitive tasks to enhancing creative processes, AI is reshaping how teams operate.</p>
                 </div>
                 
                 <h2>AI Roles Already in the Workplace</h2>
                 <ul>
-                    <li><strong>AI Content Creators</strong>: Writing blog posts, social media content, and marketing copy.</li>
+                    <li><strong><a href="#summarization" onclick="showPage('summarization'); return false;">AI Content Creators</a></strong>: Writing blog posts, social media content, and marketing copy.</li>
                     <li><strong>Data Analysts</strong>: Processing complex datasets and generating reports.</li>
-                    <li><strong>Design Assistants</strong>: Generating logos, graphics, and mockups.</li>
-                    <li><strong>Translation Specialists</strong>: Handling multilingual communication instantly.</li>
+                    <li><strong><a href="#ai-generator" onclick="showPage('ai-generator'); return false;">Design Assistants</a></strong>: Generating logos, graphics, and mockups.</li>
+                    <li><strong><a href="#translate" onclick="showPage('translate'); return false;">Translation Specialists</a></strong>: Handling multilingual communication instantly.</li>
                 </ul>
                 
                 <div class="bg-black/50 border-l-4 border-[#6C00FF] p-4 my-6 italic text-gray-300">
@@ -600,25 +543,16 @@
                     </tbody>
                 </table>
                 
-                <h2>Preparing for an AI-Augmented Workforce</h2>
-                <ol>
-                    <li><strong>Identify augmentation opportunities</strong>: Which repetitive or data-heavy tasks could AI handle?</li>
-                    <li><strong>Develop AI literacy</strong>: Understand the capabilities and limitations of the tools you use.</li>
-                    <li><strong>Redefine roles</strong>: Focus on uniquely human skills like strategy, empathy, and complex negotiation.</li>
-                    <li><strong>Establish workflows</strong>: Create efficient human-AI collaboration systems for seamless integration.</li>
-                </ol>
-                
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
                     <h2 class="mt-0">Ready to Integrate AI Into Your Team?</h2>
-                    <p>Discover how AI can enhance your business operations and give you a competitive edge.</p>
+                    <p>Discover how our AI can enhance your business operations and give you a competitive edge.</p>
                     <button onclick="showPage('pricing')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition mt-4 font-semibold">
                         Explore Our AI Solutions
                     </button>
                 </div>
                 
                 <h2>Conclusion: Collaboration, Not Replacement</h2>
-                <p>The future of work isn't about humans versus machines—it's about humans <em>with</em> machines. By leveraging AI as team members, we can achieve more than either could alone. The most successful organizations will be those that learn to harness both human creativity and AI capabilities in harmony.</p>
-                <p class="italic mt-4">Is your team ready for its AI colleagues?</p>
+                <p>The future of work isn't about humans versus machines—it's about humans <em>with</em> machines. By leveraging AI as team members, we can achieve more than either could alone. For more insights, visit our main <a href="#blog" onclick="showPage('blog'); return false;">Tech_Gen Blog</a>.</p>
             </div>
         </div>
     </div>
@@ -870,13 +804,20 @@
           </div>
         </section>
      
-    <div class="container mx-auto py-8 px-4">
-        <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
-            <h2>Unleash Your Creativity with AI Image Generation</h2>
-            <p>Our AI Image Generator, powered by advanced models via Pollinations API, allows you to turn simple text prompts into breathtaking visuals. Whether you're an artist looking for inspiration, a marketer needing unique ad creatives, or just curious about the power of AI, this tool is for you.</p>
-            <p><strong>How it works:</strong> Simply type a description of the image you envision. Be as detailed or as abstract as you like. Choose your preferred aspect ratio and an optional style to guide the AI. Our system will then process your request and generate a unique image based on your input. Explore different prompts and styles to discover endless possibilities!</p>
-          </article>
-       </div>
+        <div class="container mx-auto py-8 px-4">
+            <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
+                <h2>Unleash Your Creativity with AI Image Generation</h2>
+                <p>Our AI Image Generator, powered by advanced models, allows you to turn simple text prompts into breathtaking visuals. Whether you're an artist looking for inspiration, a marketer needing unique ad creatives, or just curious about the power of AI, this tool is for you.</p>
+                <p><strong>How it works:</strong> Simply type a description of the image you envision. Be as detailed or as abstract as you like. Choose your preferred aspect ratio and an optional style to guide the AI. Our system will then process your request and generate a unique image based on your input.</p>
+                <div class="mt-8 text-center bg-[#0D0D0D] border border-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-3">Want to improve your results?</h3>
+                    <p class="text-gray-400 mb-4">Read our <a href="#blog-post-2" onclick="showPage('blog-post-2'); return false;" class="text-[#A800FF] hover:underline">Guide to Writing Effective AI Prompts</a> to master the art of generation.</p>
+                    <button onclick="showPage('pricing')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition font-semibold">
+                        Upgrade for Unlimited Generations
+                    </button>
+                </div>
+              </article>
+           </div>
     </div>
     
     <div id="translate" class="page">
@@ -1152,7 +1093,6 @@
                     <option value="yi">Yiddish</option>
                     <option value="yo">Yoruba</option>
                     <option value="zu">Zulu</option>
-
                   </select>
                   <button id="translateDocBtn" class="bg-[#0070FF] text-white text-sm font-medium px-6 py-2 rounded hover-glow flex items-center" disabled>
                     <span>Translate Document</span>
@@ -1179,11 +1119,15 @@
             <p>Our AI-powered translation tool provides fast and accurate translations for both plain text and full documents. Whether you're dealing with business correspondence, academic research, or personal messages, bridge communication gaps effortlessly.</p>
             <ul>
                 <li><strong>Text Translation:</strong> Paste text directly for instant translation.</li>
-                <li><strong>Document Translation:</strong> Upload your files (PDF, DOCX, TXT) and receive a translated version while preserving the original structure as much as possible.</li>
-                <li><strong>Multiple Languages:</strong> We support a wide array of languages, constantly expanding our list.</li>
-                <li><strong>High Accuracy:</strong> Leveraging cutting-edge AI for quality translations.</li>
+                <li><strong>Document Translation:</strong> Upload your files (PDF, DOCX, TXT) and receive a translated version.</li>
             </ul>
-            <p>Use our translator for business documents, academic papers, personal correspondence, or simply to understand content in a foreign language. It's fast, easy, and reliable.</p>
+            <div class="mt-8 text-center bg-[#0D0D0D] border border-gray-700 p-6 rounded-lg">
+                <h3 class="text-xl font-semibold text-white mb-3">Need more power?</h3>
+                <p class="text-gray-400 mb-4">Find more productivity tips on our <a href="#blog" onclick="showPage('blog'); return false;" class="text-[#A800FF] hover:underline">main blog</a>.</p>
+                <button onclick="showPage('pricing')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition font-semibold">
+                    Upgrade for Unlimited Translations
+                </button>
+            </div>
         </article>
       </div>
     </div>
@@ -1252,9 +1196,14 @@
                     <li><strong>Save Time:</strong> Read less while understanding more.</li>
                     <li><strong>Improve Comprehension:</strong> Focus on core ideas without getting lost in details.</li>
                     <li><strong>Boost Productivity:</strong> Quickly process information for research, study, or business.</li>
-                    <li><strong>Versatile:</strong> Summarize news articles, blog posts, academic papers, business reports, and more.</li>
                 </ul>
-                <p>Our tool uses advanced natural language processing techniques to identify key sentences and concepts, then reconstructs them into a coherent and concise summary. Try it now and experience the power of AI-driven information distillation!</p>
+                <div class="mt-8 text-center bg-[#0D0D0D] border border-gray-700 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-3">Become a power-user</h3>
+                    <p class="text-gray-400 mb-4">Discover more ways to use AI in your workflow on our <a href="#blog" onclick="showPage('blog'); return false;" class="text-[#A800FF] hover:underline">Tech_Gen Blog</a>.</p>
+                    <button onclick="showPage('pricing')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition font-semibold">
+                        Upgrade for Unlimited Summaries
+                    </button>
+                </div>
             </article>
           </div>
     </div>
@@ -1274,11 +1223,11 @@
                     <p class="text-4xl font-bold text-white mb-4">₹0<span class="text-lg font-normal text-gray-400">/month</span></p>
                     <p class="text-gray-400 mb-6">Perfect for individuals starting out or trying our basic features.</p>
                     <ul class="text-gray-300 mb-8 flex-grow">
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 15 AI Image Generations (per month)</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 Text/Doc Translations (per month)</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 Text Summarizations (per month)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 15 <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generations</a> (per month)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 <a href="#translate" onclick="showPage('translate'); return false;">Text/Doc Translations</a> (per month)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> 50 <a href="#summarization" onclick="showPage('summarization'); return false;">Text Summarizations</a> (per month)</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Community Support</li>
-                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Guest Users: 10 total uses (session limit)</li>
+                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Guest Users: 10 total uses</li>
                     </ul>
                 </div>
                 <div class="pricing-card bg-[#1A1A1A]/70 rounded-lg shadow-lg p-6 border-4 border-[#A800FF] flex flex-col relative">
@@ -1287,9 +1236,9 @@
                     <p class="text-4xl font-bold text-white mb-4" id="proPlanPriceDisplay">₹499<span class="text-lg font-normal text-gray-400">/month</span></p>
                     <p class="text-gray-400 mb-6">Ideal for professionals and small teams needing more power.</p>
                     <ul class="text-gray-300 mb-8 flex-grow">
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Text & Document Translation</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Text Summarization</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generations</a></li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited <a href="#translate" onclick="showPage('translate'); return false;">Text & Doc Translation</a></li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited <a href="#summarization" onclick="showPage('summarization'); return false;">Text Summarization</a></li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Priority Email Support</li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Access to new features first</li>
                     </ul>
@@ -1300,11 +1249,11 @@
                      <p class="text-4xl font-bold text-white mb-4" id="businessPlanPriceDisplay">₹1499<span class="text-lg font-normal text-gray-400">/month</span></p>
                     <p class="text-gray-400 mb-6">For larger teams and businesses requiring extensive usage and support.</p>
                     <ul class="text-gray-300 mb-8 flex-grow">
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited AI Image Generations</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Text & Document Translation</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited Summarization</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generations</a></li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited <a href="#translate" onclick="showPage('translate'); return false;">Text & Doc Translation</a></li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Unlimited <a href="#summarization" onclick="showPage('summarization'); return false;">Text Summarization</a></li>
                         <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Dedicated 24/7 Support</li>
-                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Team Collaboration Tools (Coming Soon)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Team Collaboration Tools</li>
                     </ul>
                     <button onclick="initiatePayment('business')" class="w-full bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-white transition mt-auto">Choose Business</button>
                 </div>
@@ -1584,7 +1533,7 @@
     let currentUser = null; 
     let inactivityTimer;
     let passwordResetCode = null;
-    const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
+    const INACTIVITY_TIMEOUT = 15 * 60 * 1000;
     const GUEST_TOTAL_USAGE_LIMIT = 10; 
     const FREE_TIER_LIMITS = { 
         imageGen: 15,
@@ -1605,7 +1554,6 @@
         business: { name: "Business", priceDisplay: "₹1499/month", priceAmount: 149900, currency: "INR", id: 'business', description: "All Pro features plus dedicated support and team tools for your organization." }
     };
     
-    // *** MODIFIED FOR SEO ***
     const pageMetaInfo = {
         home: { title: "AI Tools for Images, Translation & Summaries | Tech_Gen", description: "Boost your workflow with AI-powered image generation, document translation, and text summarization tools from TECH_GEN." },
         login: { title: "Login - Tech_Gen", description: "Access your Tech_Gen account to use our suite of AI tools." },
