@@ -14,7 +14,7 @@
   
   <!-- Microsoft Verification -->
   <meta name="msvalidate.01" content="0411FDFD8C7EE90CFC8093F8B0BA1ACF" />
-  A
+  
   <!-- Google Adsense -->
   <meta name="google-adsense-account" content="ca-pub-1893797822419017">
   
@@ -51,16 +51,16 @@
   }
   </script>
   
+  <!-- *** PERFORMANCE: Tailwind CSS is loaded in head as it's required for styling before paint *** -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   
   <style>
     /* New Color Palette & Global Styles */
     body {
         background-color: #0D0D0D;
         color: #e5e7eb; /* Default text color: gray-200 */
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+        font-size: 16px; /* Ensure base font size is at least 16px */
         background-image: radial-gradient(circle at 15% 50%, rgba(107, 0, 215, 0.1), transparent 40%), 
                           radial-gradient(circle at 85% 30%, rgba(36, 0, 75, 0.1), transparent 40%);
     }
@@ -236,7 +236,7 @@
       <header class="gradient-bg text-white py-20">
         <div class="container mx-auto text-center px-4">
           <h1 class="text-2xl font-bold mb-2">Transform Your Workflow with AI</h1>
-          <p class="text-lg mb-6 max-w-2xl mx-auto text-gray-200">Our AI-platform tools for image generation, document translation, and text summarization.</p>
+          <p class="text-lg mb-6 max-w-2xl mx-auto text-gray-200">Our AI platform provides tools for image generation, document translation, and text summarization.</p>
           </div>
       </header>
       
@@ -247,17 +247,17 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div class="p-6 bg-[#1A1A1A]/70 rounded-lg shadow-md border border-gray-800">
             <h3 class="text-xl font-semibold mb-2 text-white">AI Image Generator</h3>
-            <p class="mb-4 text-gray-300">Our advanced AI image generator. Perfect for artists, marketers, and content creators.</p>
+            <p class="mb-4 text-gray-300">Create amazing images from text. Perfect for artists, marketers, and content creators.</p>
             <button onclick="showPage('ai-generator')" class="text-[#A800FF] font-medium hover:text-[#D480FF] transition-colors">Try it now →</button>
           </div>
           <div class="p-6 bg-[#1A1A1A]/70 rounded-lg shadow-md border border-gray-800">
             <h3 class="text-xl font-semibold mb-2 text-white">Translate Documents</h3>
-            <p class="mb-4 text-gray-300">Effortlessly translate text and entire documents into multiple languages with high accuracy.</p>
+            <p class="mb-4 text-gray-300">Easily translate text and full documents into multiple languages with high accuracy.</p>
             <button onclick="showPage('translate')" class="text-[#A800FF] font-medium hover:text-[#D480FF] transition-colors">Try it now →</button>
           </div>
           <div class="p-6 bg-[#1A1A1A]/70 rounded-lg shadow-md border border-gray-800">
             <h3 class="text-xl font-semibold mb-2 text-white">Text Summarization</h3>
-            <p class="mb-4 text-gray-300">Get concise and coherent summaries of long articles, reports, or documents in seconds.</p>
+            <p class="mb-4 text-gray-300">Get short and clear summaries of long articles, reports, or documents in just seconds.</p>
             <button onclick="showPage('summarization')" class="text-[#A800FF] font-medium hover:text-[#D480FF] transition-colors">Try it now →</button>
           </div>
         </div>
@@ -268,9 +268,9 @@
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-3xl font-bold text-white mb-6">Why Choose Tech_Gen?</h2>
             <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-                Tech_Gen provides cutting-edge artificial intelligence tools designed to be intuitive, powerful, and accessible.
-                We leverage state-of-the-art models to deliver high-quality results, helping you save time, enhance creativity, and
-                improve your workflows. Our platform is continuously evolving with new features and improvements.
+                Tech_Gen provides modern AI tools that are easy to use, powerful, and accessible.
+                We use top-tier models to deliver high-quality results, helping you save time, boost your creativity, and
+                improve your work.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="p-6">
@@ -405,37 +405,23 @@
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
                 <h1 class="text-3xl font-bold mb-6 text-center">Unlock Creativity with Our AI Image Generator</h1>
                 
-                <p class="text-lg italic text-gray-400 mb-8 text-center">In a world where visual content dominates, our AI Image Generator empowers artists, designers, marketers, and creatives of all kinds to bring their visions to life with unprecedented speed and flexibility.</p>
-                
-                <div class="my-8 text-center">
-                <p class="text-sm text-gray-500 mt-2"><em>Example of artwork created with our AI Image Generator.</em></p>
-                </div>
+                <p class="text-lg italic text-gray-400 mb-8 text-center">In a world where visual content is key, our AI Image Generator empowers everyone to bring their visions to life with amazing speed and ease.</p>
                 
                 <h2>Why Use an AI Image Generator?</h2>
-                <p>Traditional creative processes often involve hours of work, expensive software, and specialized skills. Our AI-powered solution breaks down these barriers by:</p>
-                
-                <div class="bg-[#0D0D0D] border-l-4 border-[#A800FF] p-4 my-6">
-                    <h3 class="mt-0">Instant Visual Exploration</h3>
-                    <p>Generate multiple variations of your concept in seconds, allowing you to explore creative directions that might have taken days manually.</p>
-                </div>
-                
-                <div class="bg-[#0D0D0D] border-l-4 border-[#A800FF] p-4 my-6">
-                    <h3>Endless Inspiration</h3>
-                    <p>Overcome creative blocks by let our AI suggest unexpected compositions, color palettes, and styles based on your initial input.</p>
-                </div>
+                <p>Traditional creative work often requires long hours, expensive software, and special skills. Our AI tool removes these barriers.</p>
                 
                 <h2>How It Works</h2>
                 <p>To get the best results, you need to write a good prompt. To learn the secrets, read our guide on <a href="#blog-post-2" onclick="showPage('blog-post-2'); return false;">writing effective AI prompts</a>.</p>
                 <ol>
-                    <li><strong>Describe Your Vision</strong>: Enter a text prompt describing what you want to create.</li>
-                    <li><strong>Choose a Style</strong>: Select from various artistic styles like photorealistic or digital art.</li>
+                    <li><strong>Describe Your Vision</strong>: Type a simple description of what you want to create.</li>
+                    <li><strong>Choose a Style</strong>: Select from styles like photorealistic or digital art to guide the AI.</li>
                     <li><strong>Generate & Refine</strong>: Our AI creates multiple options in seconds.</li>
                 </ol>
                 
                 <h2>Use Cases</h2>
                 <ul>
-                    <li><strong>Concept Artists</strong>: Rapidly prototype character designs, environments, and props.</li>
-                    <li><strong>Marketers</strong>: Create unique visuals for ad campaigns without expensive photoshoots.</li>
+                    <li><strong>Concept Artists</strong>: Quickly create designs for characters, scenes, and items.</li>
+                    <li><strong>Marketers</strong>: Make unique images for ad campaigns without costly photoshoots.</li>
                     <li><strong>Content Creators</strong>: Generate eye-catching thumbnails and social media graphics.</li>
                 </ul>
                 
@@ -448,7 +434,12 @@
                 </div>
                 
                 <h2>The Future of Creative Expression</h2>
-                <p>Our AI Image Generator isn't here to replace human creativity—it's here to amplify it. By handling the technical execution, we free you to focus on what truly matters: your vision, your message, and your unique creative perspective. This is just one aspect of the <a href="#blog-post-3" onclick="showPage('blog-post-3'); return false;">future of work with AI</a>.</p>
+                <p>Our AI Image Generator is not here to replace human creativity—it's here to boost it. By handling the technical work, we free you to focus on your vision and message. This is just one part of the <a href="#blog-post-3" onclick="showPage('blog-post-3'); return false;">future of work with AI</a>.</p>
+                
+                <div class="mt-12 p-4 border-t border-gray-700 text-center">
+                    <h3 class="text-lg font-semibold text-white">Join the Discussion</h3>
+                    <p class="text-gray-400 text-sm">Comments are coming soon! We'd love to hear your thoughts.</p>
+                </div>
             </div>
         </article>
     </div>
@@ -459,30 +450,16 @@
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
                 <h1 class="text-3xl font-bold mb-6 text-center">A Guide to Writing Effective AI Image Prompts</h1>
                 
-                <div class="bg-[#0D0D0D] p-4 rounded-lg my-6">
-                    <p class="text-lg italic text-gray-400">AI image generators have revolutionized digital art, but how do you craft the perfect prompt? This guide will teach you the art of writing AI image prompts that produce amazing results.</p>
-                </div>
+                <h2>Why Prompts Matter</h2>
+                <p>AI models create images based on your text descriptions. The more precise and descriptive your prompt, the better the result. A vague prompt gives random results, while a well-written one can produce professional art. To see the tool in action, check out our <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generator</a>.</p>
                 
-                <h2>Why Prompt Engineering Matters</h2>
-                <p>AI models generate images based on textual descriptions—the more precise and descriptive your prompt, the better the output. A vague prompt may give unpredictable results, while a well-structured one can produce professional-quality artwork. To see the tool in action, check out our <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generator</a>.</p>
-                
-                <div class="bg-[#0D0D0D] border-l-4 border-[#A800FF] p-4 my-6">
-                    <h3 class="mt-0">Key Elements of a Strong Prompt</h3>
-                    <ol>
-                        <li><strong>Subject</strong>: What is the main focus? (e.g., "a cyberpunk samurai")</li>
-                        <li><strong>Style</strong>: Art medium or aesthetic (e.g., "digital painting, anime style")</li>
-                        <li><strong>Details</strong>: Lighting, colors, textures (e.g., "neon lights, rainy streets")</li>
-                        <li><strong>Composition</strong>: Perspective, framing (e.g., "close-up portrait, cinematic")</li>
-                    </ol>
-                </div>
-                
-                <h2>Step-by-Step: Crafting the Perfect Prompt</h2>
-                
-                <h3>1. Be Specific, But Not Overly Restrictive</h3>
-                <p>Instead of "a cat," try:</p>
-                <div class="bg-black/50 p-4 rounded-lg my-4 font-mono text-sm text-gray-300">
-                    <p>"A majestic black panther standing on a mossy ancient ruin at sunset, golden hour lighting, hyper-detailed fur, cinematic composition, 8K resolution"</p>
-                </div>
+                <h2>Key Elements of a Strong Prompt</h2>
+                <ol>
+                    <li><strong>Subject</strong>: What is the main focus? (e.g., "a cyberpunk samurai")</li>
+                    <li><strong>Style</strong>: What art style do you want? (e.g., "digital painting, anime style")</li>
+                    <li><strong>Details</strong>: Add lighting, colors, or textures. (e.g., "neon lights, rainy streets")</li>
+                    <li><strong>Composition</strong>: How should it be framed? (e.g., "close-up portrait, cinematic")</li>
+                </ol>
                 
                 <h2>Common Mistakes to Avoid</h2>
                 <ul>
@@ -492,14 +469,19 @@
                 
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
                     <h2 class="mt-0">Ready to Master AI Art Generation?</h2>
-                    <p>Start experimenting with different prompts and see how small tweaks can dramatically change your results!</p>
+                    <p>Start trying different prompts and see how small changes can improve your results!</p>
                     <button onclick="showPage('ai-generator')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition mt-4 font-semibold">
                         Try Our AI Image Generator Now
                     </button>
                 </div>
                 
                 <h2>Final Thoughts</h2>
-                <p>Writing effective AI image prompts is both an art and a science. For a more general overview of AI creativity, read our post on <a href="#blog-post-1" onclick="showPage('blog-post-1'); return false;">unlocking creativity with AI</a>.</p>
+                <p>Writing good AI image prompts is a skill. The more you practice, the better you'll get at creating amazing art. For a general overview, read our post on <a href="#blog-post-1" onclick="showPage('blog-post-1'); return false;">unlocking creativity with AI</a>.</p>
+
+                <div class="mt-12 p-4 border-t border-gray-700 text-center">
+                    <h3 class="text-lg font-semibold text-white">Join the Discussion</h3>
+                    <p class="text-gray-400 text-sm">Comments are coming soon! Let us know what you create.</p>
+                </div>
             </div>
         </article>
     </div>
@@ -508,11 +490,9 @@
     <div id="blog-post-3" class="page">
         <article class="container mx-auto px-4 py-16">
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
-                <h1 class="text-3xl font-bold mb-6 text-center">The Future of Work: Why Your Next Team Member Might Be an AI</h1>
+                <h1 class="text-3xl font-bold mb-6 text-center">The Future of Work: Your Next Team Member Might Be an AI</h1>
                 
-                <div class="bg-[#0D0D0D] p-4 rounded-lg my-6">
-                    <p class="text-lg italic text-gray-400">The workplace is evolving at an unprecedented pace, and artificial intelligence is no longer just a tool—it's becoming a collaborative partner. From automating repetitive tasks to enhancing creative processes, AI is reshaping how teams operate.</p>
-                </div>
+                <p class="text-lg italic text-gray-400 mb-8 text-center">The modern workplace is changing fast. Artificial intelligence is now more than a tool—it's a partner. AI is reshaping how teams work, from automating simple tasks to helping with creative projects.</p>
                 
                 <h2>AI Roles Already in the Workplace</h2>
                 <ul>
@@ -522,12 +502,8 @@
                     <li><strong><a href="#translate" onclick="showPage('translate'); return false;">Translation Specialists</a></strong>: Handling multilingual communication instantly.</li>
                 </ul>
                 
-                <div class="bg-black/50 border-l-4 border-[#6C00FF] p-4 my-6 italic text-gray-300">
-                    "In five years, we'll look back and wonder how we ever worked without AI colleagues. They're not replacing humans—they're making us more capable than ever before." — Tech Industry Leader
-                </div>
-                
                 <h2>The Human-AI Partnership Advantage</h2>
-                <h3>Complementary Strengths</h3>
+                <p>Humans and AI are great at different things. When they work together, they can achieve amazing results.</p>
                 <table>
                     <thead>
                         <tr>
@@ -538,21 +514,26 @@
                     <tbody>
                         <tr><td>Creative problem-solving</td><td>Processing large datasets</td></tr>
                         <tr><td>Emotional intelligence</td><td>24/7 availability</td></tr>
-                        <tr><td>Strategic thinking</td><td>Rapid execution</td></tr>
+                        <tr><td>Strategic thinking</td><td>Speed and repetition</td></tr>
                         <tr><td>Adaptability</td><td>Consistency</td></tr>
                     </tbody>
                 </table>
                 
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
                     <h2 class="mt-0">Ready to Integrate AI Into Your Team?</h2>
-                    <p>Discover how our AI can enhance your business operations and give you a competitive edge.</p>
+                    <p>Discover how our AI can improve your business and give you a competitive edge.</p>
                     <button onclick="showPage('pricing')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition mt-4 font-semibold">
                         Explore Our AI Solutions
                     </button>
                 </div>
                 
                 <h2>Conclusion: Collaboration, Not Replacement</h2>
-                <p>The future of work isn't about humans versus machines—it's about humans <em>with</em> machines. By leveraging AI as team members, we can achieve more than either could alone. For more insights, visit our main <a href="#blog" onclick="showPage('blog'); return false;">Tech_Gen Blog</a>.</p>
+                <p>The future of work isn't about humans versus machines. It's about humans *with* machines. By using AI as team members, we can achieve more than either could alone. For more insights, visit our main <a href="#blog" onclick="showPage('blog'); return false;">Tech_Gen Blog</a>.</p>
+
+                <div class="mt-12 p-4 border-t border-gray-700 text-center">
+                    <h3 class="text-lg font-semibold text-white">Join the Discussion</h3>
+                    <p class="text-gray-400 text-sm">Comments are coming soon! What are your thoughts on AI in the workplace?</p>
+                </div>
             </div>
         </article>
     </div>
@@ -747,7 +728,7 @@
       <header class="gradient-bg text-white py-8">
         <div class="container mx-auto px-4 text-center">
           <h1 class="text-3xl font-bold">AI Image Generator</h1>
-          <p class="mt-2 text-gray-200">Transform your ideas into stunning visuals with Tech_Gen</p>
+          <p class="mt-2 text-gray-200">Turn your ideas into stunning visuals with Tech_Gen.</p>
         </div>
       </header>
 
@@ -806,9 +787,8 @@
      
         <div class="container mx-auto py-8 px-4">
             <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
-                <h2>Unleash Your Creativity with AI Image Generation</h2>
-                <p>Our AI Image Generator, powered by advanced models, allows you to turn simple text prompts into breathtaking visuals. Whether you're an artist looking for inspiration, a marketer needing unique ad creatives, or just curious about the power of AI, this tool is for you.</p>
-                <p><strong>How it works:</strong> Simply type a description of the image you envision. Be as detailed or as abstract as you like. Choose your preferred aspect ratio and an optional style to guide the AI. Our system will then process your request and generate a unique image based on your input.</p>
+                <h2>Unleash Your Creativity</h2>
+                <p>Our AI Image Generator allows you to turn simple text prompts into amazing images. Whether you're an artist looking for ideas, a marketer needing unique visuals, or just curious about AI, this tool is for you.</p>
                 <div class="mt-8 text-center bg-[#0D0D0D] border border-gray-700 p-6 rounded-lg">
                     <h3 class="text-xl font-semibold text-white mb-3">Want to improve your results?</h3>
                     <p class="text-gray-400 mb-4">Read our <a href="#blog-post-2" onclick="showPage('blog-post-2'); return false;" class="text-[#A800FF] hover:underline">Guide to Writing Effective AI Prompts</a> to master the art of generation.</p>
@@ -824,7 +804,7 @@
       <header class="gradient-bg text-white py-8">
         <div class="container mx-auto px-4 text-center">
           <h1 class="text-3xl font-bold">AI Document & Text Translator</h1>
-          <p class="mt-2 text-gray-200">Translate text and documents with high accuracy using AI</p>
+          <p class="mt-2 text-gray-200">Translate text and documents with high accuracy using AI.</p>
         </div>
       </header>
       
@@ -905,11 +885,11 @@
         </div>
       <div class="container mx-auto py-8 px-4">
         <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
-            <h2>Break Language Barriers with AI Translation</h2>
-            <p>Our AI-powered translation tool provides fast and accurate translations for both plain text and full documents. Whether you're dealing with business correspondence, academic research, or personal messages, bridge communication gaps effortlessly.</p>
+            <h2>Break Language Barriers</h2>
+            <p>Our AI translation tool gives you fast and accurate translations for text and documents. Bridge communication gaps for business, school, or personal messages.</p>
             <ul>
-                <li><strong>Text Translation:</strong> Paste text directly for instant translation.</li>
-                <li><strong>Document Translation:</strong> Upload your files (PDF, DOCX, TXT) and receive a translated version.</li>
+                <li><strong>Text Translation:</strong> Paste text for an instant translation.</li>
+                <li><strong>Document Translation:</strong> Upload your PDF, DOCX, or TXT files to receive a translated version.</li>
             </ul>
             <div class="mt-8 text-center bg-[#0D0D0D] border border-gray-700 p-6 rounded-lg">
                 <h3 class="text-xl font-semibold text-white mb-3">Need more power?</h3>
@@ -926,7 +906,7 @@
         <header class="gradient-bg text-white py-8">
             <div class="container mx-auto px-4 text-center">
               <h1 class="text-3xl font-bold">AI Text Summarizer</h1>
-              <p class="mt-2 text-gray-200">Condense long texts into concise summaries using AI</p>
+              <p class="mt-2 text-gray-200">Get short, easy-to-read summaries of long texts.</p>
             </div>
         </header>
         
@@ -980,12 +960,12 @@
             </section>
       <div class="container mx-auto py-8 px-4">
             <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
-                <h2>Quickly Grasp Key Information with AI Summaries</h2>
-                <p>Overwhelmed by lengthy articles or documents? Our AI Text Summarizer distills vast amounts of text into clear, concise summaries, helping you understand key points quickly and efficiently.</p>
+                <h2>Understand Key Information Faster</h2>
+                <p>Feeling overwhelmed by long articles? Our AI Text Summarizer turns large amounts of text into clear, short summaries. This helps you understand the main points quickly and easily.</p>
                 <ul>
                     <li><strong>Save Time:</strong> Read less while understanding more.</li>
-                    <li><strong>Improve Comprehension:</strong> Focus on core ideas without getting lost in details.</li>
-                    <li><strong>Boost Productivity:</strong> Quickly process information for research, study, or business.</li>
+                    <li><strong>Improve Comprehension:</strong> Focus on core ideas without getting lost in the details.</li>
+                    <li><strong>Boost Productivity:</strong> Quickly review information for research, school, or work.</li>
                 </ul>
                 <div class="mt-8 text-center bg-[#0D0D0D] border border-gray-700 p-6 rounded-lg">
                     <h3 class="text-xl font-semibold text-white mb-3">Become a power-user</h3>
@@ -1090,182 +1070,106 @@
       </div>
     </div>
   
-    <!-- Privacy Policy and Terms of Service Pages -->
-<div id="privacyPolicyPage" class="page">
-  <article class="container mx-auto px-4 py-16">
-    <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
-      <h1 class="text-3xl font-bold mb-6 text-center">Privacy Policy</h1>
-      <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 30, 2025</p>
-      
-      <p>At Tech_Gen SaaS, we respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
-
-      <h2>1. Information We Collect</h2>
-      <p>We may collect the following data when you interact with our Service:</p>
-
-      <h3>Personal Information</h3>
-      <p>Name, email, contact details (when you sign up or contact us).</p>
-      <p>Payment/billing information (processed securely via third-party providers like Stripe/PayPal).</p>
-
-      <h3>Automated Data</h3>
-      <p>Cookies & Tracking: We use cookies to improve user experience (e.g., login sessions, analytics).</p>
-      <p>Log Files: IP address, browser type, pages visited, and timestamps.</p>
-
-      <h3>Third-Party Data</h3>
-      <p>If you log in via Google/GitHub/etc., we may receive your public profile info (per your permissions).</p>
-
-      <h2>2. How We Use Your Data</h2>
-      <p>We process your information to:</p>
-      <ul>
-          <li>Provide and maintain the Service.</li>
-          <li>Process payments and prevent fraud.</li>
-          <li>Communicate updates, offers, or support requests.</li>
-          <li>Analyze usage trends to improve our Service.</li>
-      </ul>
-
-      <h2>3. Data Sharing & Disclosure</h2>
-      <p>We do not sell your data. We may share it only in these cases:</p>
-      <ul>
-          <li><strong>Service Providers:</strong> Trusted vendors (e.g., hosting, payment processors) under strict confidentiality.</li>
-          <li><strong>Legal Compliance:</strong> If required by law (e.g., subpoenas, fraud investigations).</li>
-          <li><strong>Business Transfers:</strong> In case of mergers/acquisitions (users will be notified).</li>
-      </ul>
-
-      <h2>4. Data Security</h2>
-      <p>We implement SSL encryption, access controls, and regular audits to protect your data. However, no online method is 100% secure—please safeguard your account credentials.</p>
-
-      <h2>5. Your Rights</h2>
-      <p>Depending on your location, you may:</p>
-      <ul>
-          <li>Access, correct, or delete your personal data.</li>
-          <li>Opt out of marketing emails (via unsubscribe links).</li>
-          <li>Disable cookies (via browser settings).</li>
-          <li>Request data portability or restriction of processing.</li>
-      </ul>
-      <p>To exercise these rights, contact us at <a href="mailto:privacy@Tech_Gen.com">privacy@Tech_Gen.com</a>.</p>
-
-      <h2>6. Cookies Policy</h2>
-      <p>We use:</p>
-      <ul>
-          <li><strong>Essential Cookies:</strong> Necessary for site functionality (e.g., login).</li>
-          <li><strong>Analytics Cookies:</strong> Google Analytics to track traffic (anonymous data).</li>
-          <li><strong>Marketing Cookies:</strong> If running ads (e.g., Facebook Pixel).</li>
-      </ul>
-
-      <h2>7. Third-Party Links</h2>
-      <p>Our Service may link to external sites (e.g., documentation, social media). We are not responsible for their privacy practices.</p>
-
-      <h2>8. Children's Privacy</h2>
-      <p>Our Service is not intended for users under 13. We do not knowingly collect their data.</p>
-
-      <h2>9. International Data Transfers</h2>
-      <p>If data crosses borders, we ensure protections (e.g., GDPR Standard Contractual Clauses).</p>
-
-      <h2>10. Policy Updates</h2>
-      <p>We may update this policy and will notify users via email or website notices.</p>
-
-      <div class="contact-info">
-          <h2>11. Contact Us</h2>
-          <p>For privacy-related questions, contact:</p>
-          <p><a href="mailto:privacy@Tech_Gen.com">privacy@Tech_Gen.com</a></p>
-      </div>
+    <!-- Privacy Policy, Terms, and Disclaimer Pages -->
+    <div id="privacyPolicyPage" class="page">
+        <article class="container mx-auto px-4 py-16">
+            <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
+                <h1 class="text-3xl font-bold mb-6 text-center">Privacy Policy</h1>
+                <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 30, 2025</p>
+                <p>At Tech_Gen, we respect your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services.</p>
+                <h2>1. Information We Collect</h2>
+                <p>We may collect your name and email when you sign up or contact us. We also collect usage data to improve our service.</p>
+                <h2>2. How We Use Your Data</h2>
+                <p>We use your information to provide the service, process payments, communicate with you, and analyze usage to make our tools better.</p>
+                <h2>3. Data Sharing</h2>
+                <p>We do not sell your data. We only share it with trusted vendors who help us run our service (like hosting and payment processors) or if required by law.</p>
+                <h2>4. Your Rights</h2>
+                <p>You have the right to access, correct, or delete your personal data. You can also opt out of marketing emails. To exercise these rights, please <a href="#contact" onclick="showPage('contact'); return false;">contact us</a>.</p>
+            </div>
+        </article>
     </div>
-  </article>
-</div>
 
-<div id="termsOfServicePage" class="page">
-  <article class="container mx-auto px-4 py-16">
-    <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
-      <h1 class="text-3xl font-bold mb-6 text-center">Terms of Service</h1>
-      <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 30, 2025</p>
-
-      <p>Welcome to Tech_Gen SaaS (the "Service"). By accessing or using our website and services, you agree to comply with and be bound by the following Terms and Conditions. If you do not agree, please refrain from using our Service.</p>
-
-      <h2>1. Acceptance of Terms</h2>
-      <p>By using our Service, you confirm that you are at least 18 years old or have legal guardian consent. You also agree to provide accurate and complete information when registering.</p>
-
-      <h2>2. Service Description</h2>
-      <p>Tech_Gen SaaS provides cloud-based AI tools including image generation, document translation, and text summarization. We reserve the right to modify or discontinue any part of the Service without prior notice.</p>
-
-      <h2>3. User Responsibilities</h2>
-      <p>You agree not to misuse the Service (e.g., hacking, spamming, or distributing malware).</p>
-      <p>You are responsible for maintaining the confidentiality of your account credentials.</p>
-      <p>Any unauthorized use of your account must be reported immediately.</p>
-
-      <h2>4. Payments & Subscriptions</h2>
-      <p>Fees for the Service are as listed on our <a href="#pricing" onclick="showPage('pricing'); return false;">pricing page</a>.</p>
-      <p>Payments are non-refundable unless otherwise stated.</p>
-      <p>We may change pricing with prior notice.</p>
-
-      <h2>5. Intellectual Property</h2>
-      <p>All content, trademarks, and software on the Service are owned by Tech_Gen or its licensors. Unauthorized use, reproduction, or distribution is prohibited.</p>
-
-      <h2>6. Privacy Policy</h2>
-      <p>Your use of the Service is also governed by our <a href="#privacyPolicyPage" onclick="showPage('privacyPolicyPage'); return false;">Privacy Policy</a>.</p>
-
-      <h2>7. Termination</h2>
-      <p>We may suspend or terminate your access for violations of these Terms, illegal activities, or non-payment.</p>
-
-      <h2>8. Limitation of Liability</h2>
-      <p>Tech_Gen is not liable for any indirect, incidental, or consequential damages arising from your use of the Service.</p>
-
-      <h2>9. Governing Law</h2>
-      <p>These Terms shall be governed by the laws of India, without regard to conflict of law principles.</p>
-
-      <h2>10. Changes to Terms</h2>
-      <p>We may update these Terms periodically. Continued use after changes constitutes acceptance.</p>
-
-      <h3 class="text-2xl font-semibold mt-8 mb-3">Contact Us</h3>
-      <p>If you have any questions about these Terms, please contact us via the <a href="#contact" onclick="showPage('contact'); return false;">Contact page</a>.</p>
+    <div id="termsOfServicePage" class="page">
+        <article class="container mx-auto px-4 py-16">
+            <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
+                <h1 class="text-3xl font-bold mb-6 text-center">Terms of Service</h1>
+                <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 30, 2025</p>
+                <p>Welcome to Tech_Gen. By using our website and services, you agree to these terms. If you do not agree, please do not use our service.</p>
+                <h2>1. User Responsibilities</h2>
+                <p>You agree not to misuse our service for illegal activities. You are responsible for keeping your account password safe.</p>
+                <h2>2. Payments & Subscriptions</h2>
+                <p>Fees for our service are listed on our <a href="#pricing" onclick="showPage('pricing'); return false;">pricing page</a>. Payments are non-refundable unless stated otherwise.</p>
+                <h2>3. Intellectual Property</h2>
+                <p>The content you generate is yours. The content on our website, including our logo and tools, belongs to us. You may not copy or distribute it without permission. Our Privacy Policy and <a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;">Disclaimer</a> are also part of these terms.</p>
+            </div>
+        </article>
     </div>
-  </article>
-</div>
+
+    <!-- *** NEW: Disclaimer Page *** -->
+    <div id="disclaimerPage" class="page">
+        <article class="container mx-auto px-4 py-16">
+            <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
+                <h1 class="text-3xl font-bold mb-6 text-center">Disclaimer</h1>
+                <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 30, 2025</p>
+                <p>The information and content generated by the AI tools on Tech_Gen ("the Service") are provided for general informational purposes only. All information on the site is provided in good faith, however, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information or AI-generated content on the Site.</p>
+                <h2>Not Professional Advice</h2>
+                <p>The content generated by our AI is not a substitute for professional advice. The outputs from our tools (including image, text, and translation) should not be used for making legal, financial, medical, or any other professional decisions. Always consult with a qualified professional for advice specific to your situation.</p>
+                <h2>User Responsibility</h2>
+                <p>You are solely responsible for the content you generate and how you use it. Tech_Gen is not liable for any loss or damage of any kind incurred as a result of the use of the site or reliance on any information or AI-generated content provided. Your use of the site and your reliance on any information is solely at your own risk.</p>
+            </div>
+        </article>
+    </div>
+
   </main>
 
-  <footer class="bg-black/50 text-white py-8 border-t border-gray-800">
-    <div class="container mx-auto px-4 text-center">
-      
-      <div class="mb-6">
-        <h4 class="text-lg font-semibold mb-4 text-white">Connect With Us</h4>
-        <div class="flex justify-center space-x-4">
-          <a href="https://www.facebook.com/share/1E4dYSnnYw/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <title>Facebook</title>
-              <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"></path>
-            </svg>
-          </a>
-          <a href="https://x.com/manjeshsharma8?t=6FU-OLj9YMIPd_92uoUHPw&s=09" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <title>Twitter</title>
-              <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
-            </svg>
-          </a>
-          <a href="https://www.instagram.com/mjsharma7321?igsh=ZW0yMmhyZ2Z0bmp6" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <title>Instagram</title>
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path>
-            </svg>
-          </a>
-          <a href="https://youtube.com/@manjeshsharma?si=cvazHP7_fLn3mZrd" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <title>YouTube</title>
-              <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
-            </svg>
-          </a>
+  <footer class="bg-black/50 text-white py-12 border-t border-gray-800">
+    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+        <div>
+            <h4 class="font-bold text-white mb-3">Tech_Gen</h4>
+            <p class="text-gray-400 text-sm">AI-powered tools to enhance your creativity and productivity.</p>
+            <div class="flex justify-center md:justify-start space-x-4 mt-4">
+                <a href="https://www.facebook.com/share/1E4dYSnnYw/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><title>Facebook</title><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"></path></svg></a>
+                <a href="https://x.com/manjeshsharma8?t=6FU-OLj9YMIPd_92uoUHPw&s=09" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><title>Twitter</title><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg></a>
+                <a href="https://www.instagram.com/mjsharma7321?igsh=ZW0yMmhyZ2Z0bmp6" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><title>Instagram</title><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg></a>
+                <a href="https://youtube.com/@manjeshsharma?si=cvazHP7_fLn3mZrd" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#D480FF] transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><title>YouTube</title><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path></svg></a>
+            </div>
         </div>
-      </div>
-      
-      <div class="mb-4 text-gray-400">
-        <a href="#home" onclick="showPage('home'); return false;" class="hover:text-[#D480FF] underline">Home</a> | 
-        <a href="#privacyPolicyPage" onclick="showPage('privacyPolicyPage'); return false;" class="hover:text-[#D480FF] underline">Privacy Policy</a> | 
-        <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;" class="hover:text-[#D480FF] underline">Terms of Service</a> |
-        <a href="#contact" onclick="showPage('contact'); return false;" class="hover:text-[#D480FF] underline">Contact Us</a>
-      </div>
-
-      <p class="text-gray-500">© 2025 Tech_Gen. All rights reserved.</p>
-      </div>
+        <div>
+            <h4 class="font-bold text-white mb-3">Tools</h4>
+            <ul class="space-y-2 text-sm">
+                <li><a href="#ai-generator" onclick="showPage('ai-generator'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">AI Image Generator</a></li>
+                <li><a href="#translate" onclick="showPage('translate'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Document Translator</a></li>
+                <li><a href="#summarization" onclick="showPage('summarization'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Text Summarizer</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-3">Company</h4>
+            <ul class="space-y-2 text-sm">
+                <li><a href="#blog" onclick="showPage('blog'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Blog</a></li>
+                <li><a href="#pricing" onclick="showPage('pricing'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Pricing</a></li>
+                <li><a href="#contact" onclick="showPage('contact'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Contact Us</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-3">Legal</h4>
+            <ul class="space-y-2 text-sm">
+                <li><a href="#privacyPolicyPage" onclick="showPage('privacyPolicyPage'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Privacy Policy</a></li>
+                <li><a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Terms of Service</a></li>
+                <li><a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Disclaimer</a></li>
+            </ul>
+        </div>
+        <div class="col-span-1 md:col-span-4 text-center mt-8 pt-8 border-t border-gray-800">
+             <p class="text-gray-500 text-sm">© 2025 Tech_Gen. All rights reserved.</p>
+        </div>
+    </div>
   </footer>
 
-  <script type="module">
+  <!-- *** PERFORMANCE: Scripts moved to end of body with defer attribute to prevent render-blocking *** -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js" defer></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+
+  <script type="module" defer>
     // --- FIREBASE SDK IMPORTS ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import { 
@@ -1360,6 +1264,7 @@
         contact: { title: "Contact Us - Tech_Gen", description: "Get in touch with the Tech_Gen team for support, inquiries, or feedback. We're here to help!" },
         privacyPolicyPage: { title: "Privacy Policy - Tech_Gen", description: "Read the Privacy Policy for Tech_Gen to understand how we collect, use, and protect your personal information." },
         termsOfServicePage: { title: "Terms of Service - Tech_Gen", description: "Review the Terms of Service for using the Tech_Gen platform and its AI-powered tools." },
+        disclaimerPage: { title: "Disclaimer - Tech_Gen", description: "Review the disclaimer for the use of AI-generated content and services on the Tech_Gen platform." },
         paymentPage: { title: "Complete Purchase - Tech_Gen", description: "Securely complete your subscription purchase for Tech_Gen AI tools."},
         forgotPassword: { title: "Forgot Password - Tech_Gen", description: "Reset your Tech_Gen account password."},
         resetPassword: { title: "Set New Password - Tech_Gen", description: "Set a new password for your Tech_Gen account."}
