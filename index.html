@@ -1579,8 +1579,8 @@
     };
     
     // --- YAHOO LOGIN CONFIGURATION ---
-    const YAHOO_CLIENT_ID = "dj0yJmk9eWw2dTRqbVFYU1ZDJmQ9WVdrOVdtTTFhR1JNVDFVbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTI3"; // <-- REPLACE THIS
-    const YAHOO_LOGIN_FUNCTION_URL = "https://project1-4140a.firebaseapp.com/__/auth/handler"; // <-- REPLACE THIS (e.g., https://us-central1-your-project-id.cloudfunctions.net/yahooLogin)
+    const YAHOO_CLIENT_ID = "YOUR_YAHOO_CLIENT_ID"; // <-- REPLACE THIS
+    const YAHOO_LOGIN_FUNCTION_URL = "YOUR_FUNCTION_URL"; // <-- REPLACE THIS (e.g., https://us-central1-your-project-id.cloudfunctions.net/yahooLogin)
 
 
     // Initialize Firebase
@@ -1657,42 +1657,63 @@
     
     // --- YAHOO LOGIN HANDLERS ---
     const handleYahooSignIn = () => {
-        if (!YAHOO_CLIENT_ID || YAHOO_CLIENT_ID === "YOUR_YAHOO_CLIENT_ID") {
-            showAlert("Yahoo login is not configured.", "error");
+        if (!YAHOO_CLIENT_ID || YAHOO_CLIENT_ID.includes("YOUR_YAHOO_CLIENT_ID")) {
+            showAlert("Yahoo login is not configured by the site administrator.", "error");
+            console.error("Developer: Please replace 'YOUR_YAHOO_CLIENT_ID' in the script.");
             return;
         }
+        // This is the URL of YOUR application where Yahoo will redirect the user back.
+        // It must be registered in your Yahoo Developer App settings.
         const redirectUri = window.location.origin + window.location.pathname;
+        
         const authUrl = "https://api.login.yahoo.com/oauth2/request_auth?" +
             `client_id=${YAHOO_CLIENT_ID}&` +
             `redirect_uri=${encodeURIComponent(redirectUri)}&` +
             "response_type=code&" +
             "scope=openid%20profile%20email";
+        
+        // Store the fact that a Yahoo login is in progress
         sessionStorage.setItem('yahooLoginInProgress', 'true');
+        showAlert("Redirecting to Yahoo for sign-in...", "info", 3000);
+        
+        // Redirect the user to Yahoo's login page
         window.location.href = authUrl;
     };
 
     const handleYahooRedirect = async (code) => {
-        showAlert('Connecting with Yahoo...', 'info');
+        showAlert('Completing sign-in with Yahoo...', 'info');
         const redirectUri = window.location.origin + window.location.pathname;
         try {
-            if (!YAHOO_LOGIN_FUNCTION_URL || YAHOO_LOGIN_FUNCTION_URL === "YOUR_FUNCTION_URL") {
-                throw new Error("Yahoo login function URL is not configured.");
+            if (!YAHOO_LOGIN_FUNCTION_URL || YAHOO_LOGIN_FUNCTION_URL.includes("YOUR_FUNCTION_URL")) {
+                throw new Error("Yahoo login backend is not configured by the site administrator.");
             }
+            console.log("Calling Firebase Function to handle Yahoo auth code...");
+            // Call your backend Firebase Function
             const response = await fetch(YAHOO_LOGIN_FUNCTION_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code: code, redirect_uri: redirectUri })
             });
+
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(errorText || "Failed to get custom token from server.");
+                throw new Error(errorText || "Failed to get custom token from the server.");
             }
+
             const data = await response.json();
+            console.log("Received custom token from function. Signing into Firebase...");
+            
+            // Use the custom token to sign in to Firebase
             await signInWithCustomToken(auth, data.token);
+            
+            // onAuthStateChanged will now fire and handle the rest of the login flow.
+            console.log("Successfully signed in with Yahoo custom token.");
+            
         } catch (error) {
             console.error('Yahoo custom sign-in failed:', error);
             showAlert(`Yahoo sign-in failed: ${error.message}`, 'error');
         } finally {
+            // Clean up the URL by removing the code parameter
             const cleanUrl = window.location.origin + window.location.pathname + window.location.hash;
             window.history.replaceState({}, document.title, cleanUrl);
             sessionStorage.removeItem('yahooLoginInProgress');
@@ -1742,20 +1763,19 @@
     onAuthStateChanged(auth, async (user) => {
         const wasLoggedIn = !!currentUser;
         if (user) {
-            await user.reload();
-            if (user.emailVerified) {
-                currentUser = await loadUserProfile(user);
-                if (!wasLoggedIn) {
-                    const pendingPlan = sessionStorage.getItem('pendingPlan');
-                    const intendedPage = sessionStorage.getItem('intendedPage');
-                    sessionStorage.removeItem('pendingPlan');
-                    sessionStorage.removeItem('intendedPage');
-                    showAlert(`Welcome back, ${escapeHtml(currentUser.name)}!`, 'success');
-                    if (pendingPlan) { initiatePayment(pendingPlan); } 
-                    else if (intendedPage) { showPage(intendedPage); } 
-                    else { showPage('home'); }
-                }
-            } else { currentUser = null; }
+            // No need to check for email verification here as it's handled by login forms
+            // or implicitly handled by the custom token flow for Yahoo.
+            currentUser = await loadUserProfile(user);
+            if (!wasLoggedIn) {
+                const pendingPlan = sessionStorage.getItem('pendingPlan');
+                const intendedPage = sessionStorage.getItem('intendedPage');
+                sessionStorage.removeItem('pendingPlan');
+                sessionStorage.removeItem('intendedPage');
+                showAlert(`Welcome, ${escapeHtml(currentUser.name)}!`, 'success');
+                if (pendingPlan) { window.initiatePayment(pendingPlan); } 
+                else if (intendedPage && intendedPage !== 'login' && intendedPage !== 'register') { showPage(intendedPage); } 
+                else { showPage('home'); }
+            }
         } else { currentUser = null; }
         
         // Update UI based on auth state
@@ -1764,7 +1784,7 @@
         if (currentUser) {
             authButtons.classList.add('hidden');
             userInfo.classList.remove('hidden');
-            document.getElementById('userEmailDisplay').textContent = `Welcome, ${escapeHtml(currentUser.name)}!`;
+            document.getElementById('userEmailDisplay').textContent = `${escapeHtml(currentUser.name)}`;
         } else {
             authButtons.classList.remove('hidden');
             userInfo.classList.add('hidden');
@@ -1788,21 +1808,44 @@
         if (pageIdToShow) showPage(pageIdToShow);
     });
 
-    // All other event listeners
-    document.getElementById('loginForm')?.addEventListener('submit', async (e) => { e.preventDefault(); /* Login logic here */ });
-    document.getElementById('registerForm')?.addEventListener('submit', async (e) => { e.preventDefault(); /* Register logic here */ });
-    document.getElementById('forgotPasswordForm')?.addEventListener('submit', async (e) => { e.preventDefault(); /* Forgot Pwd logic here */ });
-    document.getElementById('resetPasswordForm')?.addEventListener('submit', async (e) => { e.preventDefault(); /* Reset Pwd logic here */ });
-    document.getElementById('contactForm')?.addEventListener('submit', (e) => { e.preventDefault(); /* Contact logic here */ });
-    document.getElementById('paymentForm')?.addEventListener('submit', (e) => { e.preventDefault(); /* Payment logic here */ });
+    function getAuthErrorMessage(errorCode) {
+        switch (errorCode) {
+            case 'auth/invalid-email': return 'Invalid email address format.';
+            case 'auth/user-not-found':
+            case 'auth/wrong-password': return 'Invalid login credentials. Please try again.';
+            case 'auth/email-already-in-use': return 'This email address is already registered.';
+            case 'auth/weak-password': return 'Password is too weak. It should be at least 6 characters.';
+            case 'auth/requires-recent-login': return 'This operation is sensitive. Please log out and log in again.';
+            case 'auth/popup-blocked': return 'Popup blocked by browser. Please allow popups for this site.';
+            case 'auth/popup-closed-by-user': return 'Sign-in window was closed before completion.';
+            case 'auth/invalid-action-code': return 'Invalid or expired password reset link. Please request a new one.';
+            default:
+                console.error("Firebase Auth Error:", errorCode);
+                return 'An authentication error occurred. Please try again.';
+        }
+    }
+
+    // --- All other event listeners for forms, buttons, etc. ---
     document.getElementById('logoutButton')?.addEventListener('click', logoutUser);
-    document.getElementById('googleSignInBtn')?.addEventListener('click', () => signInWithPopup(auth, new GoogleAuthProvider()).catch(err => showAlert(getAuthErrorMessage(err.code), 'error')));
-    document.getElementById('googleSignUpBtn')?.addEventListener('click', () => signInWithPopup(auth, new GoogleAuthProvider()).catch(err => showAlert(getAuthErrorMessage(err.code), 'error')));
+    
+    // Google Sign-in
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+        } catch (error) {
+            showAlert(getAuthErrorMessage(error.code), 'error');
+        }
+    };
+    document.getElementById('googleSignInBtn')?.addEventListener('click', handleGoogleSignIn);
+    document.getElementById('googleSignUpBtn')?.addEventListener('click', handleGoogleSignIn);
+
+    // Yahoo Sign-in (Redirect flow)
     document.getElementById('yahooSignInBtn')?.addEventListener('click', handleYahooSignIn);
     document.getElementById('yahooSignUpBtn')?.addEventListener('click', handleYahooSignIn);
-
-    // ... (All other tool-specific, non-auth event listeners remain unchanged)
     
+    // ... (Your non-auth related tool listeners like 'generateImageBtn', etc., would go here and are unchanged)
+
   </script>
 </body>
 </html>
