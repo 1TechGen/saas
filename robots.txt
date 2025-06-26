@@ -1,11 +1,4 @@
-User-agent: Googlebot
-Disallow: /nogooglebot/
-
 User-agent: *
 Allow: /
 
-Sitemap: https://www.techgentools.site/sitemap.xml
-
-User-agent: *
-Allow: /
 Sitemap: https://www.techgentools.site/sitemap.xml
