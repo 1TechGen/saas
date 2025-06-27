@@ -3,6 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO & STRUCTURE: robots.txt & sitemap.xml instructions -->
+  <!-- 
+    ACTION REQUIRED: Create a file named 'robots.txt' in your website's root directory with the following content:
+    
+    User-agent: *
+    Allow: /
+    Disallow: /search?q=
+
+    Sitemap: https://www.techgentools.site/sitemap.xml
+  -->
+  <!-- 
+    ACTION REQUIRED: Create a file named 'sitemap.xml' in your website's root directory with the following content.
+    Update the <lastmod> date whenever you make significant changes.
+    
+    <?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      <url>
+        <loc>https://www.techgentools.site/</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>1.00</priority>
+      </url>
+      <url>
+        <loc>https://www.techgentools.site/#ai-generator</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.90</priority>
+      </url>
+      <url>
+        <loc>https://www.techgentools.site/#translate</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.90</priority>
+      </url>
+      <url>
+        <loc>https://www.techgentools.site/#summarization</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.90</priority>
+      </url>
+      <url>
+        <loc>https://www.techgentools.site/#pricing</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.80</priority>
+      </url>
+      <url>
+        <loc>https://www.techgentools.site/#blog</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.80</priority>
+      </url>
+       <url>
+        <loc>https://www.techgentools.site/#blog-post-1</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.70</priority>
+      </url>
+       <url>
+        <loc>https://www.techgentools.site/#blog-post-2</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.70</priority>
+      </url>
+       <url>
+        <loc>https://www.techgentools.site/#blog-post-3</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.70</priority>
+      </url>
+      <url>
+        <loc>https://www.techgentools.site/#about</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.70</priority>
+      </url>
+      <url>
+        <loc>https://www.techgentools.site/#contact</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.60</priority>
+      </url>
+      <url>
+        <loc>https://www.techgentools.site/#privacyPolicyPage</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.30</priority>
+      </url>
+      <url>
+        <loc>https://www.techgentools.site/#termsOfServicePage</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.30</priority>
+      </url>
+      <url>
+        <loc>https://www.techgentools.site/#disclaimerPage</loc>
+        <lastmod>2025-05-31</lastmod>
+        <priority>0.30</priority>
+      </url>
+    </urlset>
+  -->
+  
   <meta name="seobility" content="6c05ed8a8d8c0c749c7703a38f35cb4b">
   <!-- Primary Meta Tags -->
   <title>AI Tools for Images, Translation & Summaries | Tech_Gen</title>
@@ -52,6 +142,7 @@
   </script>
   
   <!-- *** PERFORMANCE: Tailwind CSS is loaded in head as it's required for styling before paint *** -->
+  <!-- NOTE FOR PRODUCTION: For best performance, use the Tailwind CLI to purge unused styles from your CSS and self-host the resulting file. -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
@@ -60,7 +151,7 @@
         background-color: #0D0D0D;
         color: #e5e7eb; /* Default text color: gray-200 */
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-        font-size: 16px; /* Ensure base font size is at least 16px */
+        font-size: 16px; /* Ensure base font size is at least 16px for readability */
         background-image: radial-gradient(circle at 15% 50%, rgba(107, 0, 215, 0.1), transparent 40%), 
                           radial-gradient(circle at 85% 30%, rgba(36, 0, 75, 0.1), transparent 40%);
     }
@@ -213,6 +304,7 @@
           </li>
           <li><button onclick="showPage('pricing')" class="hover:text-[#D480FF]">Pricing</button></li>
           <li><button onclick="showPage('blog')" class="hover:text-[#D480FF]">Blog</button></li>
+          <li><button onclick="showPage('about')" class="hover:text-[#D480FF]">About Us</button></li>
           <li><button onclick="showPage('contact')" class="hover:text-[#D480FF]">Contact</button></li>
         </ul>
         <div id="authContainer" class="flex items-center">
@@ -231,33 +323,39 @@
   </nav>
 
   <main>
-    <!-- Home Page (and other non-auth content pages) -->
+    <!-- 
+      NOTE ON HEADING STRUCTURE (H1): This is a Single Page Application (SPA).
+      Each 'page' div acts as a unique view. When a view becomes active, its H1 tag serves as the
+      main heading for that specific context, which is a semantically correct and modern approach for SPAs.
+      This ensures that for any given active screen, there is only one primary H1 tag.
+    -->
     <div id="home" class="page">
       <header class="gradient-bg text-white py-20">
         <div class="container mx-auto text-center px-4">
-          <h1 class="text-2xl font-bold mb-2">Transform Your Workflow with AI</h1>
-          <p class="text-lg mb-6 max-w-2xl mx-auto text-gray-200">Our AI platform provides tools for image generation, document translation, and text summarization.</p>
-          </div>
+          <h1 class="text-4xl md:text-5xl font-bold mb-4">Transform Your Workflow with AI</h1>
+          <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-200">Our seamless AI platform provides state-of-the-art tools for image generation, document translation, and text summarization, built for speed and simplicity.</p>
+          <button onclick="showPage('register')" class="bg-white text-black font-bold py-3 px-8 rounded-full hover-glow transition-transform transform hover:scale-105">Get Started for Free</button>
+        </div>
       </header>
       
       <section class="py-16 container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-12 text-white">Powerful Features</h2>
+        <h2 class="text-3xl font-bold text-center mb-12 text-white">Powerful Features, Effortless Results</h2>
         <aside class="adsense-placeholder">Home Page - Ad Unit Placeholder (e.g., 728x90 Leaderboard)</aside>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div class="p-6 bg-[#1A1A1A]/70 rounded-lg shadow-md border border-gray-800">
             <h3 class="text-xl font-semibold mb-2 text-white">AI Image Generator</h3>
-            <p class="mb-4 text-gray-300">Create amazing images from text. Perfect for artists, marketers, and content creators.</p>
+            <p class="mb-4 text-gray-300">Create breathtaking, original images from simple text descriptions. Perfect for artists, marketers, and content creators who need visuals in seconds.</p>
             <button onclick="showPage('ai-generator')" class="text-[#A800FF] font-medium hover:text-[#D480FF] transition-colors">Try it now →</button>
           </div>
           <div class="p-6 bg-[#1A1A1A]/70 rounded-lg shadow-md border border-gray-800">
             <h3 class="text-xl font-semibold mb-2 text-white">Translate Documents</h3>
-            <p class="mb-4 text-gray-300">Easily translate text and full documents into multiple languages with high accuracy.</p>
+            <p class="mb-4 text-gray-300">Break language barriers instantly. Translate text and full documents into multiple languages with exceptional accuracy and context preservation.</p>
             <button onclick="showPage('translate')" class="text-[#A800FF] font-medium hover:text-[#D480FF] transition-colors">Try it now →</button>
           </div>
           <div class="p-6 bg-[#1A1A1A]/70 rounded-lg shadow-md border border-gray-800">
             <h3 class="text-xl font-semibold mb-2 text-white">Text Summarization</h3>
-            <p class="mb-4 text-gray-300">Get short and clear summaries of long articles, reports, or documents in just seconds.</p>
+            <p class="mb-4 text-gray-300">Distill long articles, reports, or documents into concise, easy-to-digest summaries. Save time and grasp key information faster than ever.</p>
             <button onclick="showPage('summarization')" class="text-[#A800FF] font-medium hover:text-[#D480FF] transition-colors">Try it now →</button>
           </div>
         </div>
@@ -267,10 +365,10 @@
       <section class="py-16">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-3xl font-bold text-white mb-6">Why Choose Tech_Gen?</h2>
-            <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-                Tech_Gen provides modern AI tools that are easy to use, powerful, and accessible.
-                We use top-tier models to deliver high-quality results, helping you save time, boost your creativity, and
-                improve your work.
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-12">
+                Tech_Gen is engineered to provide modern AI tools that are intuitive, powerful, and accessible to everyone.
+                We leverage top-tier models to deliver high-quality results, helping you save critical time, amplify your creativity, and
+                streamline your professional and personal projects.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="p-6">
@@ -280,7 +378,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-white mb-2">User-Friendly Interface</h3>
-                    <p class="text-gray-400">Easy-to-use tools that don't require technical expertise.</p>
+                    <p class="text-gray-400">Our tools are designed for clarity and ease of use, requiring no technical expertise to get started.</p>
                 </div>
                 <div class="p-6">
                      <div class="text-[#A800FF] mb-4">
@@ -289,7 +387,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-white mb-2">Fast & Accurate</h3>
-                    <p class="text-gray-400">Get high-quality AI-powered results in seconds.</p>
+                    <p class="text-gray-400">Receive high-quality, context-aware, AI-powered results in just a matter of seconds.</p>
                 </div>
                 <div class="p-6">
                     <div class="text-[#A800FF] mb-4">
@@ -297,13 +395,56 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Time Saving</h3>
-                    <p class="text-gray-400">Automate tasks and boost your overall productivity.</p>
+                    <h3 class="text-xl font-semibold text-white mb-2">Productivity Focused</h3>
+                    <p class="text-gray-400">Automate repetitive tasks, accelerate research, and boost your overall productivity and creative output.</p>
                 </div>
             </div>
         </div>
       </section>
     </div> 
+
+    <!-- About Us Page -->
+    <div id="about" class="page">
+        <header class="gradient-bg text-white py-8">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-3xl font-bold">About Tech_Gen</h1>
+                <p class="mt-2 text-gray-200">The people and passion behind the platform.</p>
+            </div>
+        </header>
+        <section class="container mx-auto px-4 py-16">
+            <div class="prose lg:prose-xl mx-auto text-center">
+                <h2>Our Mission</h2>
+                <p>At Tech_Gen, our mission is to democratize access to powerful artificial intelligence tools. We believe that creativity and productivity should not be limited by technical barriers or expensive software. We are dedicated to building an intuitive, reliable, and affordable platform that empowers students, professionals, artists, and creators of all backgrounds to bring their ideas to life, communicate across languages, and understand complex information with ease.</p>
+            </div>
+            
+            <div class="mt-20">
+                <h2 class="text-3xl font-bold text-center mb-12 text-white">Meet the Team</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-5xl mx-auto">
+                    <!-- Fictional Employee 1 -->
+                    <div class="text-center">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.postimg.cc/dQHF8KY2/Photo.jpg/150?u/150?u=manjesh" alt="Photo of Manjesh Sharma" loading="lazy">
+                        <h3 class="text-xl font-semibold text-white">Manjesh Sharma</h3>
+                        <p class="text-[#A800FF] font-medium">Founder & CEO</p>
+                        <p class="text-gray-400 mt-2 text-sm">With a vision to make AI accessible to all, Manjesh founded Tech_Gen to bridge the gap between complex technology and everyday users. He leads the company's strategy and is passionate about user-centric product development.</p>
+                    </div>
+                    <!-- Fictional Employee 2 -->
+                    <div class="text-center">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.pravatar.c/150?u=elara" alt="Photo of Dr. Elara Vance" loading="lazy">
+                        <h3 class="text-xl font-semibold text-white">Rahul Sharma</h3>
+                        <p class="text-[#A800FF] font-medium">Lead AI Researcher</p>
+                        <p class="text-gray-400 mt-2 text-sm">Rahul Sharma is the brilliant mind behind our AI models. With a Ph.D. in Computational Linguistics, she ensures our translation and summarization tools are not just accurate, but also contextually intelligent and nuanced.</p>
+                    </div>
+                    <!-- Fictional Employee 3 -->
+                    <div class="text-center">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.pravatar.c/150?u=kai" alt="Photo of Kai Tanaka" loading="lazy">
+                        <h3 class="text-xl font-semibold text-white">Jyoth Prakash</h3>
+                        <p class="text-[#A800FF] font-medium">Head of Design & UX</p>
+                        <p class="text-gray-400 mt-2 text-sm">Prakash believes that powerful technology should feel effortless. He is responsible for Tech_Gen's clean, intuitive interface, ensuring that every user, regardless of skill level, has a seamless and enjoyable experience.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <!-- Account Page -->
     <div id="account" class="page">
@@ -383,7 +524,7 @@
                 <article class="bg-[#1A1A1A]/70 rounded-lg shadow-lg overflow-hidden flex flex-col border border-gray-800">
                     <div class="p-6 flex flex-col flex-grow">
                         <h2 class="text-xl font-semibold text-white mb-2">A Guide to Writing Effective AI Image Prompts</h2>
-                        <p class="text-gray-300 mb-4 flex-grow">From "photorealistic" to "fantasy art," learn the secrets to crafting prompts that generate exactly the image you're imagining.</p>
+                        <p class="text-gray-300 mb-4 flex-grow">From "photorealistic" to "fantasy art," learn the secrets to crafting prompts that generate exactly the image you're imagining. This guide covers structure, keywords, and advanced techniques.</p>
                         <button class="text-[#A800FF] font-medium hover:text-[#D480FF] self-start mt-auto" onclick="showPage('blog-post-2')">Read More →</button>
                     </div>
                 </article>
@@ -391,7 +532,7 @@
                 <article class="bg-[#1A1A1A]/70 rounded-lg shadow-lg overflow-hidden flex flex-col border border-gray-800">
                     <div class="p-6 flex flex-col flex-grow">
                         <h2 class="text-xl font-semibold text-white mb-2">The Future of Work: Why Your Next Team Member Might Be an AI</h2>
-                        <p class="text-gray-300 mb-4 flex-grow">We explore the evolving landscape of AI in the workplace and how to best integrate these powerful tools into your daily workflow.</p>
+                        <p class="text-gray-300 mb-4 flex-grow">We explore the evolving landscape of AI in the workplace, how to integrate these powerful tools into your daily workflow, and the new era of human-AI collaboration.</p>
                         <button class="text-[#A800FF] font-medium hover:text-[#D480FF] self-start mt-auto" onclick="showPage('blog-post-3')">Read More →</button>
                     </div>
                 </article>
@@ -403,42 +544,48 @@
     <div id="blog-post-1" class="page">
         <article class="container mx-auto px-4 py-16">
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
-                <h1 class="text-3xl font-bold mb-6 text-center">Unlock Creativity with Our AI Image Generator</h1>
+                <h1 class="text-3xl font-bold mb-6 text-center">Unlock Limitless Creativity with Our AI Image Generator</h1>
                 
-                <p class="text-lg italic text-gray-400 mb-8 text-center">In a world where visual content is key, our AI Image Generator empowers everyone to bring their visions to life with amazing speed and ease.</p>
+                <p class="text-lg italic text-gray-400 mb-8 text-center">In a world where visual content reigns supreme, the ability to create compelling images is more valuable than ever. Tech_Gen's AI Image Generator is designed to be your creative co-pilot, empowering everyone—from seasoned artists to complete beginners—to bring their most ambitious visions to life with astonishing speed and ease.</p>
                 
-                <h2>Why Use an AI Image Generator?</h2>
-                <p>Traditional creative work often requires long hours, expensive software, and special skills. Our AI tool removes these barriers.</p>
+                <h2>The Creative Revolution: Why Use an AI Image Generator?</h2>
+                <p>Traditional creative workflows are often fraught with barriers. They can demand long hours of meticulous work, proficiency in complex and expensive software, and a highly specialized skill set. Our AI tool systematically dismantles these barriers, democratizing the power of visual creation. It's not about replacing human creativity; it's about augmenting it. By handling the technical execution, the AI frees you to focus on the bigger picture: your idea, your story, your message.</p>
                 
-                <h2>How It Works</h2>
-                <p>To get the best results, you need to write a good prompt. To learn the secrets, read our guide on <a href="#blog-post-2" onclick="showPage('blog-post-2'); return false;">writing effective AI prompts</a>.</p>
+                <h2>How It Works: From Thought to Masterpiece in Seconds</h2>
+                <p>The magic of the AI Image Generator lies in its simplicity. The process is intuitive and designed for rapid iteration, allowing you to refine your ideas on the fly.</p>
                 <ol>
-                    <li><strong>Describe Your Vision</strong>: Type a simple description of what you want to create.</li>
-                    <li><strong>Choose a Style</strong>: Select from styles like photorealistic or digital art to guide the AI.</li>
-                    <li><strong>Generate & Refine</strong>: Our AI creates multiple options in seconds.</li>
+                    <li><strong>Describe Your Vision</strong>: Start by typing a simple or complex description of the image you want to create. This is your "prompt." The more descriptive you are, the more detailed the result will be. For an in-depth tutorial on this crucial step, we highly recommend reading our guide on <a href="#blog-post-2" onclick="showPage('blog-post-2'); return false;">writing effective AI prompts</a>.</li>
+                    <li><strong>Choose a Style</strong>: Guide the AI's aesthetic direction by selecting from a diverse range of styles. Whether you need a crisp, 'photorealistic' render, the vibrant energy of 'digital art,' the clean lines of 'anime,' or the nostalgic charm of 'pixel art,' a style choice instantly sets the mood.</li>
+                    <li><strong>Generate & Refine</strong>: With a single click, our AI processes your prompt and style choice, generating unique image options in seconds. Don't love the first result? Tweak your prompt, try a different style, or simply generate again. This iterative process is key to honing in on the perfect visual.</li>
                 </ol>
                 
-                <h2>Use Cases</h2>
+                <h2>A Universe of Applications: Who Can Benefit?</h2>
+                <p>The versatility of the AI Image Generator makes it an invaluable asset across numerous fields. It's a tool that adapts to your needs, whatever they may be.</p>
                 <ul>
-                    <li><strong>Concept Artists</strong>: Quickly create designs for characters, scenes, and items.</li>
-                    <li><strong>Marketers</strong>: Make unique images for ad campaigns without costly photoshoots.</li>
-                    <li><strong>Content Creators</strong>: Generate eye-catching thumbnails and social media graphics.</li>
+                    <li><strong>Concept Artists & Designers</strong>: Rapidly prototype ideas for characters, environments, and props. Visualize entire worlds in minutes instead of days, accelerating the pre-production pipeline for games, films, and animation.</li>
+                    <li><strong>Marketers & Social Media Managers</strong>: Create an endless stream of unique, on-brand images for ad campaigns, blog posts, and social media feeds. Eliminate the need for costly stock photos or time-consuming photoshoots.</li>
+                    <li><strong>Content Creators & Bloggers</strong>: Generate eye-catching thumbnails for YouTube videos, feature images for articles, and custom graphics that make your content stand out in a crowded digital landscape.</li>
+                    <li><strong>Students & Educators</strong>: Create vivid illustrations for presentations, reports, and learning materials, making complex topics more engaging and understandable.</li>
+                    <li><strong>Small Business Owners</strong>: Design logos, product mockups, and marketing materials with a professional polish, without needing to hire a dedicated designer.</li>
                 </ul>
+
+                <h2>Ethical Creation and Responsible Use</h2>
+                <p>As we embrace this new technology, it's vital to consider the ethical implications. At Tech_Gen, we are committed to promoting responsible AI use. Our models are trained to avoid generating harmful or explicit content. We encourage users to be mindful of copyright and intellectual property when creating images based on existing styles or characters. The goal is to foster a creative ecosystem that is both innovative and respectful. For more information on our content policies, please refer to our <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;">Terms of Service</a>.</p>
                 
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
                     <h2 class="mt-0">Ready to Unleash Your Creativity?</h2>
-                    <p>Join thousands of creators already using our AI Image Generator to bring their ideas to life.</p>
+                    <p>You've seen the potential. Now it's time to experience it. Join thousands of creators, professionals, and innovators who are already using our AI Image Generator to push the boundaries of what's possible.</p>
                     <button onclick="showPage('ai-generator')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition mt-4 font-semibold">
-                        Try The AI Image Generator
+                        Try The AI Image Generator Now
                     </button>
                 </div>
                 
-                <h2>The Future of Creative Expression</h2>
-                <p>Our AI Image Generator is not here to replace human creativity—it's here to boost it. By handling the technical work, we free you to focus on your vision and message. This is just one part of the <a href="#blog-post-3" onclick="showPage('blog-post-3'); return false;">future of work with AI</a>.</p>
+                <h2>The Future is Collaborative</h2>
+                <p>The AI Image Generator is more than just a tool; it's a new paradigm in creative expression. It's not here to replace the human artist but to become their most powerful collaborator. By automating the technical, we elevate the conceptual. This is a core tenet of our philosophy on the human-AI partnership, a topic we explore more deeply in our article on the <a href="#blog-post-3" onclick="showPage('blog-post-3'); return false;">future of work with AI</a>.</p>
                 
                 <div class="mt-12 p-4 border-t border-gray-700 text-center">
                     <h3 class="text-lg font-semibold text-white">Join the Discussion</h3>
-                    <p class="text-gray-400 text-sm">Comments are coming soon! We'd love to hear your thoughts.</p>
+                    <p class="text-gray-400 text-sm">Comments are coming soon! We'd love to see what you create and hear your thoughts.</p>
                 </div>
             </div>
         </article>
@@ -448,39 +595,72 @@
     <div id="blog-post-2" class="page">
         <article class="container mx-auto px-4 py-16">
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
-                <h1 class="text-3xl font-bold mb-6 text-center">A Guide to Writing Effective AI Image Prompts</h1>
+                <h1 class="text-3xl font-bold mb-6 text-center">The Ultimate Guide to Writing Effective AI Image Prompts</h1>
                 
-                <h2>Why Prompts Matter</h2>
-                <p>AI models create images based on your text descriptions. The more precise and descriptive your prompt, the better the result. A vague prompt gives random results, while a well-written one can produce professional art. To see the tool in action, check out our <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generator</a>.</p>
+                <p class="text-lg italic text-gray-400 mb-8 text-center">The quality of your AI-generated images is directly proportional to the quality of your prompts. Think of yourself as an art director and the AI as your incredibly talented, literal-minded artist. Your prompt is the creative brief. A vague brief yields random results; a well-crafted one can produce a masterpiece.</p>
+
+                <h2>The Anatomy of a Masterful Prompt</h2>
+                <p>A great prompt is a blend of precision and poetry. It provides clear instructions while leaving just enough room for the AI's "imagination" to flourish. To achieve this, a strong prompt typically includes several key ingredients. While not all are required for every image, understanding them will give you ultimate control.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ingredient</th>
+                            <th>Purpose</th>
+                            <th>Example Keywords</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Subject</strong></td><td>The main focus of the image. Be specific!</td><td><code>a majestic lion king</code>, <code>a tiny robot explorer</code>, <code>two wizards dueling</code></td></tr>
+                        <tr><td><strong>Medium/Style</strong></td><td>The artistic style or medium.</td><td><code>digital painting</code>, <code>photorealistic</code>, <code>anime style</code>, <code>pixel art</code>, <code>watercolor</code></td></tr>
+                        <tr><td><strong>Environment</strong></td><td>The setting or background.</td><td><code>on a surreal alien planet</code>, <code>in a neon-lit cyberpunk city</code>, <code>at the bottom of the ocean</code></td></tr>
+                        <tr><td><strong>Lighting</strong></td><td>Sets the mood and time of day.</td><td><code>cinematic lighting</code>, <code>soft morning light</code>, <code>dramatic studio lighting</code>, <code>glowing neon</code></td></tr>
+                        <tr><td><strong>Color Scheme</strong></td><td>Influences the overall color palette.</td><td><code>vibrant colors</code>, <code>monochromatic blue</code>, <code>pastel tones</code>, <code>dark and moody</code></td></tr>
+                        <tr><td><strong>Composition</strong></td><td>How the subject is framed.</td><td><code>close-up portrait</code>, <code>wide-angle shot</code>, <code>dynamic action pose</code>, <code>top-down view</code></td></tr>
+                        <tr><td><strong>Artist/Influence</strong></td><td>Mimics the style of a famous artist or studio.</td><td><code>in the style of Van Gogh</code>, <code>Studio Ghibli aesthetic</code>, <code>inspired by Ansel Adams</code></td></tr>
+                        <tr><td><strong>Detail/Quality</strong></td><td>Boosts the level of detail and realism.</td><td><code>hyperrealistic</code>, <code>insanely detailed</code>, <code>8k resolution</code>, <code>trending on ArtStation</code></td></tr>
+                    </tbody>
+                </table>
                 
-                <h2>Key Elements of a Strong Prompt</h2>
+                <h2>From Basic to Brilliant: A Practical Example</h2>
+                <p>Let's see how adding these ingredients can transform a simple idea into a stunning piece of art. To see the tool in action as you learn, open our <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generator</a> in another tab and follow along.</p>
+                
                 <ol>
-                    <li><strong>Subject</strong>: What is the main focus? (e.g., "a cyberpunk samurai")</li>
-                    <li><strong>Style</strong>: What art style do you want? (e.g., "digital painting, anime style")</li>
-                    <li><strong>Details</strong>: Add lighting, colors, or textures. (e.g., "neon lights, rainy streets")</li>
-                    <li><strong>Composition</strong>: How should it be framed? (e.g., "close-up portrait, cinematic")</li>
+                    <li><strong>The Basic Idea</strong>: <code>a robot</code>
+                    <br><em>Result: A generic, simple robot, likely on a white background.</em></li>
+                    
+                    <li><strong>Adding a Subject and Environment</strong>: <code>a small, friendly robot exploring a lush jungle</code>
+                    <br><em>Result: Better! Now we have a story. The robot is in a specific place with a defined role.</em></li>
+
+                    <li><strong>Layering on Style and Lighting</strong>: <code>a small, friendly robot exploring a lush jungle, soft morning light filtering through the canopy, digital painting</code>
+                    <br><em>Result: The image now has a distinct mood and artistic feel. The lighting makes it feel more alive.</em></li>
+
+                    <li><strong>The Final Polish with Detail and Composition</strong>: <code>close-up shot of a small, friendly, weathered robot exploring a lush, bioluminescent jungle at night, soft glowing light from mushrooms, insanely detailed, cinematic, in the style of Studio Ghibli</code>
+                    <br><em>Result: A masterpiece. Every word adds a layer of instruction, resulting in a highly specific, atmospheric, and professional-looking image.</em></li>
                 </ol>
-                
-                <h2>Common Mistakes to Avoid</h2>
+
+                <h2>Common Pitfalls and How to Avoid Them</h2>
                 <ul>
-                    <li><strong>Too vague</strong>: Instead of "A beautiful landscape," try "A serene mountain lake at dawn with misty forests."</li>
-                    <li><strong>Overcomplicating</strong>: Avoid long, conflicting descriptions that can confuse the AI.</li>
+                    <li><strong>Being Too Vague</strong>: The AI can't read your mind. Instead of "a beautiful landscape," describe <em>what makes it beautiful</em>: "A serene, misty mountain lake at dawn, reflecting a pastel pink and orange sky, with dense pine forests on the shore."</li>
+                    <li><strong>Using Contradictory Terms</strong>: Avoid prompts like "a minimalist, hyper-detailed city." This can confuse the AI. Choose a clear direction.</li>
+                    <li><strong>Forgetting "Negative Prompts"</strong>: Sometimes, telling the AI what <em>not</em> to include is as important as telling it what to include. While our tool doesn't have a separate field, you can try phrasing like "<code>a person, no glasses</code>". (Effectiveness varies by model).</li>
+                    <li><strong>Overstuffing Keywords</strong>: While detail is good, a long, rambling list of disconnected keywords can be less effective than a well-structured sentence. Aim for descriptive phrases.</li>
                 </ul>
                 
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
                     <h2 class="mt-0">Ready to Master AI Art Generation?</h2>
-                    <p>Start trying different prompts and see how small changes can improve your results!</p>
+                    <p>The best way to learn is by doing. Start experimenting with different combinations of the ingredients above. See how changing a single word can drastically alter the outcome. Your journey to becoming a prompt master starts now!</p>
                     <button onclick="showPage('ai-generator')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition mt-4 font-semibold">
                         Try Our AI Image Generator Now
                     </button>
                 </div>
                 
-                <h2>Final Thoughts</h2>
-                <p>Writing good AI image prompts is a skill. The more you practice, the better you'll get at creating amazing art. For a general overview, read our post on <a href="#blog-post-1" onclick="showPage('blog-post-1'); return false;">unlocking creativity with AI</a>.</p>
+                <h2>Final Thoughts: Prompting is a Skill</h2>
+                <p>Writing effective AI image prompts is a creative skill in itself. It's a dance between technical instruction and artistic direction. The more you practice, the more intuitive it will become, and the better you'll get at translating the images in your head into digital reality. For a broader look at how this skill fits into the creative landscape, read our post on <a href="#blog-post-1" onclick="showPage('blog-post-1'); return false;">unlocking creativity with AI</a>.</p>
 
                 <div class="mt-12 p-4 border-t border-gray-700 text-center">
                     <h3 class="text-lg font-semibold text-white">Join the Discussion</h3>
-                    <p class="text-gray-400 text-sm">Comments are coming soon! Let us know what you create.</p>
+                    <p class="text-gray-400 text-sm">Comments are coming soon! Let us know your favorite prompt combinations.</p>
                 </div>
             </div>
         </article>
@@ -492,18 +672,19 @@
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
                 <h1 class="text-3xl font-bold mb-6 text-center">The Future of Work: Your Next Team Member Might Be an AI</h1>
                 
-                <p class="text-lg italic text-gray-400 mb-8 text-center">The modern workplace is changing fast. Artificial intelligence is now more than a tool—it's a partner. AI is reshaping how teams work, from automating simple tasks to helping with creative projects.</p>
+                <p class="text-lg italic text-gray-400 mb-8 text-center">The landscape of the modern workplace is undergoing a seismic shift. For decades, technology has given us tools to work faster. Today, artificial intelligence offers something fundamentally different: not just a tool, but a collaborator. AI is evolving from a passive instrument into an active participant, reshaping how teams innovate, solve problems, and create value.</p>
                 
-                <h2>AI Roles Already in the Workplace</h2>
+                <h2>AI Roles Already Integrated in the Workplace</h2>
+                <p>This isn't a far-off future; the integration has already begun. AI "specialists" are augmenting human teams in nearly every industry, handling tasks that are data-intensive, repetitive, or require immense speed.</p>
                 <ul>
-                    <li><strong><a href="#summarization" onclick="showPage('summarization'); return false;">AI Content Creators</a></strong>: Writing blog posts, social media content, and marketing copy.</li>
-                    <li><strong>Data Analysts</strong>: Processing complex datasets and generating reports.</li>
-                    <li><strong><a href="#ai-generator" onclick="showPage('ai-generator'); return false;">Design Assistants</a></strong>: Generating logos, graphics, and mockups.</li>
-                    <li><strong><a href="#translate" onclick="showPage('translate'); return false;">Translation Specialists</a></strong>: Handling multilingual communication instantly.</li>
+                    <li><strong>The AI Content Strategist</strong>: Generates drafts for blog posts, social media updates, and marketing emails. It can analyze keywords, suggest topics, and even adapt its writing style to match a brand's voice. Tools like our <a href="#summarization" onclick="showPage('summarization'); return false;">AI Text Summarizer</a> are a key part of this, helping researchers quickly digest source material.</li>
+                    <li><strong>The AI Data Analyst</strong>: Sifts through massive datasets in seconds, identifying trends, anomalies, and insights that would take a human analyst weeks to uncover. It builds dashboards, generates reports, and provides predictive modeling.</li>
+                    <li><strong>The AI Design Assistant</strong>: Creates initial design concepts, generates logos, produces marketing graphics, and builds website mockups based on simple text prompts. Our <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generator</a> is a prime example of this new creative partner.</li>
+                    <li><strong>The AI Translation Specialist</strong>: Manages global communication by providing instant, high-quality translations of documents, emails, and real-time conversations, as demonstrated by our <a href="#translate" onclick="showPage('translate'); return false;">AI Translator</a>. This eliminates language barriers and opens up international markets.</li>
                 </ul>
                 
-                <h2>The Human-AI Partnership Advantage</h2>
-                <p>Humans and AI are great at different things. When they work together, they can achieve amazing results.</p>
+                <h2>The Human-AI Partnership: A Symbiotic Advantage</h2>
+                <p>The true power of this revolution lies not in replacement, but in collaboration. Humans and AI have complementary strengths. When they work in synergy, they create a whole that is far greater than the sum of its parts. This partnership allows human workers to offload tedious tasks and focus on what they do best.</p>
                 <table>
                     <thead>
                         <tr>
@@ -512,23 +693,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Creative problem-solving</td><td>Processing large datasets</td></tr>
-                        <tr><td>Emotional intelligence</td><td>24/7 availability</td></tr>
-                        <tr><td>Strategic thinking</td><td>Speed and repetition</td></tr>
-                        <tr><td>Adaptability</td><td>Consistency</td></tr>
+                        <tr><td><strong>Strategic & Critical Thinking</strong></td><td><strong>Data Processing & Pattern Recognition</strong></td></tr>
+                        <tr><td><strong>Emotional Intelligence & Empathy</strong></td><td><strong>Speed, Scale & Repetition</strong></td></tr>
+                        <tr><td><strong>Complex Problem-Solving & Creativity</strong></td><td><strong>24/7 Availability & Consistency</strong></td></tr>
+                        <tr><td><strong>Adaptability & Ethical Judgment</strong></td><td><strong>Memory Recall & Information Synthesis</strong></td></tr>
                     </tbody>
                 </table>
+                <p>Imagine a marketing team. The AI analyst identifies a new, emerging customer segment. The AI content strategist drafts five different ad campaigns targeting this segment. The human marketer then uses their strategic thinking and emotional intelligence to select the most resonant campaign, refine the messaging, and make the final creative and ethical judgments. This is the future: AI provides the data-driven foundation, and humans provide the wisdom and direction.</p>
+
+                <h2>Navigating the Challenges: Ethics, Training, and Adaptation</h2>
+                <p>Adopting AI as a team member is not without its challenges. Businesses must be proactive in addressing them:</p>
+                <ul>
+                    <li><strong>Ethical Implementation:</strong> It is crucial to be transparent about the use of AI and to build safeguards against bias in AI algorithms. Our <a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;">Disclaimer</a> and <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;">Terms of Service</a> outline our commitment to responsible use.</li>
+                    <li><strong>Reskilling and Upskilling:</strong> The workforce will need to develop new skills. Prompt engineering, AI oversight, and data interpretation will become as fundamental as using a spreadsheet is today.</li>
+                    <li><strong>Job Role Evolution:</strong> Some roles will be automated, but many more will be created. The focus will shift from "doing" to "directing" and "validating" the work of AI systems.</li>
+                </ul>
                 
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
                     <h2 class="mt-0">Ready to Integrate AI Into Your Team?</h2>
-                    <p>Discover how our AI can improve your business and give you a competitive edge.</p>
+                    <p>The competitive advantage of tomorrow will belong to those who effectively integrate AI into their workflows today. Discover how Tech_Gen's suite of tools can serve as your first AI team members, boosting productivity and unlocking new possibilities.</p>
                     <button onclick="showPage('pricing')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition mt-4 font-semibold">
                         Explore Our AI Solutions
                     </button>
                 </div>
                 
-                <h2>Conclusion: Collaboration, Not Replacement</h2>
-                <p>The future of work isn't about humans versus machines. It's about humans *with* machines. By using AI as team members, we can achieve more than either could alone. For more insights, visit our main <a href="#blog" onclick="showPage('blog'); return false;">Tech_Gen Blog</a>.</p>
+                <h2>Conclusion: A New Era of Collaboration</h2>
+                <p>The narrative of "humans versus machines" is outdated. The future of work is a story of "humans <em>with</em> machines." By embracing AI as a collaborative partner, we can augment our own intelligence, automate the mundane, and free ourselves to focus on the truly human skills of creativity, strategy, and connection. The question is no longer *if* AI will join your team, but *how* you will welcome and empower it. For more insights into this evolving world, visit our main <a href="#blog" onclick="showPage('blog'); return false;">Tech_Gen Blog</a>.</p>
 
                 <div class="mt-12 p-4 border-t border-gray-700 text-center">
                     <h3 class="text-lg font-semibold text-white">Join the Discussion</h3>
@@ -886,14 +1076,14 @@
       <div class="container mx-auto py-8 px-4">
         <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
             <h2>Break Language Barriers</h2>
-            <p>Our AI translation tool gives you fast and accurate translations for text and documents. Bridge communication gaps for business, school, or personal messages.</p>
+            <p>Our AI translation tool provides fast, nuanced, and accurate translations for both quick text snippets and entire documents. Bridge communication gaps for international business, academic research, or personal correspondence with confidence.</p>
             <ul>
-                <li><strong>Text Translation:</strong> Paste text for an instant translation.</li>
-                <li><strong>Document Translation:</strong> Upload your PDF, DOCX, or TXT files to receive a translated version.</li>
+                <li><strong>Text Translation:</strong> Paste text for an instant, context-aware translation.</li>
+                <li><strong>Document Translation:</strong> Securely upload your PDF, DOCX, or TXT files to receive a fully translated version while preserving the core information.</li>
             </ul>
             <div class="mt-8 text-center bg-[#0D0D0D] border border-gray-700 p-6 rounded-lg">
-                <h3 class="text-xl font-semibold text-white mb-3">Need more power?</h3>
-                <p class="text-gray-400 mb-4">Find more productivity tips on our <a href="#blog" onclick="showPage('blog'); return false;" class="text-[#A800FF] hover:underline">main blog</a>.</p>
+                <h3 class="text-xl font-semibold text-white mb-3">Integrating AI into Global Workflows</h3>
+                <p class="text-gray-400 mb-4">Learn more about how AI translation is changing the professional world in our article about <a href="#blog-post-3" onclick="showPage('blog-post-3'); return false;" class="text-[#A800FF] hover:underline">the Future of Work</a>.</p>
                 <button onclick="showPage('pricing')" class="bg-[#6C00FF] text-white py-2 px-6 rounded-md hover:bg-[#A800FF] transition font-semibold">
                     Upgrade for Unlimited Translations
                 </button>
@@ -961,11 +1151,11 @@
       <div class="container mx-auto py-8 px-4">
             <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
                 <h2>Understand Key Information Faster</h2>
-                <p>Feeling overwhelmed by long articles? Our AI Text Summarizer turns large amounts of text into clear, short summaries. This helps you understand the main points quickly and easily.</p>
+                <p>Feeling overwhelmed by long articles, dense reports, or lengthy emails? Our AI Text Summarizer is your solution for information overload. It intelligently condenses large amounts of text into clear, coherent summaries, allowing you to grasp the main points quickly and efficiently.</p>
                 <ul>
-                    <li><strong>Save Time:</strong> Read less while understanding more.</li>
-                    <li><strong>Improve Comprehension:</strong> Focus on core ideas without getting lost in the details.</li>
-                    <li><strong>Boost Productivity:</strong> Quickly review information for research, school, or work.</li>
+                    <li><strong>Save Critical Time:</strong> Absorb the essence of documents in a fraction of the time it would take to read them fully.</li>
+                    <li><strong>Improve Comprehension:</strong> Focus on core ideas and key takeaways without getting lost in extraneous details.</li>
+                    <li><strong>Boost Productivity:</strong> Accelerate your research, stay on top of industry news, and make faster, more informed decisions.</li>
                 </ul>
                 <div class="mt-8 text-center bg-[#0D0D0D] border border-gray-700 p-6 rounded-lg">
                     <h3 class="text-xl font-semibold text-white mb-3">Become a power-user</h3>
@@ -1075,16 +1265,75 @@
         <article class="container mx-auto px-4 py-16">
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
                 <h1 class="text-3xl font-bold mb-6 text-center">Privacy Policy</h1>
-                <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 30, 2025</p>
-                <p>At Tech_Gen, we respect your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services.</p>
-                <h2>1. Information We Collect</h2>
-                <p>We may collect your name and email when you sign up or contact us. We also collect usage data to improve our service.</p>
-                <h2>2. How We Use Your Data</h2>
-                <p>We use your information to provide the service, process payments, communicate with you, and analyze usage to make our tools better.</p>
-                <h2>3. Data Sharing</h2>
-                <p>We do not sell your data. We only share it with trusted vendors who help us run our service (like hosting and payment processors) or if required by law.</p>
-                <h2>4. Your Rights</h2>
-                <p>You have the right to access, correct, or delete your personal data. You can also opt out of marketing emails. To exercise these rights, please <a href="#contact" onclick="showPage('contact'); return false;">contact us</a>.</p>
+                <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 31, 2025</p>
+                
+                <h2>1. Introduction</h2>
+                <p>Welcome to Tech_Gen ("we," "our," or "us"). We are committed to protecting your privacy and handling your personal data in an open and transparent manner. This Privacy Policy explains how we collect, use, process, and safeguard your information when you visit our website https://www.techgentools.site/ (the "Site") and use our services (the "Services").</p>
+                <p>Please read this policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site or use our services. By using our Services, you signify your acceptance of this policy and our <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;">Terms of Service</a>.</p>
+
+                <h2>2. Information We Collect</h2>
+                <p>We may collect information about you in a variety of ways. The information we may collect on the Site includes:</p>
+                <h3>2.1. Personal Data You Provide to Us</h3>
+                <ul>
+                    <li><strong>Account Registration Data</strong>: When you register for an account, we collect your full name, email address, and password. This information is necessary for creating and managing your account.</li>
+                    <li><strong>Payment Information</strong>: When you subscribe to a paid plan, we collect payment information through our third-party payment processor, Razorpay. This includes your name, email, and payment card details. We do not store your full payment card information on our servers.</li>
+                    <li><strong>Communications</strong>: When you contact us for support, send us an email, or communicate with us in any way, we collect the information you provide in those communications.</li>
+                </ul>
+                <h3>2.2. Data We Collect Automatically</h3>
+                <ul>
+                    <li><strong>Usage Data</strong>: We automatically collect information about your interactions with our Services. This includes the features you use, the pages you visit, the dates and times of your access, and your IP address. For registered users on our Free plan, we specifically track the number of image generations, translations, and summarizations you perform each month to manage usage limits.</li>
+                    <li><strong>Device Data</strong>: We collect information about the computer or mobile device you use to access our Services, such as the hardware model, operating system and version, unique device identifiers, and browser type.</li>
+                    <li><strong>Cookies and Similar Technologies</strong>: We use cookies and similar tracking technologies to track activity on our Site and hold certain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Services.</li>
+                </ul>
+                <h3>2.3. Data From Third-Party Services</h3>
+                <p>If you choose to register or log in to our Services using a third-party service like Google or Yahoo, we may receive personal data from that service, such as your name and email address, as permitted by your privacy settings on that service.</p>
+
+                <h2>3. How We Use Your Information</h2>
+                <p>We use the information we collect for various purposes, including to:</p>
+                <ul>
+                    <li>Create and manage your account.</li>
+                    <li>Provide, operate, and maintain our Services.</li>
+                    <li>Process your transactions and manage your subscriptions.</li>
+                    <li>Improve, personalize, and expand our Services.</li>
+                    <li>Understand and analyze how you use our Services to enhance user experience.</li>
+                    <li>Communicate with you, either directly or through one of our partners, for customer service, to provide you with updates and other information relating to the Site, and for marketing and promotional purposes.</li>
+                    <li>Send you technical notices, updates, security alerts, and support messages.</li>
+                    <li>Prevent fraud and ensure the security of our Site and Services.</li>
+                    <li>Comply with legal obligations.</li>
+                </ul>
+
+                <h2>4. Sharing and Disclosure of Information</h2>
+                <p>We do not sell, trade, or rent your personal information to others. We may share your information in the following situations:</p>
+                <ul>
+                    <li><strong>With Service Providers</strong>: We may share your information with third-party vendors and service providers who perform services for us or on our behalf, such as payment processing (Razorpay), cloud hosting (Firebase), and customer support. These providers are contractually obligated to protect your data and are not permitted to use it for their own purposes.</li>
+                    <li><strong>For Legal Reasons</strong>: We may disclose your information if we are required to do so by law or in response to valid requests by public authorities (e.g., a court or a government agency).</li>
+                    <li><strong>To Protect Our Rights</strong>: We may disclose your information where we believe it is necessary to investigate, prevent, or take action regarding potential violations of our policies, suspected fraud, situations involving potential threats to the safety of any person and illegal activities, or as evidence in litigation in which we are involved.</li>
+                    <li><strong>With Your Consent</strong>: We may disclose your personal information for any other purpose with your consent.</li>
+                </ul>
+                
+                <h2>5. Data Retention</h2>
+                <p>We will retain your personal information only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use your information to the extent necessary to comply with our legal obligations, resolve disputes, and enforce our policies. Account and usage data will be retained as long as your account is active and for a reasonable period thereafter in case you decide to re-activate the Services.</p>
+
+                <h2>6. Your Data Protection Rights</h2>
+                <p>Depending on your location, you may have the following rights regarding your personal information:</p>
+                <ul>
+                    <li><strong>The right to access</strong> – You have the right to request copies of your personal data.</li>
+                    <li><strong>The right to rectification</strong> – You have the right to request that we correct any information you believe is inaccurate or complete information you believe is incomplete.</li>
+                    <li><strong>The right to erasure</strong> – You have the right to request that we erase your personal data, under certain conditions.</li>
+                    <li><strong>The right to restrict processing</strong> – You have the right to request that we restrict the processing of your personal data, under certain conditions.</li>
+                    <li><strong>The right to object to processing</strong> – You have the right to object to our processing of your personal data, under certain conditions.</li>
+                    <li><strong>The right to data portability</strong> – You have the right to request that we transfer the data that we have collected to another organization, or directly to you, under certain conditions.</li>
+                </ul>
+                <p>To exercise any of these rights, please <a href="#contact" onclick="showPage('contact'); return false;">contact us</a>. We will respond to your request within a reasonable timeframe.</p>
+
+                <h2>7. Children's Privacy</h2>
+                <p>Our Services are not intended for use by children under the age of 13. We do not knowingly collect personally identifiable information from children under 13. If we become aware that we have collected personal information from a child under 13, we will take steps to delete such information from our files as soon as possible.</p>
+
+                <h2>8. Changes to This Privacy Policy</h2>
+                <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date at the top. You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+
+                <h2>9. Contact Us</h2>
+                <p>If you have any questions or concerns about this Privacy Policy, please do not hesitate to <a href="#contact" onclick="showPage('contact'); return false;">contact us</a>.</p>
             </div>
         </article>
     </div>
@@ -1093,29 +1342,111 @@
         <article class="container mx-auto px-4 py-16">
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
                 <h1 class="text-3xl font-bold mb-6 text-center">Terms of Service</h1>
-                <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 30, 2025</p>
-                <p>Welcome to Tech_Gen. By using our website and services, you agree to these terms. If you do not agree, please do not use our service.</p>
-                <h2>1. User Responsibilities</h2>
-                <p>You agree not to misuse our service for illegal activities. You are responsible for keeping your account password safe.</p>
-                <h2>2. Payments & Subscriptions</h2>
-                <p>Fees for our service are listed on our <a href="#pricing" onclick="showPage('pricing'); return false;">pricing page</a>. Payments are non-refundable unless stated otherwise.</p>
-                <h2>3. Intellectual Property</h2>
-                <p>The content you generate is yours. The content on our website, including our logo and tools, belongs to us. You may not copy or distribute it without permission. Our Privacy Policy and <a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;">Disclaimer</a> are also part of these terms.</p>
+                <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 31, 2025</p>
+                
+                <h2>1. Agreement to Terms</h2>
+                <p>By accessing or using the Tech_Gen website at https://www.techgentools.site/ (the "Site") and any of its services, including but not limited to the AI Image Generator, Document Translator, and Text Summarizer (collectively, the "Services"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of the terms, then you may not access the Service.</p>
+                <p>This agreement also incorporates by reference our <a href="#privacyPolicyPage" onclick="showPage('privacyPolicyPage'); return false;">Privacy Policy</a> and <a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;">Disclaimer</a>. Please read them carefully.</p>
+
+                <h2>2. User Accounts</h2>
+                <h3>2.1. Registration</h3>
+                <p>To access certain features of the Service, you must register for an account. When you register, you agree to provide accurate, current, and complete information. You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password.</p>
+                <h3>2.2. Account Security</h3>
+                <p>You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account. We are not liable for any loss or damage arising from your failure to comply with this security obligation.</p>
+                <h3>2.3. Age Requirement</h3>
+                <p>You must be at least 13 years old to use the Services. By creating an account, you represent and warrant that you meet this requirement.</p>
+
+                <h2>3. Use of Services</h2>
+                <h3>3.1. License to Use</h3>
+                <p>We grant you a non-transferable, non-exclusive, revocable, limited license to use and access the Services for your personal or internal business purposes, strictly in accordance with these Terms.</p>
+                <h3>3.2. Prohibited Activities</h3>
+                <p>You agree not to use the Services for any purpose that is illegal or prohibited by these Terms. You agree not to:</p>
+                <ul>
+                    <li>Use the Services to generate content that is unlawful, harmful, defamatory, obscene, infringing, harassing, or hateful.</li>
+                    <li>Attempt to reverse engineer, decompile, or otherwise discover the source code of the Services.</li>
+                    <li>Use any automated system, including "robots," "spiders," or "offline readers," to access the Service in a manner that sends more request messages to our servers than a human can reasonably produce in the same period.</li>
+                    <li>Use the Services to create a competing product or service.</li>
+                    <li>Violate the intellectual property rights of others, including creating content that infringes on copyrights or trademarks without permission.</li>
+                    <li>Overload, "flood," "spam," "crash," or otherwise disrupt the Services or its servers.</li>
+                </ul>
+                <p>Violation of these rules may result in the immediate termination of your account without notice.</p>
+                
+                <h2>4. Content and Intellectual Property</h2>
+                <h3>4.1. Your Content</h3>
+                <p>You retain all ownership rights to the text, documents, and prompts you input into the Services ("Input Content") and the images, translations, and summaries generated by the Services based on your input ("Generated Content"). Collectively, this is "Your Content."</p>
+                <h3>4.2. Our License to Your Content</h3>
+                <p>By using the Services, you grant us a worldwide, non-exclusive, royalty-free, sublicensable, and transferable license to use, reproduce, distribute, and display your Input Content solely for the purpose of operating, providing, and improving the Services. We will not use Your Content for any other purpose without your explicit permission.</p>
+                <h3>4.3. Our Intellectual Property</h3>
+                <p>All content and materials on the Site, including our logo, design, text, graphics, and the selection and arrangement thereof (excluding Your Content), are the exclusive property of Tech_Gen and are protected by copyright, trademark, and other intellectual property laws. You may not use, copy, or distribute this content without our prior written permission.</p>
+
+                <h2>5. Fees and Payment</h2>
+                <h3>5.1. Subscriptions</h3>
+                <p>Some of our Services are offered under a subscription-based model. Our plans and pricing are detailed on our <a href="#pricing" onclick="showPage('pricing'); return false;">Pricing page</a>. By selecting a paid plan, you agree to pay the subscription fees at the rates in effect when the charges are incurred.</p>
+                <h3>5.2. Billing and Renewal</h3>
+                <p>Subscriptions will automatically renew at the end of each billing cycle unless you cancel your subscription through your account settings before the renewal date. All fees are non-refundable, except as required by law or as specified in a particular offer.</p>
+                <h3>5.3. Payment Processing</h3>
+                <p>We use a third-party payment processor (Razorpay) to handle payments. Your payment is subject to the terms and conditions and privacy policy of the payment processor.</p>
+
+                <h2>6. Termination</h2>
+                <p>We may terminate or suspend your account and bar access to the Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms. If you wish to terminate your account, you may simply discontinue using the Service or delete your account where the option is available.</p>
+
+                <h2>7. Disclaimer of Warranties and Limitation of Liability</h2>
+                <p>The Services are provided on an "AS IS" and "AS AVAILABLE" basis. Your use of the Service is at your sole risk. We expressly disclaim all warranties of any kind, whether express or implied. We do not warrant that the Service will be uninterrupted, timely, secure, or error-free, or that the results obtained from the use of the Service will be accurate or reliable. For more details, please review our full <a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;">Disclaimer</a>.</p>
+                <p>In no event shall Tech_Gen, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.</p>
+
+                <h2>8. Governing Law</h2>
+                <p>These Terms shall be governed and construed in accordance with the laws of India, without regard to its conflict of law provisions. Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights.</p>
+
+                <h2>9. Changes to Terms</h2>
+                <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide at least 30 days' notice prior to any new terms taking effect by posting them on this page and updating the "Last updated" date. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.</p>
+                
+                <h2>10. Contact Us</h2>
+                <p>If you have any questions about these Terms, please <a href="#contact" onclick="showPage('contact'); return false;">contact us</a>.</p>
             </div>
         </article>
     </div>
 
-    <!-- *** NEW: Disclaimer Page *** -->
     <div id="disclaimerPage" class="page">
         <article class="container mx-auto px-4 py-16">
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
                 <h1 class="text-3xl font-bold mb-6 text-center">Disclaimer</h1>
-                <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 30, 2025</p>
-                <p>The information and content generated by the AI tools on Tech_Gen ("the Service") are provided for general informational purposes only. All information on the site is provided in good faith, however, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information or AI-generated content on the Site.</p>
-                <h2>Not Professional Advice</h2>
-                <p>The content generated by our AI is not a substitute for professional advice. The outputs from our tools (including image, text, and translation) should not be used for making legal, financial, medical, or any other professional decisions. Always consult with a qualified professional for advice specific to your situation.</p>
-                <h2>User Responsibility</h2>
-                <p>You are solely responsible for the content you generate and how you use it. Tech_Gen is not liable for any loss or damage of any kind incurred as a result of the use of the site or reliance on any information or AI-generated content provided. Your use of the site and your reliance on any information is solely at your own risk.</p>
+                <p class="mb-4 text-sm text-gray-400 text-center">Last updated: May 31, 2025</p>
+                
+                <h2>1. General Information Purpose</h2>
+                <p>The information, tools, and content provided by Tech_Gen on https://www.techgentools.site/ (the "Site") and through our services (the "Services") are for general informational and entertainment purposes only. All AI-generated content, including but not limited to images, text, summaries, and translations ("Generated Content"), is provided in good faith. However, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any Generated Content.</p>
+                
+                <h2>2. No Professional Advice</h2>
+                <p>The content generated by our AI tools is not, and should not be considered, a substitute for professional advice. The outputs from our tools are generated by algorithms and may contain errors, inaccuracies, or biases. They are not tailored to your specific circumstances.</p>
+                <ul>
+                    <li><strong>No Legal Advice:</strong> Generated Content should not be used for making legal decisions or as a substitute for consultation with a qualified legal professional.</li>
+                    <li><strong>No Financial Advice:</strong> Generated Content should not be used for financial planning, investment decisions, or as a substitute for advice from a certified financial advisor.</li>
+                    <li><strong>No Medical Advice:</strong> Generated Content is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</li>
+                    <li><strong>No Technical or Factual Advice:</strong> While our AI strives for accuracy, it can produce information that is incorrect, outdated, or fabricated ("hallucinations"). You must independently verify any factual claims, statistics, or technical instructions generated by our Services before relying on them.</li>
+                </ul>
+
+                <h2>3. User Responsibility and Assumption of Risk</h2>
+                <p>Your use of the Site and Services and your reliance on any information or Generated Content is solely at your own risk. You are solely responsible for:</p>
+                <ul>
+                    <li><strong>Evaluating the accuracy and appropriateness</strong> of any Generated Content for your intended use.</li>
+                    <li><strong>The final application</strong> of any Generated Content. This includes any images you publish, documents you rely on after translation, or decisions you make based on a summary.</li>
+                    <li><strong>Compliance with all applicable laws and regulations</strong>, including copyright, trademark, and privacy laws, regarding the content you generate and how you use it.</li>
+                </ul>
+                <p>Tech_Gen is not liable for any loss or damage of any kind incurred as a result of the use of the Site or our Services or reliance on any information or Generated Content provided. You agree to hold us harmless from any claims arising from your use of the Generated Content.</p>
+
+                <h2>4. AI-Generated Content</h2>
+                <h3>4.1. Accuracy and Bias</h3>
+                <p>AI models are trained on vast amounts of data from the internet and may reflect the biases present in that data. Generated Content may be factually incorrect, incomplete, or offensive. We are continuously working to improve the safety and reliability of our models, but we cannot guarantee that all outputs will be free of such issues.</p>
+                <h3>4.2. Originality and Copyright</h3>
+                <p>While our AI aims to create original content, it is possible for Generated Content to be substantially similar to existing copyrighted works. The legal landscape regarding copyright for AI-generated works is still evolving. You are responsible for ensuring that your use of Generated Content does not infringe upon the intellectual property rights of others. We make no warranties regarding the copyright status of the Generated Content.</p>
+                
+                <h2>5. External Links Disclaimer</h2>
+                <p>The Site may contain links to other websites or content belonging to or originating from third parties. Such external links are not investigated, monitored, or checked for accuracy, adequacy, validity, reliability, availability, or completeness by us. We do not warrant, endorse, guarantee, or assume responsibility for the accuracy or reliability of any information offered by third-party websites linked through the site.</p>
+                
+                <h2>6. No Endorsements</h2>
+                <p>Any mention of third-party products, services, or individuals (e.g., artists mentioned in a prompt guide) does not constitute an endorsement or recommendation by Tech_Gen. These references are provided for informational and illustrative purposes only.</p>
+
+                <h2>7. Acceptance of this Disclaimer</h2>
+                <p>By using our Site and Services, you acknowledge that you have read this Disclaimer and agree to all its terms and conditions. This disclaimer forms an integral part of our <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;">Terms of Service</a>.</p>
             </div>
         </article>
     </div>
@@ -1145,6 +1476,7 @@
         <div>
             <h4 class="font-bold text-white mb-3">Company</h4>
             <ul class="space-y-2 text-sm">
+                 <li><a href="#about" onclick="showPage('about'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">About Us</a></li>
                 <li><a href="#blog" onclick="showPage('blog'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Blog</a></li>
                 <li><a href="#pricing" onclick="showPage('pricing'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Pricing</a></li>
                 <li><a href="#contact" onclick="showPage('contact'); return false;" class="text-gray-400 hover:text-[#D480FF] underline">Contact Us</a></li>
@@ -1165,6 +1497,7 @@
   </footer>
 
   <!-- *** PERFORMANCE: Scripts moved to end of body with defer attribute to prevent render-blocking *** -->
+  <!-- For a production environment, consider using a bundler like Vite or Webpack to handle dependencies and enable code-splitting for even better performance. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js" defer></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
@@ -1253,6 +1586,7 @@
         login: { title: "Login - Tech_Gen", description: "Access your Tech_Gen account to use our suite of AI tools." },
         register: { title: "Register - Tech_Gen", description: "Create an account with Tech_Gen to start using powerful AI tools for image generation, translation, and summarization." },
         account: { title: "My Account - Tech_Gen", description: "Manage your Tech_Gen profile, view your subscription status, and access your account details." },
+        about: { title: "About Us - Tech_Gen", description: "Meet the team and learn about the mission behind Tech_Gen's innovative AI platform." },
         blog: { title: "AI & Productivity Insights | Tech_Gen Blog", description: "Read the latest news, tutorials, and insights on AI and productivity from the Tech_Gen team." },
         'blog-post-1': { title: "Unlock Creativity with AI Image Generation | Tech_Gen Blog", description: "Learn how Tech_Gen's AI Image Generator can empower artists, designers, and marketers to bring their creative visions to life instantly." },
         'blog-post-2': { title: "Guide to Effective AI Image Prompts | Tech_Gen Blog", description: "Master the art of prompt engineering. This guide provides step-by-step instructions for crafting the perfect AI image prompts." },
