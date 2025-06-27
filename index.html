@@ -1763,9 +1763,18 @@
     onAuthStateChanged(auth, async (user) => {
         const wasLoggedIn = !!currentUser;
         if (user) {
-            currentUser = await loadUserProfile(user);
-            if (!wasLoggedIn) { 
-                handleSuccessfulLogin();
+            // Social logins are always considered "verified" by Firebase
+            const isSocialLogin = user.providerData.some(provider => provider.providerId !== 'password');
+            if (user.emailVerified || isSocialLogin) {
+                currentUser = await loadUserProfile(user);
+                if (!wasLoggedIn) { 
+                    handleSuccessfulLogin();
+                }
+            } else {
+                 // This case handles a page refresh where the user is technically logged in but not verified.
+                 // We sign them out to force a re-login where the check will happen.
+                await signOut(auth);
+                currentUser = null;
             }
         } else {
             currentUser = null;
@@ -1798,14 +1807,20 @@
 
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            // *** FIX STARTS HERE ***
-            // Force a reload of the user's profile to get the latest emailVerified status
-            await userCredential.user.reload();
-            // *** FIX ENDS HERE ***
             
+            // *** NEW ROBUST FIX ***
+            // Force a reload of the user's profile to get the latest data from Firebase servers.
+            await userCredential.user.reload();
+            
+            // After reloading, check the central auth object's current user.
+            // This is the most reliable source for the emailVerified status at this moment.
             if (auth.currentUser && auth.currentUser.emailVerified) {
-                // Success: onAuthStateChanged will handle the rest.
+                // The user is authenticated and verified.
+                // The onAuthStateChanged listener will now handle the successful login flow.
+                // We don't need to do anything else here.
             } else {
+                // The user is authenticated BUT their email is still not verified.
+                // Log them out immediately and show the verification message.
                 await signOut(auth);
                 errorEl.textContent = 'Please verify your email before logging in. Check your inbox for a verification link.';
                 errorEl.classList.remove('hidden');
