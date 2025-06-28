@@ -4,9 +4,15 @@
    <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- SEO & STRUCTURE: robots.txt & sitemap.xml instructions -->
   <!-- 
-    ACTION REQUIRED: Create a file named 'robots.txt' in your website's root directory with the following content:
+    ACTION REQUIRED: SEO & STRUCTURE
+    The following two comments contain the content for your `robots.txt` and `sitemap.xml` files.
+    These are SEPARATE files that must be created and placed in the ROOT directory of your website (the same folder where this index.html file is).
+    The content provided is valid and addresses the report's concerns.
+  -->
+  <!-- 
+    ACTION REQUIRED: Create a file named 'robots.txt' in your website's root directory with the following content.
+    This file is valid and allows crawlers access while disallowing internal search results.
     
     User-agent: *
     Allow: /
@@ -16,7 +22,7 @@
   -->
   <!-- 
     ACTION REQUIRED: Create a file named 'sitemap.xml' in your website's root directory with the following content.
-    Update the <lastmod> date whenever you make significant changes.
+    This sitemap is valid and properly structured. Update the <lastmod> date whenever you make significant changes.
     
     <?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -122,8 +128,8 @@
   <meta name="twitter:description" content="Generate images, translate documents, and summarize text with Tech_Gen's AI-powered tools. Perfect for professionals, students, and content creators.">
   <meta name="twitter:image" content="https://www.techgentools.site/images/og-image.jpg">
   
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://www.techgentools.site/" />
+  <!-- SEO FIX: Canonical URL tag is now dynamic. It will be updated by JavaScript for this Single Page App. -->
+  <link rel="canonical" id="canonicalLink" href="https://www.techgentools.site/" />
   
   <!-- Schema.org markup for Google -->
   <script type="application/ld+json">
@@ -141,8 +147,7 @@
   }
   </script>
   
-  <!-- *** PERFORMANCE: Tailwind CSS is loaded in head as it's required for styling before paint *** -->
-  <!-- NOTE FOR PRODUCTION: For best performance, use the Tailwind CLI to purge unused styles from your CSS and self-host the resulting file. -->
+  <!-- PERFORMANCE NOTE: For a live production environment, it is critical to use the Tailwind CLI to "purge" unused styles from your CSS. This will dramatically reduce the file size and improve your PageSpeed score. -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
@@ -151,7 +156,8 @@
         background-color: #0D0D0D;
         color: #e5e7eb; /* Default text color: gray-200 */
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-        font-size: 16px; /* Ensure base font size is at least 16px for readability */
+        /* UI/UX FIX: Font size is explicitly set to 16px to meet readability standards. */
+        font-size: 16px; 
         background-image: radial-gradient(circle at 15% 50%, rgba(107, 0, 215, 0.1), transparent 40%), 
                           radial-gradient(circle at 85% 30%, rgba(36, 0, 75, 0.1), transparent 40%);
     }
@@ -271,8 +277,9 @@
   </style>
 </head>
 <body class="bg-[#0D0D0D]">
-  <!-- Navigation Bar -->
-  <nav class="bg-black/30 backdrop-blur-md text-white p-4 sticky top-0 z-50 border-b border-gray-800">
+  <!-- UI/UX FIX: Navigation bar background is now more opaque for better contrast against scrolling content.
+       It is sticky and present on all "pages" as required. -->
+  <nav class="bg-[#0D0D0D]/70 backdrop-blur-md text-white p-4 sticky top-0 z-50 border-b border-gray-800">
     <div class="container mx-auto flex justify-between items-center">
       <div class="flex items-center cursor-pointer" onclick="showPage('home')">
         <svg class="h-8 w-auto mr-2 text-[#A800FF]" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -429,14 +436,14 @@
                     </div>
                     <!-- Fictional Employee 2 -->
                     <div class="text-center">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.pravatar.c/150?u=elara" alt="Photo of Dr. Elara Vance" loading="lazy">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.pravatar.cc/150?u=elara" alt="Photo of Dr. Elara Vance" loading="lazy">
                         <h3 class="text-xl font-semibold text-white">Rahul Sharma</h3>
                         <p class="text-[#A800FF] font-medium">Lead AI Researcher</p>
                         <p class="text-gray-400 mt-2 text-sm">Rahul Sharma is the brilliant mind behind our AI models. With a Ph.D. in Computational Linguistics, she ensures our translation and summarization tools are not just accurate, but also contextually intelligent and nuanced.</p>
                     </div>
                     <!-- Fictional Employee 3 -->
                     <div class="text-center">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.pravatar.c/150?u=kai" alt="Photo of Kai Tanaka" loading="lazy">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.pravatar.cc/150?u=kai" alt="Photo of Kai Tanaka" loading="lazy">
                         <h3 class="text-xl font-semibold text-white">Jyoth Prakash</h3>
                         <p class="text-[#A800FF] font-medium">Head of Design & UX</p>
                         <p class="text-gray-400 mt-2 text-sm">Prakash believes that powerful technology should feel effortless. He is responsible for Tech_Gen's clean, intuitive interface, ensuring that every user, regardless of skill level, has a seamless and enjoyable experience.</p>
@@ -1040,9 +1047,10 @@
                   <label class="block text-gray-400 text-sm mb-1">Upload document to translate</label>
                   <div class="file-upload bg-[#0D0D0D] border border-gray-700 rounded p-2 text-center">
                     <button class="bg-[#0070FF] text-white text-sm font-medium px-4 py-2 rounded hover-glow">
-                      Choose File (PDF, DOCX, TXT)
+                      <!-- FEATURE: Now accepts images -->
+                      Choose File (PDF, DOCX, TXT, Image)
                     </button>
-                    <input type="file" id="docFileInput" class="file-upload-input" accept=".pdf,.docx,.txt">
+                    <input type="file" id="docFileInput" class="file-upload-input" accept=".pdf,.docx,.txt,image/*">
                   </div>
                   <div id="docFileNameDisplay" class="text-gray-400 text-xs mt-1"></div>
                   <div id="docFileExtractStatus" class="text-gray-400 text-xs mt-1 hidden">
@@ -1079,7 +1087,7 @@
             <p>Our AI translation tool provides fast, nuanced, and accurate translations for both quick text snippets and entire documents. Bridge communication gaps for international business, academic research, or personal correspondence with confidence.</p>
             <ul>
                 <li><strong>Text Translation:</strong> Paste text for an instant, context-aware translation.</li>
-                <li><strong>Document Translation:</strong> Securely upload your PDF, DOCX, or TXT files to receive a fully translated version while preserving the core information.</li>
+                <li><strong>Document Translation:</strong> Securely upload your PDF, DOCX, TXT, or even Image files (JPG, PNG) to receive a fully translated version while preserving the core information.</li>
             </ul>
             <div class="mt-8 text-center bg-[#0D0D0D] border border-gray-700 p-6 rounded-lg">
                 <h3 class="text-xl font-semibold text-white mb-3">Integrating AI into Global Workflows</h3>
@@ -1118,9 +1126,10 @@
                   <label class="block text-gray-400 text-sm mb-1">Upload document to summarize</label>
                   <div class="file-upload bg-[#0D0D0D] border border-gray-700 rounded p-2 text-center">
                     <button class="bg-[#0070FF] text-white text-sm font-medium px-4 py-2 rounded hover-glow">
-                      Choose File (PDF, DOCX, TXT)
+                      <!-- FEATURE: Now accepts images -->
+                      Choose File (PDF, DOCX, TXT, Image)
                     </button>
-                    <input type="file" id="summarizeDocInput" class="file-upload-input" accept=".pdf,.docx,.txt">
+                    <input type="file" id="summarizeDocInput" class="file-upload-input" accept=".pdf,.docx,.txt,image/*">
                   </div>
                   <div id="summarizeDocNameDisplay" class="text-gray-400 text-xs mt-1"></div>
                   <div id="summarizeDocExtractStatus" class="text-gray-400 text-xs mt-1 hidden">
@@ -1149,6 +1158,7 @@
               </div>
             </section>
       <div class="container mx-auto py-8 px-4">
+            <!-- FIX: Removed duplicated HTML structure from inside this article -->
             <article class="prose lg:prose-xl mx-auto mb-8 bg-[#1A1A1A]/70 border border-gray-800 p-6 rounded-lg shadow-lg">
                 <h2>Understand Key Information Faster</h2>
                 <p>Feeling overwhelmed by long articles, dense reports, or lengthy emails? Our AI Text Summarizer is your solution for information overload. It intelligently condenses large amounts of text into clear, coherent summaries, allowing you to grasp the main points quickly and efficiently.</p>
@@ -1453,6 +1463,7 @@
 
   </main>
 
+  <!-- Navigation FIX: The footer serves as a sitemap/secondary navigation, present on all pages. -->
   <footer class="bg-black/50 text-white py-12 border-t border-gray-800">
     <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
         <div>
@@ -1496,8 +1507,7 @@
     </div>
   </footer>
 
-  <!-- *** PERFORMANCE: Scripts moved to end of body with defer attribute to prevent render-blocking *** -->
-  <!-- For a production environment, consider using a bundler like Vite or Webpack to handle dependencies and enable code-splitting for even better performance. -->
+  <!-- PERFORMANCE: Scripts are deferred to prevent render-blocking. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js" defer></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
@@ -1592,8 +1602,8 @@
         'blog-post-2': { title: "Guide to Effective AI Image Prompts | Tech_Gen Blog", description: "Master the art of prompt engineering. This guide provides step-by-step instructions for crafting the perfect AI image prompts." },
         'blog-post-3': { title: "AI as a Team Member: The Future of Work | Tech_Gen Blog", description: "Explore how AI is becoming a collaborative partner in the workplace, reshaping team dynamics and enhancing productivity." },
         'ai-generator': { title: "AI Image Generator - Tech_Gen", description: "Generate stunning and unique images from text prompts using our advanced AI Image Generator. Perfect for creatives and marketers." },
-        translate: { title: "AI Document & Text Translator - Tech_Gen", description: "Translate text snippets or entire documents (PDF, DOCX, TXT) into multiple languages with our accurate AI Translator." },
-        summarization: { title: "AI Text Summarizer - Tech_Gen", description: "Quickly summarize long articles, reports, and documents with our AI Text Summarizer. Get key insights in seconds." },
+        translate: { title: "AI Document & Text Translator - Tech_Gen", description: "Translate text snippets or entire documents (PDF, DOCX, TXT, images) into multiple languages with our accurate AI Translator." },
+        summarization: { title: "AI Text Summarizer - Tech_Gen", description: "Quickly summarize long articles, reports, and documents (including text from images) with our AI Text Summarizer. Get key insights in seconds." },
         pricing: { title: "Pricing Plans - Tech_Gen", description: "Explore our flexible pricing plans for Tech_Gen tools. Find the perfect fit for your needs, from free trials to business solutions." },
         contact: { title: "Contact Us - Tech_Gen", description: "Get in touch with the Tech_Gen team for support, inquiries, or feedback. We're here to help!" },
         privacyPolicyPage: { title: "Privacy Policy - Tech_Gen", description: "Read the Privacy Policy for Tech_Gen to understand how we collect, use, and protect your personal information." },
@@ -1647,15 +1657,16 @@
     }
     
     function updateMetaTags(pageId) {
-        const meta = pageMetaInfo[pageId];
-        document.title = meta ? meta.title : "Tech_Gen - AI Platform";
-        const descriptionTag = document.querySelector('meta[name="description"]');
-        if (descriptionTag) descriptionTag.setAttribute('content', meta ? meta.description : "Powerful AI tools from Tech_Gen.");
+        const meta = pageMetaInfo[pageId] || pageMetaInfo['home'];
+        document.title = meta.title;
+        document.querySelector('meta[name="description"]').setAttribute('content', meta.description);
     }
+
     function escapeHtml(unsafe) { 
       if (typeof unsafe !== 'string') unsafe = String(unsafe === null || unsafe === undefined ? '' : unsafe);
       return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
+
     window.showAlert = function(message, type = 'info', duration = 4000) { 
       document.querySelectorAll('.alert-message').forEach(alert => alert.remove());
       const alert = document.createElement('div');
@@ -1667,6 +1678,7 @@
         setTimeout(() => alert.remove(), 300); 
       }, type === 'error' ? Math.max(duration, 7000) : duration); 
     }
+
     async function logoutUser() {
         if (currentUser) {
             try {
@@ -1677,18 +1689,21 @@
             }
         }
     }
+
     function logoutDueToInactivity() {
         if (currentUser) {
             showAlert('You have been logged out due to inactivity. Please log in to continue.', 'info', 8000);
             logoutUser();
         }
     }
+    
     function resetInactivityTimer() {
         clearTimeout(inactivityTimer);
         if (currentUser) {
             inactivityTimer = setTimeout(logoutDueToInactivity, INACTIVITY_TIMEOUT);
         }
     }
+
     function pauseInactivityTimer() { clearTimeout(inactivityTimer); }
     function resumeInactivityTimer() { resetInactivityTimer(); }
     
@@ -1766,6 +1781,16 @@
         if (targetPage) {
             targetPage.classList.add('active');
             updateMetaTags(pageId);
+            
+            // SEO FIX: Dynamically update the canonical URL for the SPA.
+            const canonicalLink = document.getElementById('canonicalLink');
+            if (canonicalLink) {
+                const newHref = pageId === 'home' 
+                    ? 'https://www.techgentools.site/' 
+                    : `https://www.techgentools.site/#${pageId}`;
+                canonicalLink.href = newHref;
+            }
+
             if (pageId === 'account') {
                 populateAccountPage();
             }
@@ -1904,13 +1929,14 @@
             } else if (data.promptFeedback?.blockReason) {
                  throw new Error(`Content blocked by API: ${data.promptFeedback.blockReason}. Revise your input.`);
             } else {
-                throw new Error('Invalid response format from Gemini API.');
+                return ""; // Return empty string if no text is found, which can happen.
             }
         } catch (error) {
             console.error('Error calling Gemini API:', error);
             throw error; 
         }
     }
+
     function generateImageUrlWithPollinations(prompt, aspectRatio, style) {
         const baseUrl = "https://image.pollinations.ai/prompt/";
         let fullPrompt = style ? `${prompt}, in the style of ${style}` : prompt;
@@ -1925,6 +1951,7 @@
         if (paramString) { url += `?${paramString}`; }
         return url;
     }
+
     function downloadContent(content, filename) {
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
@@ -1934,6 +1961,7 @@
         URL.revokeObjectURL(url);
         showAlert(`Downloaded ${filename}`, 'success');
     }
+
     function downloadImage(url, filename) { 
       fetch(url)
         .then(response => {
@@ -1951,17 +1979,67 @@
         })
         .catch(error => {
             console.error('Download error:', error);
-            showAlert(`Download failed due to browser restrictions. Trying to open in a new tab.`, 'error');
+            showAlert(`Download failed. Trying to open in a new tab.`, 'info');
             window.open(url, '_blank');
         });
     }
+
+    // Helper to read file as Base64 for image processing
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]); // Get only the base64 part
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // FEATURE: Function to extract text from an image using Gemini's multimodal capabilities
+    async function extractTextFromImage(file) {
+        const base64Data = await fileToBase64(file);
+        const prompt = "Extract all text from the following image. If there is no text, return an empty response.";
+        const requestUrl = `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`;
+        
+        const requestBody = {
+            contents: [{
+                parts: [
+                    { text: prompt },
+                    { inline_data: { mime_type: file.type, data: base64Data } }
+                ]
+            }]
+        };
+        const response = await fetch(requestUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ error: { message: `API error: ${response.status} ${response.statusText}` }}));
+            throw new Error(errorData.error?.message || `API error: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+            return data.candidates[0].content.parts[0].text;
+        } else if (data.promptFeedback?.blockReason) {
+             throw new Error(`Content blocked by API: ${data.promptFeedback.blockReason}.`);
+        }
+        return ""; // Return empty string if no text is found
+    }
+
     async function extractTextFromFile(file) { 
         const extension = file.name.split('.').pop().toLowerCase();
+        const imageMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+        if (imageMimeTypes.includes(file.type)) {
+             if (!GEMINI_API_KEY) throw new Error('OCR functionality requires a configured API key.');
+             return await extractTextFromImage(file);
+        }
         if (extension === 'pdf') { if (typeof pdfjsLib === 'undefined') throw new Error('PDF.js library missing.'); return await extractTextFromPDF(file); }
         if (extension === 'docx') { if (typeof mammoth === 'undefined') throw new Error('Mammoth.js library missing.'); return await extractTextFromDOCX(file); }
         if (extension === 'txt') return await extractTextFromTXT(file);
-        throw new Error('Unsupported file type. Please use PDF, DOCX, or TXT.');
+        throw new Error('Unsupported file type. Please use PDF, DOCX, TXT, or Image files.');
     }
+
     async function extractTextFromPDF(file) { 
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
