@@ -972,12 +972,12 @@
                 </select>
               </div>
             </div>
-            <div class="mt-4 text-center">
+            <!-- CLS FIX: Added a min-height to this container to reserve space for the image AND the download button, preventing layout shift when the result appears. -->
+            <div class="mt-4 text-center" style="min-height: 300px;">
               <div id="imagePlaceholder" class="bg-[#0D0D0D] border border-gray-700 rounded flex items-center justify-center h-64">
                 <p id="imagePlaceholderText" class="text-gray-400 text-sm">Image will appear here</p>
               </div>
               <div id="imageResultContainer" class="hidden">
-                 <!-- The generated image is contained within a fixed-height div to prevent CLS -->
                 <img id="generatedImage" src="" alt="Generated image" class="rounded mx-auto border border-gray-700 max-w-full h-64 object-contain">
                 <button id="downloadImageBtn" class="mt-2 bg-[#D480FF] text-black text-sm font-medium px-4 py-2 rounded hover-glow">
                   Download Image
@@ -1037,7 +1037,8 @@
                     <span id="translateTextSpinner" class="loading hidden ml-2"></span>
                   </button>
                 </div>
-                <div id="textOutput" class="mt-4 p-3 bg-[#0D0D0D] rounded border border-gray-700 min-h-32">
+                <!-- CLS FIX: Changed min-h-32 to a fixed h-48 and added overflow-y-auto to prevent layout shift. -->
+                <div id="textOutput" class="mt-4 p-3 bg-[#0D0D0D] rounded border border-gray-700 h-48 overflow-y-auto">
                   <p class="text-gray-400 text-sm">Translation results will appear here...</p>
                 </div>
                 <div class="flex justify-end mt-2">
@@ -1076,7 +1077,8 @@
                   <label class="block text-gray-400 text-sm mb-1">Original Text Preview (first 500 characters)</label>
                   <div class="p-3 bg-[#0D0D0D] rounded border border-gray-700 max-h-32 overflow-y-auto text-sm text-gray-400"></div>
                 </div>
-                <div id="docTranslationOutput" class="mt-4 p-3 bg-[#0D0D0D] rounded border border-gray-700 min-h-32" data-original-text="">
+                <!-- CLS FIX: Changed min-h-32 to a fixed h-48 and added overflow-y-auto to prevent layout shift. -->
+                <div id="docTranslationOutput" class="mt-4 p-3 bg-[#0D0D0D] rounded border border-gray-700 h-48 overflow-y-auto" data-original-text="">
                   <p class="text-gray-400 text-sm">Document translation results will appear here...</p>
                 </div>
                 <div class="flex justify-between mt-2">
@@ -1154,7 +1156,8 @@
                   <span id="summarizeBtnText">Summarize</span>
                   <span id="summarizeTextSpinner" class="loading hidden ml-2"></span>
                 </button>
-                <div id="summaryOutput" class="mt-4 p-3 bg-[#0D0D0D] rounded border border-gray-700 min-h-32">
+                <!-- CLS FIX: Changed min-h-32 to a fixed h-48 and added overflow-y-auto to prevent layout shift. -->
+                <div id="summaryOutput" class="mt-4 p-3 bg-[#0D0D0D] rounded border border-gray-700 h-48 overflow-y-auto">
                   <p class="text-gray-400 text-sm">Summary will appear here...</p>
                 </div>
                 <div class="flex justify-end mt-2">
@@ -1621,7 +1624,7 @@
 
     const authPageIds = ['login', 'register', 'forgotPassword', 'resetPassword', 'paymentPage'];
 
-    // FIX: To resolve the "no inbound links" issue, we will tell search engines not to index pages that are part of a user flow and not meant for general discovery.
+    // To resolve the "no inbound links" issue, we will tell search engines not to index pages that are part of a user flow and not meant for general discovery.
     const noIndexPages = ['resetPassword', 'paymentPage'];
     
     async function loadUserProfile(user) {
@@ -1767,7 +1770,6 @@
         }
     }
 
-    // FIX: This function dynamically adds/removes the "noindex" meta tag.
     function updateRobotsMetaTag(pageId) {
         let metaTag = document.querySelector('meta[name="robots"]');
         
@@ -1807,9 +1809,8 @@
         if (targetPage) {
             targetPage.classList.add('active');
             updateMetaTags(pageId);
-            updateRobotsMetaTag(pageId); // FIX: Call the function to manage the noindex tag.
+            updateRobotsMetaTag(pageId);
             
-            // SEO FIX: Dynamically update the canonical URL for the SPA.
             const canonicalLink = document.getElementById('canonicalLink');
             if (canonicalLink) {
                 const newHref = pageId === 'home' 
