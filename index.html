@@ -154,17 +154,6 @@
   <!-- PERFORMANCE NOTE: For a live production environment, it is critical to use the Tailwind CLI to "purge" unused styles from your CSS. This will dramatically reduce the file size and improve your PageSpeed score. -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- SCRIPT LOADING FIX: These critical libraries are now loaded synchronously in the head to prevent race conditions. -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"
-          integrity="sha512-s2Ay5V4O2x52y0ACmcMvNda3igQ8qYx0Jfl3YssP1iSPSnzbE4BS5xIWU3LgGgKkX5NB3R5nZ5wJd8B0+a3pWA=="
-          crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"
-          integrity="sha512-s5DA8B1vDqk2I8ZvdTq3CSg2Qhhw2nS0I7j2HXZHFT0sQG2gBCiQ33zhLhXQ6f0vKPPZzQjD/4zMv8H6s8Bf0g=="
-          crossorigin="anonymous"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"
-          integrity="sha512-H9tZCs2YqK2Gs3heTzK9mMp+tS73aKfbOOi2R1y70/2Y1stF2i/PE9f2s2h+M3LqP2zT3i7ePAzZfO1O/Gkvg=="
-          crossorigin="anonymous"></script>
-
   <style>
     /* New Color Palette & Global Styles */
     body {
@@ -1525,6 +1514,11 @@
         </div>
     </div>
   </footer>
+
+  <!-- PERFORMANCE: Scripts are deferred to prevent render-blocking. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js" defer></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
 
   <script type="module" defer>
     // --- FIREBASE SDK IMPORTS ---
