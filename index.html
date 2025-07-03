@@ -1409,7 +1409,7 @@
                 <p>We may terminate or suspend your account and bar access to the Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms. If you wish to terminate your account, you may simply discontinue using the Service or delete your account where the option is available.</p>
 
                 <h2>7. Disclaimer of Warranties and Limitation of Liability</h2>
-                <p>The Services are provided on an "AS IS" and "AS AVAILABLE" basis. Your use of the Service is at your sole risk. We expressly disclaim all warranties of any kind, whether express or implied. We do not warrant that the Service will be uninterrupted, timely, secure, or error-free, or that the results obtained from the use of the Service will be a accurate or reliable. For more details, please review our full <a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;">Disclaimer</a>.</p>
+                <p>The Services are provided on an "AS IS" and "AS AVAILABLE" basis. Your use of the Service is at your sole risk. We expressly disclaim all warranties of any kind, whether express or implied. We do not warrant that the Service will be uninterrupted, timely, secure, or error-free, or that the results obtained from the use of the Service will be accurate or reliable. For more details, please review our full <a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;">Disclaimer</a>.</p>
                 <p>In no event shall Tech_Gen, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.</p>
 
                 <h2>8. Governing Law</h2>
@@ -1516,9 +1516,7 @@
   </footer>
 
   <!-- PERFORMANCE: Scripts are deferred to prevent render-blocking. -->
-  <!-- FIX: Updated pdf.js CDN link to a valid version (e.g., 3.11.174). -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
-  <!-- FIX: Updated mammoth.js CDN link to a valid version (e.g., 1.7.0). -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.0/mammoth.browser.min.js" defer></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
 
@@ -1550,7 +1548,6 @@
 
     // Initialize PDF.js worker
     if (typeof pdfjsLib !== 'undefined') {
-        // FIX: Updated pdf.js worker path to match the new library version.
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     } else {
         console.error("pdf.js library not loaded. PDF functionality will be affected.");
