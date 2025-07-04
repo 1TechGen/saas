@@ -1851,6 +1851,8 @@
         const commentsList = document.getElementById(`comments-list-${postId}`);
         if (!commentsList) return;
 
+        // FIX: Removed `orderBy` from the query to prevent needing a composite index.
+        // We will sort on the client side for robustness.
         const q = query(collection(db, "comments"), where("postId", "==", postId));
 
         unsubscribeComments = onSnapshot(q, (querySnapshot) => {
@@ -1866,6 +1868,7 @@
                 comments.push(doc.data());
             });
 
+            // FIX: Sort comments by timestamp client-side (newest first).
             comments.sort((a, b) => {
                 const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
                 const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
@@ -1886,6 +1889,7 @@
             });
 
         }, (error) => {
+            // FIX: Provide a more helpful error message for debugging.
             console.error("Error fetching comments. This is often caused by Firestore security rules. Ensure the 'comments' collection is readable by the public.", error);
             commentsList.innerHTML = '<p class="text-red-400 text-sm text-center mt-4">Could not load comments. Please check console for errors.</p>';
         });
@@ -2326,41 +2330,18 @@
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
     activityEvents.forEach(eventName => window.addEventListener(eventName, resetInactivityTimer, true));
     
-    // FIX: Refactored onAuthStateChanged to be the single source of truth for login flow.
     onAuthStateChanged(auth, async (user) => {
         const wasLoggedIn = !!currentUser;
         if (user) {
-            // If the user object exists, check its verification status.
-            if (!user.emailVerified) {
-                // This user is logged in BUT not verified. This can happen after registration
-                // or if they try to log in without verifying.
-                // We show the error and immediately sign them out.
-                if (wasLoggedIn) {
-                    // This case shouldn't happen often, but is a good safeguard.
-                    await signOut(auth);
-                } else {
-                     // This is the key case: a user just tried to log in but isn't verified.
-                    showAlert('Please verify your email before logging in. Check your inbox for a verification link.', 'error', 8000);
-                    await signOut(auth);
-                }
-                // The signOut() call will re-trigger this listener with user=null,
-                // which will then update the UI to the logged-out state.
-            } else {
-                // User is logged in AND verified.
-                currentUser = await loadUserProfile(user);
-                if (!wasLoggedIn) {
-                    // This is a fresh, successful login.
-                    handleSuccessfulLogin();
-                }
-                updateAuthUI();
-                resetInactivityTimer();
+            currentUser = await loadUserProfile(user);
+            if (!wasLoggedIn) { 
+                handleSuccessfulLogin();
             }
         } else {
-            // User is null, meaning they are logged out.
             currentUser = null;
-            updateAuthUI();
-            resetInactivityTimer();
         }
+        updateAuthUI();
+        resetInactivityTimer();
     });
 
     updatePricingDisplay(); 
@@ -2373,9 +2354,6 @@
     });
     
     // --- FORM EVENT LISTENERS ---
-
-    // FIX: Simplified the login form handler. Its only job is to try signing in.
-    // The onAuthStateChanged listener will handle success/failure/verification checks.
     const loginFormEl = document.getElementById('loginForm');
     if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -2389,10 +2367,16 @@
         submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing In...`;
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            // On success, do nothing here. The onAuthStateChanged listener will handle everything.
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            await userCredential.user.reload();
+            if (auth.currentUser && auth.currentUser.emailVerified) {
+                // Success: onAuthStateChanged will handle the rest.
+            } else {
+                await signOut(auth);
+                errorEl.textContent = 'Please verify your email before logging in. Check your inbox for a verification link.';
+                errorEl.classList.remove('hidden');
+            }
         } catch (error) {
-            // On failure (e.g., wrong password), show the error.
             errorEl.textContent = getAuthErrorMessage(error.code);
             errorEl.classList.remove('hidden');
         } finally {
