@@ -278,6 +278,34 @@
     .prose table { width: 100%; border-collapse: collapse; }
     .prose th, .prose td { border: 1px solid #4b5563; padding: 0.5rem 1rem; }
     .prose th { background-color: #374151; }
+    
+    /* Comment Section Styles */
+    .comments-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 1rem;
+    }
+    .comments-list li {
+        background-color: #0D0D0D;
+        border: 1px solid #374151;
+        border-radius: 0.375rem;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.75rem;
+    }
+    .comments-list li .comment-author {
+        font-weight: 600;
+        color: #D480FF;
+    }
+    .comments-list li .comment-date {
+        font-size: 0.75rem;
+        color: #9ca3af;
+        margin-left: 0.5rem;
+    }
+    .comments-list li .comment-text {
+        margin-top: 0.5rem;
+        color: #e5e7eb;
+        white-space: pre-wrap; /* Preserve line breaks in comments */
+    }
   </style>
 </head>
 <body class="bg-[#0D0D0D]">
@@ -555,12 +583,9 @@
         <article class="container mx-auto px-4 py-16">
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
                 <h1 class="text-3xl font-bold mb-6 text-center">Unlock Limitless Creativity with Our AI Image Generator</h1>
-                
                 <p class="text-lg italic text-gray-400 mb-8 text-center">In a world where visual content reigns supreme, the ability to create compelling images is more valuable than ever. Tech_Gen's AI Image Generator is designed to be your creative co-pilot, empowering everyone—from seasoned artists to complete beginners—to bring their most ambitious visions to life with astonishing speed and ease.</p>
-                
                 <h2>The Creative Revolution: Why Use an AI Image Generator?</h2>
                 <p>Traditional creative workflows are often fraught with barriers. They can demand long hours of meticulous work, proficiency in complex and expensive software, and a highly specialized skill set. Our AI tool systematically dismantles these barriers, democratizing the power of visual creation. It's not about replacing human creativity; it's about augmenting it. By handling the technical execution, the AI frees you to focus on the bigger picture: your idea, your story, your message.</p>
-                
                 <h2>How It Works: From Thought to Masterpiece in Seconds</h2>
                 <p>The magic of the AI Image Generator lies in its simplicity. The process is intuitive and designed for rapid iteration, allowing you to refine your ideas on the fly.</p>
                 <ol>
@@ -568,7 +593,6 @@
                     <li><strong>Choose a Style</strong>: Guide the AI's aesthetic direction by selecting from a diverse range of styles. Whether you need a crisp, 'photorealistic' render, the vibrant energy of 'digital art,' the clean lines of 'anime,' or the nostalgic charm of 'pixel art,' a style choice instantly sets the mood.</li>
                     <li><strong>Generate & Refine</strong>: With a single click, our AI processes your prompt and style choice, generating unique image options in seconds. Don't love the first result? Tweak your prompt, try a different style, or simply generate again. This iterative process is key to honing in on the perfect visual.</li>
                 </ol>
-                
                 <h2>A Universe of Applications: Who Can Benefit?</h2>
                 <p>The versatility of the AI Image Generator makes it an invaluable asset across numerous fields. It's a tool that adapts to your needs, whatever they may be.</p>
                 <ul>
@@ -578,10 +602,8 @@
                     <li><strong>Students & Educators</strong>: Create vivid illustrations for presentations, reports, and learning materials, making complex topics more engaging and understandable.</li>
                     <li><strong>Small Business Owners</strong>: Design logos, product mockups, and marketing materials with a professional polish, without needing to hire a dedicated designer.</li>
                 </ul>
-
                 <h2>Ethical Creation and Responsible Use</h2>
                 <p>As we embrace this new technology, it's vital to consider the ethical implications. At Tech_Gen, we are committed to promoting responsible AI use. Our models are trained to avoid generating harmful or explicit content. We encourage users to be mindful of copyright and intellectual property when creating images based on existing styles or characters. The goal is to foster a creative ecosystem that is both innovative and respectful. For more information on our content policies, please refer to our <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;">Terms of Service</a>.</p>
-                
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
                     <h2 class="mt-0">Ready to Unleash Your Creativity?</h2>
                     <p>You've seen the potential. Now it's time to experience it. Join thousands of creators, professionals, and innovators who are already using our AI Image Generator to push the boundaries of what's possible.</p>
@@ -589,13 +611,24 @@
                         Try The AI Image Generator Now
                     </button>
                 </div>
-                
                 <h2>The Future is Collaborative</h2>
                 <p>The AI Image Generator is more than just a tool; it's a new paradigm in creative expression. It's not here to replace the human artist but to become their most powerful collaborator. By automating the technical, we elevate the conceptual. This is a core tenet of our philosophy on the human-AI partnership, a topic we explore more deeply in our article on the <a href="#blog-post-3" onclick="showPage('blog-post-3'); return false;">future of work with AI</a>.</p>
                 
-                <div class="mt-12 p-4 border-t border-gray-700 text-center">
+                <!-- NEW: Comment Section for Blog Post 1 -->
+                <div id="comments-section-blog-post-1" class="mt-12 p-4 border-t border-gray-700">
                     <h3 class="text-lg font-semibold text-white">Join the Discussion</h3>
-                    <p class="text-gray-400 text-sm">Comments are coming soon! We'd love to see what you create and hear your thoughts.</p>
+                    <div id="comment-form-container-blog-post-1" class="hidden">
+                        <form onsubmit="handleCommentSubmit(event, 'blog-post-1'); return false;" class="mt-4">
+                            <textarea id="comment-textarea-blog-post-1" rows="3" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-[#0D0D0D] text-white" placeholder="Write your comment..." required></textarea>
+                            <button type="submit" class="mt-2 bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition font-semibold">Post Comment</button>
+                        </form>
+                    </div>
+                    <div id="comment-login-prompt-blog-post-1" class="mt-4 text-center p-4 bg-[#0D0D0D] rounded-lg">
+                        <p class="text-gray-400">Please <a href="#login" onclick="showPage('login')" class="text-[#A800FF] hover:underline">log in</a> to post a comment.</p>
+                    </div>
+                    <ul id="comments-list-blog-post-1" class="comments-list">
+                        <!-- Comments will be loaded here by JavaScript -->
+                    </ul>
                 </div>
             </div>
         </article>
@@ -606,20 +639,11 @@
         <article class="container mx-auto px-4 py-16">
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
                 <h1 class="text-3xl font-bold mb-6 text-center">The Ultimate Guide to Writing Effective AI Image Prompts</h1>
-                
                 <p class="text-lg italic text-gray-400 mb-8 text-center">The quality of your AI-generated images is directly proportional to the quality of your prompts. Think of yourself as an art director and the AI as your incredibly talented, literal-minded artist. Your prompt is the creative brief. A vague brief yields random results; a well-crafted one can produce a masterpiece.</p>
-
                 <h2>The Anatomy of a Masterful Prompt</h2>
                 <p>A great prompt is a blend of precision and poetry. It provides clear instructions while leaving just enough room for the AI's "imagination" to flourish. To achieve this, a strong prompt typically includes several key ingredients. While not all are required for every image, understanding them will give you ultimate control.</p>
-
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Ingredient</th>
-                            <th>Purpose</th>
-                            <th>Example Keywords</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Ingredient</th><th>Purpose</th><th>Example Keywords</th></tr></thead>
                     <tbody>
                         <tr><td><strong>Subject</strong></td><td>The main focus of the image. Be specific!</td><td><code>a majestic lion king</code>, <code>a tiny robot explorer</code>, <code>two wizards dueling</code></td></tr>
                         <tr><td><strong>Medium/Style</strong></td><td>The artistic style or medium.</td><td><code>digital painting</code>, <code>photorealistic</code>, <code>anime style</code>, <code>pixel art</code>, <code>watercolor</code></td></tr>
@@ -631,24 +655,14 @@
                         <tr><td><strong>Detail/Quality</strong></td><td>Boosts the level of detail and realism.</td><td><code>hyperrealistic</code>, <code>insanely detailed</code>, <code>8k resolution</code>, <code>trending on ArtStation</code></td></tr>
                     </tbody>
                 </table>
-                
                 <h2>From Basic to Brilliant: A Practical Example</h2>
                 <p>Let's see how adding these ingredients can transform a simple idea into a stunning piece of art. To see the tool in action as you learn, open our <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generator</a> in another tab and follow along.</p>
-                
                 <ol>
-                    <li><strong>The Basic Idea</strong>: <code>a robot</code>
-                    <br><em>Result: A generic, simple robot, likely on a white background.</em></li>
-                    
-                    <li><strong>Adding a Subject and Environment</strong>: <code>a small, friendly robot exploring a lush jungle</code>
-                    <br><em>Result: Better! Now we have a story. The robot is in a specific place with a defined role.</em></li>
-
-                    <li><strong>Layering on Style and Lighting</strong>: <code>a small, friendly robot exploring a lush jungle, soft morning light filtering through the canopy, digital painting</code>
-                    <br><em>Result: The image now has a distinct mood and artistic feel. The lighting makes it feel more alive.</em></li>
-
-                    <li><strong>The Final Polish with Detail and Composition</strong>: <code>close-up shot of a small, friendly, weathered robot exploring a lush, bioluminescent jungle at night, soft glowing light from mushrooms, insanely detailed, cinematic, in the style of Studio Ghibli</code>
-                    <br><em>Result: A masterpiece. Every word adds a layer of instruction, resulting in a highly specific, atmospheric, and professional-looking image.</em></li>
+                    <li><strong>The Basic Idea</strong>: <code>a robot</code><br><em>Result: A generic, simple robot, likely on a white background.</em></li>
+                    <li><strong>Adding a Subject and Environment</strong>: <code>a small, friendly robot exploring a lush jungle</code><br><em>Result: Better! Now we have a story. The robot is in a specific place with a defined role.</em></li>
+                    <li><strong>Layering on Style and Lighting</strong>: <code>a small, friendly robot exploring a lush jungle, soft morning light filtering through the canopy, digital painting</code><br><em>Result: The image now has a distinct mood and artistic feel. The lighting makes it feel more alive.</em></li>
+                    <li><strong>The Final Polish with Detail and Composition</strong>: <code>close-up shot of a small, friendly, weathered robot exploring a lush, bioluminescent jungle at night, soft glowing light from mushrooms, insanely detailed, cinematic, in the style of Studio Ghibli</code><br><em>Result: A masterpiece. Every word adds a layer of instruction, resulting in a highly specific, atmospheric, and professional-looking image.</em></li>
                 </ol>
-
                 <h2>Common Pitfalls and How to Avoid Them</h2>
                 <ul>
                     <li><strong>Being Too Vague</strong>: The AI can't read your mind. Instead of "a beautiful landscape," describe <em>what makes it beautiful</em>: "A serene, misty mountain lake at dawn, reflecting a pastel pink and orange sky, with dense pine forests on the shore."</li>
@@ -656,7 +670,6 @@
                     <li><strong>Forgetting "Negative Prompts"</strong>: Sometimes, telling the AI what <em>not</em> to include is as important as telling it what to include. While our tool doesn't have a separate field, you can try phrasing like "<code>a person, no glasses</code>". (Effectiveness varies by model).</li>
                     <li><strong>Overstuffing Keywords</strong>: While detail is good, a long, rambling list of disconnected keywords can be less effective than a well-structured sentence. Aim for descriptive phrases.</li>
                 </ul>
-                
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
                     <h2 class="mt-0">Ready to Master AI Art Generation?</h2>
                     <p>The best way to learn is by doing. Start experimenting with different combinations of the ingredients above. See how changing a single word can drastically alter the outcome. Your journey to becoming a prompt master starts now!</p>
@@ -664,13 +677,24 @@
                         Try Our AI Image Generator Now
                     </button>
                 </div>
-                
                 <h2>Final Thoughts: Prompting is a Skill</h2>
                 <p>Writing effective AI image prompts is a creative skill in itself. It's a dance between technical instruction and artistic direction. The more you practice, the more intuitive it will become, and the better you'll get at translating the images in your head into digital reality. For a broader look at how this skill fits into the creative landscape, read our post on <a href="#blog-post-1" onclick="showPage('blog-post-1'); return false;">unlocking creativity with AI</a>.</p>
 
-                <div class="mt-12 p-4 border-t border-gray-700 text-center">
+                <!-- NEW: Comment Section for Blog Post 2 -->
+                <div id="comments-section-blog-post-2" class="mt-12 p-4 border-t border-gray-700">
                     <h3 class="text-lg font-semibold text-white">Join the Discussion</h3>
-                    <p class="text-gray-400 text-sm">Comments are coming soon! Let us know your favorite prompt combinations.</p>
+                    <div id="comment-form-container-blog-post-2" class="hidden">
+                        <form onsubmit="handleCommentSubmit(event, 'blog-post-2'); return false;" class="mt-4">
+                            <textarea id="comment-textarea-blog-post-2" rows="3" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-[#0D0D0D] text-white" placeholder="Write your comment..." required></textarea>
+                            <button type="submit" class="mt-2 bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition font-semibold">Post Comment</button>
+                        </form>
+                    </div>
+                    <div id="comment-login-prompt-blog-post-2" class="mt-4 text-center p-4 bg-[#0D0D0D] rounded-lg">
+                        <p class="text-gray-400">Please <a href="#login" onclick="showPage('login')" class="text-[#A800FF] hover:underline">log in</a> to post a comment.</p>
+                    </div>
+                    <ul id="comments-list-blog-post-2" class="comments-list">
+                        <!-- Comments will be loaded here by JavaScript -->
+                    </ul>
                 </div>
             </div>
         </article>
@@ -681,9 +705,7 @@
         <article class="container mx-auto px-4 py-16">
             <div class="prose lg:prose-xl mx-auto bg-[#1A1A1A]/70 border border-gray-800 p-8 rounded-lg shadow-lg">
                 <h1 class="text-3xl font-bold mb-6 text-center">The Future of Work: Your Next Team Member Might Be an AI</h1>
-                
                 <p class="text-lg italic text-gray-400 mb-8 text-center">The landscape of the modern workplace is undergoing a seismic shift. For decades, technology has given us tools to work faster. Today, artificial intelligence offers something fundamentally different: not just a tool, but a collaborator. AI is evolving from a passive instrument into an active participant, reshaping how teams innovate, solve problems, and create value.</p>
-                
                 <h2>AI Roles Already Integrated in the Workplace</h2>
                 <p>This isn't a far-off future; the integration has already begun. AI "specialists" are augmenting human teams in nearly every industry, handling tasks that are data-intensive, repetitive, or require immense speed.</p>
                 <ul>
@@ -692,16 +714,10 @@
                     <li><strong>The AI Design Assistant</strong>: Creates initial design concepts, generates logos, produces marketing graphics, and builds website mockups based on simple text prompts. Our <a href="#ai-generator" onclick="showPage('ai-generator'); return false;">AI Image Generator</a> is a prime example of this new creative partner.</li>
                     <li><strong>The AI Translation Specialist</strong>: Manages global communication by providing instant, high-quality translations of documents, emails, and real-time conversations, as demonstrated by our <a href="#translate" onclick="showPage('translate'); return false;">AI Translator</a>. This eliminates language barriers and opens up international markets.</li>
                 </ul>
-                
                 <h2>The Human-AI Partnership: A Symbiotic Advantage</h2>
                 <p>The true power of this revolution lies not in replacement, but in collaboration. Humans and AI have complementary strengths. When they work in synergy, they create a whole that is far greater than the sum of its parts. This partnership allows human workers to offload tedious tasks and focus on what they do best.</p>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Humans Excel At</th>
-                            <th>AI Excels At</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Humans Excel At</th><th>AI Excels At</th></tr></thead>
                     <tbody>
                         <tr><td><strong>Strategic & Critical Thinking</strong></td><td><strong>Data Processing & Pattern Recognition</strong></td></tr>
                         <tr><td><strong>Emotional Intelligence & Empathy</strong></td><td><strong>Speed, Scale & Repetition</strong></td></tr>
@@ -710,15 +726,12 @@
                     </tbody>
                 </table>
                 <p>Imagine a marketing team. The AI analyst identifies a new, emerging customer segment. The AI content strategist drafts five different ad campaigns targeting this segment. The human marketer then uses their strategic thinking and emotional intelligence to select the most resonant campaign, refine the messaging, and make the final creative and ethical judgments. This is the future: AI provides the data-driven foundation, and humans provide the wisdom and direction.</p>
-
                 <h2>Navigating the Challenges: Ethics, Training, and Adaptation</h2>
-                <p>Adopting AI as a team member is not without its challenges. Businesses must be proactive in addressing them:</p>
                 <ul>
                     <li><strong>Ethical Implementation:</strong> It is crucial to be transparent about the use of AI and to build safeguards against bias in AI algorithms. Our <a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;">Disclaimer</a> and <a href="#termsOfServicePage" onclick="showPage('termsOfServicePage'); return false;">Terms of Service</a> outline our commitment to responsible use.</li>
                     <li><strong>Reskilling and Upskilling:</strong> The workforce will need to develop new skills. Prompt engineering, AI oversight, and data interpretation will become as fundamental as using a spreadsheet is today.</li>
                     <li><strong>Job Role Evolution:</strong> Some roles will be automated, but many more will be created. The focus will shift from "doing" to "directing" and "validating" the work of AI systems.</li>
                 </ul>
-                
                 <div class="bg-[#1A1A1A] text-center p-8 rounded-lg my-12 shadow-inner">
                     <h2 class="mt-0">Ready to Integrate AI Into Your Team?</h2>
                     <p>The competitive advantage of tomorrow will belong to those who effectively integrate AI into their workflows today. Discover how Tech_Gen's suite of tools can serve as your first AI team members, boosting productivity and unlocking new possibilities.</p>
@@ -726,13 +739,24 @@
                         Explore Our AI Solutions
                     </button>
                 </div>
-                
                 <h2>Conclusion: A New Era of Collaboration</h2>
                 <p>The narrative of "humans versus machines" is outdated. The future of work is a story of "humans <em>with</em> machines." By embracing AI as a collaborative partner, we can augment our own intelligence, automate the mundane, and free ourselves to focus on the truly human skills of creativity, strategy, and connection. The question is no longer *if* AI will join your team, but *how* you will welcome and empower it. For more insights into this evolving world, visit our main <a href="#blog" onclick="showPage('blog'); return false;">Tech_Gen Blog</a>.</p>
 
-                <div class="mt-12 p-4 border-t border-gray-700 text-center">
+                <!-- NEW: Comment Section for Blog Post 3 -->
+                <div id="comments-section-blog-post-3" class="mt-12 p-4 border-t border-gray-700">
                     <h3 class="text-lg font-semibold text-white">Join the Discussion</h3>
-                    <p class="text-gray-400 text-sm">Comments are coming soon! What are your thoughts on AI in the workplace?</p>
+                    <div id="comment-form-container-blog-post-3" class="hidden">
+                        <form onsubmit="handleCommentSubmit(event, 'blog-post-3'); return false;" class="mt-4">
+                            <textarea id="comment-textarea-blog-post-3" rows="3" class="w-full px-4 py-2 border border-gray-700 rounded-md focus:ring-[#A800FF] focus:border-[#A800FF] bg-[#0D0D0D] text-white" placeholder="Write your comment..." required></textarea>
+                            <button type="submit" class="mt-2 bg-[#6C00FF] text-white py-2 px-4 rounded-md hover:bg-[#A800FF] transition font-semibold">Post Comment</button>
+                        </form>
+                    </div>
+                    <div id="comment-login-prompt-blog-post-3" class="mt-4 text-center p-4 bg-[#0D0D0D] rounded-lg">
+                        <p class="text-gray-400">Please <a href="#login" onclick="showPage('login')" class="text-[#A800FF] hover:underline">log in</a> to post a comment.</p>
+                    </div>
+                    <ul id="comments-list-blog-post-3" class="comments-list">
+                        <!-- Comments will be loaded here by JavaScript -->
+                    </ul>
                 </div>
             </div>
         </article>
@@ -1539,11 +1563,8 @@
     } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { 
         getFirestore,
-        doc,
-        getDoc,
-        setDoc,
-        updateDoc,
-        increment 
+        doc, getDoc, setDoc, updateDoc, increment,
+        collection, addDoc, query, where, orderBy, onSnapshot, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     // Initialize PDF.js worker
@@ -1623,8 +1644,6 @@
     };
 
     const authPageIds = ['login', 'register', 'forgotPassword', 'resetPassword', 'paymentPage'];
-
-    // To resolve the "no inbound links" issue, we will tell search engines not to index pages that are part of a user flow and not meant for general discovery.
     const noIndexPages = ['resetPassword', 'paymentPage'];
     
     async function loadUserProfile(user) {
@@ -1786,6 +1805,80 @@
             }
         }
     }
+    
+    // NEW: Function to handle comment submission
+    window.handleCommentSubmit = async function(event, postId) {
+        event.preventDefault();
+        if (!currentUser) {
+            showAlert('You must be logged in to post a comment.', 'info');
+            return;
+        }
+        
+        const textarea = document.getElementById(`comment-textarea-${postId}`);
+        const text = textarea.value.trim();
+        if (!text) {
+            showAlert('Comment cannot be empty.', 'error');
+            return;
+        }
+
+        const submitButton = textarea.nextElementSibling;
+        submitButton.disabled = true;
+
+        const commentData = {
+            postId: postId,
+            userId: currentUser.id,
+            userName: currentUser.name,
+            text: text,
+            createdAt: serverTimestamp()
+        };
+
+        try {
+            await addDoc(collection(db, "comments"), commentData);
+            textarea.value = '';
+        } catch (error) {
+            showAlert(`Error posting comment: ${error.message}`, 'error');
+        } finally {
+            submitButton.disabled = false;
+        }
+    }
+
+    // NEW: Function to load and display comments in real-time
+    let unsubscribeComments;
+    function loadAndDisplayComments(postId) {
+        if (unsubscribeComments) {
+            unsubscribeComments(); // Unsubscribe from previous listener
+        }
+        
+        const commentsList = document.getElementById(`comments-list-${postId}`);
+        if (!commentsList) return;
+
+        const q = query(collection(db, "comments"), where("postId", "==", postId), orderBy("createdAt", "desc"));
+
+        unsubscribeComments = onSnapshot(q, (querySnapshot) => {
+            commentsList.innerHTML = ''; // Clear previous comments
+            if (querySnapshot.empty) {
+                commentsList.innerHTML = '<p class="text-gray-500 text-sm text-center mt-4">Be the first to comment!</p>';
+                return;
+            }
+            querySnapshot.forEach((doc) => {
+                const comment = doc.data();
+                const li = document.createElement('li');
+                const commentDate = comment.createdAt ? comment.createdAt.toDate().toLocaleString() : 'Just now';
+                li.innerHTML = `
+                    <div>
+                        <span class="comment-author">${escapeHtml(comment.userName)}</span>
+                        <span class="comment-date">${escapeHtml(commentDate)}</span>
+                    </div>
+                    <p class="comment-text">${escapeHtml(comment.text)}</p>
+                `;
+                commentsList.appendChild(li);
+            });
+        }, (error) => {
+            console.error("Error fetching comments:", error);
+            commentsList.innerHTML = '<p class="text-red-400 text-sm text-center mt-4">Could not load comments.</p>';
+        });
+    }
+
 
     window.showPage = function(pageId, isInitialLoad = false) {
         if (pageId === 'account' && !currentUser) {
@@ -1822,6 +1915,16 @@
             if (pageId === 'account') {
                 populateAccountPage();
             }
+
+            // NEW: Load comments for blog post pages
+            if (pageId.startsWith('blog-post-')) {
+                loadAndDisplayComments(pageId);
+            } else if (unsubscribeComments) {
+                unsubscribeComments(); // Stop listening if we navigate away
+                unsubscribeComments = null;
+            }
+
+
             const cleanPath = window.location.origin + window.location.pathname;
             const newURL = `${cleanPath}#${pageId}`;
             const pageTitle = pageMetaInfo[pageId]?.title || `Tech_Gen - ${pageId}`;
@@ -1873,19 +1976,32 @@
         const authButtonsContainer = document.getElementById('authButtonsContainer');
         const userInfoContainer = document.getElementById('userInfoContainer');
         const userEmailDisplay = document.getElementById('userEmailDisplay');
-        const getStartedBtn = document.getElementById('getStartedBtn'); // Get the button
+        const getStartedBtn = document.getElementById('getStartedBtn'); 
         if (!authButtonsContainer || !userInfoContainer || !userEmailDisplay) return;
         
+        const blogPostIds = ['blog-post-1', 'blog-post-2', 'blog-post-3'];
+
         if (currentUser) { 
             authButtonsContainer.classList.add('hidden');
             userInfoContainer.classList.remove('hidden'); 
             userEmailDisplay.textContent = `Welcome, ${escapeHtml(currentUser.name)}!`;
-            if (getStartedBtn) getStartedBtn.classList.add('hidden'); // Hide button if logged in
+            if (getStartedBtn) getStartedBtn.classList.add('hidden');
+            // Show comment forms for logged-in users
+            blogPostIds.forEach(id => {
+                document.getElementById(`comment-form-container-${id}`)?.classList.remove('hidden');
+                document.getElementById(`comment-login-prompt-${id}`)?.classList.add('hidden');
+            });
+
         } else { 
             authButtonsContainer.classList.remove('hidden');
             userInfoContainer.classList.add('hidden');
             userEmailDisplay.textContent = '';
-            if (getStartedBtn) getStartedBtn.classList.remove('hidden'); // Show button if logged out
+            if (getStartedBtn) getStartedBtn.classList.remove('hidden');
+            // Show login prompts for logged-out users
+             blogPostIds.forEach(id => {
+                document.getElementById(`comment-form-container-${id}`)?.classList.add('hidden');
+                document.getElementById(`comment-login-prompt-${id}`)?.classList.remove('hidden');
+            });
         }
     }
     function updateGuestUsage() {
@@ -2015,17 +2131,15 @@
         });
     }
 
-    // Helper to read file as Base64 for image processing
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = () => resolve(reader.result.split(',')[1]); // Get only the base64 part
+            reader.onload = () => resolve(reader.result.split(',')[1]); 
             reader.onerror = error => reject(error);
             reader.readAsDataURL(file);
         });
     }
 
-    // FEATURE: Function to extract text from an image using Gemini's multimodal capabilities
     async function extractTextFromImage(file) {
         const base64Data = await fileToBase64(file);
         const prompt = "Extract all text from the following image. If there is no text, return an empty response.";
@@ -2054,7 +2168,7 @@
         } else if (data.promptFeedback?.blockReason) {
              throw new Error(`Content blocked by API: ${data.promptFeedback.blockReason}.`);
         }
-        return ""; // Return empty string if no text is found
+        return "";
     }
 
     async function extractTextFromFile(file) { 
