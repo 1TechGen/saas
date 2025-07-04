@@ -1467,7 +1467,7 @@
                 </ul>
 
                 <h2>3. User Responsibility and Assumption of Risk</h2>
-                <p>Your use of the Site and Services and your reliance on any information or Generated Content is solely at your own risk. You are a-priori responsible for:</p>
+                <p>Your use of the Site and Services and your reliance on any information or Generated Content is solely at your own risk. You are solely responsible for:</p>
                 <ul>
                     <li><strong>Evaluating the accuracy and appropriateness</strong> of any Generated Content for your intended use.</li>
                     <li><strong>The final application</strong> of any Generated Content. This includes any images you publish, documents you rely on after translation, or decisions you make based on a summary.</li>
@@ -1851,6 +1851,8 @@
         const commentsList = document.getElementById(`comments-list-${postId}`);
         if (!commentsList) return;
 
+        // FIX: Removed `orderBy` from the query to prevent needing a composite index.
+        // We will sort on the client side for robustness.
         const q = query(collection(db, "comments"), where("postId", "==", postId));
 
         unsubscribeComments = onSnapshot(q, (querySnapshot) => {
@@ -1866,6 +1868,7 @@
                 comments.push(doc.data());
             });
 
+            // FIX: Sort comments by timestamp client-side (newest first).
             comments.sort((a, b) => {
                 const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
                 const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
@@ -1886,6 +1889,7 @@
             });
 
         }, (error) => {
+            // FIX: Provide a more helpful error message for debugging.
             console.error("Error fetching comments. This is often caused by Firestore security rules. Ensure the 'comments' collection is readable by the public.", error);
             commentsList.innerHTML = '<p class="text-red-400 text-sm text-center mt-4">Could not load comments. Please check console for errors.</p>';
         });
@@ -2364,17 +2368,10 @@
 
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            
-            // FIX: Force a reload of the user's state from the Firebase backend.
-            // This ensures we have the latest `emailVerified` status.
             await userCredential.user.reload();
-            
-            // Now, check the reloaded and updated user object.
             if (auth.currentUser && auth.currentUser.emailVerified) {
-                // Success: onAuthStateChanged will handle the UI update and navigation.
-                // No further action is needed here.
+                // Success: onAuthStateChanged will handle the rest.
             } else {
-                // If still not verified, sign them out and show the message.
                 await signOut(auth);
                 errorEl.textContent = 'Please verify your email before logging in. Check your inbox for a verification link.';
                 errorEl.classList.remove('hidden');
