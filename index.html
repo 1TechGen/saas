@@ -344,7 +344,7 @@
         <div class="container mx-auto text-center px-4">
           <h1 class="text-4xl md:text-5xl font-bold mb-4">Transform Your Workflow with AI</h1>
           <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-200">Our seamless AI platform provides state-of-the-art tools for image generation, document translation, and text summarization, built for speed and simplicity.</p>
-          <button onclick="showPage('register')" class="bg-white text-black font-bold py-3 px-8 rounded-full hover-glow transition-transform transform hover:scale-105">Get Started for Free</button>
+          <button id="getStartedBtn" onclick="showPage('register')" class="bg-white text-black font-bold py-3 px-8 rounded-full hover-glow transition-transform transform hover:scale-105">Get Started for Free</button>
         </div>
       </header>
       
@@ -1873,16 +1873,19 @@
         const authButtonsContainer = document.getElementById('authButtonsContainer');
         const userInfoContainer = document.getElementById('userInfoContainer');
         const userEmailDisplay = document.getElementById('userEmailDisplay');
+        const getStartedBtn = document.getElementById('getStartedBtn'); // Get the button
         if (!authButtonsContainer || !userInfoContainer || !userEmailDisplay) return;
         
         if (currentUser) { 
             authButtonsContainer.classList.add('hidden');
             userInfoContainer.classList.remove('hidden'); 
             userEmailDisplay.textContent = `Welcome, ${escapeHtml(currentUser.name)}!`;
+            if (getStartedBtn) getStartedBtn.classList.add('hidden'); // Hide button if logged in
         } else { 
             authButtonsContainer.classList.remove('hidden');
             userInfoContainer.classList.add('hidden');
             userEmailDisplay.textContent = '';
+            if (getStartedBtn) getStartedBtn.classList.remove('hidden'); // Show button if logged out
         }
     }
     function updateGuestUsage() {
