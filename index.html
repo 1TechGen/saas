@@ -2368,12 +2368,16 @@
 
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            await userCredential.user.reload();
-            if (auth.currentUser && auth.currentUser.emailVerified) {
-                // Success: onAuthStateChanged will handle the rest.
+            const user = userCredential.user;
+            await user.reload(); // <<-- UPDATED: Reload user data to get latest emailVerified status
+
+            if (user.emailVerified) {
+                // Success. The onAuthStateChanged listener will handle the rest.
             } else {
+                // User is not verified. Resend email and sign them out.
+                await sendEmailVerification(user);
                 await signOut(auth);
-                errorEl.textContent = 'Please verify your email before logging in. Check your inbox for a verification link.';
+                errorEl.textContent = 'Your email is not verified. A new verification link has been sent. Please check your inbox and try again.';
                 errorEl.classList.remove('hidden');
             }
         } catch (error) {
