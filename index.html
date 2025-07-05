@@ -2330,14 +2330,26 @@
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
     activityEvents.forEach(eventName => window.addEventListener(eventName, resetInactivityTimer, true));
     
+    // UPDATED: onAuthStateChanged listener with proper email verification handling
     onAuthStateChanged(auth, async (user) => {
         const wasLoggedIn = !!currentUser;
         if (user) {
-            currentUser = await loadUserProfile(user);
-            if (!wasLoggedIn) { 
-                handleSuccessfulLogin();
+            await user.reload(); // Get the very latest user state from Firebase servers.
+            if (user.emailVerified) {
+                // User is valid and verified, proceed with login
+                currentUser = await loadUserProfile(user);
+                if (!wasLoggedIn) {
+                    handleSuccessfulLogin();
+                }
+            } else {
+                // User exists but is not verified.
+                showAlert('Your email is not verified. A new verification link has been sent. Please check your inbox and try again.', 'error', 10000);
+                await sendEmailVerification(user);
+                await signOut(auth); // Sign them out so they don't get stuck in a weird state
+                currentUser = null;
             }
         } else {
+            // User is signed out
             currentUser = null;
         }
         updateAuthUI();
@@ -2354,6 +2366,8 @@
     });
     
     // --- FORM EVENT LISTENERS ---
+    
+    // UPDATED: loginForm event listener is now simpler
     const loginFormEl = document.getElementById('loginForm');
     if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -2367,20 +2381,11 @@
         submitButton.innerHTML = `<span class="loading inline-block mr-2"></span>Signing In...`;
 
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            await user.reload(); // <<-- UPDATED: Reload user data to get latest emailVerified status
-
-            if (user.emailVerified) {
-                // Success. The onAuthStateChanged listener will handle the rest.
-            } else {
-                // User is not verified. Resend email and sign them out.
-                await sendEmailVerification(user);
-                await signOut(auth);
-                errorEl.textContent = 'Your email is not verified. A new verification link has been sent. Please check your inbox and try again.';
-                errorEl.classList.remove('hidden');
-            }
+            // The only job of this handler is to try signing in.
+            // The onAuthStateChanged listener will handle what happens next (e.g., email verification check).
+            await signInWithEmailAndPassword(auth, email, password);
         } catch (error) {
+            // This now only catches actual login failures, like wrong password or user not found.
             errorEl.textContent = getAuthErrorMessage(error.code);
             errorEl.classList.remove('hidden');
         } finally {
