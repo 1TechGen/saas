@@ -1433,7 +1433,7 @@
                 <p>We may terminate or suspend your account and bar access to the Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms. If you wish to terminate your account, you may simply discontinue using the Service or delete your account where the option is available.</p>
 
                 <h2>7. Disclaimer of Warranties and Limitation of Liability</h2>
-                <p>The Services are provided on an "AS IS" and "AS IS AVAILABLE" basis. Your use of the Service is at your sole risk. We expressly disclaim all warranties of any kind, whether express or implied. We do not warrant that the Service will be uninterrupted, timely, secure, or error-free, or that the results obtained from the use of the Service will be accurate or reliable. For more details, please review our full <a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;">Disclaimer</a>.</p>
+                <p>The Services are provided on an "AS IS" and "AS AVAILABLE" basis. Your use of the Service is at your sole risk. We expressly disclaim all warranties of any kind, whether express or implied. We do not warrant that the Service will be uninterrupted, timely, secure, or error-free, or that the results obtained from the use of the Service will be accurate or reliable. For more details, please review our full <a href="#disclaimerPage" onclick="showPage('disclaimerPage'); return false;">Disclaimer</a>.</p>
                 <p>In no event shall Tech_Gen, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.</p>
 
                 <h2>8. Governing Law</h2>
@@ -1851,7 +1851,9 @@
         const commentsList = document.getElementById(`comments-list-${postId}`);
         if (!commentsList) return;
 
-        const q = query(collection(db, "comments"), where("postId", "==", postId), orderBy("createdAt", "desc"));
+        // FIX: Removed `orderBy` from the query to prevent needing a composite index.
+        // We will sort on the client side for robustness.
+        const q = query(collection(db, "comments"), where("postId", "==", postId));
 
         unsubscribeComments = onSnapshot(q, (querySnapshot) => {
             commentsList.innerHTML = '';
@@ -1861,8 +1863,19 @@
                 return;
             }
 
+            const comments = [];
             querySnapshot.forEach((doc) => {
-                const comment = doc.data();
+                comments.push(doc.data());
+            });
+
+            // FIX: Sort comments by timestamp client-side (newest first).
+            comments.sort((a, b) => {
+                const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
+                const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
+                return timeB - timeA;
+            });
+
+            comments.forEach((comment) => {
                 const li = document.createElement('li');
                 const commentDate = comment.createdAt ? comment.createdAt.toDate().toLocaleString() : 'Just now';
                 li.innerHTML = `
@@ -1876,7 +1889,8 @@
             });
 
         }, (error) => {
-            console.error("Error fetching comments:", error);
+            // FIX: Provide a more helpful error message for debugging.
+            console.error("Error fetching comments. This is often caused by Firestore security rules. Ensure the 'comments' collection is readable by the public.", error);
             commentsList.innerHTML = '<p class="text-red-400 text-sm text-center mt-4">Could not load comments. Please check console for errors.</p>';
         });
     }
@@ -2297,9 +2311,7 @@
         switch (errorCode) {
             case 'auth/invalid-email': return 'Invalid email address format.';
             case 'auth/user-not-found':
-            case 'auth/wrong-password':
-            case 'auth/invalid-credential': // Catches both wrong password and user not found
-                return 'Invalid login credentials. Please try again.';
+            case 'auth/wrong-password': return 'Invalid login credentials. Please try again.';
             case 'auth/email-already-in-use': return 'This email address is already registered.';
             case 'auth/weak-password': return 'Password is too weak. It should be at least 6 characters.';
             case 'auth/requires-recent-login': return 'This operation is sensitive. Please log out and log in again.';
@@ -2318,13 +2330,11 @@
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
     activityEvents.forEach(eventName => window.addEventListener(eventName, resetInactivityTimer, true));
     
-    // CORRECTED onAuthStateChanged: Simplified, as verification is now handled by the form.
     onAuthStateChanged(auth, async (user) => {
         const wasLoggedIn = !!currentUser;
         if (user) {
-            // We now assume any user object here is verified and valid for login.
             currentUser = await loadUserProfile(user);
-            if (!wasLoggedIn) {
+            if (!wasLoggedIn) { 
                 handleSuccessfulLogin();
             }
         } else {
@@ -2344,8 +2354,6 @@
     });
     
     // --- FORM EVENT LISTENERS ---
-    
-    // CORRECTED loginForm listener: Handles unverified emails directly.
     const loginFormEl = document.getElementById('loginForm');
     if (loginFormEl) loginFormEl.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -2361,17 +2369,17 @@
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            
-            if (!user.emailVerified) {
-                // Handle unverified user directly in the form.
-                errorEl.textContent = 'Your email is not verified. A new verification link has been sent. Please check your inbox.';
-                errorEl.classList.remove('hidden');
-                await sendEmailVerification(user);
-                await signOut(auth); // Immediately sign out.
-                return; // Stop further processing.
-            }
-            // If verified, onAuthStateChanged will handle the successful login.
+            await user.reload(); // <<-- UPDATED: Reload user data to get latest emailVerified status
 
+            if (user.emailVerified) {
+                // Success. The onAuthStateChanged listener will handle the rest.
+            } else {
+                // User is not verified. Resend email and sign them out.
+                await sendEmailVerification(user);
+                await signOut(auth);
+                errorEl.textContent = 'Your email is not verified. A new verification link has been sent. Please check your inbox and try again.';
+                errorEl.classList.remove('hidden');
+            }
         } catch (error) {
             errorEl.textContent = getAuthErrorMessage(error.code);
             errorEl.classList.remove('hidden');
